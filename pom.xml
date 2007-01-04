@@ -1,0 +1,99 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>net.sourceforge.floggy</groupId>
+	<artifactId>floggy</artifactId>
+	<version>1.0</version>
+	<name>Floggy Framework's for JME</name>
+	<url>http://floggy.sourceforge.net</url>
+	<description>A collection of frameworks for JME</description>
+	<inceptionYear>2006</inceptionYear>
+	<packaging>pom</packaging>
+	<organization>
+		<name>Floggy Open Source Group</name>
+		<url>http://floggy.org/</url>
+	</organization>
+	<scm>
+		<connection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/tags/floggy-1.0</connection>
+		<developerConnection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/tags/floggy-1.0</developerConnection>
+		<url>http://floggy.svn.sourceforge.net/viewvc/floggy/tags/floggy-1.0</url>
+	</scm>
+	<issueManagement>
+		<system>Sourceforge</system>
+		<url>http://sourceforge.net/tracker/?group_id=139426</url>
+	</issueManagement>
+	<mailingLists>
+		<mailingList>
+			<name>Developer's mailing list</name>
+			<archive>http://sourceforge.net/mailarchive/forum.php?forum=floggy-developer</archive>
+			<post>floggy-developer@lists.sourceforge.net</post>
+			<subscribe>https://lists.sourceforge.net/lists/listinfo/floggy-developer</subscribe>
+			<unsubscribe>https://lists.sourceforge.net/lists/listinfo/floggy-developer</unsubscribe>
+		</mailingList>
+		<mailingList>
+			<name>User's mailing list</name>
+			<archive>http://sourceforge.net/mailarchive/forum.php?forum=floggy-user</archive>
+			<post>floggy-user@lists.sourceforge.net</post>
+			<subscribe>https://lists.sourceforge.net/lists/listinfo/floggy-user</subscribe>
+			<unsubscribe>https://lists.sourceforge.net/lists/listinfo/floggy-user</unsubscribe>
+		</mailingList>
+	</mailingLists>
+	<repositories>
+		<repository>
+			<id>sourceforge</id>
+			<name>SourceForge.net</name>
+			<url>http://floggy.sourceforge.net/repository</url>
+		</repository>
+	</repositories>
+	<distributionManagement>
+		<site>
+			<id>sourceforge</id>
+			<name>SourceForge.net</name>
+			<url>scp://${username}@shell.sourceforge.net:/home/groups/f/fl/floggy/htdocs/</url>
+		</site>
+		<repository>
+			<id>sourceforge</id>
+			<name>SourceForge.net</name>
+			<url>scp://${username}@shell.sourceforge.net:/home/groups/f/fl/floggy/htdocs/repository</url>
+		</repository>
+		<snapshotRepository>
+			<id>sourceforge</id>
+			<name>SourceForge.net</name>
+			<url>scp://${username}@shell.sourceforge.net:/home/groups/f/fl/floggy/htdocs/repository</url>
+		</snapshotRepository>
+	</distributionManagement>
+	<developers>
+		<developer>
+			<name>Thiago Leao Moreira</name>
+			<id>thiagolm</id>
+			<email>thiagolm@users.sourceforge.net</email>
+			<organization>Floggy Open Source Group</organization>
+			<roles>
+				<role>Java Developer</role>
+				<role>Release Manager</role>
+			</roles>
+			<timezone>-3</timezone>
+		</developer>
+		<developer>
+			<name>Thiago Rossato</name>
+			<id>thiagorossato</id>
+			<email>thiagorossato@users.sourceforge.net</email>
+			<organization>Floggy Open Source Group</organization>
+			<roles>
+				<role>Java Developer</role>
+				<role>Release Manager</role>
+			</roles>
+			<timezone>-3</timezone>
+		</developer>
+		<developer>
+			<name>Priscila Tavares Lugon</name>
+			<id>priscilalugon</id>
+			<email>priscilalugon@users.sourceforge.net</email>
+			<organization>Floggy Open Source Group</organization>
+			<roles>
+				<role>Java Developer</role>
+				<role>Release Manager</role>
+			</roles>
+			<timezone>-3</timezone>
+		</developer>
+	</developers>
+</project>
