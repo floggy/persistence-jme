@@ -1,0 +1,27 @@
+Ant
+
+ "Apache {{{http://ant.apache.org}Ant}} is a Java-based build tool. In theory, it is kind of like Make, but without Make's wrinkles." 
+ 
+ To use Floggy with Ant you need to declare a taskdef like the snippet below.
+ 
++------------------------------------------+
+[...]
+  <taskdef name="floggy-compiler" classname="net.sourceforge.floggy.CompilerTask" 
+    classpath="floggy-compiler-j2me-midp2-1.2.jar:commons-io-1.2.jar:javassist-3.3.jar:commons-logging-1.0.4.jar"/>
+[...]
++------------------------------------------+
+
+ Also you need to create a target to execute Floggy. 
+   
++------------------------------------------+
+[...]
+  <target name="floggy">
+    <floggy-compiler classpath="floggy-framework-1.2.jar:midpapi20.jar:cldc11.jar"
+      inputfile="${basedir}/bin" outputfile="${basedir}/bin" />
+  </target>
+[...]
++------------------------------------------+
+
+ Here is a example of a build {{{http://floggy.svn.sourceforge.net/viewvc/*checkout*/floggy/trunk/floggy-persistence-demo/build.xml}file}}.
+
+

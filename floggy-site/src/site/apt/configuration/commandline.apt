@@ -1,0 +1,14 @@
+Command line
+
+ Here we demostrate how to use the Floggy in the command line. We suggest that you\
+ use other way to build your project, for instance you may use {{{http://ant.apache.org}Ant}}.
+
++------------------------------------------+
+   java -classpath
+ prompt> java -classpath \
+ floggy-compiler-j2me-midp2-{version}.jar:commons-io-1.2.jar:javassist-3.3.jar:commons-logging-1.0.4.jar \
+   net.sourceforge.floggy.Main -cp floggy-framework-1.2.jar:midpapi20.jar:cldc11.jar -o ./input ./output
++------------------------------------------+
+
+ We create a script to simplify your development. Here are the two flavors of \
+ the script: {{{http://ant.apache.org}Windows}} and {{{http://ant.apache.org}Linux}}
