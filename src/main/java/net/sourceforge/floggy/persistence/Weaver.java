@@ -28,6 +28,8 @@ import org.apache.commons.logging.LogFactory;
 public class Weaver {
 
     private static final Log LOG = LogFactory.getLog(Weaver.class);
+    public static final String PERSISTABLE_CLASSNAME= "net.sourceforge.floggy.persistence.Persistable";
+    public static final String __PERSISTABLE_CLASSNAME= "net.sourceforge.floggy.persistence.__Persistable";
 
     private ClassPool classpathPool;
 
@@ -133,9 +135,9 @@ public class Weaver {
 	LOG.info("Look up for classes that implements Persistable!");
 	List list = new LinkedList();
 	final CtClass persistable = classpathPool
-		.get("net.sourceforge.floggy.persistence.Persistable");
+		.get(Weaver.PERSISTABLE_CLASSNAME);
 	final CtClass __persistable = classpathPool
-		.get("net.sourceforge.floggy.persistence.__Persistable");
+		.get(Weaver.__PERSISTABLE_CLASSNAME);
 	for (int i = 0; i < classCount; i++) {
 	    String fileName = this.inputPool.getFileName(i);
 	    String className = getClassName(fileName);
@@ -169,7 +171,7 @@ public class Weaver {
 
     private List buildClassTree(CtClass ctClass) throws NotFoundException {
 	final CtClass persistable = classpathPool
-		.get("net.sourceforge.floggy.persistence.Persistable");
+		.get(Weaver.PERSISTABLE_CLASSNAME);
 	List list = new ArrayList();
 	CtClass superClass = ctClass;
 	String superName = ctClass.getName();

@@ -46,7 +46,7 @@ public class ClassVerifier {
 	if (interfaces != null) {
 	    for (int i = 0; i < interfaces.length; i++) {
 		if (interfaces[i].getName().equals(
-			"net.sourceforge.floggy.Persistable")) {
+			Weaver.PERSISTABLE_CLASSNAME)) {
 		    return true;
 		}
 	    }
@@ -69,7 +69,7 @@ public class ClassVerifier {
 	if (interfaces != null) {
 	    for (int i = 0; i < interfaces.length; i++) {
 		if (interfaces[i].getName().equals(
-			"net.sourceforge.floggy.__Persistable")) {
+			Weaver.__PERSISTABLE_CLASSNAME)) {
 		    return true;
 		}
 	    }

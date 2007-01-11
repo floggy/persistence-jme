@@ -8,6 +8,7 @@ import javassist.CtNewMethod;
 import javassist.Modifier;
 import javassist.NotFoundException;
 import net.sourceforge.floggy.persistence.ClassVerifier;
+import net.sourceforge.floggy.persistence.Weaver;
 import net.sourceforge.floggy.persistence.formatter.CodeFormatter;
 
 import org.apache.commons.logging.Log;
@@ -83,7 +84,7 @@ public class CodeGenerator {
          */
     private void generatePersistableInterface() throws NotFoundException {
 	this.ctClass.addInterface(this.ctClass.getClassPool().get(
-		"net.sourceforge.floggy.persistence.__Persistable"));
+		Weaver.__PERSISTABLE_CLASSNAME));
     }
 
     /**
