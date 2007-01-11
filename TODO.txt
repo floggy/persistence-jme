@@ -1,0 +1,78 @@
+Floggy
+-migrar para o Maven 2
+  - criar pulgin (maven-floggy-plugin)
+  - documentação do plugin
+  - o que é mais caro criar um DataInputStream ou executar um metodo synchronized
+  
+- documentação
+  - diagramas da arquitetura
+  - diagrama de classes e de sequência
+  - diagrama do fluxo de execução do java, floggy, retroweaver???, retroguard, jminimizer, preverifier!!!
+  - criar uma aplicação de exemplo
+  - logomarca?? criar uma imagem.
+  - criar script do netbenas, do maven, e shell scripts
+  - documentar em código também
+
+- FEITO solicitar a liberação do javassist no repositório do maven2 para a versão 3.3  
+- formatar o código
+- adicionar a licensa aos projetos
+- se o objeto ainda não estiver salvo e alguem querer deletar?!?!!?
+- medir a performance
+- preverificação
+- FEITO criar um repositório do maven para abrigar as bibliotecas de J2ME desenvolvidas no projeto me4se (para executar os testcases).
+- trabalhar com o commons-vfs para ler e escrever as classes.
+- Dar um jeito de identificar mudanças nas classes e só enxertar as que contêm modificações
+- Permitir que o usuário final veja o código gerado.
+- adicionar a dependencia do floggy-framework ao jar final da aplicação.
+- adicionar a licensa a todos os codigos fontes dos projetos
+- criar a aplicação de exemplo e deixa-la pronta para ser usado pelos usuários (liberada numa url, utilizar o tinyurl.com)
+- FEITO criar as listas de discussão
+- adicionar este arquivo ao floggy-main
+- translate this document
+
+
+
+MODULO DE PERSISTÊNCIA
+- documentação da task do ant
+- arquitetura do sistema
+- exclusão em cascata (paleativo - chamar um método antes de deletar o Persistable, tipo: beforeDelete() throws Exception)
+- transação
+- criar uma maneira de migrar de versões dos RMSs, talvez criar uma aplicação para isso. Ou colocar no primeiro registro o layout dos dados armazenados no RMS
+- listar data types que podem ser persistiveis
+        * tipos primitivos
+        * classes wrappers
+        * java.util.Date
+        * java.lang.String
+        * java.util.Vector (os objetos do vector devem pertencer a esta lista também)
+        * net.sourceforge.floggy.Persistable
+        * arrays desses tipos
+
+- transformar os métodos __save() e __load() em métodos estáticos?!?!?!?!?!
+- FEITO atributos estáticos não poderão ser salvos!!!
+- deixar ou não os RMS abertos??? ter um método para fechar os RMS destroyApp(boolean)
+- pode-se solicitar ao PersistenceManager para que trabalhe com os RMS abertos ou fechados. (setWorkWithOpenRecordsStores(boolean)
+- gerar uma classe que será responsável por saber os metadados da aplicação (criar um RMS com a descrição das classes)
+- modificar task do Ant
+- deve funcionar sem o modulo de sincronização
+- lazy load, carregar todo o objeto ou carregar somente o primeiro objeto ou carregar a árvore de objetos a um certo nível.
+- attributes embebbeds (EJB 3.0)
+
+
+
+MODULO DE SINCRONIZAÇÃO
+- usar a interface net.sourceforge.floggy.Synchronyzable para marcar as clases que devem ser sincronizadas
+- todas as entidades deverão ter um id vindo do servidor??????? (para efeitos de delete, edit,...)
+- usar a interface net.sourceforge.floggy.Serializable para serializar as classes em array de bytes??????
+- enviar as entidades como arrays de bytes ou como estruturas CSV ou como documentos XML.
+- usar o Java 5.0 com annotations e tirar-las na hora de fazer a modificação do código
+- flag indicativa de não sincronização com o servidor (N-new, M-modified, E-excluded), primeiro byte a ser salvo
+- se houver sincronização TEM que utilizar o modulo de persistência também.
+- zipar os dados?!?!?! (medir performance)
+- criptografar os dados!?!?! (medir performance)
+- usar anotações para setar criptografia, compactação...
+- verificar a possibilidade de transformar bytecode 5.0 para 1.3 via Javassist
+
+
+MODULO DE REFLEXÃO
+- se temos acesso a todas as estruturas das classes porque não criar métodos que retornem estas estruturas???
+- getMethods(), getFields(), getSuperClass()

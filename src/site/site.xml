@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="Floggy">
+  <publishDate position="left" format="dd MMM yyyy"/>
+  <version value="1.0"/>
+  <bannerLeft>
+  	<name>Floggy</name>
+    <src>images/banner-left.jpg</src>
+    <href>http://floggy.org/</href>
+  </bannerLeft>
+    <body>
+    <links>
+      <item name="JME" href="http://java.sun.com/javame/index.jsp"/>
+      <item name="Maven 2" href="http://maven.apache.org/maven2/"/>
+    </links>
+	
+    <menu name="Floggy">
+      <item name="Introduction" href="index.html"/>
+      <item name="Download" href="http://sourceforge.net/project/showfiles.php?group_id=139426"/>
+      <item name="Road Map" href="roadmap.html" />
+      <item name="FAQ" href="faq.html" />
+    </menu>
+    
+    <menu name="Configuration">
+	  <item name="Ant" href="configuration/ant.html"/>
+	  <item name="Command line" href="underconstruction.html"/>
+	  <item name="Eclipse" href="underconstruction.html"/>
+	  <item name="Maven" href="configuration/maven.html"/>
+	  <item name="Netbeans" href="underconstruction.html"/>
+	</menu>
+	
+    <menu name="Modules" collapse="true">
+	  <item name="Framework" href="module/framework.html"/>
+	  <item name="Weaver" href="module/weaver.html"/>
+	</menu>
+	
+	<menu name="Support">
+	  <item name="Email" href="http://sourceforge.net/mail/?group_id=139426"/>
+	  <item name="Issue Tracking" href="http://sourceforge.net/tracker/?group_id=139426"/>
+	  <item name="Tasks" href="http://sourceforge.net/pm/?group_id=139426"/>
+	</menu>
+    
+	<menu name="About us">
+	  <item name="Team" href="team.html"/>
+	  <item name="Brazil" href="brazil.html"/>
+	</menu>
+	<menu ref="reports"/>
+  </body>
+</project>

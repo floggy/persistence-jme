@@ -1,0 +1,73 @@
+Comming soon
+	
+	The first release of Floggy will be avaible soon! 
+	We are working really hard to finish version 1.0 before Christmas.
+	
+Introduction
+
+	Floggy is an <<object persistence framework>> for {{{http://java.sun.com/javame/}JME}}/MIDP applications. The main objective of this project is facility of use, 
+	facility of leraning, good performance and above of everything, cumprimento of requirements of one persistence layer like described at {{{http://www.ambysoft.com/downloads/persistenceLayer.pdf}The design of a robust persistence layer for relational databases}}
+	Floggy is composed by two modules: Floggy Framework and Floggy Weaver.
+	The framework module is responsiable to delivery to applications the persistence support, retriving and searching of data, enquanto the weaver module
+	is responsiable to generate and weaver the code of persistence to objects.
+	
+	
+	
+	
+	
+	There is no need to write the persistence code! This work is done at compilation-time. We tried to make it easy to you!
+	
+ The next step is setup your environment. Click {{{./configuration.html}here}} to learn how.
+ 
+Example
+
+* A simple persistable bean
+ 
++------------------------------+
+public class Person implements net.sourceforge.floggy.Persistable {
+ 
+ 	private String name;
+ 	private int age;
+ 	
+	public Person(String name, int age) {
+		this.name = name;
+		this.age = age;
+	}
+
+ 	...
+ 	
+}
++------------------------------+
+
+* Storing and retrieving an object
+
++------------------------------+
+ 	...
+ 	
+ 	Person person = new Person("Priscila", 23);
+ 	
+	PersistableManager manager = PersistableManager.getInstance();
+	int id = manager.save(person);
+	
+	...
+	
+	Person samePerson = new Person();
+	manager.load(samePerson, id);
+	
+	...
++------------------------------+
+
+* Searching all objects
+
++------------------------------+
+ 	...
+	
+	PersistableManager manager = PersistableManager.getInstance();
+	ObjectSet persons = manager.find(Person.class, null, null);
+	while (persons.hasNext()) {
+		Person person = (Person) persons.next();
+		...
+	}
+
+	...
++------------------------------+

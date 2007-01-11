@@ -1,0 +1,90 @@
+
+Criando uma aplicação
+
+ O primeiro passo para utilizar o framework Floggy é adicionar a interface net.sourceforge.floggy.Persistable a lista de interfaces implementada pelas classes que serão persistidas.
+ 
++------------------------------+
+public class Person implements net.sourceforge.floggy.Persistable {
+ 
+ 	private int age;
+ 	private String name;
+ 	
+ 	...
+ 	
+}
++-----------------------------+
+
+  Em seguida deve-se obter uma instancia de net.sourceforge.floggy.PersistableManager através do método getInstance();
+
++------------------------------+
+public class HelloFloggyWorldMidlet extends Midlet {
+
+    protected PersistableManager pm;
+ 
+    protected void startApp() throws MIDletStateChangeException {
+        pm= PersistableManager.getInstance();
+        ...
+    }
+    
+}
++-----------------------------+
+
+   Obtendo uma lista de objetos.
+   
++------------------------------+
+public class HelloFloggyWorldMidlet extends Midlet {
+
+	...
+	 
+    public void listPersons() {
+    	ObjectSet persons= pm.find(Person.class, null, null);
+        while (persons.hasNext()) {
+            Person person= (Person) persons.next();
+            ...
+        }
+    }
+}
++-----------------------------+
+
+  Salvando um objeto.
+
++------------------------------+
+public class HelloFloggyWorldMidlet extends Midlet {
+
+    ...
+    
+    public void savePerson() {
+    	Person person= new Person();
+    	person.setAge(...);
+    	person.setName(...);
+    	int id= pm.save(person);
+    	...
+    }
+}
++-----------------------------+
+
+   Carregando um objeto.
+
++------------------------------+
+public class HelloFloggyWorldMidlet extends Midlet {
+
+    ...
+    
+    public Person loadPerson(int id) {
+    	Person person= new Person();
+    	pm.load(person, id);
+    	return person;
+    }
+}
++-----------------------------+
+
+    O último passo é executar o pós compilador para gerar os métodos necessários para a persistencia dos objetos.
+
+Configurando o pós compilador.
+    
+
+
+
+
+ 
+ 

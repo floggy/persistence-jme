@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<faqs id="FAQ" title="Frequently Asked Questions">
+ <part id="General">
+   <faq ig="why-floggy">
+     <question>Why Floggy?</question>
+     <answer>
+       <p>The Floggy name was choosed by Priscila. Because she think pretty quilt.</p>
+     </answer>
+   </faq>
+ </part>
+ <part id="Technical">
+   <faq id="static-field">
+     <question><i>Static</i> fields are persisted?</question>
+     <answer>
+       <p>No. These fields belows to the class and not to a instance of the class.</p>
+     </answer>
+   </faq>
+   <faq id="transient-field">
+     <question><i>Transient</i> fields are persisted?</question>
+     <answer>
+       <p>No. A <i>transient</i> field means that it must not be persisted. More information are available <a href="http://java.sun.com/docs/books/vmspec/2nd-edition/html/Concepts.doc.html#29882">here</a>.</p>
+     </answer>
+   </faq>
+ </part>
+</faqs>

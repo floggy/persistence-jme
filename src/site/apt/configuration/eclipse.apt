@@ -1,0 +1,15 @@
+Eclipse
+
+ "{{{http://www.eclipse.org}Eclipse}} is an open source community whose projects are focused on building an open development platform comprised of extensible frameworks, tools and runtimes for building, deploying and managing software across the lifecycle." 
+
+The steps take at this section enable you to use Floggy with Eclipse.
+  
+  [[1]]First you need to create a new External Tool, to do this access the menu Run, submenu External Tools, \
+  or click on the button ExternalTools on the menu bar. Now create a new external tool with the \
+  configuration of Floggy. Do something like the imge below.
+  
++------------------------------------------+
+
+  
++------------------------------------------+
+  

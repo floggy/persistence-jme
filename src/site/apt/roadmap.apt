@@ -1,0 +1,24 @@
+
+Road map
+
+* Version 1.2 March/2007
+
+	* Transaction.
+	
+
+* Version 1.3 July/2007
+
+	* Lazy load.
+	
+	* Cascade delete.
+
+* Version 1.4 October/2007
+
+	* Store data compressed.
+	
+	* Store data encrypted.
+
+* Version 1.5 January/2008
+
+	* Process based on annotations.
+

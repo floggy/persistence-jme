@@ -1,0 +1,67 @@
+
+Datatypes
+
+   All primitive types are saved using only the size of that type. Object types receive one byte more that indicates the state of the object (null or not).
+
+*----------*--------------*------------------------*
+| Type   | Default value | Observation|
+*----------*--------------*------------------------*
+| boolean   | false     | Must be a field of a class that implements net.sourceforge.floggy.Persistable|
+*----------*--------------*------------------------*
+| byte   | 0     | Must be a field of a class that implements net.sourceforge.floggy.Persistable|
+*----------*--------------*------------------------*
+| char   | 0     | Must be a field of a class that implements net.sourceforge.floggy.Persistable|
+*----------*--------------*------------------------*
+| double | 0.0	|Must be a field of a class that implements net.sourceforge.floggy.Persistable|
+*----------*--------------*------------------------*
+| float  | 0.0	|Must be a field of a class that implements net.sourceforge.floggy.Persistable|
+*----------*--------------*------------------------*
+| int    | 0     | Must be a field of a class that implements net.sourceforge.floggy.Persistable|
+*----------*--------------*------------------------*
+| long   | 0     | Must be a field of a class that implements net.sourceforge.floggy.Persistable|
+*----------*--------------*------------------------*
+| short    | 0     | Must be a field of a class that implements net.sourceforge.floggy.Persistable|
+*----------*--------------*------------------------*
+| java.lang.Boolean | null     | Must be a field of a class that implements net.sourceforge.floggy.Persistable|
+*----------*--------------*------------------------*
+| java.lang.Byte | null     | Must be a field of a class that implements net.sourceforge.floggy.Persistable|
+*----------*--------------*------------------------*
+| java.lang.Character | null     | Must be a field of a class that implements net.sourceforge.floggy.Persistable|
+*----------*--------------*------------------------*
+| java.lang.Double | null     | Must be a field of a class that implements net.sourceforge.floggy.Persistable|
+*----------*--------------*------------------------*
+| java.lang.Float | null     | Must be a field of a class that implements net.sourceforge.floggy.Persistable|
+*----------*--------------*------------------------*
+| java.lang.Integer | null     | Must be a field of a class that implements net.sourceforge.floggy.Persistable|
+*----------*--------------*------------------------*
+| java.lang.Long | null     | Must be a field of a class that implements net.sourceforge.floggy.Persistable|
+*----------*--------------*------------------------*
+| java.lang.Short | null     | Must be a field of a class that implements net.sourceforge.floggy.Persistable|
+*----------*--------------*------------------------*
+| java.lang.String | null     | Must be a field of a class that implements net.sourceforge.floggy.Persistable|
+*----------*--------------*------------------------*
+| java.util.Date | null     | Must be a field of a class that implements net.sourceforge.floggy.Persistable. If the value of the field was null, only one byte are saved. If not the java.util.Date are transformed in a long type and saved using writeLong(long)|
+*----------*--------------*------------------------*
+| java.util.Vector | null     | Must be a field of a class that implements net.sourceforge.floggy.Persistable|
+*----------*--------------*------------------------*
+| net.sourceforge.floggy.Persistable | null     | 
+*----------*--------------*------------------------*
+
+	Examples
+	
+	Suppose that you have a class like this:
+	
+	public class Car {
+		private String name;
+		private java.util.Date buildDate;
+		private double price;
+	}
+
+	Now suppose this threee scenarios:
+	
+	[1] A instance of Car with null name, null buildDate and 0 price the total cost of store this instance is: 
+		1 byte + 1 byte + 64 bytes= 66 bytes
+		
+		This happens because no value must be save for name and buildDate only one byte indicating nullable state.
+		
+	[2] teste teste

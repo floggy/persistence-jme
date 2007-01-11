@@ -1,0 +1,50 @@
+Maven 2.0
+
+ "{{{http://maven.apache.org}Maven}} is a software project management and comprehension tool. Based on the concept of a project object model (POM), Maven can manage a project's build, reporting and documentation from a central piece of information."
+ 
+  All projects developed by Floggy Open Source Group are managed by Maven. To use the Maven you need to do a three steps . 
+	
+ [[1]] First you need to adds the plugin repository of Floggy into your project's pom.xml
+	
++------------------------------------------+
+<project>
+[...]
+  <pluginRepositories>
+    <pluginRepository>
+      <id>sourceforge</id>
+      <name>SourceForge.net</name>
+      <url>http://floggy.sourceforge.net/repository</url>
+    </pluginRepository>
+  </pluginRepositories>
+[...]
+</project>
++------------------------------------------+
+
+ [[2]] Then configure the Floggy plugin:
+	
++------------------------------------------+
+<project>
+[...]
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>net.sourceforge.floggy</groupId>
+        <artifactId>maven-floggy-plugin</artifactId>
+        <version>1.1</version>
+        <executions>
+          <execution>
+            <phase>test-compile</phase>
+            <goals>
+              <goal>floggy</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+[...]
+</project>
++------------------------------------------+
+
+ Here is a example of a POM {{{http://floggy.svn.sourceforge.net/viewvc/*checkout*/floggy/trunk/floggy-persistence-demo/pom.xml}file}}.
+
