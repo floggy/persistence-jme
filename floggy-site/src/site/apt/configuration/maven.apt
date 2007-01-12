@@ -2,7 +2,7 @@ Maven 2.0
 
  "{{{http://maven.apache.org}Maven}} is a software project management and comprehension tool. Based on the concept of a project object model (POM), Maven can manage a project's build, reporting and documentation from a central piece of information."
  
-  All projects developed by Floggy Open Source Group are managed by Maven. To use the Maven you need to do a three steps . 
+  All projects developed by Floggy Open Source Group are managed by Maven. To use the Maven you need to do the following steps . 
 	
  [[1]] First you need to adds the plugin repository of Floggy into your project's pom.xml
 	
@@ -30,12 +30,12 @@ Maven 2.0
       <plugin>
         <groupId>net.sourceforge.floggy</groupId>
         <artifactId>maven-floggy-plugin</artifactId>
-        <version>1.1</version>
+        <version>1.0</version>
         <executions>
           <execution>
-            <phase>test-compile</phase>
+            <phase>process-classes</phase>
             <goals>
-              <goal>floggy</goal>
+              <goal>persistence-weaver</goal>
             </goals>
           </execution>
         </executions>
@@ -46,5 +46,9 @@ Maven 2.0
 </project>
 +------------------------------------------+
 
- Here is a example of a POM {{{http://floggy.svn.sourceforge.net/viewvc/*checkout*/floggy/trunk/floggy-persistence-demo/pom.xml}file}}.
+A POM sample.
+
+ We developed a POM file to the demo application. You can customize this file to your way of development. The file is 
+ available {{{http://floggy.svn.sourceforge.net/viewvc/*checkout*/floggy/trunk/floggy-persistence-demo/pom.xml}here}}.
+ The POM file use plugins from the {{{http://mojo.codehaus.org/j2me-maven-plugin/introduction.html}j2me-maven-floggy}} project to generate the JAD file and to preverify the classes.
 
