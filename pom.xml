@@ -58,7 +58,7 @@
 					<execution>
 						<phase>process-classes</phase>
 						<goals>
-							<goal>weaver</goal>
+							<goal>persistence-weaver</goal>
 						</goals>
 						<configuration>
 							<input>${project.build.outputDirectory}</input>
