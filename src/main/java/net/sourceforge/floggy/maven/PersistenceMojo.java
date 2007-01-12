@@ -13,7 +13,7 @@ import org.apache.maven.project.MavenProject;
 /**
  * Goal which runs the Floggy compiler.
  * 
- * @goal weaver
+ * @goal persistence-weaver
  * @phase process-classes
  */
 public class PersistenceMojo extends AbstractMojo {
