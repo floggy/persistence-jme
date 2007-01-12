@@ -73,14 +73,14 @@
 				<version>1.0-SNAPSHOT</version>
 				<executions>
 					<execution>
-						<id>1</id>
+						<id>persistence-weaver</id>
 						<goals>
-							<goal>weaver</goal>
+							<goal>persistence-weaver</goal>
 						</goals>
 						<phase>process-classes</phase>
 					</execution>
 					<execution>
-						<id>2</id>
+						<id>package</id>
 						<configuration>
 							<embbededFinalName>hospital-me</embbededFinalName>
 						</configuration>
