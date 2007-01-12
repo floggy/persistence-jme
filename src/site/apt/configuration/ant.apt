@@ -6,22 +6,42 @@ Ant
  
 +------------------------------------------+
 [...]
-  <taskdef name="floggy-compiler" classname="net.sourceforge.floggy.CompilerTask" 
-    classpath="floggy-compiler-j2me-midp2-1.2.jar:commons-io-1.2.jar:javassist-3.3.jar:commons-logging-1.0.4.jar"/>
+  <taskdef name="floggy-persistence-weaver" classname="net.sourceforge.floggy.persistence.WeaverTask" 
+    classpath="..."/>
 [...]
 +------------------------------------------+
+
+ The classpath could be generated with the dependencies described in this {{{./modules/weaver/}list}}.
 
  Also you need to create a target to execute Floggy. 
    
 +------------------------------------------+
 [...]
   <target name="floggy">
-    <floggy-compiler classpath="floggy-framework-1.2.jar:midpapi20.jar:cldc11.jar"
-      inputfile="${basedir}/bin" outputfile="${basedir}/bin" />
+	<floggy-persistence-weaver bootclasspathref="..." classpathref="..." input="..." output="..." generateSource="..."/>
   </target>
 [...]
 +------------------------------------------+
 
- Here is a example of a build {{{http://floggy.svn.sourceforge.net/viewvc/*checkout*/floggy/trunk/floggy-persistence-demo/build.xml}file}}.
+ We sugest that this target run just after the compilation has done. 
+ 
+ 	The attributes declared in the floggy-persistence-weaver tag has the following meaning.
+ 	
+ 	[[*]] bootclasspathref: a reference to a path that contains the packages cldcapi and midpapi, any version. This packages could be find at 
+ 		the {{{http://java.sun.com/jme/}Sun Java Wireless Toolkit}}.
+ 	
+ 	[[*]] classpathref: a reference to a path that contains a version of the package floggy-persistence-framework. This package could be find at {{{http://sourceforge.net/project/showfiles.php?group_id=139426}here}}
+ 	
+ 	[[*]] input: the directory or jar file that contains the classes that will be processed by the weaver.
+ 	
+ 	[[*]] output: the directory or jar file when the weaved classes will be placed.
+ 	
+ 	[[*]] generateSource: a boolean indicating the weaver to generate or not the source of methods weaved in the bytecode.
+ 	
+A build sample.
+
+  We developed a build file to the demo application. You can customize this file to your way of development. The file is 
+ available {{{http://floggy.svn.sourceforge.net/viewvc/*checkout*/floggy/trunk/floggy-persistence-demo/build.xml}here}}.
+ The build file use tasks from the {{{http://antenna.sourceforge.net/}Antenna}} project to generate the JAD file and to preverify the classes.
 
 
