@@ -1,7 +1,11 @@
-Comming soon
+The Problem
+
+	A traditional application typically stores data in local files or in databases who that are fastly eand easily access through a hard drive or a network.
+	The mobile devices, however, in general don't has hard drives or rare are connected with a steady connection to a database server. 
+	The more common way to store data in this kind of devices are the flash memory.
 	
-	The first release of Floggy will be avaible soon! 
-	We are working really hard to finish version 1.0 before Christmas.
+	The {{{http://java.sun.com/products/midp/}MIDP}} specification demands that all implemantations supply a persistence way to store data during the MIDlet execution and when the device are turned off. 
+	The data must be avaialble across multiples executions of the MIDlet. The 
 	
 Introduction
 
@@ -15,59 +19,5 @@ Introduction
 	
 	
 	
-	There is no need to write the persistence code! This work is done at compilation-time. We tried to make it easy to you!
+	There is no need to write the persistence code! This work is done at pos-compilation time. We make tthe development easy to you!
 	
- The next step is setup your environment. Click {{{./configuration.html}here}} to learn how.
- 
-Example
-
-* A simple persistable bean
- 
-+------------------------------+
-public class Person implements net.sourceforge.floggy.Persistable {
- 
- 	private String name;
- 	private int age;
- 	
-	public Person(String name, int age) {
-		this.name = name;
-		this.age = age;
-	}
-
- 	...
- 	
-}
-+------------------------------+
-
-* Storing and retrieving an object
-
-+------------------------------+
- 	...
- 	
- 	Person person = new Person("Priscila", 23);
- 	
-	PersistableManager manager = PersistableManager.getInstance();
-	int id = manager.save(person);
-	
-	...
-	
-	Person samePerson = new Person();
-	manager.load(samePerson, id);
-	
-	...
-+------------------------------+
-
-* Searching all objects
-
-+------------------------------+
- 	...
-	
-	PersistableManager manager = PersistableManager.getInstance();
-	ObjectSet persons = manager.find(Person.class, null, null);
-	while (persons.hasNext()) {
-		Person person = (Person) persons.next();
-		...
-	}
-
-	...
-+------------------------------+

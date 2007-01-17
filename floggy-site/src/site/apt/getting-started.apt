@@ -1,10 +1,12 @@
 
-Criando uma aplicação
+Using the framework
 
- O primeiro passo para utilizar o framework Floggy é adicionar a interface net.sourceforge.floggy.Persistable a lista de interfaces implementada pelas classes que serão persistidas.
+ The first step you need to take is add the interface <<net.sourceforge.floggy.persistence.Persistable>> to the list of interfaces implemented by the classes that will be persisted.
+ Every class that implements <<net.sourceforge.floggy.persistence.Persistable>> will be processed by the weaver to becoma a persisteable entity.
+
  
 +------------------------------+
-public class Person implements net.sourceforge.floggy.Persistable {
+public class Person implements net.sourceforge.floggy.persistence.Persistable {
  
  	private int age;
  	private String name;
@@ -14,7 +16,7 @@ public class Person implements net.sourceforge.floggy.Persistable {
 }
 +-----------------------------+
 
-  Em seguida deve-se obter uma instancia de net.sourceforge.floggy.PersistableManager através do método getInstance();
+ The next step is obtain a instance of <<net.sourceforge.floggy.persistence.PersistableManager>>. This can be done using the static method <<getInstance()>> of class <<net.sourceforge.floggy.persistence.PersistableManager>>
 
 +------------------------------+
 public class HelloFloggyWorldMidlet extends Midlet {
@@ -29,25 +31,10 @@ public class HelloFloggyWorldMidlet extends Midlet {
 }
 +-----------------------------+
 
-   Obtendo uma lista de objetos.
-   
-+------------------------------+
-public class HelloFloggyWorldMidlet extends Midlet {
-
-	...
-	 
-    public void listPersons() {
-    	ObjectSet persons= pm.find(Person.class, null, null);
-        while (persons.hasNext()) {
-            Person person= (Person) persons.next();
-            ...
-        }
-    }
-}
-+-----------------------------+
-
-  Salvando um objeto.
-
+ Now you can save, load, delete and find objects using the instance of <<net.sourceforge.floggy.persistence.PersistableManager>>.
+ 
+* Saving a object.
+ 
 +------------------------------+
 public class HelloFloggyWorldMidlet extends Midlet {
 
@@ -62,9 +49,9 @@ public class HelloFloggyWorldMidlet extends Midlet {
     }
 }
 +-----------------------------+
-
-   Carregando um objeto.
-
+ 
+* Loading a object, previous saved.
+	
 +------------------------------+
 public class HelloFloggyWorldMidlet extends Midlet {
 
@@ -78,13 +65,19 @@ public class HelloFloggyWorldMidlet extends Midlet {
 }
 +-----------------------------+
 
-    O último passo é executar o pós compilador para gerar os métodos necessários para a persistencia dos objetos.
+* Finding objects
+	
++------------------------------+
+public class HelloFloggyWorldMidlet extends Midlet {
 
-Configurando o pós compilador.
-    
-
-
-
-
- 
- 
+	...
+	 
+    public void listPersons() {
+    	ObjectSet persons= pm.find(Person.class, null, null);
+        while (persons.hasNext()) {
+            Person person= (Person) persons.next();
+            ...
+        }
+    }
+}
++-----------------------------+

@@ -1,6 +1,6 @@
 Floggy
 -migrar para o Maven 2
-  - criar pulgin (maven-floggy-plugin)
+  - FEITO criar pulgin (maven-floggy-plugin)
   - documentação do plugin
   - o que é mais caro criar um DataInputStream ou executar um metodo synchronized
   
@@ -9,7 +9,7 @@ Floggy
   - diagrama de classes e de sequência
   - diagrama do fluxo de execução do java, floggy, retroweaver???, retroguard, jminimizer, preverifier!!!
   - criar uma aplicação de exemplo
-  - logomarca?? criar uma imagem.
+  - FEITO logomarca?? criar uma imagem.
   - criar script do netbenas, do maven, e shell scripts
   - documentar em código também
 
@@ -18,17 +18,18 @@ Floggy
 - adicionar a licensa aos projetos
 - se o objeto ainda não estiver salvo e alguem querer deletar?!?!!?
 - medir a performance
-- preverificação
+- FEITO preverificação
 - FEITO criar um repositório do maven para abrigar as bibliotecas de J2ME desenvolvidas no projeto me4se (para executar os testcases).
 - trabalhar com o commons-vfs para ler e escrever as classes.
 - Dar um jeito de identificar mudanças nas classes e só enxertar as que contêm modificações
-- Permitir que o usuário final veja o código gerado.
-- adicionar a dependencia do floggy-framework ao jar final da aplicação.
+- FEITO Permitir que o usuário final veja o código gerado.
+- FEITO adicionar a dependencia do floggy-framework ao jar final da aplicação.
 - adicionar a licensa a todos os codigos fontes dos projetos
 - criar a aplicação de exemplo e deixa-la pronta para ser usado pelos usuários (liberada numa url, utilizar o tinyurl.com)
 - FEITO criar as listas de discussão
-- adicionar este arquivo ao floggy-main
+- FEITO adicionar este arquivo ao floggy-site
 - translate this document
+- adicionar link para doações
 
 
 
