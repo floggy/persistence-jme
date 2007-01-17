@@ -15,6 +15,7 @@
 	
     <menu name="Floggy">
       <item name="Introduction" href="index.html"/>
+      <item name="Getting Started" href="getting-started.html"/>
       <item name="Download" href="http://sourceforge.net/project/showfiles.php?group_id=139426"/>
       <item name="Road Map" href="roadmap.html" />
       <item name="FAQ" href="faq.html" />
