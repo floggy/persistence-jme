@@ -14,6 +14,7 @@ Floggy
   - documentar em código também
 
 - FEITO solicitar a liberação do javassist no repositório do maven2 para a versão 3.3  
+- verificar antes da adição dos métodos e campos se eles já não existem e dai gerar uma exception
 - formatar o código
 - adicionar a licensa aos projetos
 - se o objeto ainda não estiver salvo e alguem querer deletar?!?!!?
