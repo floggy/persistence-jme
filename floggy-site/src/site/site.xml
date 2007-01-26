@@ -30,8 +30,11 @@
 	</menu>
 	
     <menu name="Modules" collapse="true">
-	  <item name="Framework" href="module/framework.html"/>
-	  <item name="Weaver" href="module/weaver.html"/>
+	  <item name="Framework" href="persistence-framework/index.html">
+	  </item>
+	  <item name="Weaver" href="persistence-weaver/index.html">
+	  	<item name="Weaved methods " href="persistence-weaver/class-structure.html"/>
+	  </item>
 	</menu>
 	
 	<menu name="Support">

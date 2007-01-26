@@ -1,0 +1,157 @@
+
+ This is a sample of a entity that will be processed by the weaver and will had your bytecode changed to store and retrevie his fields.
+ 
++------------------------------+
+
+package net.sourceforge.floggy.persistence.model;
+
+import net.sourceforge.floggy.persistence.Persistable;
+
+public class Patient extends Person implements Persistable {
+
+    private String address;
+
+    private String[] phones;
+
+    private boolean insuredByGoverment;
+
+    public Patient() {
+        this.phones = new String[3];
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public boolean isInsuredByGoverment() {
+        return insuredByGoverment;
+    }
+
+    public void setInsuredByGoverment(boolean insuredByGoverment) {
+        this.insuredByGoverment = insuredByGoverment;
+    }
+    
+    public String[] getPhones() {
+		return phones;
+	}
+    
+    public void setPhones(String[] phones) {
+		this.phones = phones;
+	}
+}    
++------------------------------+
+
+ The weaver will add fields and methods to accomplish the process of store and retrevie data from the RMS system.
+
+ This field identifies uniquely the data represented by this entity on the RMS system. It is like a primary key on RDBMS systems.
+ 
++------------------------------+
+private int __id = -1;
++------------------------------+
+
+ This method is responsible to transform a byte array in the fields of the Patient entity. It know the order and type of the fields serialized in the byte array.
+ 
++------------------------------+
+public void __load(byte[] buffer) throws java.lang.Exception {
+    java.io.ByteArrayInputStream bais = new java.io.ByteArrayInputStream(buffer);
+    java.io.DataInputStream dis = new java.io.DataInputStream(bais);
+    javax.microedition.rms.RecordStore rs = net.sourceforge.floggy.persistence.PersistableManager.getRecordStore(
+    	"net.sourceforge.floggy.persistence.model.Person");
+    int superClassId = dis.readInt();
+    byte[] superClassBuffer = rs.getRecord(superClassId);
+    rs.closeRecordStore();
+    super.__load(superClassBuffer);
+    if(dis.readByte() == 0) {
+        this.endereco = dis.readUTF();
+    }
+    else {
+        this.endereco = null;
+    }
+    if(dis.readByte() == 0) {
+        int count = dis.readInt();
+        this.telefones = new java.lang.String[count];
+        for(int b = 0; b < count; b++) {
+            if(dis.readByte() == 0) {
+                this.telefones[b] = dis.readUTF();
+            }
+            else {
+                this.telefones[b] = null;
+            }
+        }
+    }
+    else {
+        telefones = null;
+    }
+    this.particular = dis.readBoolean();
+    dis.close();
+    return;
+}
++------------------------------+
++------------------------------+
+public void __load(int id) throws java.lang.Exception {
+    javax.microedition.rms.RecordStore rs = net.sourceforge.floggy.persistence.PersistableManager.getRecordStore(
+    	"net.sourceforge.floggy.persistence.model.Patient");
+    byte[] buffer = rs.getRecord(id);
+    rs.closeRecordStore();
+    this.__load(buffer);
+    this.__id = id;
+}
++------------------------------+
++------------------------------+
+public int __save() throws java.lang.Exception {
+    java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
+    java.io.DataOutputStream dos = new java.io.DataOutputStream(baos);
+    int superClassId = super.__save();
+    dos.writeInt(superClassId);
+    javax.microedition.rms.RecordStore rs = net.sourceforge.floggy.persistence.PersistableManager.getRecordStore(
+    	"net.sourceforge.floggy.persistence.model.Patient");
+    if(this.endereco == null) {
+        dos.writeByte(1);
+    }
+    else {
+        dos.writeByte(0);
+        dos.writeUTF(this.endereco);
+    }
+    if(this.telefones == null) {
+        dos.writeByte(1);
+    }
+    else {
+        dos.writeByte(0);
+        int count = this.telefones.length;
+        dos.writeInt(count);
+        for(int c = 0; c < count; c++) {
+            if(this.telefones[c] == null) {
+                dos.writeByte(1);
+            }
+            else {
+                dos.writeByte(0);
+                dos.writeUTF(this.telefones[c]);
+            }
+        }
+    }
+    dos.writeBoolean(this.particular);
+    if(this.__id == -1) {
+        this.__id = rs.addRecord(baos.toByteArray(), 0, baos.size());
+    }
+    else {
+        rs.setRecord(this.__id, baos.toByteArray(), 0, baos.size());
+    }
+    rs.closeRecordStore();
+    dos.close();
+    return this.__id;
+}
++------------------------------+
++------------------------------+
+public void __delete() throws java.lang.Exception {
+    if (this.__id != -1) {
+        javax.microedition.rms.RecordStore rs = net.sourceforge.floggy.persistence.PersistableManager.getRecordStore(
+        	"net.sourceforge.floggy.persistence.model.Patient");
+        rs.deleteRecord(this.__id);
+        rs.closeRecordStore();
+    }
+}
++------------------------------+
