@@ -60,7 +60,7 @@ public class PatientForm extends Form implements CommandListener {
         this.dtNascimento.setDate(paciente.getDataNascimento());
         this.append(this.dtNascimento);
 
-        this.txtEndereco = new TextField("Endereço", paciente.getEndereco(),
+        this.txtEndereco = new TextField("Endereço", paciente.getAddress(),
                 100, TextField.ANY);
         this.append(txtEndereco);
 
@@ -75,8 +75,8 @@ public class PatientForm extends Form implements CommandListener {
         this.cgConvenio = new ChoiceGroup("Tipo:", ChoiceGroup.EXCLUSIVE);
         this.cgConvenio.append("Particular", null);
         this.cgConvenio.append("Convênio", null);
-        this.cgConvenio.setSelectedIndex(0, paciente.isParticular());
-        this.cgConvenio.setSelectedIndex(1, !paciente.isParticular());
+        this.cgConvenio.setSelectedIndex(0, paciente.isInsuredByGoverment());
+        this.cgConvenio.setSelectedIndex(1, !paciente.isInsuredByGoverment());
         this.append(cgConvenio);
         
         this.cmdOk = new Command("Ok", Command.OK, 0);
@@ -96,7 +96,7 @@ public class PatientForm extends Form implements CommandListener {
                 this.paciente.setNome(this.txtNome.getString());
                 this.paciente.setCpf(this.txtCPF.getString());
                 this.paciente.setDataNascimento(this.dtNascimento.getDate());
-                this.paciente.setParticular(this.cgConvenio.isSelected(0));
+                this.paciente.setInsuredByGoverment(this.cgConvenio.isSelected(0));
                 this.paciente.setTelefoneCasa(this.txtTelefoneCasa.getString());
                 this.paciente.setTelefoneCelular(this.txtTelefoneCelular.getString());
                 this.paciente.setTelefoneTrabalho(this.txtTelefoneTrabalho.getString());
