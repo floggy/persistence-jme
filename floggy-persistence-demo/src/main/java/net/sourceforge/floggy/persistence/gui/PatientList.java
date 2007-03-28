@@ -55,7 +55,7 @@ public class PatientList extends List implements CommandListener {
             for (int i = 0; i < pacientes.size(); i++) {
                 Patient paciente = (Patient) pacientes.get(i);
                 String tipo;
-                if (paciente.isParticular()) {
+                if (paciente.isInsuredByGoverment()) {
                     tipo = "Particular";
                 } else {
                     tipo = "Convênio";
