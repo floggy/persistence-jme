@@ -1,29 +1,21 @@
 package net.sourceforge.floggy.persistence;
 
-public interface PersistableMetadata {
-    /**
-         * Returns the number of objects.
-         * 
-         * @return
-         */
-    public int getObjectCount();
+public class PersistableMetadata {
+	
+	private String recordStoreName;
+	
+	
+	public PersistableMetadata(String recordStoreName) {
+		super();
+		this.recordStoreName = recordStoreName;
+	}
 
-    /**
-         * Return the
-         * 
-         * @return
-         */
-    public long getLastModified();
+	public String getRecordStoreName() {
+		return recordStoreName;
+	}
 
-    /**
-         * 
-         * @return
-         */
-    public int getSize();
+	public void setRecordStoreName(String recordStoreName) {
+		this.recordStoreName = recordStoreName;
+	}
 
-    /**
-         * 
-         * @return
-         */
-    public int getVersion();
 }

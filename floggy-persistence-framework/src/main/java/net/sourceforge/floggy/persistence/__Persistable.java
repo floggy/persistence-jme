@@ -5,6 +5,8 @@ package net.sourceforge.floggy.persistence;
  * All classes that implement Persistable will implement automatically this class. This work is done by the Compiler!
  */
 public interface __Persistable {
+	
+	public final String RecordStoreName="";
 
     public int __getId();
 
@@ -15,5 +17,7 @@ public interface __Persistable {
     public int __save() throws Exception;
 
     public void __delete() throws Exception;
+    
+    public PersistableMetadata __getPersistableMetadata();
 
 }
