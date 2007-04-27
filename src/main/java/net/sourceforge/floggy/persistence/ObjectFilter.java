@@ -10,31 +10,27 @@ import javax.microedition.rms.RecordFilter;
 /**
  * An implementation of RecordComparator for comparing two objects.
  * 
- * @author Thiago Rossato
+ * @author Thiago Leão Moreira <thiagolm@users.sourceforge.net>
+ * @author Thiago Rossato <thiagorossato@users.sourceforge.net>
  * @since 1.0
  */
 class ObjectFilter implements RecordFilter {
 
-    private Persistable persistable;
+	private final Persistable persistable;
 
-    private Filter filter;
+	private Filter filter;
 
-    ObjectFilter(Class persistableClass, Filter filter) throws FloggyException {
-	try {
-	    persistable = (Persistable) persistableClass.newInstance();
-	} catch (Exception e) {
-	    throw new FloggyException(e.getMessage());
+	ObjectFilter(Persistable persistable, Filter filter) {
+		this.persistable = persistable;
+		this.filter = filter;
 	}
 
-	this.filter = filter;
-    }
-
-    public boolean matches(byte[] buffer) {
-	try {
-	    ((__Persistable) this.persistable).__load(buffer);
-	} catch (Exception e) {
-	    // Ignore
+	public boolean matches(byte[] buffer) {
+		try {
+			((__Persistable) this.persistable).__load(buffer);
+		} catch (Exception e) {
+			// Ignore
+		}
+		return filter.matches(persistable);
 	}
-	return filter.matches(persistable);
-    }
 }

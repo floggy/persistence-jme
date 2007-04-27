@@ -10,49 +10,44 @@ import javax.microedition.rms.RecordComparator;
 /**
  * An implementation of RecordComparator for comparing two objects.
  * 
- * @author Thiago Rossato
+ * @author Thiago Leão Moreira <thiagolm@users.sourceforge.net>
+ * @author Thiago Rossato <thiagorossato@users.sourceforge.net>
  * @since 1.0
  */
 class ObjectComparator implements RecordComparator {
 
-    private Comparator comparator;
+	private Comparator comparator;
 
-    private Persistable o1;
+	private final Persistable p1;
 
-    private Persistable o2;
+	private final Persistable p2;
 
-    ObjectComparator(Class persistableClass, Comparator comparator)
-	    throws FloggyException {
-
-	try {
-	    this.o1 = (Persistable) persistableClass.newInstance();
-	    this.o2 = (Persistable) persistableClass.newInstance();
-	} catch (Exception e) {
-	    throw new FloggyException(e.getMessage());
-	}
-	this.comparator = comparator;
-    }
-
-    public int compare(byte[] buffer1, byte[] buffer2) {
-	try {
-	    ((__Persistable) o1).__load(buffer1);
-	    ((__Persistable) o2).__load(buffer2);
-	} catch (Exception e) {
-	    // Ignore
+	ObjectComparator(Comparator comparator, Persistable p1, Persistable p2) {
+		this.p1 = p1;
+		this.p2 = p2;
+		this.comparator = comparator;
 	}
 
-	int result = comparator.compare(o1, o2);
-	switch (result) {
-	case Comparator.PRECEDES:
-	    result = RecordComparator.PRECEDES;
-	    break;
-	case Comparator.EQUIVALENT:
-	    result = RecordComparator.EQUIVALENT;
-	    break;
-	case Comparator.FOLLOWS:
-	    result = RecordComparator.FOLLOWS;
-	    break;
+	public int compare(byte[] buffer1, byte[] buffer2) {
+		try {
+			((__Persistable) p1).__load(buffer1);
+			((__Persistable) p2).__load(buffer2);
+		} catch (Exception e) {
+			// Ignore
+		}
+
+		int result = comparator.compare(p1, p2);
+		switch (result) {
+		case Comparator.PRECEDES:
+			result = RecordComparator.PRECEDES;
+			break;
+		case Comparator.EQUIVALENT:
+			result = RecordComparator.EQUIVALENT;
+			break;
+		case Comparator.FOLLOWS:
+			result = RecordComparator.FOLLOWS;
+			break;
+		}
+		return result;
 	}
-	return result;
-    }
 }
