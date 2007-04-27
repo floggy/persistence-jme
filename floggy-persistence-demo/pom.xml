@@ -1,15 +1,22 @@
-
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>net.sourceforge.floggy</groupId>
 		<artifactId>floggy</artifactId>
 		<version>1.0</version>
 	</parent>
-    <artifactId>floggy-persistence-demo</artifactId>
+	<artifactId>floggy-persistence-demo</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<name>Hospital-ME</name>
 	<description>A demo application using Floggy persistence framework.</description>
+	<repositories>
+		<repository>
+			<id>pyx4j-web</id>
+			<url>http://www.pyx4j.com/maven2</url>
+		</repository>
+	</repositories>
 	<dependencies>
 		<dependency>
 			<groupId>net.sourceforge.floggy</groupId>
@@ -59,9 +66,7 @@
 							<MIDlet-Name>${jme.midlet.name}</MIDlet-Name>
 							<MIDlet-Vendor>${jme.midlet.vendor}</MIDlet-Vendor>
 							<MIDlet-Version>${jme.midlet.version}</MIDlet-Version>
-							<MicroEdition-Configuration>
-								${jme.midlet.configuration}
-							</MicroEdition-Configuration>
+							<MicroEdition-Configuration>${jme.midlet.configuration}</MicroEdition-Configuration>
 							<MicroEdition-Profile>${jme.midlet.profile}</MicroEdition-Profile>
 						</manifestEntries>
 					</archive>
@@ -78,48 +83,41 @@
 							<goal>persistence-weaver</goal>
 						</goals>
 						<phase>process-classes</phase>
-					</execution>
-					<execution>
-						<id>package</id>
 						<configuration>
-							<embbededFinalName>hospital-me</embbededFinalName>
+							<generateSource>true</generateSource>
 						</configuration>
-						<goals>
-							<goal>package</goal>
-						</goals>
-						<phase>package</phase>
 					</execution>
 				</executions>
 			</plugin>
 			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
+				<groupId>com.pyx4me</groupId>
 				<artifactId>j2me-maven-plugin</artifactId>
-				<configuration>
-					<midletVersion>${jme.midlet.version}</midletVersion>
-					<midletVendor>${jme.midlet.vendor}</midletVendor>
-					<midletName>${jme.midlet.name}</midletName>
-					<j2meProfile>${jme.midlet.profile}</j2meProfile>
-					<j2meConfiguration>${jme.midlet.configuration}</j2meConfiguration>
-				</configuration>
+				<version>2.0.1</version>
 				<executions>
 					<execution>
-						<configuration>
-							<sdkPath>${wtk.home}</sdkPath>
-						</configuration>
 						<goals>
-							<goal>preverify</goal>
-							<goal>create-jad</goal>
+							<goal>package</goal>
 						</goals>
-						<phase>process-classes</phase>
 					</execution>
 				</executions>
+				<configuration>
+					<wtkHome>${wtk.home}</wtkHome>
+					<obfuscate>true</obfuscate>
+					<midlets>
+						<MIDlet>
+							<name>${jme.midlet.name}</name>
+							<icon>/floggy.png</icon>
+							<class>net.sourceforge.floggy.persistence.HospitalMIDlet</class>
+						</MIDlet>
+					</midlets>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
 					<source>1.3</source>
-					<target>1.3</target>
+					<target>1.1</target>
 				</configuration>
 			</plugin>
 		</plugins>
