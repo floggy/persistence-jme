@@ -12,8 +12,7 @@ public class SuperClassGenerator {
     public static String generateLoadSource(CtClass superClass) {
 	String source = "\n";
 
-	source += "javax.microedition.rms.RecordStore rs = net.sourceforge.floggy.persistence.PersistableManager.getRecordStore(\""
-		+ superClass.getName() + "\");\n";
+	source += "javax.microedition.rms.RecordStore rs = net.sourceforge.floggy.persistence.PersistableManager.getRecordStore(super.__getPersistableMetadata());\n";
 	source += "int superClassId = dis.readInt();\n";
 	source += "byte[] superClassBuffer = rs.getRecord(superClassId);\n";
 	source += "rs.closeRecordStore();\n";

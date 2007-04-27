@@ -66,6 +66,8 @@ public class SourceCodeGeneratorFactory {
     }
 
     private static char getNextIndexForIteration() {
+    	
+    	//melhorar isso pode haver uma cadeia de interações com mais de 26 iteradores!!!
 	indexForIteration++;
 	if (indexForIteration == 'z') {
 	    indexForIteration = 'a';
