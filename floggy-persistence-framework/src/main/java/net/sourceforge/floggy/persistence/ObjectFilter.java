@@ -16,21 +16,21 @@ import javax.microedition.rms.RecordFilter;
  */
 class ObjectFilter implements RecordFilter {
 
-	private final Persistable persistable;
+	private final Persistable p;
 
-	private Filter filter;
+	private final Filter f;
 
-	ObjectFilter(Persistable persistable, Filter filter) {
-		this.persistable = persistable;
-		this.filter = filter;
+	ObjectFilter(Persistable p, Filter f) {
+		this.p = p;
+		this.f = f;
 	}
 
-	public boolean matches(byte[] buffer) {
+	public boolean matches(byte[] b) {
 		try {
-			((__Persistable) this.persistable).__load(buffer);
+			((__Persistable) this.p).__load(b);
 		} catch (Exception e) {
 			// Ignore
 		}
-		return filter.matches(persistable);
+		return f.matches(p);
 	}
 }
