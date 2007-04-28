@@ -6,8 +6,6 @@ package net.sourceforge.floggy.persistence;
  */
 public interface __Persistable {
 	
-	public final String RecordStoreName="";
-
     public int __getId();
 
     public void __load(int id) throws Exception;

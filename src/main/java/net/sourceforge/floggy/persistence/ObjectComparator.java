@@ -16,38 +16,26 @@ import javax.microedition.rms.RecordComparator;
  */
 class ObjectComparator implements RecordComparator {
 
-	private Comparator comparator;
+	private final Comparator c;
 
 	private final Persistable p1;
 
 	private final Persistable p2;
 
-	ObjectComparator(Comparator comparator, Persistable p1, Persistable p2) {
+	ObjectComparator(Comparator c, Persistable p1, Persistable p2) {
 		this.p1 = p1;
 		this.p2 = p2;
-		this.comparator = comparator;
+		this.c = c;
 	}
 
-	public int compare(byte[] buffer1, byte[] buffer2) {
+	public int compare(byte[] b1, byte[] b2) {
 		try {
-			((__Persistable) p1).__load(buffer1);
-			((__Persistable) p2).__load(buffer2);
+			((__Persistable) p1).__load(b1);
+			((__Persistable) p2).__load(b2);
 		} catch (Exception e) {
 			// Ignore
 		}
 
-		int result = comparator.compare(p1, p2);
-		switch (result) {
-		case Comparator.PRECEDES:
-			result = RecordComparator.PRECEDES;
-			break;
-		case Comparator.EQUIVALENT:
-			result = RecordComparator.EQUIVALENT;
-			break;
-		case Comparator.FOLLOWS:
-			result = RecordComparator.FOLLOWS;
-			break;
-		}
-		return result;
+		return c.compare(p1, p2);
 	}
 }
