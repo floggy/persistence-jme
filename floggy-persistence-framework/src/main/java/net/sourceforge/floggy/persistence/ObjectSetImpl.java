@@ -13,9 +13,6 @@ class ObjectSetImpl implements ObjectSet {
 	 */
 	private int[] ids;
 
-	/**
-	 * The number of objects.
-	 */
 	private int size;
 
 	/**

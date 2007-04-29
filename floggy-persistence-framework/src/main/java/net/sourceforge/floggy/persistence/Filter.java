@@ -7,7 +7,6 @@ package net.sourceforge.floggy.persistence;
  * true if the candidate record is selected by the RecordFilter. This interface
  * is used in the record store for searching or subsetting records.
  * 
- * @author Thiago Rossato
  * @since 1.0
  * 
  * @see PersistableManager#find(Class, Filter, Comparator)
@@ -15,15 +14,13 @@ package net.sourceforge.floggy.persistence;
  */
 public interface Filter {
 
-    /**
-         * Returns true if the candidate object matches the implemented
-         * criterion.
-         * 
-         * @param object
-         *                The candidate object.
-         * @return True if the candidate object matches the implemented
-         *         criterion.
-         */
-    public boolean matches(Persistable object);
+	/**
+	 * Returns true if the candidate object matches the implemented criterion.
+	 * 
+	 * @param o
+	 *            The candidate object.
+	 * @return True if the candidate object matches the implemented criterion.
+	 */
+	public boolean matches(Persistable o);
 
 }

@@ -6,7 +6,7 @@ import javax.microedition.rms.RecordStoreException;
 
 /**
  * This is the main class of the framework. All persistence operations methods
- * (such loading, saving, deleting and searching for objects) are declared in
+ * (such as loading, saving, deleting and searching for objects) are declared in
  * this class.
  * 
  * @author Thiago Leão Moreira <thiagolm@users.sourceforge.net>
@@ -50,9 +50,9 @@ public class PersistableManager {
 	 */
 	public static RecordStore getRecordStore(PersistableMetadata metadata)
 			throws FloggyException {
-		
 		try {
-			return RecordStore.openRecordStore(metadata.getRecordStoreName(), true);
+			return RecordStore.openRecordStore(metadata.getRecordStoreName(),
+					true);
 		} catch (Exception e) {
 			throw new FloggyException(e.getMessage());
 		}
@@ -78,10 +78,8 @@ public class PersistableManager {
 	 * @see #save(Persistable)
 	 */
 	public void load(Persistable persistable, int id) throws FloggyException {
-		__Persistable __persistable = checkArgumentsAndCast(persistable);
-
 		try {
-			__persistable.__load(id);
+			checkArgumentsAndCast(persistable).__load(id);
 		} catch (Exception e) {
 			throw new FloggyException(e.getMessage());
 		}
@@ -106,10 +104,8 @@ public class PersistableManager {
 	 * @see #load(Persistable, int)
 	 */
 	public int save(Persistable persistable) throws FloggyException {
-		__Persistable __persistable = checkArgumentsAndCast(persistable);
-
 		try {
-			return __persistable.__save();
+			return checkArgumentsAndCast(persistable).__save();
 		} catch (Exception ex) {
 			throw new FloggyException(ex.getMessage());
 		}
@@ -130,9 +126,8 @@ public class PersistableManager {
 	 *             object.
 	 */
 	public void delete(Persistable persistable) throws FloggyException {
-		__Persistable __persistable = checkArgumentsAndCast(persistable);
 		try {
-			__persistable.__delete();
+			checkArgumentsAndCast(persistable).__delete();
 		} catch (Exception e) {
 			throw new FloggyException(e.getMessage());
 		}
@@ -165,15 +160,16 @@ public class PersistableManager {
 		ObjectFilter objectFilter = null;
 		ObjectComparator objectComparator = null;
 
-		/* this is a auxiliary object used to return the name of the RecordStore. 
-		If the argument filter is not null this object is passed to the ObjectFilter constructor
-		*/
-		Persistable persistable= createInstance(persistableClass);
-		
+		/*
+		 * this is a auxiliary object used to return the name of the
+		 * RecordStore. If the argument filter is not null this object is passed
+		 * to the ObjectFilter constructor
+		 */
+		Persistable persistable = createInstance(persistableClass);
+
 		// Creates an auxiliar filter (if necessary)
 		if (filter != null) {
-			objectFilter = new ObjectFilter(persistable,
-					filter);
+			objectFilter = new ObjectFilter(persistable, filter);
 		}
 
 		// Creates an auxiliar comparator (if necessary)
@@ -186,20 +182,20 @@ public class PersistableManager {
 		// Searchs the repository and create an object set as result.
 		int[] ids = null;
 
-		RecordStore rs = getRecordStore(checkArgumentsAndCast(persistable).__getPersistableMetadata());
+		RecordStore rs = getRecordStore(checkArgumentsAndCast(persistable)
+				.__getPersistableMetadata());
 
 		try {
 			RecordEnumeration en = rs.enumerateRecords(objectFilter,
 					objectComparator, false);
 			int numRecords = en.numRecords();
-
 			if (numRecords > 0) {
 				ids = new int[numRecords];
-
 				for (int i = 0; i < numRecords; i++) {
 					ids[i] = en.nextRecordId();
 				}
 			}
+			en.destroy();
 		} catch (RecordStoreException e) {
 			throw new FloggyException(e.getMessage());
 		}
@@ -209,16 +205,14 @@ public class PersistableManager {
 
 	private Persistable createInstance(Class persistableClass)
 			throws FloggyException {
-		Persistable persistable;
 		// Try to create a new instance of the persistable class.
 		try {
-			persistable = (Persistable) persistableClass.newInstance();
+			return (Persistable) persistableClass.newInstance();
 		} catch (Exception e) {
 			throw new FloggyException(
 					"Error creating a new instance of the persistable class: "
 							+ e.getMessage());
 		}
-		return persistable;
 	}
 
 	private static __Persistable checkArgumentsAndCast(Persistable persistable) {

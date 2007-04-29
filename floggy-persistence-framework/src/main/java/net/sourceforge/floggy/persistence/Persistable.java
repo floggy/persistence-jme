@@ -1,10 +1,11 @@
 package net.sourceforge.floggy.persistence;
 
 /**
- * The <code>Persistable</code> interface acts as a marker. It defines no
- * method or fields.<br>
- * By default, all fields of a persistable class will be persisted unless those
- * declared as <code>transient</code> and <code>static</code>.<br>
+ * A class that implements or extends this <code>interface</code> is
+ * considered persistable.<br>
+ * <br>
+ * By default, all fields of a persistable class will be persisted except those
+ * declared as <code>transient</code> or <code>static</code>.<br>
  * 
  * @author Thiago Rossato
  * @since 1.0

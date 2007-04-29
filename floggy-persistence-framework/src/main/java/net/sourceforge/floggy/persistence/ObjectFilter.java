@@ -8,10 +8,8 @@ package net.sourceforge.floggy.persistence;
 import javax.microedition.rms.RecordFilter;
 
 /**
- * An implementation of RecordComparator for comparing two objects.
+ * An internal implementation of <code>RecordComparator</code> for comparing two objects.
  * 
- * @author Thiago Leão Moreira <thiagolm@users.sourceforge.net>
- * @author Thiago Rossato <thiagorossato@users.sourceforge.net>
  * @since 1.0
  */
 class ObjectFilter implements RecordFilter {
