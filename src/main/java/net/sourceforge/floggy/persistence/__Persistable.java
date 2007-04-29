@@ -1,21 +1,25 @@
 package net.sourceforge.floggy.persistence;
 
-/*
- * Internal interface to identify a persistable class.
- * All classes that implement Persistable will implement automatically this class. This work is done by the Compiler!
+/**
+ * An internal <code>interface</code> that holds all methods used by the
+ * persistence module. All classes identified as <b>persistable</b> ({@link Persistable})
+ * will be modified to implement all methods of this <code>interface</code>.
+ * 
+ * @since 1.0
+ * @see Persistable
  */
 public interface __Persistable {
-	
-    public int __getId();
 
-    public void __load(int id) throws Exception;
+	public int __getId();
 
-    public void __load(byte[] buffer) throws Exception;
+	public void __load(int id) throws Exception;
 
-    public int __save() throws Exception;
+	public void __load(byte[] buffer) throws Exception;
 
-    public void __delete() throws Exception;
-    
-    public PersistableMetadata __getPersistableMetadata();
+	public int __save() throws Exception;
+
+	public void __delete() throws Exception;
+
+	public PersistableMetadata __getPersistableMetadata();
 
 }
