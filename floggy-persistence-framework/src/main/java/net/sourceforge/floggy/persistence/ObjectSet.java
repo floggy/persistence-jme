@@ -32,6 +32,17 @@ public interface ObjectSet {
 	 * 
 	 * @param index
 	 *            Index of the object to be loaded.
+	 * @return The id number at RMS system at the specified position in the set.
+	 * @throws FloggyException
+	 *             Exception thrown if a persistance error occurs.
+	 */
+	public int getId(int index) throws FloggyException;
+
+	/**
+	 * Load the object of a given index into the object instance.
+	 * 
+	 * @param index
+	 *            Index of the object to be loaded.
 	 * @param object
 	 *            An instance of the object to be loaded. It cannot be
 	 *            <code>null</code>.

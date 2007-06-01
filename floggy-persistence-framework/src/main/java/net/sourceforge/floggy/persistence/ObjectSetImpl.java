@@ -44,25 +44,34 @@ class ObjectSetImpl implements ObjectSet {
 		// Retrieve the manager instance
 		this.manager = PersistableManager.getInstance();
 	}
-
+	
+	
 	/**
 	 * 
 	 * 
-	 * @see net.sourceforge.floggy.persistence.ObjectSet#get(int)
+	 * @see net.sourceforge.floggy.persistence.ObjectSet#getId(int)
 	 */
-	public void get(int index, Persistable persistable) throws FloggyException {
-
+	public int getId(int index) {
 		// Checks if the index is valid.
 		if (index < 0 || index >= size) {
 			throw new IndexOutOfBoundsException();
 		}
 		
+		return ids[index];
+	}
+
+	/**
+	 * 
+	 * 
+	 * @see net.sourceforge.floggy.persistence.ObjectSet#get(int, Persistable)
+	 */
+	public void get(int index, Persistable persistable) throws FloggyException {
 		if (persistable == null) {
 			throw new IllegalArgumentException("The persistable object cannot be null!");
 		}
 
 		// Load the data from the repository.
-		manager.load(persistable, ids[index]);
+		manager.load(persistable, getId(index));
 	}
 
 	/**
@@ -71,20 +80,8 @@ class ObjectSetImpl implements ObjectSet {
 	 * @see net.sourceforge.floggy.persistence.ObjectSet#get(int)
 	 */
 	public Persistable get(int index) throws FloggyException {
-		Persistable persistable = null;
-
 		// Try to create a new instance of the persistable class.
-		try {
-			persistable = (Persistable) persistableClass.newInstance();
-		} catch (InstantiationException e) {
-			throw new FloggyException(
-					"Error creating a new instance of the persistable class: "
-							+ e.getMessage());
-		} catch (IllegalAccessException e) {
-			throw new FloggyException(
-					"Error creating a new instance of the persistable class: "
-							+ e.getMessage());
-		}
+		Persistable persistable = PersistableManager.createInstance(persistableClass);
 
 		// Load the data from the repository.
 		get(index, persistable);
