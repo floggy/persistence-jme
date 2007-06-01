@@ -154,9 +154,7 @@ public class PersistableManager {
 	 */
 	public ObjectSet find(Class persistableClass, Filter filter,
 			Comparator comparator) throws FloggyException {
-		// validating teh argument
-		validatePersistableClassArgument(persistableClass);
-
+		
 		ObjectFilter objectFilter = null;
 		ObjectComparator objectComparator = null;
 
@@ -203,8 +201,9 @@ public class PersistableManager {
 		return new ObjectSetImpl(ids, persistableClass);
 	}
 
-	private Persistable createInstance(Class persistableClass)
+	static Persistable createInstance(Class persistableClass)
 			throws FloggyException {
+		validatePersistableClassArgument(persistableClass);
 		// Try to create a new instance of the persistable class.
 		try {
 			return (Persistable) persistableClass.newInstance();
