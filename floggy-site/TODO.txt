@@ -1,5 +1,5 @@
 Floggy
--migrar para o Maven 2
+  - FEITO migrar para o Maven 2
   - FEITO criar pulgin (maven-floggy-plugin)
   - documentação do plugin
   - o que é mais caro criar um DataInputStream ou executar um metodo synchronized
@@ -12,11 +12,12 @@ Floggy
   - FEITO logomarca?? criar uma imagem.
   - criar script do netbenas, do maven, e shell scripts
   - documentar em código também
+  - cuidado com o nome floggy pois é superset de flog (fotolog), regras de firewalls.
 
 - FEITO solicitar a liberação do javassist no repositório do maven2 para a versão 3.3  
 - verificar antes da adição dos métodos e campos se eles já não existem e dai gerar uma exception
 - formatar o código
-- adicionar a licensa aos projetos
+- FEITO adicionar a licensa aos projetos
 - se o objeto ainda não estiver salvo e alguem querer deletar?!?!!?
 - medir a performance
 - FEITO preverificação
@@ -35,7 +36,7 @@ Floggy
 
 
 MODULO DE PERSISTÊNCIA
-- documentação da task do ant
+- FEITO documentação da task do ant
 - arquitetura do sistema
 - exclusão em cascata (paleativo - chamar um método antes de deletar o Persistable, tipo: beforeDelete() throws Exception)
 - transação

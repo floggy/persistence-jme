@@ -1,52 +1,95 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- 
+	Copyright 2006 Floggy Open Source Group
+	
+	Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+	
+	http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
+-->
 <project name="Floggy">
-  <publishDate position="left" format="dd MMM yyyy"/>
-  <version value="1.0"/>
-  <bannerLeft>
-  	<name>Floggy</name>
-    <src>images/banner-left.jpg</src>
-    <href>http://floggy.org/</href>
-  </bannerLeft>
-    <body>
-    <links>
-      <item name="JME" href="http://java.sun.com/javame/index.jsp"/>
-      <item name="Maven 2" href="http://maven.apache.org/maven2/"/>
-    </links>
-	
-    <menu name="Floggy">
-      <item name="Introduction" href="index.html"/>
-      <item name="Getting Started" href="getting-started.html"/>
-      <item name="Download" href="http://sourceforge.net/project/showfiles.php?group_id=139426"/>
-      <item name="Road Map" href="roadmap.html" />
-      <item name="FAQ" href="faq.html" />
-    </menu>
-    
-    <menu name="Configuration">
-	  <item name="Ant" href="configuration/ant.html"/>
-	  <item name="Command line" href="underconstruction.html"/>
-	  <item name="Eclipse" href="underconstruction.html"/>
-	  <item name="Maven" href="configuration/maven.html"/>
-	  <item name="Netbeans" href="underconstruction.html"/>
-	</menu>
-	
-    <menu name="Modules" collapse="true">
-	  <item name="Framework" href="persistence-framework/index.html">
-	  </item>
-	  <item name="Weaver" href="persistence-weaver/index.html">
-	  	<item name="Weaved methods " href="persistence-weaver/class-structure.html"/>
-	  </item>
-	</menu>
-	
-	<menu name="Support">
-	  <item name="Email" href="http://sourceforge.net/mail/?group_id=139426"/>
-	  <item name="Issue Tracking" href="http://sourceforge.net/tracker/?group_id=139426"/>
-	  <item name="Tasks" href="http://sourceforge.net/pm/?group_id=139426"/>
-	</menu>
-    
-	<menu name="About us">
-	  <item name="Team" href="team.html"/>
-	  <item name="Brazil" href="brazil.html"/>
-	</menu>
-	<menu ref="reports"/>
-  </body>
+	<skin>
+		<groupId>net.sourceforge.floggy</groupId>
+		<artifactId>floggy-site-skin</artifactId>
+		<version>1.0-SNAPSHOT</version>
+	</skin>
+	<publishDate position="left" format="dd MMM yyyy" />
+	<version value="1.0" />
+	<bannerLeft>
+		<name>Floggy</name>
+		<src>images/banner-left.jpg</src>
+		<href>http://floggy.org/</href>
+	</bannerLeft>
+	<body>
+		<links>
+			<item name="JME"
+				href="http://java.sun.com/javame/index.jsp" />
+			<item name="Maven 2" href="http://maven.apache.org/maven2/" />
+		</links>
+
+		<menu name="Floggy">
+			<item name="Introduction" href="index.html" />
+			<item name="Getting Started" href="getting-started.html" />
+			<item name="API"
+				href="modules/floggy-persistence-framework/apidocs/index.html" />
+			<item name="Download"
+				href="http://sourceforge.net/project/showfiles.php?group_id=139426" />
+			<item name="Road Map" href="roadmap.html" />
+			<item name="FAQ" href="faq.html" />
+		</menu>
+
+		<menu name="Configuration">
+			<item name="Ant" href="configuration/ant.html" />
+			<item name="Command line"
+				href="configuration/commandline.html" />
+			<item name="Eclipse" href="underconstruction.html" />
+			<item name="Maven" href="configuration/maven.html" />
+			<item name="Netbeans" href="underconstruction.html" />
+		</menu>
+
+		<menu name="Modules">
+			<item name="Framework"
+				href="persistence-framework/index.html" collapse="true">
+				<item name="API"
+					href="modules/floggy-persistence-framework/apidocs/index.html" />
+				<!-- item name="Reports" href="modules/floggy-persistence-framework/project-info.html"/-->
+				<!-- item name="Versions" collapse="true">
+					<item name="1.0-SNAPSHOT" href="modules/floggy-persistence-framework/1.0-SNAPSHOT/floggy-persistence-framework"/>
+					</item-->
+			</item>
+			<item name="Weaver" href="persistence-weaver/index.html"
+				collapse="true">
+				<item name="Datatypes &amp; Size" href="datatypes.html" />
+				<item name="Weaved methods"
+					href="persistence-weaver/class-structure.html" />
+				<!-- item name="Reports" href="modules/floggy-persistence-weaver/project-info.html"/-->
+				<!--item name="Versions" collapse="true">
+					<item name="1.0-SNAPSHOT"
+					href="modules/floggy-persistence-weaver/1.0-SNAPSHOT/floggy-persistence-weaver" />
+					</item-->
+			</item>
+		</menu>
+
+		<menu name="Support">
+			<item name="Email"
+				href="http://sourceforge.net/mail/?group_id=139426" />
+			<item name="Issue Tracking"
+				href="http://sourceforge.net/tracker/?group_id=139426" />
+			<item name="Tasks"
+				href="http://sourceforge.net/pm/?group_id=139426" />
+		</menu>
+
+		<menu name="About us">
+			<item name="Team" href="team.html" />
+			<item name="Brazil" href="underconstruction.html" />
+		</menu>
+		<!--menu ref="reports"/-->
+	</body>
 </project>

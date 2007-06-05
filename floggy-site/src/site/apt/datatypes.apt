@@ -1,67 +1,75 @@
 
-Datatypes
+Datatypes and its size
 
-   All primitive types are saved using only the size of that type. Object types receive one byte more that indicates the state of the object (null or not).
+	The below table shows the valid data types and its size that are Floggy compliance.
+	All primitive types are saved using only the size of that type.
+	Object types receive one byte more that indicates the state of the object (null or not).
+	Only fields of a class that implements net.sourceforge.floggy.Persistable will be persisted.
 
 *----------*--------------*------------------------*
-| Type   | Default value | Observation|
+| Type   | Default value | Size |
 *----------*--------------*------------------------*
-| boolean   | false     | Must be a field of a class that implements net.sourceforge.floggy.Persistable|
+| boolean   | false     |1 byte|
 *----------*--------------*------------------------*
-| byte   | 0     | Must be a field of a class that implements net.sourceforge.floggy.Persistable|
+| byte   | 0     |1 byte|
 *----------*--------------*------------------------*
-| char   | 0     | Must be a field of a class that implements net.sourceforge.floggy.Persistable|
+| char   | 0     |2 bytes|
 *----------*--------------*------------------------*
-| double | 0.0	|Must be a field of a class that implements net.sourceforge.floggy.Persistable|
+| double | 0.0	|8 bytes|
 *----------*--------------*------------------------*
-| float  | 0.0	|Must be a field of a class that implements net.sourceforge.floggy.Persistable|
+| float  | 0.0	|4 bytes|
 *----------*--------------*------------------------*
-| int    | 0     | Must be a field of a class that implements net.sourceforge.floggy.Persistable|
+| int    | 0     |4 bytes |
 *----------*--------------*------------------------*
-| long   | 0     | Must be a field of a class that implements net.sourceforge.floggy.Persistable|
+| long   | 0     |8 bytes |
 *----------*--------------*------------------------*
-| short    | 0     | Must be a field of a class that implements net.sourceforge.floggy.Persistable|
+| short    | 0     | 2 bytes|
 *----------*--------------*------------------------*
-| java.lang.Boolean | null     | Must be a field of a class that implements net.sourceforge.floggy.Persistable|
+| java.lang.Boolean | null     | 1 byte case the value are null or 2 bytes case not|
 *----------*--------------*------------------------*
-| java.lang.Byte | null     | Must be a field of a class that implements net.sourceforge.floggy.Persistable|
+| java.lang.Byte | null     | 1 byte case the value are null or 2 bytes case not|
 *----------*--------------*------------------------*
-| java.lang.Character | null     | Must be a field of a class that implements net.sourceforge.floggy.Persistable|
+| java.lang.Character | null     | 1 byte case the value are null or 3 bytes case not|
 *----------*--------------*------------------------*
-| java.lang.Double | null     | Must be a field of a class that implements net.sourceforge.floggy.Persistable|
+| java.lang.Double | null     | 1 byte case the value are null or 9 bytes case not|
 *----------*--------------*------------------------*
-| java.lang.Float | null     | Must be a field of a class that implements net.sourceforge.floggy.Persistable|
+| java.lang.Float | null     | 1 byte case the value are null or 5 bytes case not|
 *----------*--------------*------------------------*
-| java.lang.Integer | null     | Must be a field of a class that implements net.sourceforge.floggy.Persistable|
+| java.lang.Integer | null     | 1 byte case the value are null or 5 bytes case not|
 *----------*--------------*------------------------*
-| java.lang.Long | null     | Must be a field of a class that implements net.sourceforge.floggy.Persistable|
+| java.lang.Long | null     | 1 byte case the value are null or 9 bytes case not|
 *----------*--------------*------------------------*
-| java.lang.Short | null     | Must be a field of a class that implements net.sourceforge.floggy.Persistable|
+| java.lang.Short | null     | 1 byte case the value are null or 3 bytes case not|
 *----------*--------------*------------------------*
-| java.lang.String | null     | Must be a field of a class that implements net.sourceforge.floggy.Persistable|
+| java.lang.String | null     | 1 byte case the value are null, case not the size are calculate conform the specification of {{{http://java.sun.com/javase/6/docs/api/java/io/DataInput.html#modified-utf-8}Modified UTF-8}} |
 *----------*--------------*------------------------*
-| java.util.Date | null     | Must be a field of a class that implements net.sourceforge.floggy.Persistable. If the value of the field was null, only one byte are saved. If not the java.util.Date are transformed in a long type and saved using writeLong(long)|
+| java.util.Date | null     | 1 byte case the value are null or 9 bytes case not. The java.util.Date are transformed in a long type and saved using writeLong(long)|
 *----------*--------------*------------------------*
-| java.util.Vector | null     | Must be a field of a class that implements net.sourceforge.floggy.Persistable|
+| java.util.Vector | null     | 1 byte case the value are null|
 *----------*--------------*------------------------*
-| net.sourceforge.floggy.Persistable | null     | 
+| net.sourceforge.floggy.Persistable | null     | 1 byte case the value are null|
 *----------*--------------*------------------------*
 
-	Examples
+		Examples
 	
 	Suppose that you have a class like this:
 	
++------------------------------+
 	public class Car {
 		private String name;
 		private java.util.Date buildDate;
 		private double price;
 	}
++------------------------------+
 
-	Now suppose this threee scenarios:
+	Now suppose this three scenarios:
 	
-	[1] A instance of Car with null name, null buildDate and 0 price the total cost of store this instance is: 
-		1 byte + 1 byte + 64 bytes= 66 bytes
+	[1] A instance of Car with <<null>> name, <<null>> buildDate and <<0>> price the total cost of store this instance is: 
+		(1 byte) + (1 byte) + (8 bytes)= 10 bytes. This happens because no value must be save for name and buildDate only one byte indicating nullable state.
 		
-		This happens because no value must be save for name and buildDate only one byte indicating nullable state.
+	[2] A instance of Car with <<Ferrari F-50>> name, <<05-30-2007>> buildDate and <<1.000.000>> price the total cost of store this instance is:
+		(1 byte + 14 bytes) + (1 byte + 8 bytes) + (8 bytes)= 32 bytes. This happens because the values for name and buildDate doesn't are null.
 		
-	[2] teste teste
+	[3] A instance of Car with <<null>> name, <<05-30-2007>> buildDate and <<1.000.000>> price the total cost of store this instance is:
+		(1 byte) + (1 byte + 8 bytes) + (8 bytes)= 18 bytes. This happens because the value of name are null.
+		

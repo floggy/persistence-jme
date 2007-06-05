@@ -50,5 +50,5 @@ A POM sample.
 
  We developed a POM file to the demo application. You can customize this file to your way of development. The file is 
  available {{{http://floggy.svn.sourceforge.net/viewvc/*checkout*/floggy/trunk/floggy-persistence-demo/pom.xml}here}}.
- The POM file use plugins from the {{{http://mojo.codehaus.org/j2me-maven-plugin/introduction.html}j2me-maven-floggy}} project to generate the JAD file and to preverify the classes.
+ The POM file use plugins from the {{{http://pyx4me.com/pyx4me-maven-plugins/j2me-maven-plugin/introduction.html}j2me-maven-floggy}} project to generate the JAD file and to preverify the classes.
 
