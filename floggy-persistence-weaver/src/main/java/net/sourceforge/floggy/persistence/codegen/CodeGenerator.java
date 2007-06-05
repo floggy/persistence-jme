@@ -166,7 +166,7 @@ public class CodeGenerator {
 
 				// Ignores compiler fields.
 				if (field.getName().equals("__id")
-						|| field.getName().equals("__metadata")) {
+						|| field.getName().equals("__persistableMetadata")) {
 					continue;
 				}
 				// Ignores transient and static fields.
@@ -306,7 +306,7 @@ public class CodeGenerator {
 
 				// Ignores compiler fields.
 				if (field.getName().equals("__id")
-						|| field.getName().equals("__metadata")) {
+						|| field.getName().equals("__persistableMetadata")) {
 					continue;
 				}
 				// Ignores transient and static fields.
