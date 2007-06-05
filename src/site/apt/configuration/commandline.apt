@@ -1,14 +1,25 @@
 Command line
 
- Here we demostrate how to use the Floggy in the command line. We suggest that you\
- use other way to build your project, for instance you may use {{{http://ant.apache.org}Ant}}.
+ Here we demostrate how to use the Floggy in the command line. 
+ We suggest that you use other way to build your project, for instance you may use {{{http://ant.apache.org}Ant}}.
 
+ The example is based on Linux like systems.
+ 
 +------------------------------------------+
-   java -classpath
- prompt> java -classpath \
- floggy-compiler-j2me-midp2-{version}.jar:commons-io-1.2.jar:javassist-3.3.jar:commons-logging-1.0.4.jar \
-   net.sourceforge.floggy.Main -cp floggy-framework-1.2.jar:midpapi20.jar:cldc11.jar -o ./input ./output
+ prompt> fpw.sh -cp ~/wtkhome/lib/midpapi20.jar:~/wtkhome/lib/cldc10.jar -o ./output ./input
 +------------------------------------------+
 
- We create a script to simplify your development. Here are the two flavors of \
- the script: {{{http://ant.apache.org}Windows}} and {{{http://ant.apache.org}Linux}}
+ 	The parameters declared in the command line execution has the following meaning.
+ 	
+ 	[[*]] cp (required): a reference to a path that contains the classes referenced by yours application. 
+ 	The packages cldcapi and midpapi must be into this classpath. 
+ 	This packages could be find at the {{{http://java.sun.com/jme/}Sun Java Wireless Toolkit}}.
+ 	
+ 	[[*]] output (optional): the directory or jar file where the weaved classes will be placed.
+ 	If omited the classes will be placed in the input directory|file.
+	
+ 	[[*]] input (required): the directory or jar file that contains the classes that will be processed by the weaver.
+ 	
+ 	
+
+

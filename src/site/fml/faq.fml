@@ -1,4 +1,19 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+  Copyright 2006 Floggy Open Source Group
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
 <faqs id="FAQ" title="Frequently Asked Questions">
  <part id="General">
    <faq ig="why-floggy">
@@ -19,6 +34,14 @@
      <question><i>Transient</i> fields are persisted?</question>
      <answer>
        <p>No. A <i>transient</i> field means that it must not be persisted. More information are available <a href="http://java.sun.com/docs/books/vmspec/2nd-edition/html/Concepts.doc.html#29882">here</a>.</p>
+     </answer>
+   </faq>
+   <faq id="transient-field">
+     <question>How can I view the bytecode generated?</question>
+     <answer>
+       <p>You can view the bytecode generated using the <a href="http://java.sun.com/javase/6/docs/technotes/tools/windows/javap.html">javap</a> 
+       application or the <a href="http://www.ej-technologies.com/products/jclasslib/overview.html">jClasslib</a>. 
+       Alternative you can flag the weaver to generated the code </p>
      </answer>
    </faq>
  </part>

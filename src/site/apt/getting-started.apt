@@ -2,7 +2,7 @@
 Using the framework
 
  The first step you need to take is add the interface <<net.sourceforge.floggy.persistence.Persistable>> to the list of interfaces implemented by the classes that will be persisted.
- Every class that implements <<net.sourceforge.floggy.persistence.Persistable>> will be processed by the weaver to becoma a persisteable entity.
+ Every class that implements <<net.sourceforge.floggy.persistence.Persistable>> will be processed by the weaver to became a persistable entity.
 
  
 +------------------------------+

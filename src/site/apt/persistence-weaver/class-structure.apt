@@ -1,5 +1,7 @@
 
- This is a sample of a entity that will be processed by the weaver and will had your bytecode changed to store and retrevie his fields.
+Weaved methods
+
+	This is a sample of a entity that will be processed by the weaver and will had your bytecode changed to store and retrevie his fields. This 
  
 +------------------------------+
 
