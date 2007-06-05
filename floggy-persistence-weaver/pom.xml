@@ -1,4 +1,21 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<!-- 
+	Copyright 2006 Floggy Open Source Group
+	
+	Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+	
+	http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>net.sourceforge.floggy</groupId>
@@ -8,7 +25,10 @@
 	<artifactId>floggy-persistence-weaver</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<name>Floggy Persistence Weaver</name>
-	<description>A microedition development tool to weave bytecode responsable for pesistence.</description>
+	<description>
+		A microedition development tool to weave bytecode responsable
+		for pesistence.
+	</description>
 	<dependencies>
 		<dependency>
 			<groupId>jboss</groupId>
@@ -59,19 +79,77 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
 					<source>1.4</source>
 					<target>1.4</target>
 				</configuration>
 			</plugin>
-			<plugin>
+		     <plugin>
+		       <artifactId>maven-jar-plugin</artifactId>
+		       <configuration>
+		         <archive>
+		           <manifest>
+		             <mainClass>net.sourceforge.floggy.persistence.Main</mainClass>
+		             <!--addClasspath>true</addClasspath-->
+		           </manifest>
+		         </archive>
+		       </configuration>
+		     </plugin>
+      			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<configuration>
-				<descriptor>src/assembly/bin.xml</descriptor>
+					<archive>
+						<manifest>
+							<mainClass>
+								net.sourceforge.floggy.persistence.Main
+							</mainClass>
+						</manifest>
+					</archive>
+					<descriptors>
+						<descriptor>
+							src/assembly/release.xml
+						</descriptor>
+					</descriptors>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>
+					maven-project-info-reports-plugin
+				</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<configuration>
+					<minmemory>128m</minmemory>
+					<maxmemory>512</maxmemory>
+					<stylesheet>maven</stylesheet>
+					<!-- stylesheetfile>css/maven-theme.css</stylesheetfile-->
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jxr-plugin</artifactId>
+				<configuration>
+					<linkJavadoc>true</linkJavadoc>
+					<javadocDir>/apidocs/</javadocDir>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+			</plugin>
+			<!--plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-changelog-plugin</artifactId>
+				</plugin-->
+		</plugins>
+	</reporting>
+
 </project>

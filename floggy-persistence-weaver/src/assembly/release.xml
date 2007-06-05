@@ -1,0 +1,84 @@
+<!-- 
+  Copyright 2006 Floggy Open Source Group
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<assembly xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/assembly-1.1.0-SNAPSHOT.xsd">
+	<id>release</id>
+	<formats>
+		<format>zip</format>
+		<format>tar.gz</format>
+		<format>tar.bz2</format>
+	</formats>
+	<includeBaseDirectory>true</includeBaseDirectory>
+	<dependencySets>
+		<dependencySet>
+			<outputDirectory>lib</outputDirectory>
+			<outputFileNameMapping>${artifactId}.${extension}</outputFileNameMapping>
+			<scope>runtime</scope>
+		</dependencySet>
+	</dependencySets>
+	<fileSets>
+		<!--fileSet>
+			<directory>src/main/java</directory>
+			<outputDirectory>src</outputDirectory>
+		</fileSet-->
+		<fileSet>
+			<directory>src/samples</directory>
+			<filtered>true</filtered>
+			<outputDirectory>/samples</outputDirectory>
+		</fileSet>
+		<fileSet>
+			<directory>target/site</directory>
+			<outputDirectory>/docs</outputDirectory>
+		</fileSet>
+		<!--fileSet>
+			<directory>src/script</directory>
+			<fileMode>0755</fileMode>
+			<filtered>true</filtered>
+			<outputDirectory>/</outputDirectory>
+		</fileSet-->
+	</fileSets>
+	<files>
+		<file>
+			<destName>${artifactId}.${packaging}</destName>
+			<outputDirectory>lib</outputDirectory>
+			<source>target/${artifactId}-${version}.${packaging}</source>
+		</file>
+		<file>
+			<destName>LICENSE.txt</destName>
+			<lineEnding>crlf</lineEnding>
+			<source>LICENSE.txt</source>
+		</file>
+		<!--file>
+			<destName>README.txt</destName>
+			<lineEnding>crlf</lineEnding>
+			<source>src/resources/README.txt</source>
+		</file-->
+		<file>
+			<filtered>true</filtered>
+			<lineEnding>crlf</lineEnding>
+			<outputDirectory>bin</outputDirectory>
+			<source>src/scripts/fpw.bat</source>
+		</file>
+		<file>
+			<fileMode>0755</fileMode>
+			<filtered>true</filtered>
+			<lineEnding>unix</lineEnding>
+			<outputDirectory>bin</outputDirectory>
+			<source>src/scripts/fpw.sh</source>
+		</file>
+	</files>
+</assembly>
