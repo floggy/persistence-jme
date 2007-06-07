@@ -24,19 +24,19 @@ Ant
 +------------------------------------------+
 
  We sugest that this target run just after the compilation has done. 
- 
+
  	The attributes declared in the floggy-persistence-weaver tag has the following meaning.
  	
- 	[[*]] bootclasspathref: a reference to a path that contains the packages cldcapi and midpapi, any version. This packages could be find at 
+ 	[[*]] bootclasspathref (required): a reference to a path that contains the packages cldcapi and midpapi, any version. This packages could be find at 
  		the {{{http://java.sun.com/jme/}Sun Java Wireless Toolkit}}.
  	
- 	[[*]] classpathref: a reference to a path that contains a version of the package floggy-persistence-framework. This package could be find at {{{http://sourceforge.net/project/showfiles.php?group_id=139426}here}}
+ 	[[*]] classpathref (required): a reference to a path that contains a version of the package floggy-persistence-framework. This package could be find at {{{http://sourceforge.net/project/showfiles.php?group_id=139426}here}}
  	
- 	[[*]] input: the directory or jar file that contains the classes that will be processed by the weaver.
+ 	[[*]] input (required): the directory or jar file that contains the classes that will be processed by the weaver.
  	
- 	[[*]] output: the directory or jar file when the weaved classes will be placed.
+ 	[[*]] output (optional): the directory or jar file when the weaved classes will be placed.
  	
- 	[[*]] generateSource: a boolean indicating the weaver to generate or not the source of methods weaved in the bytecode.
+ 	[[*]] {generateSource} (optional): a boolean indicating the weaver to generate or not the source of methods weaved in the bytecode.
  	
 A build sample.
 
