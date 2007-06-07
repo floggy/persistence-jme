@@ -9,8 +9,6 @@ import javax.microedition.rms.RecordStoreException;
  * (such as loading, saving, deleting and searching for objects) are declared in
  * this class.
  * 
- * @author Thiago Leão Moreira <thiagolm@users.sourceforge.net>
- * @author Thiago Rossato <thiagorossato@users.sourceforge.net>
  * @since 1.0
  */
 public class PersistableManager {
@@ -91,7 +89,7 @@ public class PersistableManager {
 	 * The object ID obtained from this operation can be used in the load
 	 * operations.
 	 * 
-	 * @param persistable
+	 * @param object
 	 *            Object to be stored.
 	 * @return The ID of the object.
 	 * @throws IllegalArgumentException
@@ -103,9 +101,9 @@ public class PersistableManager {
 	 * 
 	 * @see #load(Persistable, int)
 	 */
-	public int save(Persistable persistable) throws FloggyException {
+	public int save(Persistable object) throws FloggyException {
 		try {
-			return checkArgumentsAndCast(persistable).__save();
+			return checkArgumentsAndCast(object).__save();
 		} catch (Exception ex) {
 			throw new FloggyException(ex.getMessage());
 		}
@@ -196,6 +194,12 @@ public class PersistableManager {
 			en.destroy();
 		} catch (RecordStoreException e) {
 			throw new FloggyException(e.getMessage());
+		} finally {
+			try {
+				rs.closeRecordStore();
+			} catch (RecordStoreException e) {
+				// Ignored
+			}
 		}
 
 		return new ObjectSetImpl(ids, persistableClass);

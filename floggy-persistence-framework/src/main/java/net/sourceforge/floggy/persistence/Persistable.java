@@ -7,7 +7,6 @@ package net.sourceforge.floggy.persistence;
  * By default, all fields of a persistable class will be persisted except those
  * declared as <code>transient</code> or <code>static</code>.<br>
  * 
- * @author Thiago Rossato
  * @since 1.0
  */
 public interface Persistable {

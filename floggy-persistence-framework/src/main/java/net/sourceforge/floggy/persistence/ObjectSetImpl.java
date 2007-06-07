@@ -3,7 +3,6 @@ package net.sourceforge.floggy.persistence;
 /**
  * An implementation of the <code>ObjectSet</code> interface.
  * 
- * @author Thiago Rossato
  * @since 1.0
  */
 class ObjectSetImpl implements ObjectSet {
