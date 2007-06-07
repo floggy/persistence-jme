@@ -20,7 +20,7 @@ class ObjectComparator implements RecordComparator {
 
 	private final Persistable p2;
 
-	ObjectComparator(Comparator c, Persistable p1, Persistable p2) {
+	public ObjectComparator(Comparator c, Persistable p1, Persistable p2) {
 		this.p1 = p1;
 		this.p2 = p2;
 		this.c = c;

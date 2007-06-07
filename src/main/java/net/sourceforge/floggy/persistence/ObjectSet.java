@@ -1,8 +1,10 @@
 package net.sourceforge.floggy.persistence;
 
 /**
- * The result of a search is an <code>ObjectSet</code>. It is possible to
- * iterate over all objects using the <code>get(int index)</code> method. <br>
+ * An interface representing a search result. The <code>ObjectSet</code>
+ * logically maintains a sequence of the object's IDs. It is possible to iterate
+ * over all objects (or a subset, if an optional object filter has been
+ * supplied) using the <code>get(int index)</code> method. <br>
  * <br>
  * <code>
  * PersistableManager pm = PersistableManager.getInstance();<br>
@@ -15,6 +17,7 @@ package net.sourceforge.floggy.persistence;
  * <br>
  * By using an optional <code>Filter</code>, only the objects that matches
  * the provided filter will be avaiable in this set.<br>
+ * <br>
  * By using an optional <code>Comparator</code>, the order of the objects in
  * this set will be determined by the comparator.
  * 
@@ -22,13 +25,12 @@ package net.sourceforge.floggy.persistence;
  * @see Filter
  * @see Comparator
  * 
- * @author Thiago Rossato <rossato@gmail.com>
  * @since 1.0
  */
 public interface ObjectSet {
 
 	/**
-	 * Load the object of a given index into the object instance.
+	 * Load the object of a given index into the object instance supplied.
 	 * 
 	 * @param index
 	 *            Index of the object to be loaded.
@@ -46,13 +48,19 @@ public interface ObjectSet {
 	 * @param object
 	 *            An instance of the object to be loaded. It cannot be
 	 *            <code>null</code>.
+	 * @throws IllegalArgumentException
+	 *             Exception thrown if <code>object</code> is
+	 *             <code>null</code>.
+	 * @throws IndexOutOfBoundsException
+	 *             Exception thrown if an invalid <code>index</code> was
+	 *             given.
 	 * @throws FloggyException
 	 *             Exception thrown if a persistance error occurs.
 	 */
 	public void get(int index, Persistable object) throws FloggyException;
 
 	/**
-	 * Returns the object at the specified position in the set.
+	 * Returns the object at the specified index.
 	 * 
 	 * @param index
 	 *            Index of the object to return.
