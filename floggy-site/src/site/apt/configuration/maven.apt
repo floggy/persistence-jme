@@ -30,7 +30,6 @@ Maven 2.0
       <plugin>
         <groupId>net.sourceforge.floggy</groupId>
         <artifactId>maven-floggy-plugin</artifactId>
-        <version>1.0</version>
         <executions>
           <execution>
             <phase>process-classes</phase>
@@ -46,6 +45,32 @@ Maven 2.0
 </project>
 +------------------------------------------+
 
+ [[3]] To generate the source code of the members class you must configure the plugin like that:
+ 
++------------------------------------------+
+<project>
+[...]
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>net.sourceforge.floggy</groupId>
+        <artifactId>maven-floggy-plugin</artifactId>
+        <executions>
+          <execution>
+            ...
+            <configuration>
+              <generateSource>true</generateSource>
+            </configuration>
+            ...
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+[...]
+</project>
++------------------------------------------+
+ 
 A POM sample.
 
  We developed a POM file to the demo application. You can customize this file to your way of development. The file is 
