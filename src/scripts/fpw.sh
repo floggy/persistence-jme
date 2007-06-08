@@ -28,7 +28,7 @@
 FLOGGY_CMD_LINE_ARGS=""
 while [ "$1" != "" ] ; do
 
-  FLOGGY_CMD_LINE_ARGS="$FLOGGY_CMD_LINE_ARGS \"$1\""
+  FLOGGY_CMD_LINE_ARGS="$FLOGGY_CMD_LINE_ARGS $1"
   shift
 
 done
@@ -36,9 +36,9 @@ done
 # OS specific support.  $var _must_ be set to either true or false.
 cygwin=false;
 darwin=false;
-mingw=false
+mingw=false;
 case "`uname`" in
-  CYGWIN*) cygwin=true ;;
+  CYGWIN*) cygwin=true;;
   MINGW*) mingw=true;;
   Darwin*) darwin=true 
            if [ -z "$JAVA_VERSION" ] ; then
