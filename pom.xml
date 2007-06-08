@@ -29,6 +29,11 @@
 		A microedition development tool to weave bytecode responsable
 		for pesistence.
 	</description>
+	<scm>
+		<connection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/trunk</connection>
+		<developerConnection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/trunk</developerConnection>
+		<url>http://floggy.svn.sourceforge.net/viewvc/floggy/trunk</url>
+	</scm>
 	<dependencies>
 		<dependency>
 			<groupId>jboss</groupId>
