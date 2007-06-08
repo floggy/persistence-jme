@@ -17,8 +17,10 @@ package net.sourceforge.floggy.persistence;
 
 public class WeaverException extends Exception {
 
-    public WeaverException(String message) {
-	super(message);
-    }
+	private static final long serialVersionUID = -5031495264446460275L;
+
+	public WeaverException(String message) {
+		super(message);
+	}
 
 }

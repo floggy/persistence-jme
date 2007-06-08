@@ -20,8 +20,8 @@ import java.io.IOException;
 
 public class JarInputPool extends ZipInputPool {
 
-    public JarInputPool(File file) throws IOException {
-	super(file);
-    }
+	public JarInputPool(File file) throws IOException {
+		super(file);
+	}
 
 }
