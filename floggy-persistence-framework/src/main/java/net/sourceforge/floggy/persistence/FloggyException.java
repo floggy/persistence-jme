@@ -22,6 +22,11 @@ package net.sourceforge.floggy.persistence;
  */
 public class FloggyException extends Exception {
 
+	/*
+	 * Unused for now. 
+	 */
+	private static final long serialVersionUID = 7139165976718330303L;
+
 	/**
 	 * Construct a new FloggyException with no detail message.
 	 */
