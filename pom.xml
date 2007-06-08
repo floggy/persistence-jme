@@ -28,9 +28,9 @@
 	<name>Hospital-ME</name>
 	<description>A demo application using Floggy persistence framework.</description>
 	<scm>
-		<connection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/trunk</connection>
-		<developerConnection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/trunk</developerConnection>
-		<url>http://floggy.svn.sourceforge.net/viewvc/floggy/trunk</url>
+		<connection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/trunk/${artifactId}</connection>
+		<developerConnection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/trunk/${artifactId}</developerConnection>
+		<url>http://floggy.svn.sourceforge.net/viewvc/floggy/trunk/${artifactId}</url>
 	</scm>
 	<repositories>
 		<repository>
