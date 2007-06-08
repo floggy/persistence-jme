@@ -25,6 +25,10 @@
 	<includeBaseDirectory>true</includeBaseDirectory>
 	<dependencySets>
 		<dependencySet>
+			<excludes>
+				<exclude>junit:junit</exclude>
+				<exclude>ant:ant</exclude>
+			</excludes>
 			<outputDirectory>lib</outputDirectory>
 			<outputFileNameMapping>${artifactId}.${extension}</outputFileNameMapping>
 			<scope>runtime</scope>
@@ -61,6 +65,11 @@
 			<destName>LICENSE.txt</destName>
 			<lineEnding>crlf</lineEnding>
 			<source>LICENSE.txt</source>
+		</file>
+		<file>
+			<destName>NOTICE.txt</destName>
+			<lineEnding>crlf</lineEnding>
+			<source>NOTICE.txt</source>
 		</file>
 		<!--file>
 			<destName>README.txt</destName>

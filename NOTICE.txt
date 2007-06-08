@@ -1,0 +1,8 @@
+This product includes software (ant, commons-io, commons-logging) developed by
+The Apache Software Foundation (http://www.apache.org/).
+
+This product includes software (javassist) developed by
+The JBoss Foundation (http://www.jboss.org).
+
+This product includes software (junit) developed by 
+Object Mentor Inc. (http://www.junit.org).
