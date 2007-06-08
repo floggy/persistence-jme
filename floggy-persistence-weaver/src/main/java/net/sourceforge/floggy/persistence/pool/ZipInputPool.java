@@ -29,7 +29,8 @@ public class ZipInputPool implements InputPool {
 
 	protected Vector files;
 
-	public ZipInputPool(File file) throws IOException {
+ 	public ZipInputPool(File file) throws IOException {
+		this.file= file;
 		this.files = new Vector();
 		this.initFiles(file);
 	}
@@ -46,17 +47,20 @@ public class ZipInputPool implements InputPool {
 		ZipInputStream in = new ZipInputStream(new FileInputStream(file));
 		for (ZipEntry entry = in.getNextEntry(); entry != null; entry = in
 				.getNextEntry()) {
-			String name = entry.getName();
-			name = name.replace('/', File.separatorChar);
-			this.files.add(name);
+			if(!entry.isDirectory()) {
+				String name = entry.getName();
+				name = name.replace('/', File.separatorChar);
+				this.files.add(name);
+			}
 		}
 	}
 
 	public URL getFileURL(int index) throws IOException {
 		String name = getFileName(index);
 		// jar:http://www.foo.com/bar/baz.jar!/COM/foo/Quux.class
-		System.out.println("jar:" + file.toURI().toURL() + "!" + name);
-		return null;
+		name= "jar:" + file.toURL() + "!/" + name;
+		//System.out.println(name);
+		return new URL(name);
 	}
 
 }
