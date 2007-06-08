@@ -6,7 +6,7 @@ Command line
  The example is based on Linux like systems.
  
 +------------------------------------------+
- prompt> fpw.sh -cp ~/wtkhome/lib/midpapi20.jar:~/wtkhome/lib/cldc10.jar -g -o ./output ./input
+ prompt> fpw.sh -cp ~/wtkhome/lib/midpapi20.jar:~/wtkhome/lib/cldc10.jar -s -o ./output ./input
 +------------------------------------------+
 
  	The parameters declared in the command line execution has the following meaning.
@@ -20,7 +20,7 @@ Command line
 	
  	[[*]] input (required): the directory or jar file that contains the classes that will be processed by the weaver.
  	
- 	[[*]] {-g} (optional): a flag indicating the weaver to generate or not the source of methods weaved in the bytecode.
+ 	[[*]] {-s} (optional): a flag indicating the weaver to generate or not the source of methods weaved in the bytecode.
  	
  	
  	
