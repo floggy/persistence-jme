@@ -1,6 +1,6 @@
 Datatypes and its size
 
-	The below table shows the valid data types and its size that are Floggy compliance.
+	The table below shows the valid data types and its size that are Floggy compliance.
 	All primitive types are saved using only the size of that type.
 	Object types receive one byte more that indicates the state of the object (null or not).
 	Only fields of a class that implements net.sourceforge.floggy.Persistable will be persisted.
@@ -54,21 +54,22 @@ Datatypes and its size
 	Suppose that you have a class like this:
 	
 +------------------------------+
-	public class Car {
-		private String name;
-		private java.util.Date buildDate;
-		private double price;
-	}
+public class Frog implements Persistable {
+        
+        private String name;
+        private Date bornDate;
+        private char sex;
+}
 +------------------------------+
 
 	Now suppose this three scenarios:
 	
-	[1] A instance of Car with <<null>> name, <<null>> buildDate and <<0>> price the total cost of store this instance is: 
-		(1 byte) + (1 byte) + (8 bytes)= 10 bytes. This happens because no value must be save for name and buildDate only one byte indicating nullable state.
+	[1] A instance of Frog with <<null>> name, <<null>> bornDate and <<0>> sex the total cost of store this instance is: 
+		(1 byte) + (1 byte) + (2 bytes)= 4 bytes. This happens because no value must be save for name and bornDate only one byte indicating nullable state.
 		
-	[2] A instance of Car with <<Ferrari F-50>> name, <<05-30-2007>> buildDate and <<1.000.000>> price the total cost of store this instance is:
-		(1 byte + 14 bytes) + (1 byte + 8 bytes) + (8 bytes)= 32 bytes. This happens because the values for name and buildDate doesn't are null.
+	[2] A instance of Frog with <<Flip Flop>> name, <<05-30-2007>> bornDate and <<M>> sex the total cost of store this instance is:
+		(1 byte + 9 bytes) + (1 byte + 8 bytes) + (2 bytes)= 21 bytes. This happens because the values for name and bornDate doesn't are null.
 		
-	[3] A instance of Car with <<null>> name, <<05-30-2007>> buildDate and <<1.000.000>> price the total cost of store this instance is:
-		(1 byte) + (1 byte + 8 bytes) + (8 bytes)= 18 bytes. This happens because the value of name are null.
+	[3] A instance of Frog with <<null>> name, <<05-30-2007>> bornDate and <<F>> sex the total cost of store this instance is:
+		(1 byte) + (1 byte + 8 bytes) + (2 bytes)= 12 bytes. This happens because the value of name are null.
 		
