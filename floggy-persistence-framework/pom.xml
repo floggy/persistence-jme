@@ -20,7 +20,7 @@
 	<parent>
 		<groupId>net.sourceforge.floggy</groupId>
 		<artifactId>floggy</artifactId>
-		<version>1.0</version>
+		<version>1.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>floggy-persistence-framework</artifactId>
 	<version>1.0-SNAPSHOT</version>
@@ -109,10 +109,10 @@
 					<javadocDir>/apidocs/</javadocDir>
 				</configuration>
 			</plugin>
-			<!--plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-changelog-plugin</artifactId>
-			</plugin-->
+			</plugin>
 		</plugins>
 	</reporting>
 </project>
