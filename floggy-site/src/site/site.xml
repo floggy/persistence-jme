@@ -42,16 +42,16 @@
 			<item name="Download"
 				href="http://sourceforge.net/project/showfiles.php?group_id=139426" />
 			<!--item name="Road Map" href="roadmap.html" /-->
-			<item name="FAQ" href="faq.html" />
+			<!--item name="FAQ" href="faq.html" /-->
 		</menu>
 
 		<menu name="Configuration">
 			<item name="Ant" href="configuration/ant.html" />
 			<item name="Command line"
 				href="configuration/commandline.html" />
-			<item name="Eclipse" href="underconstruction.html" />
+			<!--item name="Eclipse" href="underconstruction.html" /-->
 			<item name="Maven" href="configuration/maven.html" />
-			<item name="Netbeans" href="underconstruction.html" />
+			<!--item name="Netbeans" href="underconstruction.html" /-->
 		</menu>
 
 		<menu name="Modules">
@@ -88,7 +88,7 @@
 
 		<menu name="About us">
 			<item name="Team" href="team.html" />
-			<item name="Brazil" href="underconstruction.html" />
+			<!--item name="Brazil" href="underconstruction.html" /-->
 		</menu>
 		<!--menu ref="reports"/-->
 	</body>

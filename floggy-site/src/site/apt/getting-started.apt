@@ -1,4 +1,8 @@
 
+Download the latest version
+ 
+ First, you have to {{{http://sourceforge.net/project/showfiles.php?group_id=139426}download <<Floggy 1.0>>}} and extract the archive.
+
 Using the framework
 
  The first step you need to take is add the interface <<net.sourceforge.floggy.persistence.Persistable>> to the list of interfaces implemented by the classes that will be persisted.
