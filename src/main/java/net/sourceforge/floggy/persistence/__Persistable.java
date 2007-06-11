@@ -15,10 +15,10 @@
  */
 package net.sourceforge.floggy.persistence;
 
-/*
+/**
  * An internal <code>interface</code> that holds all methods used by the
  * persistence module. All classes identified as <b>persistable</b> ({@link Persistable})
- * will be modified to implement all methods of this <code>interface</code>.
+ * will be modified at compilation time and they will automatically implement all methods of this <code>interface</code>.
  * 
  * @since 1.0
  * @see Persistable
