@@ -17,6 +17,8 @@ package net.sourceforge.floggy.persistence;
 
 import javax.microedition.rms.RecordFilter;
 
+import net.sourceforge.floggy.persistence.internal.__Persistable;
+
 /**
  * An internal implementation of <code>RecordComparator</code> for comparing two objects.
  * 

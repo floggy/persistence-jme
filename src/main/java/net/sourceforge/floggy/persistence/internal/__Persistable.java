@@ -13,7 +13,10 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package net.sourceforge.floggy.persistence;
+package net.sourceforge.floggy.persistence.internal;
+
+import net.sourceforge.floggy.persistence.Persistable;
+import net.sourceforge.floggy.persistence.PersistableMetadata;
 
 /**
  * An internal <code>interface</code> that holds all methods used by the
