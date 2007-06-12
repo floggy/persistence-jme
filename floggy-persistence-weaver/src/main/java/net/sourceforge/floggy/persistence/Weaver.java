@@ -38,13 +38,13 @@ import org.apache.commons.logging.LogFactory;
  * Main compiler class!
  * 
  * @author Thiago Rossato <thiagorossato@users.sourceforge.net>
- * @author Thiago Leão Moreira <thiagolm@users.sourceforge.net>
+ * @author Thiago Leï¿½o Moreira <thiagolm@users.sourceforge.net>
  */
 public class Weaver {
 
     private static final Log LOG = LogFactory.getLog(Weaver.class);
     public static final String PERSISTABLE_CLASSNAME= "net.sourceforge.floggy.persistence.Persistable";
-    public static final String __PERSISTABLE_CLASSNAME= "net.sourceforge.floggy.persistence.__Persistable";
+    public static final String __PERSISTABLE_CLASSNAME= "net.sourceforge.floggy.persistence.internal.__Persistable";
 
     private ClassPool classpathPool;
 

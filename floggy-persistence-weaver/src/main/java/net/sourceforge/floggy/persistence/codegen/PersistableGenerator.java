@@ -27,7 +27,7 @@ public class PersistableGenerator extends SourceCodeGenerator {
 
     public void initLoadCode() throws NotFoundException {
 	addLoadCode("if(dis.readByte() == 0) {");
-	addLoadCode("net.sourceforge.floggy.persistence.__Persistable someClass = new "
+	addLoadCode("net.sourceforge.floggy.persistence.internal.__Persistable someClass = new "
 		+ classType.getName() + "();");
 	addLoadCode("someClass.__load(dis.readInt());");
 	addLoadCode("this." + fieldName + " = someClass;");
@@ -44,15 +44,15 @@ public class PersistableGenerator extends SourceCodeGenerator {
 	addSaveCode("else {");
 	addSaveCode("dos.writeByte(0);");
 	// NÃO OTIMIZADO
-	// addSaveCode("((net.sourceforge.floggy.persistence.__Persistable) this." +
+	// addSaveCode("((net.sourceforge.floggy.persistence.internal.__Persistable) this." +
 	// fieldName
 	// + ").__save();");
-	// addSaveCode("dos.writeInt(((net.sourceforge.floggy.persistence.__Persistable)
+	// addSaveCode("dos.writeInt(((net.sourceforge.floggy.persistence.internal.__Persistable)
 	// this."
 	// + fieldName + ").__getId());");
 
 	// OTIMIZADO
-	addSaveCode("dos.writeInt(((net.sourceforge.floggy.persistence.__Persistable) this."
+	addSaveCode("dos.writeInt(((net.sourceforge.floggy.persistence.internal.__Persistable) this."
 		+ fieldName + ").__save());");
 	addSaveCode("}");
     }
