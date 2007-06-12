@@ -28,17 +28,21 @@
 	<description>
 		A JME Persistence Framework for JME applications
 	</description>
-	<scm>
-		<connection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/trunk/${artifactId}</connection>
-		<developerConnection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/trunk/${artifactId}</developerConnection>
-		<url>http://floggy.svn.sourceforge.net/viewvc/floggy/trunk/${artifactId}</url>
-	</scm>
 	<repositories>
+		<repository>
+			<id>floggy</id>
+			<url>http://floggy.sourceforge.net/repository</url>
+		</repository>
 		<repository>
 			<id>pyx4j-web</id>
 			<url>http://www.pyx4j.com/maven2</url>
 		</repository>
 	</repositories>
+	<scm>
+		<connection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/trunk/${artifactId}</connection>
+		<developerConnection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/trunk/${artifactId}</developerConnection>
+		<url>http://floggy.svn.sourceforge.net/viewvc/floggy/trunk/${artifactId}</url>
+	</scm>
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -103,6 +107,7 @@
 					<minmemory>128m</minmemory>
 					<maxmemory>512</maxmemory>
 					<stylesheet>maven</stylesheet>
+					<excludePackageNames>*.internal</excludePackageNames>
 					<!-- stylesheetfile>css/maven-theme.css</stylesheetfile-->
 				</configuration>
 			</plugin>
