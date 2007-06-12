@@ -19,6 +19,8 @@ import javax.microedition.rms.RecordEnumeration;
 import javax.microedition.rms.RecordStore;
 import javax.microedition.rms.RecordStoreException;
 
+import net.sourceforge.floggy.persistence.internal.__Persistable;
+
 /**
  * This is the main class of the framework. All persistence operations methods
  * (such as loading, saving, deleting and searching for objects) are declared in
@@ -93,6 +95,8 @@ public class PersistableManager {
 	public void load(Persistable persistable, int id) throws FloggyException {
 		try {
 			checkArgumentsAndCast(persistable).__load(id);
+		} catch (RuntimeException e) {
+			throw e;
 		} catch (Exception e) {
 			throw new FloggyException(e.getMessage());
 		}
@@ -119,6 +123,8 @@ public class PersistableManager {
 	public int save(Persistable object) throws FloggyException {
 		try {
 			return checkArgumentsAndCast(object).__save();
+		} catch (RuntimeException e) {
+			throw e;
 		} catch (Exception ex) {
 			throw new FloggyException(ex.getMessage());
 		}
@@ -141,6 +147,8 @@ public class PersistableManager {
 	public void delete(Persistable persistable) throws FloggyException {
 		try {
 			checkArgumentsAndCast(persistable).__delete();
+		} catch (RuntimeException e) {
+			throw e;
 		} catch (Exception e) {
 			throw new FloggyException(e.getMessage());
 		}
