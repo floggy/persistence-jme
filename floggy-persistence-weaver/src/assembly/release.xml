@@ -22,7 +22,7 @@
 		<format>tar.gz</format>
 		<format>tar.bz2</format>
 	</formats>
-	<includeBaseDirectory>true</includeBaseDirectory>
+	<baseDirectory>floggy-persistence-${version}</baseDirectory>
 	<dependencySets>
 		<dependencySet>
 			<excludes>
@@ -71,11 +71,17 @@
 			<lineEnding>crlf</lineEnding>
 			<source>NOTICE.txt</source>
 		</file>
-		<!--file>
+		<file>
+			<destName>samples/pom.xml</destName>
+			<filtered>true</filtered>
+			<lineEnding>crlf</lineEnding>
+			<source>src/samples/pom.xml</source>
+		</file>
+		<file>
 			<destName>README.txt</destName>
 			<lineEnding>crlf</lineEnding>
 			<source>src/resources/README.txt</source>
-		</file-->
+		</file>
 		<file>
 			<filtered>true</filtered>
 			<lineEnding>crlf</lineEnding>
