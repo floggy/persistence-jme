@@ -22,21 +22,6 @@ public class MainForm extends List implements CommandListener {
 
     protected void cadastrosIniciais() {
         PersistableManager pm = PersistableManager.getInstance();
-
-        // Formacaoes
-        try {
-            PersistableMetadata metadata = pm.getMetadata(Formation.class);
-
-            if (metadata.getObjectCount() == 0) {
-                pm.save(new Formation("Pediatra"));
-                pm.save(new Formation("Ginecologista"));
-                pm.save(new Formation("Clinico Geral"));
-                pm.save(new Formation("Dermatologista"));
-                pm.save(new Formation("Ortopedista"));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     protected void iniciaComponentes() {
