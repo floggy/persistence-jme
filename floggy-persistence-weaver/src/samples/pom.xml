@@ -20,6 +20,18 @@
 	<groupId>net.sourceforge.floggy</groupId>
 	<artifactId>floggy-persistence-helloworld</artifactId>
 	<version>${version}</version>
+	<repositories>
+		<repository>
+			<id>floggy</id>
+			<url>http://floggy.sourceforge.net/repository</url>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>floggy</id>
+			<url>http://floggy.sourceforge.net/repository</url>
+		</pluginRepository>
+	</pluginRepositories>
 	<dependencies>
 		<dependency>
 			<groupId>net.sourceforge.floggy</groupId>
