@@ -19,12 +19,12 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.sourceforge.floggy</groupId>
 	<artifactId>floggy-persistence-helloworld</artifactId>
-	<version>1.0-SNAPSHOT</version>
+	<version>${version}</version>
 	<dependencies>
 		<dependency>
 			<groupId>net.sourceforge.floggy</groupId>
 			<artifactId>floggy-persistence-framework</artifactId>
-			<version>1.0-SNAPSHOT</version>
+			<version>${version}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
@@ -47,7 +47,7 @@
 			<plugin>
 				<groupId>net.sourceforge.floggy</groupId>
 				<artifactId>maven-floggy-plugin</artifactId>
-				<version>1.0-SNAPSHOT</version>
+				<version>${version}</version>
 				<executions>
 					<execution>
 						<id>persistence-weaver</id>
