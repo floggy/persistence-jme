@@ -20,7 +20,7 @@
 	<parent>
 		<groupId>net.sourceforge.floggy</groupId>
 		<artifactId>floggy</artifactId>
-		<version>1.1-SNAPSHOT</version>
+		<version>1.1</version>
 	</parent>
 	<artifactId>floggy-persistence-weaver</artifactId>
 	<version>1.0-SNAPSHOT</version>
@@ -29,10 +29,22 @@
 		A microedition development tool to weave bytecode responsable
 		for persistence.
 	</description>
+	<repositories>
+		<repository>
+			<id>floggy</id>
+			<url>http://floggy.sourceforge.net/repository</url>
+		</repository>
+	</repositories>
 	<scm>
-		<connection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/trunk/${artifactId}</connection>
-		<developerConnection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/trunk/${artifactId}</developerConnection>
-		<url>http://floggy.svn.sourceforge.net/viewvc/floggy/trunk/${artifactId}</url>
+		<connection>
+			scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/trunk/floggy-persistence-weaver
+		</connection>
+		<developerConnection>
+			scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/trunk/floggy-persistence-weaver
+		</developerConnection>
+		<url>
+			http://floggy.svn.sourceforge.net/viewvc/floggy/trunk/floggy-persistence-weaver
+		</url>
 	</scm>
 	<dependencies>
 		<dependency>
@@ -70,7 +82,7 @@
 		<dependency>
 			<groupId>net.sourceforge.floggy</groupId>
 			<artifactId>floggy-persistence-framework</artifactId>
-			<version>1.0-SNAPSHOT</version>
+			<version>1.0</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
@@ -90,18 +102,20 @@
 					<target>1.4</target>
 				</configuration>
 			</plugin>
-		     <plugin>
-		       <artifactId>maven-jar-plugin</artifactId>
-		       <configuration>
-		         <archive>
-		           <manifest>
-		             <mainClass>net.sourceforge.floggy.persistence.Main</mainClass>
-		             <!--addClasspath>true</addClasspath-->
-		           </manifest>
-		         </archive>
-		       </configuration>
-		     </plugin>
-      			<plugin>
+			<plugin>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>
+								net.sourceforge.floggy.persistence.Main
+							</mainClass>
+							<!--addClasspath>true</addClasspath-->
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<configuration>
 					<descriptors>
@@ -109,6 +123,14 @@
 							src/assembly/release.xml
 						</descriptor>
 					</descriptors>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-release-plugin</artifactId>
+				<configuration>
+					<tagBase>
+						https://floggy.svn.sourceforge.net/svnroot/floggy/tags
+					</tagBase>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -139,15 +161,10 @@
 					<javadocDir>/apidocs/</javadocDir>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-checkstyle-plugin</artifactId>
-			</plugin>
 			<!--plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-changelog-plugin</artifactId>
-				</plugin-->
+			</plugin-->
 		</plugins>
 	</reporting>
-
 </project>
