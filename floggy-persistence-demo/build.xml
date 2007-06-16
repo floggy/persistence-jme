@@ -44,7 +44,7 @@
 			<include name="commons-io/commons-io/1.2/commons-io-1.2.jar"/>
 			<include name="net/sourceforge/floggy/floggy-persistence-weaver/1.0/floggy-persistence-weaver-1.0.jar"/>
 			<include name="jboss/javassist/3.4.ga/javassist-3.4.ga.jar"/>
-			<include name="de/pleumann/antenna/antenna/0.9.14/antenna-0.9.14.jar"/>
+			<include name="de/pleumann/antenna/0.9.14/antenna-0.9.14.jar"/>
 		</fileset>
 	</path>
 
@@ -55,7 +55,7 @@
 	<target name="compile" depends="get-deps" description="Compile the code">
 		<taskdef name="floggy-persistence-weaver" classname="net.sourceforge.floggy.persistence.WeaverTask" classpathref="floggy.classpath"/>
 		<mkdir dir="${build.output}"/>
-		<javac destdir="${build.output}" excludes="**/package.html" debug="true" deprecation="true" optimize="false" source="1.1" target="1.1">
+		<javac destdir="${build.output}" excludes="**/package.html" debug="true" deprecation="true" optimize="false" source="1.3" target="1.1">
 			<src>
 				<pathelement location="src"/>
 			</src>
@@ -89,7 +89,7 @@
 		<mkdir dir="${repo.local}"/>
 		<get src="http://floggy.sourceforge.net/repository/net/sourceforge/floggy/floggy-persistence-framework/1.0/floggy-persistence-framework-1.0.jar" dest="${repo.local}/net/sourceforge/floggy/floggy-persistence-framework/1.0/floggy-persistence-framework-1.0.jar" usetimestamp="true" ignoreerrors="true"/>
 		<get src="http://floggy.sourceforge.net/repository/net/sourceforge/floggy/floggy-persistence-weaver/1.0/floggy-persistence-weaver-1.0.jar" dest="${repo.local}/net/sourceforge/floggy/floggy-persistence-weaver/1.0/floggy-persistence-weaver-1.0.jar" usetimestamp="true" ignoreerrors="true"/>
-		<get src="http://www.pyx4j.com/maven2/de/pleumann/antenna/antenna/0.9.14/antenna-0.9.14.jar" dest="${repo.local}/de/pleumann/antenna/antenna/0.9.14/antenna-0.9.14.jar" usetimestamp="true" ignoreerrors="true"/>
+		<get src="http://www.pyx4j.com/maven2/de/pleumann/antenna/0.9.14/antenna-0.9.14.jar" dest="${repo.local}/de/pleumann/antenna/0.9.14/antenna-0.9.14.jar" usetimestamp="true" ignoreerrors="true"/>
 		<get src="http://repo1.maven.org/maven2/jboss/javassist/3.4.ga/javassist-3.4.ga.jar" dest="${repo.local}/jboss/javassist/3.4.ga/javassist-3.4.ga.jar" usetimestamp="true" ignoreerrors="true"/>
 		<get src="http://repo1.maven.org/maven2/commons-io/commons-io/1.2/commons-io-1.2.jar" dest="${repo.local}/commons-io/commons-io/1.2/commons-io-1.2.jar" usetimestamp="true" ignoreerrors="true"/>
 		<get src="http://repo1.maven.org/maven2/commons-logging/commons-logging/1.0.4/commons-logging-1.0.4.jar" dest="${repo.local}/commons-logging/commons-logging/1.0.4/commons-logging-1.0.4.jar" usetimestamp="true" ignoreerrors="true"/>
