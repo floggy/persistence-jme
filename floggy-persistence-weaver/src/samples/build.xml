@@ -55,7 +55,7 @@
 			classpathref="floggy.classpath" />
 		<mkdir dir="${classes}" />
 		<javac destdir="${classes}" debug="true" deprecation="true"
-			optimize="false" source="1.1" target="1.1">
+			optimize="false" source="1.3" target="1.1">
 			<src>
 				<pathelement location="${src}" />
 			</src>
