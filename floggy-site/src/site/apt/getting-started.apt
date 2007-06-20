@@ -1,9 +1,24 @@
-
 Download the latest version
  
- First, you have to {{{http://sourceforge.net/project/showfiles.php?group_id=139426}download <<Floggy 1.0>>}} and extract the archive.
+ First, you have to download {{{http://sourceforge.net/project/showfiles.php?group_id=139426} <<Floggy 1.0>>}}.
+ Pri
+
+Configurated
+
+ Then you have add the lib <<floggy-persistence-framework.jar>> in your project and configurated the lib <<floggy-persistence-weaver.jar>>. We have the step by step how to do this in main programs, choose witch you used: 
+ 
+ *{{{./configuration/eclipse.html} <<Eclipse>>}}.
+ 
+ *{{{./configuration/netbeans.html} <<Netbeans>>}}.
+ 
+ *{{{./configuration/ant.html} <<Ant>>}}.
+ 
+ *{{{./configuration/commandline.html} <<Command line>>}}.
+ 
+ *{{{./configuration/maven.html} <<Maven>>}}.
 
 Using the framework
+ After all configured, let's do it!!!
 
  The first step you need to take is add the interface <<net.sourceforge.floggy.persistence.Persistable>> to the list of interfaces implemented by the classes that will be persisted.
  Every class that implements <<net.sourceforge.floggy.persistence.Persistable>> will be processed by the weaver to became a persistable entity.

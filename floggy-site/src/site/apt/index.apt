@@ -1,25 +1,19 @@
-The Problem
+Welcome to Floggy
+	
+	Floggy is a <<free object persistence framework>> for mobile device applications developed in JME/MIDP. The main goal of this framework is to abstract the data persistence details from the developer, reducing the development and maintenance effort and your code will become more clean. Floggy is very simple, easy to learn and easy to use.
+	
+ <Now you don't need anymore to write thousands of lines of persistence code. The dirty work is done by Floggy.>
 
-	A traditional application typically stores data in local files or in databases who that are fastly eand easily access through a hard drive or a network.
-	The mobile devices, however, in general don't has hard drives or rare are connected with a steady connection to a database server. 
-	The more common way to store data in this kind of devices are the flash memory.
-	
-	The {{{http://java.sun.com/products/midp/}MIDP}} specification demands that all implemantations supply a persistence way to store data during the MIDlet execution and when the device are turned off. 
-	The data must be avaialble across multiples executions of the MIDlet. The way that the data are store depends on the implementation of the vendor, but every implementation must have the same application program interface (API). 
-	The API responable to store data are called RMS (Record Management System).
-	
-	In the RMS resides the problem, the ways that the data are stored is much low level, the data are stored in former of a byte array.
-	Have you ever tried to transform a entity in byte array? 
-	Have you ever implemented code to persist an entity with more than 15 fields? 
-	Have you ever write thounsend times writeLong, writeString, writeInt and so on to persist a entity?? 
-	Have you ever write another thounsend times of methods calls readLong, readString, readInt, to retrive a entity??
-	In a common JME project this tasks are made for every entity that needs to became persistente. And are so boring because there is no difference between the code that persiste a String on differents entities
-	
-	
-The Solution
+Why Floggy?
 
-	Use Floggy!! Yes, Floggy was developed to making our live (we are JME developers too) much easier. The main goal of the project is provided a tool to reduce the time of development of entities that must be persisted.
-	The project are composited mainly by a {{{./persistence-framework/index.html}framework library}} that abstract the operations used to persis and retrieve entities and a {{{./persistence-weaver/index.html}pos-compiler tool}} used to weave bytecode responsible to persist and retrieve tha data from the RMS system.
-	Besides the main objective also we are concerned with the facility of use, facility of learning, good performance and above of everything, cumprimento of requirements of one persistence layer like described at {{{http://www.ambysoft.com/downloads/persistenceLayer.pdf}The design of a robust persistence layer for relational databases}}
-	There is no need to write the persistence code! This work is done at pos-compilation time. We make the development process easy to you!
+	As JME developers we couldn't handle anymore the idea of writing so many code lines to persist so few attributes. For each class we want to persist we had to generate the source code to transform an object into a byte array and vice-versa. We have tried to find free persistence frameworks for this technology on the internet, but we couldn't find one that fit our needs. So, we have decided start our own project. 
+
+Architecture
+
+	Floggy is composed by 2 modules: 
 	
+	* {{{./persistence-framework/index.html}Framework}}: A small library (11k) that should be attached to the application. It is responsible for  supplying persistence methods such as saving, removing and finding objects.
+ 
+	* {{{./persistence-weaver/index.html}Weaver}}: A tool responsible for generating and weaving bytecode into the persistable classes.
+
+ Before you start we strongly recommend the reading of the {{{./getting-started.html}getting started}} section. 

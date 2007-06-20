@@ -4,12 +4,30 @@ Eclipse
 
 The steps take at this section enable you to use Floggy with Eclipse.
   
-  [[1]]First you need to create a new External Tool, to do this access the menu Run, submenu External Tools, \
-  or click on the button ExternalTools on the menu bar. Now create a new external tool with the \
-  configuration of Floggy. Do something like the imge below.
-  
-+------------------------------------------+
+  [[1]]First you need to add the Floggy-Framework into your application. To do this, go to the Properties of your project and open the tab libraries. Agora clique em adicionar um jar externo e procure a pasta onde você extraiu o Floggy, dentro dessa pasta, tem um diretório lib, e dentro desse o arquivo "floggy-persistence-framework.jar", selecione esse arquivo e confirme. Conforme as figuras abaixo.
 
-  
-+------------------------------------------+
-  
+[../images/configuration/framework-step1.png]
+
+  [[2]]Selecione o arquivo "floggy-persistence-framework.jar" que se encontra na pasta do floggy.
+
+[../images/configuration/framework-step2.png]
+
+  [[3]]Agora vá no Ordem e selecione check true a opção do "floggy-persistence-framework.jar".
+
+[../images/configuration/framework-step4.png]
+
+  [[6]]Agora vamos instalar o Weaver. Para isso entre no builders
+
+[../images/configuration/WeaverStep1.PNG]
+
+[../images/configuration/WeaverStep2.PNG]
+
+[../images/configuration/WeaverStep3.PNG]
+
+[../images/configuration/WeaverStep4.PNG]
+
+[../images/configuration/WeaverStep5.PNG]
+
+[../images/configuration/WeaverStep6.PNG]
+
+[../images/configuration/WeaverStep7.PNG]
