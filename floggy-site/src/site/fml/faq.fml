@@ -19,7 +19,7 @@
    <faq ig="why-floggy">
      <question>Why Floggy?</question>
      <answer>
-       <p>The Floggy name was choosed by Priscila. Because she think pretty quilt.</p>
+       <p>The Floggy name was choosed by Priscila because she thought that it is pretty quilt.</p>
      </answer>
    </faq>
  </part>
@@ -36,12 +36,24 @@
        <p>No. A <i>transient</i> field means that it must not be persisted. More information are available <a href="http://java.sun.com/docs/books/vmspec/2nd-edition/html/Concepts.doc.html#29882">here</a>.</p>
      </answer>
    </faq>
-   <faq id="transient-field">
+   <faq id="supported-profiles">
+     <question>What profiles are supported?</question>
+     <answer>
+       <p>MIDP (2.0) is the only profile that we tested. We have planes to expand to aa maximum number of profiles</p>
+     </answer>
+   </faq>
+   <faq id="supported-configurations">
+     <question>What configurations are supported?</question>
+     <answer>
+       <p>CLDC (1.1) is the only configuration that we tested. We have planes to expand to a maximum number of configurations</p>
+     </answer>
+   </faq>
+   <faq id="bytecode-generated">
      <question>How can I view the bytecode generated?</question>
      <answer>
        <p>You can view the bytecode generated using the <a href="http://java.sun.com/javase/6/docs/technotes/tools/windows/javap.html">javap</a> 
        application or the <a href="http://www.ej-technologies.com/products/jclasslib/overview.html">jClasslib</a>. 
-       Alternative you can flag the weaver to generated the code </p>
+       Alternative you can flag the weaver to generated the code. Look at the configuration  menu to do that.</p>
      </answer>
    </faq>
  </part>

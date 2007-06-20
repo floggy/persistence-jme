@@ -1,0 +1,11 @@
+
+
+Sample Appication 
+	
+ We developed a sample application to test the framework and the weaver. 
+ The sample application is for hospitals. 
+ There are forms to register, edit and delete doctor's formation, doctors, patients, bedroom and so one.
+ The main target of the application is to made check in and check out of the patients.
+ The source code of the application is mostly in portuguese we are working on to translate it.
+	
+ You can download the source code from {{{http://sourceforge.net/project/showfiles.php?group_id=139426}here}}.
