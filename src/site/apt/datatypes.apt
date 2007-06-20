@@ -64,12 +64,12 @@ public class Frog implements Persistable {
 
 	Now suppose this three scenarios:
 	
-	[1] A instance of Frog with <<null>> name, <<null>> bornDate and <<0>> sex the total cost of store this instance is: 
+	[1] A instance of Frog with <<null>> name, <<null>> bornDate and <<0>> sex. The total cost of store this instance is: 
 		(1 byte) + (1 byte) + (2 bytes)= 4 bytes. This happens because no value must be save for name and bornDate only one byte indicating nullable state.
 		
-	[2] A instance of Frog with <<Flip Flop>> name, <<05-30-2007>> bornDate and <<M>> sex the total cost of store this instance is:
+	[2] A instance of Frog with <<Flip Flop>> name, <<05-30-2007>> bornDate and <<M>> sex. The total cost of store this instance is:
 		(1 byte + 9 bytes) + (1 byte + 8 bytes) + (2 bytes)= 21 bytes. This happens because the values for name and bornDate doesn't are null.
 		
-	[3] A instance of Frog with <<null>> name, <<05-30-2007>> bornDate and <<F>> sex the total cost of store this instance is:
+	[3] A instance of Frog with <<null>> name, <<05-30-2007>> bornDate and <<F>> sex. The total cost of store this instance is:
 		(1 byte) + (1 byte + 8 bytes) + (2 bytes)= 12 bytes. This happens because the value of name are null.
 		
