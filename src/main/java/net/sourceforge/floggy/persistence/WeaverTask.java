@@ -45,30 +45,40 @@ public class WeaverTask extends Task {
 		}
 	}
 
-	/**
-	 * Adds a reference to a classpath defined elsewhere.
-	 * 
-	 * @param r
-	 *                a reference to a classpath
-	 */
-	public void setBootClasspathRef(Reference r) {
-		if (classpath == null) {
-			classpath = new Path(getProject());
-		}
-		classpath.append((Path) r.getReferencedObject());
+	public void setBootClasspath(Path path) {
+		addToClasspath(path);
 	}
 
 	/**
 	 * Adds a reference to a classpath defined elsewhere.
 	 * 
 	 * @param r
-	 *                a reference to a classpath
+	 *            a reference to a classpath
+	 */
+	public void setBootClasspathRef(Reference r) {
+		addToClasspath((Path) r.getReferencedObject());
+
+	}
+
+	public void setClasspath(Path path) {
+		addToClasspath(path);
+	}
+
+	/**
+	 * Adds a reference to a classpath defined elsewhere.
+	 * 
+	 * @param r
+	 *            a reference to a classpath
 	 */
 	public void setClasspathRef(Reference r) {
+		addToClasspath((Path) r.getReferencedObject());
+	}
+
+	private void addToClasspath(Path path) {
 		if (classpath == null) {
 			classpath = new Path(getProject());
 		}
-		classpath.append((Path) r.getReferencedObject());
+		classpath.append(path);
 	}
 
 	public void setGenerateSource(boolean generateSource) {
