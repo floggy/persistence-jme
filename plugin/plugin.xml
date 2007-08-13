@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+
+   <extension
+         id="floggyBuilder"
+         name="Floggy Project Builder"
+         point="org.eclipse.core.resources.builders">
+      <builder
+            hasNature="true">
+         <run
+               class="net.sourceforge.floggy.eclipse.FloggyBuilder">
+         </run>
+      </builder>
+   </extension>
+   <extension
+         id="floggyNature"
+         name="Floggy Nature"
+         point="org.eclipse.core.resources.natures">
+      <runtime>
+         <run
+               class="net.sourceforge.floggy.eclipse.FloggyNature">
+         </run>
+      </runtime>
+      <builder
+            id="net.sourceforge.floggy.floggyBuilder">
+      </builder>
+   </extension>
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            adaptable="true"
+            objectClass="org.eclipse.core.resources.IProject"
+            nameFilter="*"
+            id="net.sourceforge.floggy.contribution1">
+         <action
+               label="Add/Remove Floggy Nature"
+               class="net.sourceforge.floggy.eclipse.ToggleNatureAction"
+               menubarPath="additions"
+               enablesFor="+"
+               id="net.sourceforge.floggy.addRemoveNatureAction">
+         </action>
+      </objectContribution>
+   </extension>
+
+</plugin>
