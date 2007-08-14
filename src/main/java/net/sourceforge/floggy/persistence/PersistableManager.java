@@ -35,6 +35,19 @@ public class PersistableManager {
 	 */
 	private static PersistableManager instance;
 
+	//this code is a workaround to the problem of missing  java.lang.NoClassDefFoundError.class in the CLDC 1.0
+	private static Class __persistableClass;
+	
+	static {
+		try {
+			__persistableClass= Class.forName("net.sourceforge.floggy.persistence.internal.__Persistable");
+		} catch (Exception e) {
+			//this would be never happen
+			throw new RuntimeException(e.getMessage(), e);
+		}
+	}
+
+
 	/**
 	 * Creates a new instance of PersistableManager.
 	 */
@@ -254,16 +267,17 @@ public class PersistableManager {
 		}
 	}
 
-	static void validatePersistableClassArgument(Class persistableClass) {
+	static void validatePersistableClassArgument(Class persistableClass) throws FloggyException {
 		// testing if persistableClass is null
 		if (persistableClass == null) {
 			throw new IllegalArgumentException(
 					"The persistable class cannot be null!");
 		}
 		// Checks if the persistableClass is a valid persistable class.
-		if (!__Persistable.class.isAssignableFrom(persistableClass)) {
+		if (!__persistableClass.isAssignableFrom(persistableClass)) {
 			throw new IllegalArgumentException(persistableClass.getName()
 					+ " is not a valid persistable class.");
 		}
 	}
+	
 }
