@@ -60,8 +60,18 @@ public class Weaver {
          * @param args
          */
     public Weaver() {
-	this.classpathPool = ClassPool.getDefault();
+    	this(ClassPool.getDefault());
     }
+
+    /**
+     * Creates a new instance
+     * 
+     * @param args
+     */
+    public Weaver(ClassPool classPool) {
+		this.classpathPool = classPool;
+    }
+
 
     /**
          * Sets the classpath.
