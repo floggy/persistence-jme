@@ -19,8 +19,6 @@
 	<property name="classes" value="classes" />
 	<property name="lib" value="lib" />
 	<property name="src" value="src" />
-	<property name="wtk.cldc.version" value="1.1" />
-	<property name="wtk.midp.version" value="2.0" />
 
 	<path id="build.classpath">
 		<fileset dir="${lib}">
