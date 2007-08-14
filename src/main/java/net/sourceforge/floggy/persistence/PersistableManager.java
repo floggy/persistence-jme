@@ -43,7 +43,7 @@ public class PersistableManager {
 			__persistableClass= Class.forName("net.sourceforge.floggy.persistence.internal.__Persistable");
 		} catch (Exception e) {
 			//this would be never happen
-			throw new RuntimeException(e.getMessage(), e);
+			throw new RuntimeException(e.getMessage());
 		}
 	}
 
