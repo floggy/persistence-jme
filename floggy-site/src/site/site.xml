@@ -47,12 +47,11 @@
 		</menu>
 
 		<menu name="Configuration">
-			<item name="Ant" href="configuration/ant.html" />
-			<item name="Command line"
-				href="configuration/commandline.html" />
 			<item name="Eclipse" href="configuration/eclipse.html" />
+			<item name="Netbeans" href="configuration/netbeans.html" />
+			<item name="Ant" href="configuration/ant.html" />
+			<item name="Command line" href="configuration/commandline.html" />
 			<item name="Maven" href="configuration/maven.html" />
-			<!--item name="Netbeans" href="underconstruction.html" /-->
 		</menu>
 
 		<menu name="Modules">
