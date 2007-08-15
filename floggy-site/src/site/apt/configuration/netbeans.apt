@@ -1,8 +1,33 @@
 Netbeans
 
- "The {{{http://www.netbeans.org}Netbeans}} IDE is a free, open-source Integrated Development Environment for software developers." 
+ First, you have to configure your environment, adding the Floggy framework to your classpath.
+ 
+[../images/configuration/netbeans.jpg]
+ 
+ Then, add lines bellow into the build.xml and chage the value of the "floggy.path" property pointing it to the directory where you've installed Floggy.
+ 
++------------------------------------------+
+...
 
+<property name="floggy.path" value="c:\floggy"/>
+
+<path id="floggy.classpath">
+	<fileset dir="${floggy.path}\lib" includes="*.jar"/>
+</path>
+
+<target name="post-compile">
+	<taskdef 
+		name="floggy-persistence-weaver"
+		classname="net.sourceforge.floggy.persistence.WeaverTask"
+		classpathref="floggy.classpath"/>
+	<floggy-persistence-weaver
+		bootclasspath="${platform.bootclasspath}"
+		classpath="${libs.classpath}"
+		input="${build.classes.dir}"
+		output="${build.classes.dir}"/>
+</target>
+
+....
 +------------------------------------------+
 
-
-+------------------------------------------+
+ If you need, {{{../files/build.xml}here}} is an example of a build.xml file configured to use Floggy.
