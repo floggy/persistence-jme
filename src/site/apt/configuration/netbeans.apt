@@ -1,33 +1,61 @@
 Netbeans
 
- First, you have to configure your environment, adding the Floggy framework to your classpath.
+  <<Important:>> We assume that you are using {{{http://www.netbeans.org}Netbeans}} 5.5.1 (or later) with the {{{http://www.netbeans.org/products/mobility}Netbeans Mobility Pack}}.
+ 
+  It is really simple to configure Floggy within your environment.
+ 
+  The 2 main steps are:
+ 
+   * <<{{{#Step 1}Step 1}}: Configuring the classpath>>
+  
+   * <<{{{#Step 2}Step 2}}: Editing your build.xml>>
+ 
+ []
+===
+ 
+ ~~====================================
+ ~~ Step 1
+ ~~====================================
+* <<{Step 1}: Configuring the classpath>>
+ 
+ Open the project properties pane and add the framework jar to your classpath.
+ Once you have completed this step, you will have a pane that looks like this:
  
 [../images/configuration/netbeans.jpg]
  
- Then, add lines bellow into the build.xml and chage the value of the "floggy.path" property pointing it to the directory where you've installed Floggy.
+ ~~====================================
+ ~~ Step 2
+ ~~====================================
+* <<{Step 2}: Editing your build.xml>>
+ 
+ Then, attach the following lines into the build.xml and change the value of the "floggy.path" property, pointing it to the directory where you have installed Floggy in your computer.
  
 +------------------------------------------+
-...
-
-<property name="floggy.path" value="c:\floggy"/>
-
-<path id="floggy.classpath">
-	<fileset dir="${floggy.path}\lib" includes="*.jar"/>
-</path>
-
-<target name="post-compile">
-	<taskdef 
-		name="floggy-persistence-weaver"
-		classname="net.sourceforge.floggy.persistence.WeaverTask"
-		classpathref="floggy.classpath"/>
-	<floggy-persistence-weaver
-		bootclasspath="${platform.bootclasspath}"
-		classpath="${libs.classpath}"
-		input="${build.classes.dir}"
-		output="${build.classes.dir}"/>
-</target>
-
-....
+    <!-- 
+        IMPORTANT: You must change the value of this property pointing it to the directory
+        where you have installed Floggy.
+        
+        Some examples:
+        Linux: /opt/floggy
+        Windows: c:\floggy
+    -->
+    <property name="floggy.path" value="c:\floggy"/>
+    
+    <path id="floggy.classpath">
+        <fileset dir="${floggy.path}\lib" includes="*.jar"/>
+    </path>
+    
+    <target name="post-compile">
+        <taskdef 
+            name="floggy-persistence-weaver" 
+            classname="net.sourceforge.floggy.persistence.WeaverTask"
+            classpathref="floggy.classpath"/>
+        <floggy-persistence-weaver
+            bootclasspath="${platform.bootclasspath}"
+            classpath="${libs.classpath}"
+            input="${build.classes.dir}"
+            output="${build.classes.dir}"/>
+    </target>
 +------------------------------------------+
 
  If you need, {{{../files/build.xml}here}} is an example of a build.xml file configured to use Floggy.
