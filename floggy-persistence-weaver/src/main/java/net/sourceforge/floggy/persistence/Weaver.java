@@ -175,8 +175,8 @@ public class Weaver {
 	    CtClass ctClass = this.classpathPool.get(className);
 	    // verifing if the bytecode are already processed.
 	    if (ctClass.subtypeOf(persistable)
-		    && !ctClass.subtypeOf(__persistable)) {
-		// System.out.println(className);
+		    && !ctClass.subtypeOf(__persistable) && !ctClass.isInterface()) {
+		//LOG.info(className);
 		List tree = buildClassTree(ctClass);
 		Collections.reverse(tree);
 		for (int j = 0; j < tree.size(); j++) {
