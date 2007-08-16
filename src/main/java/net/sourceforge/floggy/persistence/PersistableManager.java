@@ -25,7 +25,7 @@ import net.sourceforge.floggy.persistence.internal.__Persistable;
  * This is the main class of the framework. All persistence operations methods
  * (such as loading, saving, deleting and searching for objects) are declared in
  * this class.
- * 
+ *
  * @since 1.0
  */
 public class PersistableManager {
@@ -37,7 +37,7 @@ public class PersistableManager {
 
 	//this code is a workaround to the problem of missing  java.lang.NoClassDefFoundError.class in the CLDC 1.0
 	private static Class __persistableClass;
-	
+
 	static {
 		try {
 			__persistableClass= Class.forName("net.sourceforge.floggy.persistence.internal.__Persistable");
@@ -56,7 +56,7 @@ public class PersistableManager {
 
 	/**
 	 * Returns the current instance of PersistableManager.
-	 * 
+	 *
 	 * @return The current instace of PersistableManager.
 	 */
 	public static PersistableManager getInstance() {
@@ -69,7 +69,7 @@ public class PersistableManager {
 	/**
 	 * Returns the RecordStore that is used to store all objects of the given
 	 * class.
-	 * 
+	 *
 	 * @param className
 	 *            Class name of a persistable class.
 	 * @return The RecordStore corresponding to the persistable class.
@@ -90,7 +90,7 @@ public class PersistableManager {
 	 * Load an previously stored object from the repository using the object ID.<br>
 	 * The object ID is the result of a save operation or you can obtain it
 	 * executing a search.
-	 * 
+	 *
 	 * @param persistable
 	 *            An instance where the object data will be loaded into. Cannot
 	 *            be <code>null</code>.
@@ -102,7 +102,7 @@ public class PersistableManager {
 	 *             <code>Persistable</code>.
 	 * @throws FloggyException
 	 *             Exception thrown if an error occurs while loading the object.
-	 * 
+	 *
 	 * @see #save(Persistable)
 	 */
 	public void load(Persistable persistable, int id) throws FloggyException {
@@ -120,8 +120,8 @@ public class PersistableManager {
 	 * repository, the object data will be overwritten.<br>
 	 * The object ID obtained from this operation can be used in the load
 	 * operations.
-	 * 
-	 * @param object
+	 *
+	 * @param persistable
 	 *            Object to be stored.
 	 * @return The ID of the object.
 	 * @throws IllegalArgumentException
@@ -130,12 +130,12 @@ public class PersistableManager {
 	 *             <code>Persistable</code>.
 	 * @throws FloggyException
 	 *             Exception thrown if an error occurs while storing the object.
-	 * 
+	 *
 	 * @see #load(Persistable, int)
 	 */
-	public int save(Persistable object) throws FloggyException {
+	public int save(Persistable persistable) throws FloggyException {
 		try {
-			return checkArgumentsAndCast(object).__save();
+			return checkArgumentsAndCast(persistable).__save();
 		} catch (RuntimeException e) {
 			throw e;
 		} catch (Exception ex) {
@@ -146,7 +146,7 @@ public class PersistableManager {
 	/**
 	 * Removes an object from the repository. If the object is not stored in the
 	 * repository then a <code>FloggyException</code> will be thrown.
-	 * 
+	 *
 	 * @param persistable
 	 *            Object to be removed.
 	 * @throws IllegalArgumentException
@@ -176,7 +176,7 @@ public class PersistableManager {
 	 * <br>
 	 * An optional application-defined sort order can be defined using a
 	 * <code>Comparator</code>.
-	 * 
+	 *
 	 * @param persistableClass
 	 *            The persistable class to search the objects.
 	 * @param filter
@@ -188,7 +188,7 @@ public class PersistableManager {
 	 */
 	public ObjectSet find(Class persistableClass, Filter filter,
 			Comparator comparator) throws FloggyException {
-		
+
 		ObjectFilter objectFilter = null;
 		ObjectComparator objectComparator = null;
 
@@ -263,7 +263,7 @@ public class PersistableManager {
 			return (__Persistable) persistable;
 		} else {
 			throw new IllegalArgumentException(persistable.getClass().getName()
-					+ "\" is not a valid persistable class.");
+					+ " is not a valid persistable class. Check the weaver execution!");
 		}
 	}
 
@@ -276,8 +276,8 @@ public class PersistableManager {
 		// Checks if the persistableClass is a valid persistable class.
 		if (!__persistableClass.isAssignableFrom(persistableClass)) {
 			throw new IllegalArgumentException(persistableClass.getName()
-					+ " is not a valid persistable class.");
+					+ " is not a valid persistable class. Check the weaver execution!");
 		}
 	}
-	
+
 }
