@@ -17,9 +17,8 @@ public abstract class AbstractVerifierTest extends TestCase {
 	evaluate("net.sourceforge.floggy.persistence.FloggyException", false);
     }
 
-    public void testFloggyManager() {
-	// est� acontecendo um erro no BCELVerifierTest
-	// evaluate("net.sourceforge.floggy.persistence.FloggyManager", false);
+    public void testFloggyInterface() {
+	 evaluate("net.sourceforge.floggy.persistence.beans.FloggyInterface", false);
     }
 
     public void testNoneFields() {
