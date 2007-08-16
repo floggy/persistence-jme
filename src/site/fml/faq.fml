@@ -22,6 +22,10 @@
        <p>The Floggy name was choosed by Priscila because she thought that it is pretty quilt.</p>
      </answer>
    </faq>
+   <faq id="floggy-proxy">
+     <question>I'm no able to download the Floggy artifacts for Maven 2 (http://floggy.sourceforge.net/maven2) neither to connect to the Eclipse Update site (http://floggy.soourceforge.net/eclipse). What's happend?</question>
+     <answer><p>This could occur because the name floggy is a super set of flog, abbreviation of fotolog and some rules of proxies could denied the access to the resource. Check this with your network administrator.</p></answer>
+ 	</faq>
  </part>
  <part id="Technical">
    <faq id="static-field">
@@ -39,13 +43,13 @@
    <faq id="supported-profiles">
      <question>What profiles are supported?</question>
      <answer>
-       <p>MIDP (2.0) is the only profile that we tested. We have planes to expand to aa maximum number of profiles</p>
+       <p>MIDP (1.0, 2.0 and 2.1) is the only profile that we tested. We have planes to expand to a maximum number of profiles</p>
      </answer>
    </faq>
    <faq id="supported-configurations">
      <question>What configurations are supported?</question>
      <answer>
-       <p>CLDC (1.1) is the only configuration that we tested. We have planes to expand to a maximum number of configurations</p>
+       <p>CLDC (1.0 and 1.1) is the only configuration that we tested. We have planes to expand to a maximum number of configurations</p>
      </answer>
    </faq>
    <faq id="bytecode-generated">
@@ -56,5 +60,11 @@
        Alternative you can flag the weaver to generated the code. Look at the configuration  menu to do that.</p>
      </answer>
    </faq>
+ </part>
+ <part id="Developers">
+   <faq id="invalid-pom">
+     <question>I'm getting the follow warning when build the project floggy-persistence-weaver: [WARNING] POM for 'net.sourceforge.floggy:floggy-persistence-framework:pom:1.1-SNAPSHOT:compile' is invalid. It will be ignored for artifact resolution. What's happend?</question>
+     <answer><p>This could occur because the variable wtk.home was not defined neither passed as parameter to Maven 2. Use this command 'mvn wtk.home=c:\WTK2.5 package' to build successfully.</p></answer>
+ 	</faq>
  </part>
 </faqs>
