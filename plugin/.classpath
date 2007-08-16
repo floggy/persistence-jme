@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src/main/java"/>
-	<classpathentry exported="true" kind="lib" path="lib/commons-io-1.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/floggy-persistence-framework-1.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/commons-io-1.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/floggy-persistence-weaver-1.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/commons-logging-1.0.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/javassist-3.4.ga.jar"/>
