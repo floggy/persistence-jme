@@ -67,14 +67,7 @@ public class PersistableManager {
 	}
 
 	/**
-	 * Returns the RecordStore that is used to store all objects of the given
-	 * class.
-	 *
-	 * @param className
-	 *            Class name of a persistable class.
-	 * @return The RecordStore corresponding to the persistable class.
-	 * @throws FloggyException
-	 *             If the class name does not represents a persistable class.
+	* <b>IMPORTANT:</b> This method is for internal use only.
 	 */
 	public static RecordStore getRecordStore(PersistableMetadata metadata)
 			throws FloggyException {
