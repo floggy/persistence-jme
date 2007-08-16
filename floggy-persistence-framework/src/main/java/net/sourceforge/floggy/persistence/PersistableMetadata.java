@@ -15,6 +15,9 @@
  */
 package net.sourceforge.floggy.persistence;
 
+/**
+ * <b>IMPORTANT:</b> This class is for internal use only.
+ */
 public class PersistableMetadata {
 	
 	private String recordStoreName;
