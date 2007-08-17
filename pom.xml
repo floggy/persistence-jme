@@ -6,7 +6,7 @@
 		<version>1.1</version>
 	</parent>
 	<artifactId>floggy-persistence-weaver</artifactId>
-	<version>1.1-SNAPSHOT</version>
+	<version>1.0.1</version>
 	<name>Floggy Persistence Weaver</name>
 	<description>
 		A microedition development tool to weave bytecode responsable
@@ -19,9 +19,9 @@
 		</repository>
 	</repositories>
 	<scm>
-		<connection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/trunk/floggy-persistence-weaver</connection>
-		<developerConnection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/trunk/floggy-persistence-weaver</developerConnection>
-		<url>http://floggy.svn.sourceforge.net/viewvc/floggy/trunk/floggy-persistence-weaver</url>
+		<connection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/tags/floggy-persistence-weaver-1.0.1</connection>
+		<developerConnection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/tags/floggy-persistence-weaver-1.0.1</developerConnection>
+		<url>http://floggy.svn.sourceforge.net/viewvc/floggy/tags/floggy-persistence-weaver-1.0.1</url>
 	</scm>
 	<dependencies>
 		<dependency>
@@ -59,14 +59,7 @@
 		<dependency>
 			<groupId>net.sourceforge.floggy</groupId>
 			<artifactId>floggy-persistence-framework</artifactId>
-			<version>1.1-SNAPSHOT</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
-			<!-- used compile scope because the maven-floggy-plugin plugin-->
+			<version>1.0.1</version>
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>
