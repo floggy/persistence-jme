@@ -1,11 +1,9 @@
-Download the latest version
+Configuration
+
+ If you haven't download the latest <<Floggy>> release, you can find it {{{http://sourceforge.net/project/showfiles.php?group_id=139426} <<here>>}}.
+
  
- First, you have to download {{{http://sourceforge.net/project/showfiles.php?group_id=139426} <<Floggy 1.0>>}}.
- Pri
-
-Configurated
-
- Then you have add the lib <<floggy-persistence-framework.jar>> in your project and configurated the lib <<floggy-persistence-weaver.jar>>. We have the step by step how to do this in main programs, choose witch you used: 
+ Before starting the development you must configure the <<Floggy>> in your environment. Use one of this guides: 
  
  *{{{./configuration/eclipse.html} <<Eclipse>>}}.
  
@@ -18,18 +16,24 @@ Configurated
  *{{{./configuration/maven.html} <<Maven>>}}.
 
 Using the framework
- After all configured, let's do it!!!
-
- The first step you need to take is add the interface <<net.sourceforge.floggy.persistence.Persistable>> to the list of interfaces implemented by the classes that will be persisted.
+ 
+ First, you need to implement the interface <<net.sourceforge.floggy.persistence.Persistable>> into all classes that will be persisted.
  Every class that implements <<net.sourceforge.floggy.persistence.Persistable>> will be processed by the weaver to became a persistable entity.
-
+ NOTE IMPORTANT: All classes who implements this interface must have a empty constructor. The trasients and static attributes 
+ aren't persistable. 
+ empty  
  
 +------------------------------+
 public class Person implements net.sourceforge.floggy.persistence.Persistable {
  
- 	private int age;
  	private String name;
+ 	private Date birthday;
+ 	private char gender;
+ 	private int age; // do not save this field
  	
+	public Person(){
+		// Empty constructor 
+	}
  	...
  	
 }
@@ -38,16 +42,9 @@ public class Person implements net.sourceforge.floggy.persistence.Persistable {
  The next step is obtain a instance of <<net.sourceforge.floggy.persistence.PersistableManager>>. This can be done using the static method <<getInstance()>> of class <<net.sourceforge.floggy.persistence.PersistableManager>>
 
 +------------------------------+
-public class HelloFloggyWorldMidlet extends Midlet {
 
-    protected PersistableManager pm;
- 
-    protected void startApp() throws MIDletStateChangeException {
-        pm= PersistableManager.getInstance();
-        ...
-    }
+    PersistableManager pm = PersistableManager.getInstance();
     
-}
 +-----------------------------+
 
  Now you can save, load, delete and find objects using the instance of <<net.sourceforge.floggy.persistence.PersistableManager>>.
@@ -55,48 +52,96 @@ public class HelloFloggyWorldMidlet extends Midlet {
 * Saving a object.
  
 +------------------------------+
-public class HelloFloggyWorldMidlet extends Midlet {
-
-    ...
     
-    public void savePerson() {
-    	Person person= new Person();
-    	person.setAge(...);
-    	person.setName(...);
-    	int id= pm.save(person);
-    	...
-    }
-}
+    Person person= new Person();
+    
+    person.setName(...);
+    person.setBirthday(...);
+    person.setGender(...);
+
+    int idPerson = pm.save(person); 
+
 +-----------------------------+
  
-* Loading a object, previous saved.
+* Loading, editing or deleting a object, previous saved.
 	
 +------------------------------+
-public class HelloFloggyWorldMidlet extends Midlet {
 
-    ...
-    
-    public Person loadPerson(int id) {
-    	Person person= new Person();
-    	pm.load(person, id);
-    	return person;
-    }
-}
+    Person person = new Person();
+
+    // loading object
+    pm.load(person, idPerson);
+
+    // editing object
+    person.setName(...);
+    pm.save(person);
+
+    // deleting object
+    pm.delete(person);
+
 +-----------------------------+
 
-* Finding objects
+* Finding simple list of objects
 	
 +------------------------------+
-public class HelloFloggyWorldMidlet extends Midlet {
 
-	...
-	 
-    public void listPersons() {
-    	ObjectSet persons= pm.find(Person.class, null, null);
-        while (persons.hasNext()) {
-            Person person= (Person) persons.next();
-            ...
-        }
+    ObjectSet persons = pm.find(Person.class, null, null);
+
+    Person p;
+    for (int i = 0; i < persons.size(); i++) {
+	 p = (Person) persons.get(i);
+	 System.out.println(p.getName());
+       ...	
     }
+
++-----------------------------+
+
+* Filtering a list of objects 
+	
++------------------------------+
+
+// Filter just the persons whose gender is male
+
+ObjectSet persons = pm.find(Person.class, new FilterMalePerson(), null);
+
+... 
+
+public class FilterMalePerson implements net.sourceforge.floggy.persistence.Filter {
+
+	public boolean matches(Persistable persistable) {
+
+		Person p = (Person) persistable;
+		return p.getName() == 'M';
+	}
+
+} 
+
++-----------------------------+
+
+* Ordenando a list of objects 
+	
++------------------------------+
+
+// Ordenando as pessoas pela data de aniversário
+
+ObjectSet persons = pm.find(Person.class, null, new OrderAgePerson());
+
+... 
+
+public class OrderAgePerson implements net.sourceforge.floggy.persistence.Comparator {
+
+	public int compare(Persistable persistable1, Persistable persistable2) {
+		Person p1 = (Person) persistable1;
+		Person p2 = (Person) persistable2;
+		
+		if (p1.getBirthday().getTime() > p2.getBirthday().getTime()) {
+			return FOLLOWS;
+		} if (p1.getBirthday().getTime() < p2.getBirthday().getTime()) {
+			return PRECEDES; 
+		} else {
+			return EQUIVALENT;
+		}
+	}
+
 }
 +-----------------------------+
