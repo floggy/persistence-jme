@@ -28,8 +28,8 @@ public class Activator extends AbstractUIPlugin {
 	public static final String PLUGIN_ID = "net.sourceforge.floggy";
 
 	// The shared instance
-	private static Activator plugin; 
-	
+	private static Activator plugin;
+
 	/**
 	 * The constructor
 	 */
@@ -63,15 +63,4 @@ public class Activator extends AbstractUIPlugin {
 		return plugin;
 	}
 
-	/**
-	 * Returns an image descriptor for the image file at the given
-	 * plug-in relative path
-	 *
-	 * @param path the path
-	 * @return the image descriptor
-	 */
-	public static ImageDescriptor getImageDescriptor(String path) {
-		System.out.println("IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII"+path);
-		return imageDescriptorFromPlugin(PLUGIN_ID, path);
-	}
 }
