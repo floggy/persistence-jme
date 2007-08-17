@@ -35,6 +35,8 @@ Floggy
 
 
 
+
+
 MODULO DE PERSISTÊNCIA
 - FEITO documentação da task do ant
 - arquitetura do sistema
@@ -49,8 +51,10 @@ MODULO DE PERSISTÊNCIA
         * java.util.Vector (os objetos do vector devem pertencer a esta lista também)
         * net.sourceforge.floggy.Persistable
         * arrays desses tipos
+		* Hashtable
+		* arrays multidimencionais
 
-- transformar os métodos __save() e __load() em métodos estáticos?!?!?!?!?!
+- IMPOSSIVEL transformar os métodos __save() e __load() em métodos estáticos?!?!?!?!?! 
 - FEITO atributos estáticos não poderão ser salvos!!!
 - deixar ou não os RMS abertos??? ter um método para fechar os RMS destroyApp(boolean)
 - pode-se solicitar ao PersistenceManager para que trabalhe com os RMS abertos ou fechados. (setWorkWithOpenRecordsStores(boolean)
@@ -59,6 +63,9 @@ MODULO DE PERSISTÊNCIA
 - deve funcionar sem o modulo de sincronização
 - lazy load, carregar todo o objeto ou carregar somente o primeiro objeto ou carregar a árvore de objetos a um certo nível.
 - attributes embebbeds (EJB 3.0)
+- adicionar teste unitários aos projetos framework e weaver
+- no plugin do eclipse setar a URL do JAVAdoc e o código fonte se possível
+- verificar porque a classe VectorGenerator está com problemas na hora de realizar a tag/release
 
 
 
