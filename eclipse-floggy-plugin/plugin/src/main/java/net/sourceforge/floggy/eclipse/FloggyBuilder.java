@@ -44,26 +44,26 @@ import org.eclipse.swt.widgets.Shell;
 public class FloggyBuilder extends IncrementalProjectBuilder {
 
 	public static final String BUILDER_ID = "net.sourceforge.floggy.floggyBuilder";
-	
+
 	public static final String RECORDSTORE_CLASS_NAME = "javax.microedition.rms.RecordStore";
-	
+
 	public static final String PERSISTABLE_CLASS_NAME = "net.sourceforge.floggy.persistence.Persistable";
-	
+
 	/**
 	 *
-	 * 
+	 *
 	 * @see org.eclipse.core.internal.events.InternalBuilder#build(int,
 	 *      java.util.Map, org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	protected IProject[] build(int kind, Map args, IProgressMonitor monitor)
 			throws CoreException {
-		boolean generateSource = true;
+		boolean generateSource = false;
 		try {
 			LogFactory.getFactory().setAttribute("org.apache.commons.logging.Log", EclipseLog.class.getName());
 			IProject project= getProject();
 			IJavaProject javaProject = JavaCore.create(project);
 			IClasspathEntry[] entries = javaProject.getResolvedClasspath(true);
-			
+
 			//creating the classpath
 			List classpathList = new ArrayList();
 			ClassPool classPool= new ClassPool();
@@ -73,13 +73,21 @@ public class FloggyBuilder extends IncrementalProjectBuilder {
 				classpathList.add(path);
 				classPool.appendClassPath(path);
 			}
-			
+
 			final StringBuilder messages= new StringBuilder();
+			try {
+				classPool.get(PERSISTABLE_CLASS_NAME);
+			} catch (NotFoundException e) {
+				messages.append("You must to add the Floggy framework library to the build path.");
+			}
 			try {
 				classPool.get(RECORDSTORE_CLASS_NAME);
 			} catch (NotFoundException e) {
-				messages.append("You must add the MIDP library to the build path.");
-			}			
+				if (messages.length() != 0) {
+					messages.append('\n');
+				}
+				messages.append("You must to add the MIDP library to the build path.");
+			}
 			if (messages.length() != 0) {
 			   Display.getDefault().asyncExec(new Runnable() {
 					public void run() {
@@ -87,12 +95,12 @@ public class FloggyBuilder extends IncrementalProjectBuilder {
 						MessageDialog.openError(shell, "Floggy", messages.toString());
 					}
 				});
-				
+
 			} else {
 				Weaver weaver = new Weaver(classPool);
-				IPath root= project.getLocation(); 
+				IPath root= project.getLocation();
 				File input= root.removeLastSegments(1).append(javaProject.getOutputLocation()).toFile();
-				
+
 				File temp = new File(root.toFile(), String
 						.valueOf(System.currentTimeMillis()));
 				FileUtils.forceMkdir(temp);
@@ -103,10 +111,9 @@ public class FloggyBuilder extends IncrementalProjectBuilder {
 				weaver.execute();
 				FileUtils.copyDirectory(temp, input);
 				FileUtils.forceDelete(temp);
-				
+
 				// verifing the synchronization
 				if (!project.isSynchronized(IResource.DEPTH_INFINITE)) {
-					//System.out.println("REEEEEEfresinhggggggggggggggg");
 					project.refreshLocal(IResource.DEPTH_INFINITE, null);
 				}
 
