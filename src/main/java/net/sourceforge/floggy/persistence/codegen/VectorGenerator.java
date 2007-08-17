@@ -94,8 +94,8 @@ public class VectorGenerator extends SourceCodeGenerator implements
 	addLoadCode("}");
 	addLoadCode("Class persistableClass = java.lang.Class.forName(className);");
 	addLoadCode("Object object = persistableClass.newInstance();");
-	addLoadCode("if(object instanceof net.sourceforge.floggy.persistence.__Persistable) {");
-	addLoadCode("((net.sourceforge.floggy.persistence.__Persistable) object).__load(dis.readInt());");
+	addLoadCode("if(object instanceof net.sourceforge.floggy.persistence.internal.__Persistable) {");
+	addLoadCode("((net.sourceforge.floggy.persistence.internal.__Persistable) object).__load(dis.readInt());");
 	addLoadCode("this." + fieldName + ".addElement(object);");
 	addLoadCode("}");
 	addLoadCode("}"); // else
@@ -152,8 +152,8 @@ public class VectorGenerator extends SourceCodeGenerator implements
 	addSaveCode("else if(object instanceof java.util.Date) {");
 	addSaveCode("dos.writeLong(((java.util.Date) object).getTime());");
 	addSaveCode("}");
-	addSaveCode("else if(object instanceof net.sourceforge.floggy.persistence.__Persistable) {");
-	addSaveCode("int id = ((net.sourceforge.floggy.persistence.__Persistable) object).__save();");
+	addSaveCode("else if(object instanceof net.sourceforge.floggy.persistence.internal.__Persistable) {");
+	addSaveCode("int id = ((net.sourceforge.floggy.persistence.internal.__Persistable) object).__save();");
 	addSaveCode("dos.writeInt(id);");
 	addSaveCode("}");
 	addSaveCode("else {");
