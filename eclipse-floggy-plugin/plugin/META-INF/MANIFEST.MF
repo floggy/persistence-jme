@@ -13,10 +13,10 @@ Require-Bundle: org.eclipse.ui,
 Eclipse-LazyStart: true
 Bundle-ClassPath: .,
  lib/commons-io-1.2.jar,
- lib/floggy-persistence-weaver-1.0.jar,
- lib/floggy-persistence-framework-1.0.jar,
  lib/commons-logging-1.0.4.jar,
- lib/javassist-3.4.ga.jar
+ lib/javassist-3.4.ga.jar,
+ lib/floggy-persistence-framework-1.0.1.jar,
+ lib/floggy-persistence-weaver-1.0.1.jar
 Export-Package: net,
  net.sourceforge,
  net.sourceforge.floggy,
