@@ -7,7 +7,7 @@
 	</parent>
 	<artifactId>maven-floggy-plugin</artifactId>
 	<packaging>maven-plugin</packaging>
-	<version>1.0.1</version>
+	<version>1.0.2-SNAPSHOT</version>
 	<name>Floggy plugin for Maven</name>
 	<description>A Floggy plugin for Maven.</description>
 	<repositories>
@@ -17,9 +17,9 @@
 		</repository>
 	</repositories>
 	<scm>
-		<connection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/tags/maven-floggy-plugin-1.0.1</connection>
-		<developerConnection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/tags/maven-floggy-plugin-1.0.1</developerConnection>
-		<url>http://floggy.svn.sourceforge.net/viewvc/floggy/tags/maven-floggy-plugin-1.0.1</url>
+		<connection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/trunk/maven-floggy-plugin</connection>
+		<developerConnection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/trunk/maven-floggy-plugin</developerConnection>
+		<url>http://floggy.svn.sourceforge.net/viewvc/floggy/trunk/maven-floggy-plugin</url>
 	</scm>
 	<dependencies>
 		<dependency>
