@@ -6,7 +6,7 @@
 		<version>1.1</version>
 	</parent>
 	<artifactId>floggy-persistence-test</artifactId>
-	<version>1.1-SNAPSHOT</version>
+	<version>1.0.1-SNAPSHOT</version>
 	<name>Floggy Persistence Test</name>
 	<description>A test project to validate the byte code generate.</description>
 	<repositories>
@@ -37,7 +37,7 @@
 		<dependency>
 			<groupId>net.sourceforge.floggy</groupId>
 			<artifactId>floggy-persistence-framework</artifactId>
-			<version>1.0</version>
+			<version>1.0.1-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
@@ -71,7 +71,6 @@
 			<plugin>
 				<groupId>net.sourceforge.floggy</groupId>
 				<artifactId>maven-floggy-plugin</artifactId>
-				<version>1.0</version>
 				<executions>
 					<execution>
 						<phase>process-classes</phase>
