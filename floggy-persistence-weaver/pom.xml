@@ -59,14 +59,7 @@
 		<dependency>
 			<groupId>net.sourceforge.floggy</groupId>
 			<artifactId>floggy-persistence-framework</artifactId>
-			<version>1.0.1-SNAPSHOT</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
-			<!-- used compile scope because the maven-floggy-plugin plugin-->
+			<version>1.0.1</version>
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>
