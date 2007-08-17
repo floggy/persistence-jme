@@ -32,6 +32,7 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jdt.core.IClasspathAttribute;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
@@ -219,8 +220,14 @@ public class ToggleNatureAction implements IObjectActionDelegate {
 				URL url = (URL) e.nextElement();
 				String path = FileLocator.toFileURL(url).getPath();
 				if (path.contains("floggy-persistence-framework")) {
+					String version= getVersion(path);
+					String javadocURL= "http://floggy.sourceforge.net/modules/floggy-persistence-framework/apidocs/"; 
+					if (version != null) {
+						javadocURL= "http://floggy.sourceforge.net/modules/floggy-persistence-framework/"+version+"/floggy-persistence-framework/apidocs/";
+					}
+					IClasspathAttribute attribute= JavaCore.newClasspathAttribute("javadoc_location", javadocURL);
 					IClasspathEntry varEntry = JavaCore.newLibraryEntry(
-							new Path(path), null, null, true);
+							new Path(path), null, null, null, new IClasspathAttribute[]{attribute}, true);
 					rawClasspath.add(varEntry);
 					javaProject.setRawClasspath(
 							(IClasspathEntry[]) rawClasspath
@@ -228,6 +235,16 @@ public class ToggleNatureAction implements IObjectActionDelegate {
 				}
 			}
 		}
+	}
+	
+	private String getVersion(String path) {
+		String version= null;
+		int endIndex= path.lastIndexOf(".jar");
+		int startIndex= path.indexOf("work-")+5;
+		if (startIndex != 4 && endIndex != -1 && startIndex < endIndex) {
+			version= path.substring(startIndex, endIndex);
+		}
+		return version;
 	}
 
 }
