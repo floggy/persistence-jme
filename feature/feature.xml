@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="net.sourceforge.floggy.feature"
-      label="Eclipse Floggy Plugin Feature"
+      label="Floggy"
       version="1.0.0"
       provider-name="Floggy Open Source Group"
       plugin="net.sourceforge.floggy">
@@ -199,8 +199,8 @@
 
    <plugin
          id="net.sourceforge.floggy"
-         download-size="582"
-         install-size="582"
+         download-size="583"
+         install-size="583"
          version="1.0.0"/>
 
 </feature>
