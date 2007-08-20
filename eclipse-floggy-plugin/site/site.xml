@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
    <description url="http://floggy.sourceforge.net/eclipse">
-      Floggy update site
+      Floggy Update Site
    </description>
-   <feature url="features/net.sourceforge.floggy.feature_1.0.0.jar" id="net.sourceforge.floggy.feature" version="1.0.0"/>
+   <feature url="features/net.sourceforge.floggy.feature_1.0.0.jar" id="net.sourceforge.floggy.feature" version="1.0.0">
+      <category name="Floggy"/>
+   </feature>
+   <category-def name="Floggy" label="Floggy">
+      <description>
+         Floggy JME Development Support Feature
+      </description>
+   </category-def>
 </site>
