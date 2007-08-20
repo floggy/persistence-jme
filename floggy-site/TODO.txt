@@ -35,8 +35,6 @@ Floggy
 
 
 
-
-
 MODULO DE PERSISTÊNCIA
 - FEITO documentação da task do ant
 - arquitetura do sistema
@@ -51,8 +49,8 @@ MODULO DE PERSISTÊNCIA
         * java.util.Vector (os objetos do vector devem pertencer a esta lista também)
         * net.sourceforge.floggy.Persistable
         * arrays desses tipos
-		* Hashtable
-		* arrays multidimencionais
+	* Hashtable
+	* arrays multidimencionais
 
 - IMPOSSIVEL transformar os métodos __save() e __load() em métodos estáticos?!?!?!?!?! 
 - FEITO atributos estáticos não poderão ser salvos!!!
@@ -67,7 +65,8 @@ MODULO DE PERSISTÊNCIA
 - no plugin do eclipse setar a URL do JAVAdoc e o código fonte se possível
 - verificar porque a classe VectorGenerator está com problemas na hora de realizar a tag/release
 - na task ant setar o commons-logging para uma instancia do logger ant
-- transformar em opcional o atributo output da task ant     
+- transformar em opcional o atributo output da task ant
+- assinar digitalmente o plugin do Eclipse
 
 
 
