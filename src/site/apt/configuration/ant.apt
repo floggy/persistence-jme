@@ -6,12 +6,24 @@ Ant
  
 +------------------------------------------+
 [...]
+  <!-- 
+      IMPORTANT: You must change the value of this property pointing it to the directory
+      where you have installed Floggy.
+        
+      Some examples:
+      Linux: /opt/floggy
+      Windows: c:\floggy
+  -->
+  <property name="floggy.path" value="c:\floggy"/>
+    
+  <path id="floggy.classpath">
+    <fileset dir="${floggy.path}\lib" includes="*.jar"/>
+  </path>
+    
   <taskdef name="floggy-persistence-weaver" classname="net.sourceforge.floggy.persistence.WeaverTask" 
-    classpath="..."/>
+    classpathref="floggy.classpath"/>
 [...]
 +------------------------------------------+
-
- The classpath could be generated with the dependencies described in this {{{./modules/weaver/}list}}.
 
  Also you need to create a target to execute Floggy. 
    
@@ -23,7 +35,7 @@ Ant
 [...]
 +------------------------------------------+
 
- We sugest that this target run just after the compilation has done. 
+ This target must run just after the compilation has done and before the preverification. 
 
  	The attributes declared in the floggy-persistence-weaver tag has the following meaning.
  	
@@ -34,7 +46,7 @@ Ant
  	
  	[[*]] input (required): the directory or jar file that contains the classes that will be processed by the weaver.
  	
- 	[[*]] output (optional): the directory or jar file when the weaved classes will be placed.
+ 	[[*]] output (required): the directory or jar file when the weaved classes will be placed.
  	
  	[[*]] {generateSource} (optional): a boolean indicating the weaver to generate or not the source of methods weaved in the bytecode.
  	

@@ -21,6 +21,19 @@ Eclipse
  
  [[2]] Select the <<Search for new features to install>> option and press <<Next>>.
  
+[../images/configuration/eclipse/UpdateSiteToVisit.png]
+ 
+ [[3]] testetstetsttetstettstetstettst
+  
+ [[4]] In the New Update Site dialog that appears, enter a name for the update site something like Floggy Update Site and enter the URL http://floggy.sourceforge.net/eclipse and press Ok.
+ 
+[../images/configuration/eclipse/NewUpdateSite.png]
+
+ [[5]] The update site will now be listed in the Install dialog.
+ 
+[../images/configuration/eclipse/UpdateSiteToVisit.png]
+
+ Ensure that there is a check next to the EclipseME update site, then press Finish.
  
  
  
