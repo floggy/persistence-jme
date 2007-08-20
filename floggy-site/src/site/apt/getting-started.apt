@@ -111,18 +111,18 @@ public class FilterMalePerson implements net.sourceforge.floggy.persistence.Filt
 	public boolean matches(Persistable persistable) {
 
 		Person p = (Person) persistable;
-		return p.getName() == 'M';
+		return p.getGender() == 'M';
 	}
 
 } 
 
 +-----------------------------+
 
-* Ordenando a list of objects 
+* Sorting a list of objects 
 	
 +------------------------------+
 
-// Ordenando as pessoas pela data de aniversário
+// Sorting persons by birthday day
 
 ObjectSet persons = pm.find(Person.class, null, new OrderAgePerson());
 
