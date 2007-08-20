@@ -26,7 +26,7 @@ Floggy
 - Dar um jeito de identificar mudanças nas classes e só enxertar as que contêm modificações
 - FEITO Permitir que o usuário final veja o código gerado.
 - FEITO adicionar a dependencia do floggy-framework ao jar final da aplicação.
-- adicionar a licensa a todos os codigos fontes dos projetos
+- FEITO adicionar a licensa a todos os codigos fontes dos projetos
 - criar a aplicação de exemplo e deixa-la pronta para ser usado pelos usuários (liberada numa url, utilizar o tinyurl.com)
 - FEITO criar as listas de discussão
 - FEITO adicionar este arquivo ao floggy-site
@@ -66,6 +66,8 @@ MODULO DE PERSISTÊNCIA
 - adicionar teste unitários aos projetos framework e weaver
 - no plugin do eclipse setar a URL do JAVAdoc e o código fonte se possível
 - verificar porque a classe VectorGenerator está com problemas na hora de realizar a tag/release
+- na task ant setar o commons-logging para uma instancia do logger ant
+- transformar em opcional o atributo output da task ant     
 
 
 
