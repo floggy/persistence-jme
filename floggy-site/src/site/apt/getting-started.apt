@@ -15,7 +15,7 @@ Configuration
  
  *{{{./configuration/maven.html} <<Maven>>}}
 
-Using the framework
+Using the {framework}
 
  It is really simple! All you have to do is implement the empty interface {{{./modules/floggy-persistence-framework/apidocs/net/sourceforge/floggy/persistence/Persistable.html}<<net.sourceforge.floggy.persistence.Persistable>>}} or extend a class that implements it. 
  
