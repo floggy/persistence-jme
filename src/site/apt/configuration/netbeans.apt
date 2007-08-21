@@ -19,7 +19,7 @@ Netbeans
 * <<{Step 1}: Configuring the classpath>>
  
  Open the project properties pane and add the framework jar to your classpath.
- Once you have completed this step, you will have a pane that looks like this:
+ Once you have completed this step, you will have a pane similar to this:
  
 [../images/configuration/netbeans/netbeans.jpg]
  
