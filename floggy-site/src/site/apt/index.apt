@@ -2,7 +2,7 @@ Welcome to Floggy
 	
 	Floggy is a <<free object persistence framework>> for J2ME/MIDP applications. The main goal of this framework is to abstract the data persistence details from the developer, reducing the development and maintenance effort. How? Check the examples in the {{{getting-started.html#framework}Getting Started}} section.
 
- <Now you don't need anymore to write thousands of lines of persistence code. Floggy will do the dirty work for you!>
+ <Now you don't need to write thousands of lines of persistence code anymore. Floggy will do the dirty work for you!>
 
 
 Why Floggy?
