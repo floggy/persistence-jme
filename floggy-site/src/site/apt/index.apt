@@ -7,13 +7,13 @@ Welcome to Floggy
 
 Why Floggy?
 
-	As J2ME developers we couldn't handle anymore the idea of writing so many code lines to persist so few attributes. For each class we want to persist we had to generate the source code to transform an object into a byte array and vice-versa. We have tried to find free persistence frameworks for this technology on the internet, but we couldn't find one that fit our needs. So, we have decided to start our own project. 
+	As J2ME developers we couldn't handle anymore the idea of writing so many code lines to persist so few attributes. For each class we want to persist we had to generate the source code to transform an object into a byte array and vice-versa. We have tried to find free persistence frameworks for this technology on the internet, but we couldn't find one that fitted our needs. So, we have decided to start our own project. 
 
 Architecture
 
 	Floggy is composed by 2 modules: 
 	
-	* {{{./persistence-framework/index.html}Framework}}: It is responsible for supplying persistence methods such as saving, removing and finding objects through a small API (11k) that should be attached to your application.
+	* {{{./persistence-framework/index.html}Framework}}: It is responsible for supplying persistence methods such as saving, removing and finding objects through a small API (11k) that must be attached to your application.
  
 	* {{{./persistence-weaver/index.html}Weaver}}: A tool responsible for generating and weaving bytecode into the persistable classes.
 

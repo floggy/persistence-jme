@@ -1,8 +1,8 @@
-Datatypes and its size
+Datatypes and theirs size
 
-	The table below shows the valid data types and its size that are Floggy compliance.
+	The table below shows the data types that are Floggy compliant and their size.
 	All primitive types are saved using only the size of that type.
-	Object types receive one byte more that indicates the state of the object (null or not).
+	Object types receive one extra byte that indicates the state of the object (null or not).
 	Only fields of a class that implements net.sourceforge.floggy.Persistable will be persisted.
 
 *----------*--------------*------------------------*
@@ -24,29 +24,29 @@ Datatypes and its size
 *----------*--------------*------------------------*
 | short    | 0     | 2 bytes|
 *----------*--------------*------------------------*
-| java.lang.Boolean | null     | 1 byte case the value are null or 2 bytes case not|
+| java.lang.Boolean | null     | 1 byte if value is null; 2 bytes otherwise|
 *----------*--------------*------------------------*
-| java.lang.Byte | null     | 1 byte case the value are null or 2 bytes case not|
+| java.lang.Byte | null     | 1 byte if the value is null or 2 bytes otherwise|
 *----------*--------------*------------------------*
-| java.lang.Character | null     | 1 byte case the value are null or 3 bytes case not|
+| java.lang.Character | null     | 1 byte if the value is null or 3 bytes otherwise|
 *----------*--------------*------------------------*
-| java.lang.Double | null     | 1 byte case the value are null or 9 bytes case not|
+| java.lang.Double | null     | 1 byte if the value is null or 9 bytes otherwise|
 *----------*--------------*------------------------*
-| java.lang.Float | null     | 1 byte case the value are null or 5 bytes case not|
+| java.lang.Float | null     | 1 byte if the value is null or 5 bytes otherwise|
 *----------*--------------*------------------------*
-| java.lang.Integer | null     | 1 byte case the value are null or 5 bytes case not|
+| java.lang.Integer | null     | 1 byte if the value is null or 5 bytes otherwise|
 *----------*--------------*------------------------*
-| java.lang.Long | null     | 1 byte case the value are null or 9 bytes case not|
+| java.lang.Long | null     | 1 byte if the value is null or 9 bytes otherwise|
 *----------*--------------*------------------------*
-| java.lang.Short | null     | 1 byte case the value are null or 3 bytes case not|
+| java.lang.Short | null     | 1 byte if the value is null or 3 bytes otherwise|
 *----------*--------------*------------------------*
-| java.lang.String | null     | 1 byte case the value are null, case not the size are calculate conform the specification of {{{http://java.sun.com/javase/6/docs/api/java/io/DataInput.html#modified-utf-8}Modified UTF-8}} |
+| java.lang.String | null     | 1 byte if the value is null, otherwise the size is calculated based on the {{{http://java.sun.com/javase/6/docs/api/java/io/DataInput.html#modified-utf-8}Modified UTF-8}} specification|
 *----------*--------------*------------------------*
-| java.util.Date | null     | 1 byte case the value are null or 9 bytes case not. The java.util.Date are transformed in a long type and saved using writeLong(long)|
+| java.util.Date | null     | 1 byte if the value is null or 9 bytes otherwise. The java.util.Date objects are transformed into a long type and saved as a java.lang.Long object|
 *----------*--------------*------------------------*
-| java.util.Vector | null     | 1 byte case the value are null|
+| java.util.Vector | null     | 1 byte if the value is null|
 *----------*--------------*------------------------*
-| net.sourceforge.floggy.Persistable | null     | 1 byte case the value are null|
+| net.sourceforge.floggy.Persistable | null     | 1 byte if the value is null|
 *----------*--------------*------------------------*
 
 		Examples

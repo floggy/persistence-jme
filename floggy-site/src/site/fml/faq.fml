@@ -23,31 +23,31 @@
      </answer>
    </faq>
    <faq id="floggy-proxy">
-     <question>I'm no able to download the Floggy artifacts for Maven 2 (http://floggy.sourceforge.net/maven2) neither to connect to the Eclipse Update site (http://floggy.soourceforge.net/eclipse). What's happend?</question>
+     <question>I'm not able to download the Floggy artifacts for Maven 2 (http://floggy.sourceforge.net/maven2) neither to connect to the Eclipse Update site (http://floggy.soourceforge.net/eclipse). What's happend?</question>
      <answer><p>This could occur because the name floggy is a super set of flog, abbreviation of fotolog and some rules of proxies could denied the access to the resource. Check this with your network administrator.</p></answer>
  	</faq>
  </part>
  <part id="Technical">
    <faq id="static-field">
-     <question><i>Static</i> fields are persisted?</question>
+     <question>Are <i>static</i> fields persisted?</question>
      <answer>
        <p>No. These fields belows to the class and not to a instance of the class.</p>
      </answer>
    </faq>
    <faq id="transient-field">
-     <question><i>Transient</i> fields are persisted?</question>
+     <question>Are <i>transient</i> fields persisted?</question>
      <answer>
        <p>No. A <i>transient</i> field means that it must not be persisted. More information are available <a href="http://java.sun.com/docs/books/vmspec/2nd-edition/html/Concepts.doc.html#29882">here</a>.</p>
      </answer>
    </faq>
    <faq id="supported-profiles">
-     <question>What profiles are supported?</question>
+     <question>Which profiles are supported?</question>
      <answer>
-       <p>MIDP (1.0, 2.0 and 2.1) is the only profile that we tested. We have planes to expand to a maximum number of profiles</p>
+       <p>MIDP (1.0, 2.0 and 2.1) is the only profile that we tested. We have plans to expand to a maximum number of profiles</p>
      </answer>
    </faq>
    <faq id="supported-configurations">
-     <question>What configurations are supported?</question>
+     <question>Which configurations are supported?</question>
      <answer>
        <p>CLDC (1.0 and 1.1) is the only configuration that we tested. We have planes to expand to a maximum number of configurations</p>
      </answer>
