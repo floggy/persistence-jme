@@ -11,7 +11,7 @@ Eclipse
  
  [[1]] Using the Eclipse built-in update feature (recommended);
  
- [[2]] Downloading an archive file manually from your website, and then installing it by yourself.
+ [[2]] Downloading an archive file manually from our website, and then installing it by yourself.
  
 * Using the Eclipse built-in update feature
  
@@ -55,4 +55,4 @@ Eclipse
 
 [../images/configuration/eclipse/step10.jpg]
 
- Done! The Floggy Eclipse Plugin is now installed into your environment. A new option will be available in the project menu to enable / disable Floggy. Just select <<Add Floggy Nature>> and your project will be automatically configurated.
+ Done! The Floggy Eclipse Plugin is now installed into your environment. A new option will be available in the project menu to enable / disable Floggy. Just select <<Add Floggy Nature>> and your project will be automatically configured.
