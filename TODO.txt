@@ -4,16 +4,18 @@ Floggy
   - documentação do plugin
   - o que é mais caro criar um DataInputStream ou executar um metodo synchronized
   
-- documentação
-  - diagramas da arquitetura
-  - diagrama de classes e de sequência
-  - diagrama do fluxo de execução do java, floggy, retroweaver???, retroguard, jminimizer, preverifier!!!
-  - criar uma aplicação de exemplo
-  - FEITO logomarca?? criar uma imagem.
-  - criar script do netbenas, do maven, e shell scripts
-  - documentar em código também
-  - cuidado com o nome floggy pois é superset de flog (fotolog), regras de firewalls.
-
+- diagramas da arquitetura
+- diagrama de classes e de sequência
+- diagrama do fluxo de execução do java, floggy, retroweaver???, retroguard, jminimizer, preverifier!!!
+- criar uma aplicação de exemplo
+- FEITO logomarca?? criar uma imagem.
+- criar script do netbenas, do maven, e shell scripts
+- documentar em código também
+- cuidado com o nome floggy pois é superset de flog (fotolog), regras de firewalls.
+- deixar mais claro para os usuários que o Floggy não usa reflection at runtime!
+- traduzir o digrama de execução do javac, floggy-weaver, preverifeir...
+- deixar claro nos datatypes que arrays de uma dimensão também são válidos
+- colocar as limitações do projeto
 - FEITO solicitar a liberação do javassist no repositório do maven2 para a versão 3.3  
 - verificar antes da adição dos métodos e campos se eles já não existem e dai gerar uma exception
 - formatar o código
@@ -32,6 +34,7 @@ Floggy
 - FEITO adicionar este arquivo ao floggy-site
 - translate this document
 - adicionar link para doações
+- adicionar link para o resultado dos testcases
 
 
 
