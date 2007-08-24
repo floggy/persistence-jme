@@ -16,10 +16,16 @@
 -->
 <faqs id="FAQ" title="Frequently Asked Questions">
  <part id="General">
-   <faq ig="why-floggy">
+   <faq id="why-floggy">
      <question>Why Floggy?</question>
      <answer>
        <p>The Floggy name was choosed by Priscila because she thought that it is pretty quilt.</p>
+     </answer>
+   </faq>
+   <faq id="floggy-license">
+     <question>Under which license is Floggy licensed?</question>
+     <answer>
+       <p>Floggy is licensed under the Apache License, Version 2.0 (http://www.apache.org/licenses/). So, you can use Floggy in open source and commercial applications.</p>
      </answer>
    </faq>
    <faq id="floggy-proxy">
