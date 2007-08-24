@@ -33,7 +33,21 @@
 				href="http://java.sun.com/javame/index.jsp" />
 			<item name="Maven 2" href="http://maven.apache.org/maven2/" />
 		</links>
-
+		<head>
+			<meta name="description" content="Floggy is a persistence framework for J2ME/MIDP applications. It is free and can be used in open source and commercial applications."/>
+			<meta name="abstract" content="Floggy is a persistence framework for J2ME/MIDP applications. It is free and can be used in open source and commercial applications."/>
+			<meta name="keywords" content="floggy, persistence, framework, j2me, midp, mobile, java, api"/>
+			<meta name="revisit-after" content="7 days"/>
+			<meta name="robot" content="index,follow"/>
+			<meta name="rating" content="general"/>
+			<meta name="distribution" content="global"/>
+			<meta name="language" content="en"/>
+			<script src="http://www.google-analytics.com/urchin.js" type="text/javascript"></script>
+			<script type="text/javascript">
+				_uacct = "UA-2479671-1";
+				urchinTracker();
+			</script>
+		</head>
 		<menu name="Floggy">
 			<item name="Introduction" href="index.html" />
 			<item name="Getting Started" href="getting-started.html" />
