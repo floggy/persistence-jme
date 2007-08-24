@@ -34,7 +34,7 @@ Floggy
 - FEITO adicionar este arquivo ao floggy-site
 - translate this document
 - adicionar link para doações
-- adicionar link para o resultado dos testcases
+- FEITO adicionar link para o resultado dos testcases
 
 
 
