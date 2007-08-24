@@ -68,7 +68,7 @@
 			<item name="Maven" href="configuration/maven.html" />
 		</menu>
 
-		<menu name="Modules">
+		<menu name="Subprojects">
 			<item name="Framework"
 				href="persistence-framework/index.html" collapse="true">
 				<item name="API"
@@ -88,6 +88,10 @@
 					<item name="1.0-SNAPSHOT"
 					href="modules/floggy-persistence-weaver/1.0-SNAPSHOT/floggy-persistence-weaver" />
 					</item-->
+			</item>
+			<item name="Test" href="underconstruction.html"
+				collapse="true">
+				<item name="Tests results" href="modules/floggy-persistence-test/1.0.1/floggy-persistence-test/surefire-report.html" />
 			</item>
 		</menu>
 
