@@ -15,8 +15,12 @@ Architecture
 
 	Floggy is composed by 2 modules: 
 	
-	* {{{./persistence-framework/index.html}Framework}}: It is responsible for supplying persistence methods such as saving, removing and finding objects through a small API (11k) that must be attached to your application.
+	* {{{./persistence-framework/index.html}Framework}}: Responsible for supplying persistence methods such as saving, removing and finding objects through a small API (11k) that must be attached to your application.
  
-	* {{{./persistence-weaver/index.html}Weaver}}: A tool responsible for generating and weaving bytecode into the persistable classes.
+	* {{{./persistence-weaver/index.html}Weaver}}: Responsible for analyzing, generating and weaving bytecode into the persistable classes.
 
- Before you start we strongly recommend the reading of the {{{./getting-started.html}getting started}} section. 
+ The following process describes how Floggy works:
+	
+[./images/persistence_process.jpg]
+
+ Before you start using Floggy, we strongly recommend the reading of the {{{./getting-started.html}getting started}} section. 
