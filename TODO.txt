@@ -6,16 +6,16 @@ Floggy
   
 - diagramas da arquitetura
 - diagrama de classes e de sequência
-- diagrama do fluxo de execução do java, floggy, retroweaver???, retroguard, jminimizer, preverifier!!!
+- FEITO diagrama do fluxo de execução do java, floggy, retroweaver???, retroguard, jminimizer, preverifier!!!
 - criar uma aplicação de exemplo
 - FEITO logomarca?? criar uma imagem.
-- criar script do netbenas, do maven, e shell scripts
+- FEITO criar script do netbenas, do maven, e shell scripts
 - documentar em código também
 - cuidado com o nome floggy pois é superset de flog (fotolog), regras de firewalls.
 - deixar mais claro para os usuários que o Floggy não usa reflection at runtime!
-- traduzir o digrama de execução do javac, floggy-weaver, preverifeir...
+- FEITO traduzir o digrama de execução do javac, floggy-weaver, preverifeir...
 - deixar claro nos datatypes que arrays de uma dimensão também são válidos
-- colocar as limitações do projeto
+- colocar as limitações do projeto (busca indexada, 
 - FEITO solicitar a liberação do javassist no repositório do maven2 para a versão 3.3  
 - verificar antes da adição dos métodos e campos se eles já não existem e dai gerar uma exception
 - formatar o código
@@ -35,6 +35,21 @@ Floggy
 - translate this document
 - adicionar link para doações
 - FEITO adicionar link para o resultado dos testcases
+- adicionar ao FAQ o erro com o CLDC1.0 e a classe NoClassDefFoundError uando usamos construçoes "Class temp= Floggy.class"
+- adiconar checagem das classes que implementam Persistable se estas contêm um construtor publico e sem parametros, se não tiver adicionar caso esteja configurado
+- criar um arquivo de configuração floggy.xml
+- postar notícias:
+	- FEITO www.javafree.org
+	- www.portaljava.com.br
+	- FEITO www.guj.com.br
+	- http://forum.java.sun.com/forum.jspa?forumID=76
+	- www.dfjug.com.br
+
+- publicar artigo:
+	- java magazine
+	- mundo java
+	- web mobile
+			
 
 
 
@@ -42,6 +57,7 @@ MODULO DE PERSISTÊNCIA
 - FEITO documentação da task do ant
 - arquitetura do sistema
 - exclusão em cascata (paleativo - chamar um método antes de deletar o Persistable, tipo: beforeDelete() throws Exception)
+- fazer busca indexada (consultar netomarin@gmail.com)
 - transação
 - criar uma maneira de migrar de versões dos RMSs, talvez criar uma aplicação para isso. Ou colocar no primeiro registro o layout dos dados armazenados no RMS
 - listar data types que podem ser persistiveis
