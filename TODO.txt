@@ -40,10 +40,12 @@ Floggy
 - criar um arquivo de configuração floggy.xml
 - postar notícias:
 	- FEITO www.javafree.org
-	- www.portaljava.com.br
+	- FEITO www.portaljava.com.br
 	- FEITO www.guj.com.br
 	- http://forum.java.sun.com/forum.jspa?forumID=76
 	- www.dfjug.com.br
+	- FEITO www.codeguru.com
+	- FEITO www.j2meforums.com
 
 - publicar artigo:
 	- java magazine
