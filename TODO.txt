@@ -42,10 +42,11 @@ Floggy
 	- FEITO www.javafree.org
 	- FEITO www.portaljava.com.br
 	- FEITO www.guj.com.br
-	- http://forum.java.sun.com/forum.jspa?forumID=76
-	- www.dfjug.com.br
-	- FEITO www.codeguru.com
-	- FEITO www.j2meforums.com
+	- FEITO http://forum.java.sun.com/forum.jspa?forumID=76
+	- FEITO www.dfjug.com.br
+	- FEITO http://www.codeguru.com/forum/showthread.php?t=432574
+	- FEITO http://www.j2meforums.com/forum/index.php?topic=16740.0
+	- FEITO http://www.javalobby.org/forums/forum.jspa?forumID=17
 
 - publicar artigo:
 	- java magazine
