@@ -68,7 +68,7 @@
 			<item name="Maven" href="configuration/maven.html" />
 		</menu>
 
-		<menu name="Subprojects">
+		<menu name="Modules">
 			<item name="Framework"
 				href="persistence-framework/index.html" collapse="true">
 				<item name="API"

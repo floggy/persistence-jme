@@ -27,8 +27,8 @@ Netbeans
  ~~ Step 2
  ~~====================================
 * <<{Step 2}: Editing your build.xml>>
- 
- Then, attach the following lines into the build.xml and change the value of the "floggy.path" property, pointing it to the directory where you have installed Floggy in your computer.
+
+ Then, attach the following lines into the build.xml and change the value of the "floggy.path" property, pointing it to the directory where you have installed Floggy in your computer. By default, the <<build.xml>> file is located under the project root directory. To find this file, use the <<Files>> window (in the latest Netbeans version you can open this window pressing Ctrl+2).
  
 +------------------------------------------+
     <!-- 
@@ -57,5 +57,9 @@ Netbeans
             output="${build.classes.dir}"/>
     </target>
 +------------------------------------------+
+
+ Once you have completed this step, you will have a screen like this:
+ 
+[../images/configuration/netbeans/build_xml.jpg]
 
  If you need, {{{../files/build.xml}here}} is an example of a build.xml file configured to use Floggy.

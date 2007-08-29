@@ -44,8 +44,18 @@ public class Person implements Persistable {
 	...
 }
 +-----------------------------+
+
+ The supported types are listed below: 
  
- Check {{{supportedtypes.html}here}} the list of types that Floggy is able to persist.
+*--*--*
+| Package | Classes |
+*--*--*
+| - | boolean, byte, char, double, float, int, long, short |
+*--*--*
+| java.lang | Boolean, Byte, Character, Double, Float, Integer, Long, Short, String |
+*--*--*
+| java.util | Date, Vector |
+*--*--*
 
 * PersistableManager
  
