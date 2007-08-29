@@ -48,6 +48,7 @@ Floggy
 	- FEITO http://www.j2meforums.com/forum/index.php?topic=16740.0
 	- FEITO http://www.javalobby.org/forums/forum.jspa?forumID=17
 	- FEITO http://saloon.javaranch.com/cgi-bin/ubb/ultimatebb.cgi?ubb=get_topic&f=41&t=004658
+	- FEITO http://forums.java.net/jive/thread.jspa?threadID=30247&tstart=0
 
 - publicar artigo:
 	- java magazine
