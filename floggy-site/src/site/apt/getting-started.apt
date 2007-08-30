@@ -45,7 +45,9 @@ public class Person implements Persistable {
 	...
 }
 
-class Phone implements Persistable {
+... 
+
+public class Phone implements Persistable {
 
 	private String number;
 	private String extension;
@@ -59,7 +61,9 @@ class Phone implements Persistable {
 }
 +-----------------------------+
 
-* Supported types 
+* Supported types and restrictions
+ 
+ <<Supported types>>
  
  * All primitive types: boolean, byte, char, double, float, int, long and short;
  
@@ -69,8 +73,19 @@ class Phone implements Persistable {
  
  * All objects which implements net.sourceforge.floggy.persistence.Persistable;
  
- * One-dimensional array of any supported type.
+ * One-dimensional array of any supported type like byte[], Integer[], Date[] or Persistable[].
  
+ * <<Coming soon>>: java.lang.StringBuffer, java.util.Hashtable, java.util.Stack and java.util.Calendar.
+
+ []
+ 
+ <<Restrictions>>
+ 
+ * Bidirectional relationships;
+ 
+ * n:n relationships.
+ 
+ []
  
 * PersistableManager
  
@@ -97,6 +112,7 @@ Person p = new Person();
 p.setName(...);
 p.setBirthday(...);
 p.setGender(...);
+p.setPhones(...);
 
 try {
 	// A new object ID is generated.
