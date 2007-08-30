@@ -32,6 +32,7 @@ public class Person implements Persistable {
  	private String name;
  	private Date birthday;
  	private char gender;
+	private Phone[] phones;
  	
  	// Transient fields aren't persisted 
  	private transient int age;
@@ -43,20 +44,34 @@ public class Person implements Persistable {
 	
 	...
 }
+
+class Phone implements Persistable {
+
+	private String number;
+	private String extension;
+	private int type; // Mobile, Home, Work, etc
+	
+	public Phone() {
+		// Do something ...
+	}
+	
+	...
+}
 +-----------------------------+
 
- The supported types are listed below: 
+* Supported types 
  
-*--*--*
-| Package | Classes |
-*--*--*
-| - | boolean, byte, char, double, float, int, long, short |
-*--*--*
-| java.lang | Boolean, Byte, Character, Double, Float, Integer, Long, Short, String |
-*--*--*
-| java.util | Date, Vector |
-*--*--*
-
+ * All primitive types: boolean, byte, char, double, float, int, long and short;
+ 
+ * Package java.lang: Boolean, Byte, Character, Double, Float, Integer, Long, Short, String;
+ 
+ * Package java.util: Date, Vector;
+ 
+ * All objects which implements net.sourceforge.floggy.persistence.Persistable;
+ 
+ * One-dimensional array of any supported type.
+ 
+ 
 * PersistableManager
  
  All operations, such as saving, loading, deleting and finding objects are made through a single class called {{{./modules/floggy-persistence-framework/apidocs/net/sourceforge/floggy/persistence/PersistableManager.html} <<net.sourceforge.floggy.persistence.PersistableManager>>}}. 
@@ -75,7 +90,7 @@ public class Person implements Persistable {
 
  * {{{#comparator} Using a comparator to sort the results of a search}}
 
-* {Saving} a new object
+** {Saving} a new object
  
 +------------------------------+
 Person p = new Person();
@@ -92,7 +107,7 @@ try {
 }
 +-----------------------------+
  
-* {Editing} and saving a previously saved object
+** {Editing} and saving a previously saved object
 	
 +------------------------------+
 Person person = new Person();
