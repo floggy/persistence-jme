@@ -70,7 +70,7 @@
 
 		<menu name="Modules">
 			<item name="Framework"
-				href="persistence-framework/index.html" collapse="true">
+				href="modules/floggy-persistence-framework/apidocs/index.html" collapse="true">
 				<item name="API"
 					href="modules/floggy-persistence-framework/apidocs/index.html" />
 				<!-- item name="Reports" href="modules/floggy-persistence-framework/project-info.html"/-->
@@ -78,7 +78,7 @@
 					<item name="1.0-SNAPSHOT" href="modules/floggy-persistence-framework/1.0-SNAPSHOT/floggy-persistence-framework"/>
 					</item-->
 			</item>
-			<item name="Weaver" href="persistence-weaver/index.html"
+			<item name="Weaver" href="datatypes.html"
 				collapse="true">
 				<item name="Datatypes &amp; Size" href="datatypes.html" />
 				<item name="Weaved methods"
@@ -89,7 +89,7 @@
 					href="modules/floggy-persistence-weaver/1.0-SNAPSHOT/floggy-persistence-weaver" />
 					</item-->
 			</item>
-			<item name="Test" href="underconstruction.html"
+			<item name="Test" href="modules/floggy-persistence-test/1.0.1/floggy-persistence-test/surefire-report.html"
 				collapse="true">
 				<item name="Tests results" href="modules/floggy-persistence-test/1.0.1/floggy-persistence-test/surefire-report.html" />
 			</item>
