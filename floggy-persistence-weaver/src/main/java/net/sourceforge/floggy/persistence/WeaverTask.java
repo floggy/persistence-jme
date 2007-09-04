@@ -17,6 +17,7 @@ package net.sourceforge.floggy.persistence;
 
 import java.io.File;
 
+import org.apache.commons.logging.LogFactory;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 import org.apache.tools.ant.types.Path;
@@ -32,13 +33,18 @@ public class WeaverTask extends Task {
 
 	protected boolean generateSource;
 
+	protected boolean addDefaultConstructor;
+
 	public void execute() throws BuildException {
+		AntLog.setTask(this);
+		LogFactory.getFactory().setAttribute("org.apache.commons.logging.Log", AntLog.class.getName());
 		Weaver compiler = new Weaver();
 		try {
 			compiler.setClasspath(classpath.list());
 			compiler.setInputFile(input);
 			compiler.setOutputFile(output);
 			compiler.setGenerateSource(generateSource);
+			compiler.setAddDefaultConstructor(addDefaultConstructor);
 			compiler.execute();
 		} catch (WeaverException e) {
 			throw new BuildException(e);
@@ -91,6 +97,10 @@ public class WeaverTask extends Task {
 
 	public void setOutput(File output) {
 		this.output = output;
+	}
+
+	public void setAddDefaultConstructor(boolean addDefaultConstructor) {
+		this.addDefaultConstructor = addDefaultConstructor;
 	}
 
 }
