@@ -17,10 +17,13 @@ package net.sourceforge.floggy.persistence.codegen;
 
 import javassist.CannotCompileException;
 import javassist.CtClass;
+import javassist.CtConstructor;
 import javassist.CtField;
+import javassist.CtNewConstructor;
 import javassist.CtNewMethod;
 import javassist.Modifier;
 import javassist.NotFoundException;
+import javassist.bytecode.AccessFlag;
 import net.sourceforge.floggy.persistence.ClassVerifier;
 import net.sourceforge.floggy.persistence.Weaver;
 import net.sourceforge.floggy.persistence.formatter.CodeFormatter;
@@ -30,7 +33,7 @@ import org.apache.commons.logging.LogFactory;
 
 /**
  * Class CodeGenerator
- * 
+ *
  * @author Thiago Rossato <thiagorossato@sourceforge.net>
  * @author Thiago Leão Moreira <thiagolm@sourceforge.net>
  */
@@ -45,34 +48,68 @@ public class CodeGenerator {
 
 	private boolean generateSource;
 
+	private boolean addDefaultConstructor;
+
 	private StringBuffer source;
 
 	/**
 	 * Creates a new code generator for the class.
-	 * 
+	 *
 	 * @param ctClass
 	 *            Class to be modified.
 	 */
 	public CodeGenerator(CtClass ctClass) {
-		this.ctClass = ctClass;
+		this(ctClass, false, true);
 	}
 
 	/**
 	 * Creates a new code generator for the class.
-	 * 
+	 *
 	 * @param ctClass
 	 *            Class to be modified.
 	 * @param generateSource
-	 *            indicate the generation or not os source code.
+	 *            indicate the generation or not of source code.
 	 */
 	public CodeGenerator(CtClass ctClass, boolean generateSource) {
+		this(ctClass, generateSource, true);
+	}
+
+	/**
+	 * Creates a new code generator for the class.
+	 *
+	 * @param ctClass
+	 *            Class to be modified.
+	 * @param generateSource
+	 *            indicate the generation or not of source code.
+	 * @param addDefaultConstructor
+	 *            indicate when the weaver will add a default constructor or generate a exception.
+	 */
+	public CodeGenerator(CtClass ctClass, boolean generateSource, boolean addDefaultConstructor) {
 		this.ctClass = ctClass;
 		this.generateSource = generateSource;
+		this.addDefaultConstructor = addDefaultConstructor;
+	}
+
+	private void generateDefaultConstructor() throws NotFoundException, CannotCompileException {
+		CtConstructor constructor= null;
+		try {
+			constructor = ctClass.getConstructor("()V");
+			if (AccessFlag.PUBLIC != constructor.getModifiers()) {
+				throw new CannotCompileException("You must provide a public default constructor to class: "+ctClass.getName());
+			}
+		} catch (NotFoundException e) {
+			if (addDefaultConstructor) {
+				constructor= CtNewConstructor.defaultConstructor(ctClass);
+				ctClass.addConstructor(constructor);
+			} else {
+				throw new CannotCompileException("You must provide a public default constructor to class: "+ctClass.getName());
+			}
+		}
 	}
 
 	/**
 	 * Generate all the necessary source code for this class.
-	 * 
+	 *
 	 * @throws NotFoundException
 	 * @throws CannotCompileException
 	 */
@@ -82,6 +119,9 @@ public class CodeGenerator {
 		}
 		// Implements interface
 		this.generatePersistableInterface();
+
+		// Constructor
+		this.generateDefaultConstructor();
 
 		// Attributes
 		this.generateIdField();
@@ -104,7 +144,7 @@ public class CodeGenerator {
 	}
 
 	/**
-	 * 
+	 *
 	 * @throws CannotCompileException
 	 */
 	private void generateIdField() throws CannotCompileException {
@@ -117,7 +157,7 @@ public class CodeGenerator {
 	}
 
 	/**
-	 * 
+	 *
 	 * @throws CannotCompileException
 	 */
 	private void generatePersistableMetadataField() throws CannotCompileException {
@@ -131,7 +171,7 @@ public class CodeGenerator {
 	}
 
 	/**
-	 * 
+	 *
 	 * @throws CannotCompileException
 	 */
 	private void generateGetPersistableMetadata() throws CannotCompileException {
@@ -148,7 +188,7 @@ public class CodeGenerator {
 	}
 
 	/**
-	 * 
+	 *
 	 * @throws CannotCompileException
 	 * @throws NotFoundException
 	 */
@@ -218,7 +258,7 @@ public class CodeGenerator {
 	}
 
 	/**
-	 * 
+	 *
 	 * @throws CannotCompileException
 	 */
 	private void generateLoadFromIdMethod() throws CannotCompileException {
@@ -247,7 +287,7 @@ public class CodeGenerator {
 	}
 
 	/**
-	 * 
+	 *
 	 * @throws CannotCompileException
 	 */
 	private void generateDeleteMethod() throws CannotCompileException {
@@ -285,7 +325,7 @@ public class CodeGenerator {
 	}
 
 	/**
-	 * 
+	 *
 	 * @throws CannotCompileException
 	 * @throws NotFoundException
 	 */

@@ -38,7 +38,7 @@ import org.apache.commons.logging.LogFactory;
  * Main compiler class!
  * 
  * @author Thiago Rossato <thiagorossato@users.sourceforge.net>
- * @author Thiago Le�o Moreira <thiagolm@users.sourceforge.net>
+ * @author Thiago Moreira <thiagolm@users.sourceforge.net>
  */
 public class Weaver {
 
@@ -53,6 +53,8 @@ public class Weaver {
     private OutputPool outputPool;
 
     private boolean generateSource = false;
+    
+    private boolean addDefaultConstructor= true;
 
     /**
          * Creates a new instance
@@ -128,7 +130,7 @@ public class Weaver {
 		LOG.info("Processing bytecode " + className + "!");
 
 		CodeGenerator codeGenerator = new CodeGenerator(ctClass,
-			generateSource);
+			generateSource, addDefaultConstructor);
 		codeGenerator.generateCode();
 		if (generateSource) {
 		    byte[] source = codeGenerator.getSource().getBytes();
@@ -246,5 +248,9 @@ public class Weaver {
     public void setGenerateSource(boolean generateSource) {
 	this.generateSource = generateSource;
     }
+
+	public void setAddDefaultConstructor(boolean addDefaultConstructor) {
+		this.addDefaultConstructor = addDefaultConstructor;
+	}
 
 }

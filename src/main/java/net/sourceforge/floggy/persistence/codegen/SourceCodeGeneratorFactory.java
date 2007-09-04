@@ -17,72 +17,80 @@ package net.sourceforge.floggy.persistence.codegen;
 
 import javassist.CtClass;
 import javassist.NotFoundException;
+import net.sourceforge.floggy.persistence.Persistable;
 
 public class SourceCodeGeneratorFactory {
 
-    private static char indexForIteration = 'a';
+	private static char indexForIteration = 'a';
 
-    public static SourceCodeGenerator getSourceCodeGenerator(String fieldName,
-	    CtClass classType) throws NotFoundException {
-	SourceCodeGenerator generator;
+	public static SourceCodeGenerator getSourceCodeGenerator(String fieldName,
+			CtClass classType) throws NotFoundException {
+		SourceCodeGenerator generator= null;
 
-	// Primitive types
-	generator = new PrimitiveTypeGenerator(fieldName, classType);
-	if (generator.isInstanceOf()) {
-	    return generator;
+		String className = classType.getName();
+
+		// Primitive types
+		if (classType.isPrimitive()) {
+			generator = new PrimitiveTypeGenerator(fieldName, classType);
+			// Wrapper classes
+		} else if (isWrapper(classType)) {
+			generator = new WrapperGenerator(fieldName, classType);
+			// String
+		} else if (className.equals("java.lang.String")) {
+			generator = new StringGenerator(fieldName, classType);
+			// Date
+		} else if (className.equals("java.util.Date")) {
+			generator = new DateGenerator(fieldName, classType);
+			// Vector
+		} else if (className.equals("java.util.Vector")) {
+			generator = new VectorGenerator(fieldName, classType);
+			((AttributeIterableGenerator) generator)
+					.setUpInterableVariable(getNextIndexForIteration());
+			// Array
+		} else if (classType.isArray()) {
+			generator = new ArrayGenerator(fieldName, classType);
+			((AttributeIterableGenerator) generator)
+					.setUpInterableVariable(getNextIndexForIteration());
+			// Persistable
+		} else if (isPersistable(classType)) {
+			generator = new PersistableGenerator(fieldName, classType);
+		}
+			
+
+		if (generator == null) {
+			throw new NotFoundException("The class " + className
+					+ " is not supported by Floggy!");
+		}
+		return generator;
 	}
 
-	// Wrapper classes
-	generator = new WrapperGenerator(fieldName, classType);
-	if (generator.isInstanceOf()) {
-	    return generator;
+	private static char getNextIndexForIteration() {
+		// melhorar isso pode haver uma cadeia de interações com mais de 26
+		// iteradores!!!
+		indexForIteration++;
+		if (indexForIteration == 'z') {
+			indexForIteration = 'a';
+		}
+		return indexForIteration;
 	}
 
-	// String
-	generator = new StringGenerator(fieldName, classType);
-	if (generator.isInstanceOf()) {
-	    return generator;
-	}
+	private static boolean isWrapper(CtClass classType) {
+		String name = classType.getName();
+		return name.equals(Boolean.class.getName())
+				|| name.equals(Byte.class.getName())
+				|| name.equals(Character.class.getName())
+				|| name.equals(Double.class.getName())
+				|| name.equals(Float.class.getName())
+				|| name.equals(Integer.class.getName())
+				|| name.equals(Long.class.getName())
+				|| name.equals(Short.class.getName());
 
-	// Date
-	generator = new DateGenerator(fieldName, classType);
-	if (generator.isInstanceOf()) {
-	    return generator;
 	}
-
-	// Persistable
-	generator = new PersistableGenerator(fieldName, classType);
-	if (generator.isInstanceOf()) {
-	    return generator;
+	
+	private static boolean isPersistable(CtClass classType) throws NotFoundException {
+		CtClass persistableClass = classType.getClassPool().get(
+				Persistable.class.getName());
+		return classType.subtypeOf(persistableClass);
 	}
-
-	// Array
-	generator = new ArrayGenerator(fieldName, classType);
-	if (generator.isInstanceOf()) {
-	    ((AttributeIterableGenerator) generator)
-		    .setUpInterableVariable(getNextIndexForIteration());
-	    return generator;
-	}
-
-	// Vector
-	generator = new VectorGenerator(fieldName, classType);
-	if (generator.isInstanceOf()) {
-	    ((AttributeIterableGenerator) generator)
-		    .setUpInterableVariable(getNextIndexForIteration());
-	    return generator;
-	}
-
-	return null;
-    }
-
-    private static char getNextIndexForIteration() {
-    	
-    	//melhorar isso pode haver uma cadeia de interações com mais de 26 iteradores!!!
-	indexForIteration++;
-	if (indexForIteration == 'z') {
-	    indexForIteration = 'a';
-	}
-	return indexForIteration;
-    }
 
 }

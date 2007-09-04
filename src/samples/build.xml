@@ -48,7 +48,7 @@
 	</target>
 
 	<target name="compile" description="Compile the code">
-		<taskdef name="floggy-persistence-weaver"
+		<taskdef name="floggy"
 			classname="net.sourceforge.floggy.persistence.WeaverTask"
 			classpathref="floggy.classpath" />
 		<mkdir dir="${classes}" />
@@ -60,9 +60,9 @@
 			<classpath refid="build.classpath" />
 			<bootclasspath refid="boot.classpath" />
 		</javac>
-		<floggy-persistence-weaver bootclasspathref="boot.classpath"
+		<floggy bootclasspathref="boot.classpath"
 			classpathref="build.classpath" input="${classes}"
-			output="${classes}" />
+			output="${classes}" generatesource="true" adddefaultconstructor="true"/>
 	</target>
 
 </project>
