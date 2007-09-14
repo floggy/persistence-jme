@@ -21,22 +21,23 @@ import org.microemu.RecordStoreManager;
 import org.microemu.util.MemoryRecordStoreManager;
 
 public class RMSMemoryEmulator implements MicroEmulator {
-	
-	private static RMSMemoryEmulator instance= new RMSMemoryEmulator();
+
+	private static RMSMemoryEmulator instance = new RMSMemoryEmulator();
+
 	public static RMSMemoryEmulator getInstance() {
 		return instance;
 	}
-	
-	private RecordStoreManager rsManager= new MemoryRecordStoreManager();
+
+	private RecordStoreManager rsManager = new MemoryRecordStoreManager();
 
 	private RMSMemoryEmulator() {
-		
+
 	}
 
 	public void destroyMIDletContext(MIDletContext midletContext) {
 
 	}
-	
+
 	public String getAppProperty(String key) {
 		return null;
 	}
