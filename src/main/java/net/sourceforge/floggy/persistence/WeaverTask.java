@@ -31,21 +31,21 @@ public class WeaverTask extends Task {
 
 	protected File output;
 
-	protected boolean generateSource;
+	protected boolean generateSource= false;
 
-	protected boolean addDefaultConstructor;
+	protected boolean addDefaultConstructor= true;
 
 	public void execute() throws BuildException {
 		AntLog.setTask(this);
 		LogFactory.getFactory().setAttribute("org.apache.commons.logging.Log", AntLog.class.getName());
-		Weaver compiler = new Weaver();
+		Weaver weaver = new Weaver();
 		try {
-			compiler.setClasspath(classpath.list());
-			compiler.setInputFile(input);
-			compiler.setOutputFile(output);
-			compiler.setGenerateSource(generateSource);
-			compiler.setAddDefaultConstructor(addDefaultConstructor);
-			compiler.execute();
+			weaver.setClasspath(classpath.list());
+			weaver.setInputFile(input);
+			weaver.setOutputFile(output);
+			weaver.setGenerateSource(generateSource);
+			weaver.setAddDefaultConstructor(addDefaultConstructor);
+			weaver.execute();
 		} catch (WeaverException e) {
 			throw new BuildException(e);
 		}
