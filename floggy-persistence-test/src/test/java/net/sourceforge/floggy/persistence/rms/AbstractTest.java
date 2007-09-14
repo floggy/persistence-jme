@@ -18,16 +18,12 @@ package net.sourceforge.floggy.persistence.rms;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
-import javax.microedition.rms.RecordStore;
-
 import junit.framework.TestCase;
 import net.sourceforge.floggy.persistence.Filter;
 import net.sourceforge.floggy.persistence.FloggyException;
 import net.sourceforge.floggy.persistence.ObjectSet;
 import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.PersistableManager;
-import net.sourceforge.floggy.persistence.PersistableMetadata;
-import net.sourceforge.floggy.persistence.internal.__Persistable;
 
 import org.microemu.MIDletBridge;
 
@@ -158,25 +154,18 @@ public abstract class AbstractTest extends TestCase {
 
 	public void testDeleteAll() throws Exception {
 		Persistable object = newInstance();
-		PersistableMetadata metadata = ((__Persistable) object)
-				.__getPersistableMetadata();
 		try {
-			// fechando e deletando o RecordStore
-			RecordStore rs = PersistableManager.getRecordStore(metadata);
-			PersistableManager.closeRecordStore(rs);
-			RecordStore.deleteRecordStore(metadata.getRecordStoreName());
+			manager.deleteAll(object.getClass());
+			assertEquals(0, manager.find(object.getClass(), null, null).size());
 
-			rs = PersistableManager.getRecordStore(metadata);
-			assertEquals(0, rs.getNumRecords());
 			manager.save(object);
 			// garantido que vai estar aberto
-			rs = PersistableManager.getRecordStore(metadata);
-			assertEquals(1, rs.getNumRecords());
+			assertEquals(1, manager.find(object.getClass(), null, null).size());
+			
 			manager.deleteAll(object.getClass());
-			rs = PersistableManager.getRecordStore(metadata);
-			assertEquals(0, rs.getNumRecords());
+			assertEquals(0, manager.find(object.getClass(), null, null).size());
+			
 		} catch (Exception e) {
-			e.printStackTrace();
 			fail(e.getMessage());
 		}
 	}
