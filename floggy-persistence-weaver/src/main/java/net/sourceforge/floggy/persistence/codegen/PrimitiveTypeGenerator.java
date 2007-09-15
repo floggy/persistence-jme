@@ -20,49 +20,49 @@ import javassist.NotFoundException;
 
 public class PrimitiveTypeGenerator extends SourceCodeGenerator {
 
-    public PrimitiveTypeGenerator(String fieldName, CtClass classType) {
-	super(fieldName, classType);
-    }
-
-    public void initLoadCode() throws NotFoundException {
-	addLoadCode("this." + fieldName + " = dis.read" + getType() + "();");
-    }
-
-    public void initSaveCode() throws NotFoundException {
-	addSaveCode("dos.write" + getType() + "(this." + fieldName + ");");
-    }
-
-    public boolean isInstanceOf() {
-	return classType.isPrimitive();
-    }
-
-    private String getType() throws NotFoundException {
-	if (classType == CtClass.booleanType) {
-	    return "Boolean";
-	}
-	if (classType == CtClass.byteType) {
-	    return "Byte";
-	}
-	if (classType == CtClass.charType) {
-	    return "Char";
-	}
-	if (classType == CtClass.doubleType) {
-	    return "Double";
-	}
-	if (classType == CtClass.floatType) {
-	    return "Float";
-	}
-	if (classType == CtClass.intType) {
-	    return "Int";
-	}
-	if (classType == CtClass.longType) {
-	    return "Long";
-	}
-	if (classType == CtClass.shortType) {
-	    return "Short";
+	public PrimitiveTypeGenerator(String fieldName, CtClass classType) {
+		super(fieldName, classType);
 	}
 
-	throw new NotFoundException("Type not found!");
-    }
+	public void initLoadCode() throws NotFoundException {
+		addLoadCode("this." + fieldName + " = dis.read"
+				+ PrimitiveTypeGenerator.getType(fieldType) + "();");
+	}
+
+	public void initSaveCode() throws NotFoundException {
+		addSaveCode("fos.write" + PrimitiveTypeGenerator.getType(fieldType)
+				+ "(this." + fieldName + ");");
+	}
+
+	public static String getType(CtClass fieldType) throws NotFoundException {
+		String name = fieldType.getName();
+		
+		if (name.equals(Boolean.class.getName()) || name.equals(boolean.class.getName())) {
+			return "Boolean";
+		}
+		if (name.equals(Byte.class.getName()) || name.equals(byte.class.getName())) {
+			return "Byte";
+		}
+		if (name.equals(Character.class.getName()) || name.equals(char.class.getName())) {
+			return "Char";
+		}
+		if (name.equals(Double.class.getName()) || name.equals(double.class.getName())) {
+			return "Double";
+		}
+		if (name.equals(Float.class.getName()) || name.equals(float.class.getName())) {
+			return "Float";
+		}
+		if (name.equals(Integer.class.getName()) || name.equals(int.class.getName())) {
+			return "Int";
+		}
+		if (name.equals(Long.class.getName()) || name.equals(long.class.getName())) {
+			return "Long";
+		}
+		if (name.equals(Short.class.getName()) || name.equals(short.class.getName())) {
+			return "Short";
+		}
+	
+		throw new NotFoundException("Type not found: "+name);
+	}
 
 }
