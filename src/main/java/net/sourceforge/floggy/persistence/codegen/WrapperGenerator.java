@@ -20,71 +20,20 @@ import javassist.NotFoundException;
 
 public class WrapperGenerator extends SourceCodeGenerator {
 
-    public WrapperGenerator(String fieldName, CtClass classType) {
-	super(fieldName, classType);
-    }
-
-    public void initLoadCode() throws NotFoundException {
-	addLoadCode("if(dis.readByte() == 0) {");
-	addLoadCode("this." + fieldName + " = new " + classType.getName()
-		+ "(dis.read" + getType() + "());");
-	addLoadCode("}");
-    }
-
-    public void initSaveCode() throws NotFoundException {
-	String type = getType();
-
-	addSaveCode("if(this." + fieldName + " == null) {");
-	addSaveCode("dos.writeByte(1);");
-	addSaveCode("}");
-	addSaveCode("else {");
-	addSaveCode("dos.writeByte(0);");
-	addSaveCode("dos.write" + type + "(this." + fieldName + "."
-		+ type.toLowerCase() + "Value());");
-	addSaveCode("}");
-    }
-
-    public boolean isInstanceOf() throws NotFoundException {
-	String name = classType.getName();
-	return name.equals(Boolean.class.getName())
-		|| name.equals(Byte.class.getName())
-		|| name.equals(Character.class.getName())
-		|| name.equals(Double.class.getName())
-		|| name.equals(Float.class.getName())
-		|| name.equals(Integer.class.getName())
-		|| name.equals(Long.class.getName())
-		|| name.equals(Short.class.getName());
-    }
-
-    private String getType() throws NotFoundException {
-	String name = classType.getName();
-
-	if (name.equals(Boolean.class.getName())) {
-	    return "Boolean";
-	}
-	if (name.equals(Byte.class.getName())) {
-	    return "Byte";
-	}
-	if (name.equals(Character.class.getName())) {
-	    return "Char";
-	}
-	if (name.equals(Double.class.getName())) {
-	    return "Double";
-	}
-	if (name.equals(Float.class.getName())) {
-	    return "Float";
-	}
-	if (name.equals(Integer.class.getName())) {
-	    return "Int";
-	}
-	if (name.equals(Long.class.getName())) {
-	    return "Long";
-	}
-	if (name.equals(Short.class.getName())) {
-	    return "Short";
+	public WrapperGenerator(String fieldName, CtClass fieldType) {
+		super(fieldName, fieldType);
 	}
 
-	throw new NotFoundException("Type not found!");
-    }
+	public void initLoadCode() throws NotFoundException {
+		addLoadCode("this."
+				+ fieldName
+				+ "= net.sourceforge.floggy.persistence.impl.SerializationHelper.read"
+				+ PrimitiveTypeGenerator.getType(fieldType) + "(dis);");
+	}
+
+	public void initSaveCode() throws NotFoundException {
+		addSaveCode("net.sourceforge.floggy.persistence.impl.SerializationHelper.write"
+				+ PrimitiveTypeGenerator.getType(fieldType) + "(fos, this." + fieldName + ");");
+	}
 
 }
