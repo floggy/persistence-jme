@@ -18,6 +18,7 @@ package net.sourceforge.floggy.persistence;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -42,215 +43,230 @@ import org.apache.commons.logging.LogFactory;
  */
 public class Weaver {
 
-    private static final Log LOG = LogFactory.getLog(Weaver.class);
-    public static final String PERSISTABLE_CLASSNAME= "net.sourceforge.floggy.persistence.Persistable";
-    public static final String __PERSISTABLE_CLASSNAME= "net.sourceforge.floggy.persistence.internal.__Persistable";
+	public static final String __PERSISTABLE_CLASSNAME = "net.sourceforge.floggy.persistence.impl.__Persistable";
+	private static final Log LOG = LogFactory.getLog(Weaver.class);
+	public static final String PERSISTABLE_CLASSNAME = "net.sourceforge.floggy.persistence.Persistable";
 
-    private ClassPool classpathPool;
+	private boolean addDefaultConstructor = true;
 
-    private InputPool inputPool;
+	private ClassPool classpathPool;
 
-    private OutputPool outputPool;
+	private boolean generateSource = false;
 
-    private boolean generateSource = false;
-    
-    private boolean addDefaultConstructor= true;
+	private InputPool inputPool;
 
-    /**
-         * Creates a new instance
-         * 
-         * @param args
-         */
-    public Weaver() {
-    	this(ClassPool.getDefault());
-    }
+	private OutputPool outputPool;
 
-    /**
-     * Creates a new instance
-     * 
-     * @param args
-     */
-    public Weaver(ClassPool classPool) {
+	/**
+	 * Creates a new instance
+	 * 
+	 * @param args
+	 */
+	public Weaver() {
+		this(ClassPool.getDefault());
+	}
+
+	/**
+	 * Creates a new instance
+	 * 
+	 * @param args
+	 */
+	public Weaver(ClassPool classPool) {
 		this.classpathPool = classPool;
-    }
+	}
 
+	private List buildClassTree(CtClass ctClass) throws NotFoundException {
+		final CtClass persistable = classpathPool
+				.get(Weaver.PERSISTABLE_CLASSNAME);
+		List list = new ArrayList();
+		CtClass superClass = ctClass;
+		String superName = ctClass.getName();
+		do {
+			list.add(superName);
+			superClass = superClass.getSuperclass();
+			superName = superClass.getName();
+		} while (!superName.equals("java.lang.Object")
+				&& superClass.subtypeOf(persistable));
+		return list;
+	}
 
-    /**
-         * Sets the classpath.
-         * 
-         */
-    public void setClasspath(String[] classpath) {
-	if (classpath != null && classpath.length > 0) {
-	    for (int i = classpath.length - 1; i >= 0; i--) {
+	private void embeddedUnderlineCoreClasses() throws IOException {
+		embeddedClass("/net/sourceforge/floggy/persistence/impl/FloggyOutputStream.class");
+		embeddedClass("/net/sourceforge/floggy/persistence/impl/ObjectComparator.class");
+		embeddedClass("/net/sourceforge/floggy/persistence/impl/ObjectFilter.class");
+		embeddedClass("/net/sourceforge/floggy/persistence/impl/ObjectSetImpl.class");
+		embeddedClass("/net/sourceforge/floggy/persistence/impl/__Persistable.class");
+		embeddedClass("/net/sourceforge/floggy/persistence/impl/PersistableManagerImpl.class");
+		embeddedClass("/net/sourceforge/floggy/persistence/impl/PersistableMetadata.class");
+		embeddedClass("/net/sourceforge/floggy/persistence/impl/SerializationHelper.class");
+	}
+
+	private void embeddedClass(String fileName) throws IOException {
+		URL fileURL = getClass().getResource(fileName);
+		fileName = fileName.replace('/', File.separatorChar);
+		outputPool.addFile(fileURL, fileName);
+		classpathPool.makeClass(fileURL.openStream());
+	}
+
+	public void execute() throws WeaverException {
+		long time = System.currentTimeMillis();
+		LOG.info("CLDC version: " + ((isCLDC10()) ? "1.0" : "1.1"));
 		try {
-		    this.classpathPool.insertClassPath(classpath[i]);
-		} catch (NotFoundException e) {
-		    // Ignore
-		}
-	    }
-	}
-    }
+			embeddedUnderlineCoreClasses();
+			List list = getClassThatImplementsPersistable();
+			int classCount = list.size();
+			LOG.info("Processing " + classCount + " bytecodes!");
+			for (int i = 0; i < classCount; i++) {
+				String className = (String) list.get(i);
 
-    /**
-         * Sets the input file.
-         * 
-         */
-    public void setInputFile(File inputFile) throws WeaverException {
-	this.inputPool = PoolFactory.createInputPool(inputFile);
+				CtClass ctClass = this.classpathPool.get(className);
 
-	try {
-	    this.classpathPool.insertClassPath(inputFile.getCanonicalPath());
-	} catch (NotFoundException e) {
-	    // Ignore
-	} catch (IOException e) {
-	    // Ignore
-	}
-    }
+				LOG.info("Processing bytecode " + className + "!");
 
-    /**
-         * Sets the output file.
-         * 
-         * @param outputFile
-         */
-    public void setOutputFile(File outputFile) throws WeaverException {
-	this.outputPool = PoolFactory.createOutputPool(outputFile);
-    }
+				CodeGenerator codeGenerator = new CodeGenerator(ctClass,
+						generateSource, addDefaultConstructor);
+				codeGenerator.generateCode();
+				if (generateSource) {
+					byte[] source = codeGenerator.getSource().getBytes();
+					String fileName = className
+							.replace('.', File.separatorChar)
+							+ ".txt";
+					outputPool.addResource(new ByteArrayInputStream(source),
+							fileName);
+				}
 
-    public void execute() throws WeaverException {
-	long time = System.currentTimeMillis();
-	try {
-	    List list = getClassThatImplementsPersistable();
-	    int classCount = list.size();
-	    LOG.info("Processing " + classCount + " bytecodes!");
-	    for (int i = 0; i < classCount; i++) {
-		String className = (String) list.get(i);
-
-		CtClass ctClass = this.classpathPool.get(className);
-
-		LOG.info("Processing bytecode " + className + "!");
-
-		CodeGenerator codeGenerator = new CodeGenerator(ctClass,
-			generateSource, addDefaultConstructor);
-		codeGenerator.generateCode();
-		if (generateSource) {
-		    byte[] source = codeGenerator.getSource().getBytes();
-		    String fileName = className
-			    .replace('.', File.separatorChar)
-			    + ".txt";
-		    outputPool.addResource(new ByteArrayInputStream(source),
-			    fileName);
+				// Adds modified class to output pool
+				this.outputPool.addClass(ctClass);
+				LOG.debug("Bytecode modified.");
+			}
+		} catch (Exception e) {
+			LOG.error(e.getMessage(), e);
+			throw new WeaverException(e.getMessage());
 		}
 
-		// Adds modified class to output pool
-		this.outputPool.addClass(ctClass);
-		LOG.debug("Bytecode modified.");
-	    }
-	    // copyEmbebbedDependencies();
-	} catch (Exception e) {
-	    LOG.error(e.getMessage(), e);
-	    throw new WeaverException(e.getMessage());
+		// Status
+		time = System.currentTimeMillis() - time;
+		LOG.info("Time elapsed: " + time + "ms");
 	}
 
-	// Status
-	time = System.currentTimeMillis() - time;
-	LOG.info("Time elapsed: " + time + "ms");
-    }
-
-    private List getClassThatImplementsPersistable() throws NotFoundException,
-	    IOException {
-	int classCount = this.inputPool.getFileCount();
-	LOG.info("Look up for classes that implements Persistable!");
-	List list = new LinkedList();
-	final CtClass persistable = classpathPool
-		.get(Weaver.PERSISTABLE_CLASSNAME);
-	final CtClass __persistable = classpathPool
-		.get(Weaver.__PERSISTABLE_CLASSNAME);
-	for (int i = 0; i < classCount; i++) {
-	    String fileName = this.inputPool.getFileName(i);
-	    String className = getClassName(fileName);
-	    // Adds non-class files to output pool
-	    if (className == null) {
-		this.outputPool.addFile(inputPool.getFileURL(i), fileName);
-		continue;
-	    }
-
-	    CtClass ctClass = this.classpathPool.get(className);
-	    // verifing if the bytecode are already processed.
-	    if (ctClass.subtypeOf(persistable)
-		    && !ctClass.subtypeOf(__persistable) && !ctClass.isInterface()) {
-		//LOG.info(className);
-		List tree = buildClassTree(ctClass);
-		Collections.reverse(tree);
-		for (int j = 0; j < tree.size(); j++) {
-		    Object object = tree.get(j);
-		    if (!list.contains(object)) {
-			list.add(object);
-		    }
+	/**
+	 * Returns the class name given a file name.
+	 * 
+	 * @param fileName
+	 * @return
+	 */
+	private String getClassName(String fileName) {
+		if (fileName.endsWith(".class")) {
+			String className = fileName.replace(File.separatorChar, '.');
+			return className.substring(0, className.length() - 6);
 		}
-	    } else {
-		LOG.debug("Bytecode NOT modified.");
-		// Adds non-persistable class to output pool
-		this.outputPool.addFile(inputPool.getFileURL(i), fileName);
-	    }
-	}
-	return list;
-    }
 
-    private List buildClassTree(CtClass ctClass) throws NotFoundException {
-	final CtClass persistable = classpathPool
-		.get(Weaver.PERSISTABLE_CLASSNAME);
-	List list = new ArrayList();
-	CtClass superClass = ctClass;
-	String superName = ctClass.getName();
-	do {
-	    list.add(superName);
-	    superClass = superClass.getSuperclass();
-	    superName = superClass.getName();
-	} while (!superName.equals("java.lang.Object")
-		&& superClass.subtypeOf(persistable));
-	return list;
-    }
-
-    // private boolean implementsPersistable(CtClass ctClass) throws
-    // NotFoundException {
-    // CtClass[] interfaces = ctClass.getInterfaces();
-    // if (interfaces != null) {
-    // for (int i = 0; i < interfaces.length; i++) {
-    // if (interfaces[i].getName().equals(
-    // "net.sourceforge.floggy.Persistable")) {
-    // return true;
-    // }
-    // }
-    // }
-    // return false;
-    // }
-
-    /**
-         * Returns the class name given a file name.
-         * 
-         * @param fileName
-         * @return
-         */
-    private static String getClassName(String fileName) {
-	if (fileName.endsWith(".class")) {
-	    String className = fileName.replace(File.separatorChar, '.');
-	    return className.substring(0, className.length() - 6);
+		// File name does not represents a class file.
+		return null;
 	}
 
-	// File name does not represents a class file.
-	return null;
-    }
+	private List getClassThatImplementsPersistable() throws NotFoundException,
+			IOException {
+		int classCount = this.inputPool.getFileCount();
+		LOG.info("Look up for classes that implements Persistable!");
+		List list = new LinkedList();
+		final CtClass persistable = classpathPool
+				.get(Weaver.PERSISTABLE_CLASSNAME);
+		final CtClass __persistable = classpathPool
+				.get(Weaver.__PERSISTABLE_CLASSNAME);
+		for (int i = 0; i < classCount; i++) {
+			String fileName = this.inputPool.getFileName(i);
+			String className = getClassName(fileName);
+			// Adds non-class files to output pool
+			if (className == null) {
+				this.outputPool.addFile(inputPool.getFileURL(i), fileName);
+				continue;
+			}
 
-    /**
-         * @param generateSource
-         *                the generateSource to set
-         */
-    public void setGenerateSource(boolean generateSource) {
-	this.generateSource = generateSource;
-    }
+			CtClass ctClass = this.classpathPool.get(className);
+			// verifing if the bytecode are already processed.
+			if (ctClass.subtypeOf(persistable)
+					&& !ctClass.subtypeOf(__persistable)
+					&& !ctClass.isInterface()) {
+				// LOG.info(className);
+				List tree = buildClassTree(ctClass);
+				Collections.reverse(tree);
+				for (int j = 0; j < tree.size(); j++) {
+					Object object = tree.get(j);
+					if (!list.contains(object)) {
+						list.add(object);
+					}
+				}
+			} else {
+				LOG.debug("Bytecode NOT modified.");
+				// Adds non-persistable class to output pool
+				this.outputPool.addFile(inputPool.getFileURL(i), fileName);
+			}
+		}
+		return list;
+	}
+
+	private boolean isCLDC10() {
+		try {
+			CtClass ctClass = classpathPool.get("java.io.DataInput");
+			ctClass.getMethod("readFloat", "()F");
+		} catch (NotFoundException nfex) {
+			return true;
+		}
+		return false;
+	}
 
 	public void setAddDefaultConstructor(boolean addDefaultConstructor) {
 		this.addDefaultConstructor = addDefaultConstructor;
+	}
+
+	/**
+	 * Sets the classpath.
+	 * 
+	 */
+	public void setClasspath(String[] classpath) {
+		if (classpath != null && classpath.length > 0) {
+			for (int i = classpath.length - 1; i >= 0; i--) {
+				try {
+					this.classpathPool.insertClassPath(classpath[i]);
+				} catch (NotFoundException e) {
+					// Ignore
+				}
+			}
+		}
+	}
+
+	/**
+	 * @param generateSource
+	 *            the generateSource to set
+	 */
+	public void setGenerateSource(boolean generateSource) {
+		this.generateSource = generateSource;
+	}
+
+	/**
+	 * Sets the input file.
+	 * 
+	 */
+	public void setInputFile(File inputFile) throws WeaverException {
+		this.inputPool = PoolFactory.createInputPool(inputFile);
+
+		try {
+			this.classpathPool.insertClassPath(inputFile.getCanonicalPath());
+		} catch (NotFoundException e) {
+			// Ignore
+		} catch (IOException e) {
+			// Ignore
+		}
+	}
+
+	/**
+	 * Sets the output file.
+	 * 
+	 * @param outputFile
+	 */
+	public void setOutputFile(File outputFile) throws WeaverException {
+		this.outputPool = PoolFactory.createOutputPool(outputFile);
 	}
 
 }
