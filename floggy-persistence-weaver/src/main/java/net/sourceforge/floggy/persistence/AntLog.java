@@ -21,6 +21,11 @@ import org.apache.tools.ant.Task;
 
 public class AntLog extends NoOpLog{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3923443304806683984L;
+	
 	private static Task task;
 	
 	public static void setTask(Task task) {
