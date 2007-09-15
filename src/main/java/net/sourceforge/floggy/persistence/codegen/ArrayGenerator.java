@@ -22,9 +22,11 @@ public class ArrayGenerator extends SourceCodeGenerator implements
 	AttributeIterableGenerator {
 
     private char indexForIteration;
+    private CtClass persistableType;
 
-    public ArrayGenerator(String fieldName, CtClass classType) {
-	super(fieldName, classType);
+    public ArrayGenerator(CtClass persistableType, String fieldName, CtClass classType) {
+    	super(fieldName, classType);
+    	this.persistableType= persistableType;
     }
 
     public void initLoadCode() throws NotFoundException {
@@ -33,12 +35,12 @@ public class ArrayGenerator extends SourceCodeGenerator implements
 	addLoadCode("if(dis.readByte() == 0) {");
 	addLoadCode("int count = dis.readInt();");
 	addLoadCode("this." + fieldName + " = new "
-		+ classType.getComponentType().getName() + "[count];");
+		+ fieldType.getComponentType().getName() + "[count];");
 	addLoadCode("for(int " + indexForIteration + " = 0; "
 		+ indexForIteration + " < count; " + indexForIteration
 		+ "++) {");
-	generator = SourceCodeGeneratorFactory.getSourceCodeGenerator(fieldName
-		+ "[" + indexForIteration + "]", classType.getComponentType());
+	generator = SourceCodeGeneratorFactory.getSourceCodeGenerator(persistableType, fieldName
+			+ "[" + indexForIteration + "]", fieldType.getComponentType());
 	addLoadCode(generator.getLoadCode());
 	addLoadCode("}");
 	addLoadCode("}");
@@ -51,24 +53,20 @@ public class ArrayGenerator extends SourceCodeGenerator implements
 	SourceCodeGenerator generator;
 
 	addSaveCode("if(" + "this." + fieldName + " == null) {");
-	addSaveCode("dos.writeByte(1);");
+	addSaveCode("fos.writeByte(1);");
 	addSaveCode("}");
 	addSaveCode("else {");
-	addSaveCode("dos.writeByte(0);");
+	addSaveCode("fos.writeByte(0);");
 	addSaveCode("int count = this." + fieldName + ".length;");
-	addSaveCode("dos.writeInt(count);");
+	addSaveCode("fos.writeInt(count);");
 	addSaveCode("for(int " + indexForIteration + " = 0; "
 		+ indexForIteration + " < count; " + indexForIteration
 		+ "++) {");
-	generator = SourceCodeGeneratorFactory.getSourceCodeGenerator(fieldName
-		+ "[" + indexForIteration + "]", classType.getComponentType());
+	generator = SourceCodeGeneratorFactory.getSourceCodeGenerator(persistableType, fieldName
+			+ "[" + indexForIteration + "]", fieldType.getComponentType());
 	addSaveCode(generator.getSaveCode());
 	addSaveCode("}");
 	addSaveCode("}");
-    }
-
-    public boolean isInstanceOf() {
-	return classType.isArray();
     }
 
     public void setUpInterableVariable(char indexForIteration) {
