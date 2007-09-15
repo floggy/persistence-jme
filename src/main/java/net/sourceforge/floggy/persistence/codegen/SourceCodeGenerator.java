@@ -22,15 +22,15 @@ public abstract class SourceCodeGenerator {
 
     protected String fieldName;
 
-    protected CtClass classType;
+    protected CtClass fieldType;
 
     private StringBuffer loadCode;
 
     private StringBuffer saveCode;
 
-    protected SourceCodeGenerator(String fieldName, CtClass classType) {
+    protected SourceCodeGenerator(String fieldName, CtClass fieldType) {
 	this.fieldName = fieldName;
-	this.classType = classType;
+	this.fieldType = fieldType;
 	this.loadCode = new StringBuffer();
 	this.saveCode = new StringBuffer();
     }
@@ -65,5 +65,4 @@ public abstract class SourceCodeGenerator {
 
     public abstract void initSaveCode() throws NotFoundException;
 
-    public abstract boolean isInstanceOf() throws NotFoundException;
 }
