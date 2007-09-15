@@ -71,7 +71,7 @@ public class ClassVerifier {
     }
 
     public boolean isModified() throws NotFoundException {
-	// Checks if the class implements net.sourceforge.floggy.persistence.internal.__Persistable
+	// Checks if the class implements net.sourceforge.floggy.persistence.impl.__Persistable
 	// interface.
 	CtClass[] interfaces = null;
 	try {
