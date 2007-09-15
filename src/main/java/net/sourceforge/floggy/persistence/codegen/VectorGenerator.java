@@ -94,8 +94,8 @@ public class VectorGenerator extends SourceCodeGenerator implements
 	addLoadCode("}");
 	addLoadCode("Class persistableClass = java.lang.Class.forName(className);");
 	addLoadCode("Object object = persistableClass.newInstance();");
-	addLoadCode("if(object instanceof net.sourceforge.floggy.persistence.internal.__Persistable) {");
-	addLoadCode("((net.sourceforge.floggy.persistence.internal.__Persistable) object).__load(dis.readInt());");
+	addLoadCode("if(object instanceof net.sourceforge.floggy.persistence.impl.__Persistable) {");
+	addLoadCode("((net.sourceforge.floggy.persistence.impl.__Persistable) object).__load(dis.readInt());");
 	addLoadCode("this." + fieldName + ".addElement(object);");
 	addLoadCode("}");
 	addLoadCode("}"); // else
@@ -105,66 +105,62 @@ public class VectorGenerator extends SourceCodeGenerator implements
 
     public void initSaveCode() throws NotFoundException {
 	addSaveCode("if(this." + fieldName + " == null) {");
-	addSaveCode("dos.writeByte(1);");
+	addSaveCode("fos.writeByte(1);");
 	addSaveCode("}");
 	addSaveCode("else {");
-	addSaveCode("dos.writeByte(0);");
+	addSaveCode("fos.writeByte(0);");
 	addSaveCode("int size = this." + fieldName + ".size();");
-	addSaveCode("dos.writeInt(size);");
+	addSaveCode("fos.writeInt(size);");
 	addSaveCode("for(int " + indexForIteration + " = 0; "
 		+ indexForIteration + " < size; " + indexForIteration + "++) {");
 	addSaveCode("Object object = this." + fieldName + ".elementAt("
 		+ indexForIteration + ");");
 	addSaveCode("if(object == null) {");
-	addSaveCode("dos.writeByte(1);");
+	addSaveCode("fos.writeByte(1);");
 	addSaveCode("continue;");
 	addSaveCode("}"); // if(object == null) {
-	addSaveCode("dos.writeByte(0);");
+	addSaveCode("fos.writeByte(0);");
 	addSaveCode("String className= object.getClass().getName();");
-	addSaveCode("dos.writeUTF(className);");
+	addSaveCode("fos.writeUTF(className);");
 	addSaveCode("if(object instanceof java.lang.Boolean) {");
-	addSaveCode("dos.writeBoolean(((java.lang.Boolean) object).booleanValue());");
+	addSaveCode("fos.writeBoolean(((java.lang.Boolean) object).booleanValue());");
 	addSaveCode("}");
 	addSaveCode("else if(object instanceof java.lang.Byte) {");
-	addSaveCode("dos.writeByte(((java.lang.Byte) object).byteValue());");
+	addSaveCode("fos.writeByte(((java.lang.Byte) object).byteValue());");
 	addSaveCode("}");
 	addSaveCode("else if(object instanceof java.lang.Character) {");
-	addSaveCode("dos.writeChar(((java.lang.Character) object).charValue());");
+	addSaveCode("fos.writeChar(((java.lang.Character) object).charValue());");
 	addSaveCode("}");
 	addSaveCode("else if(object instanceof java.lang.Double) {");
-	addSaveCode("dos.writeDouble(((java.lang.Double) object).doubleValue());");
+	addSaveCode("fos.writeDouble(((java.lang.Double) object).doubleValue());");
 	addSaveCode("}");
 	addSaveCode("else if(object instanceof java.lang.Float) {");
-	addSaveCode("dos.writeFloat(((java.lang.Float) object).floatValue());");
+	addSaveCode("fos.writeFloat(((java.lang.Float) object).floatValue());");
 	addSaveCode("}");
 	addSaveCode("else if(object instanceof java.lang.Integer) {");
-	addSaveCode("dos.writeInt(((java.lang.Integer) object).intValue());");
+	addSaveCode("fos.writeInt(((java.lang.Integer) object).intValue());");
 	addSaveCode("}");
 	addSaveCode("else if(object instanceof java.lang.Long) {");
-	addSaveCode("dos.writeLong(((java.lang.Long) object).longValue());");
+	addSaveCode("fos.writeLong(((java.lang.Long) object).longValue());");
 	addSaveCode("}");
 	addSaveCode("else if(object instanceof java.lang.Short) {");
-	addSaveCode("dos.writeShort(((java.lang.Short) object).shortValue());");
+	addSaveCode("fos.writeShort(((java.lang.Short) object).shortValue());");
 	addSaveCode("}");
 	addSaveCode("else if(object instanceof java.lang.String) {");
-	addSaveCode("dos.writeUTF(((java.lang.String) object));");
+	addSaveCode("fos.writeUTF(((java.lang.String) object));");
 	addSaveCode("}");
 	addSaveCode("else if(object instanceof java.util.Date) {");
-	addSaveCode("dos.writeLong(((java.util.Date) object).getTime());");
+	addSaveCode("fos.writeLong(((java.util.Date) object).getTime());");
 	addSaveCode("}");
-	addSaveCode("else if(object instanceof net.sourceforge.floggy.persistence.internal.__Persistable) {");
-	addSaveCode("int id = ((net.sourceforge.floggy.persistence.internal.__Persistable) object).__save();");
-	addSaveCode("dos.writeInt(id);");
+	addSaveCode("else if(object instanceof net.sourceforge.floggy.persistence.impl.__Persistable) {");
+	addSaveCode("int id = ((net.sourceforge.floggy.persistence.impl.__Persistable) object).__save();");
+	addSaveCode("fos.writeInt(id);");
 	addSaveCode("}");
 	addSaveCode("else {");
 	addSaveCode("throw new net.sourceforge.floggy.persistence.FloggyException(\"The class \"+className+\" doesn't is a persistable class!\");");
 	addSaveCode("}"); // else
 	addSaveCode("}"); // for
 	addSaveCode("}"); // else
-    }
-
-    public boolean isInstanceOf() throws NotFoundException {
-	return classType.getName().equals("java.util.Vector");
     }
 
     public void setUpInterableVariable(char indexForIteration) {

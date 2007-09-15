@@ -24,26 +24,15 @@ public class StringGenerator extends SourceCodeGenerator {
 	super(fieldName, classType);
     }
 
-    public void initLoadCode() throws NotFoundException {
-	addLoadCode("if(dis.readByte() == 0) {");
-	addLoadCode("this." + fieldName + " = dis.readUTF();");
-	addLoadCode("}");
-	addLoadCode("else {");
-	addLoadCode("this." + fieldName + " = null;");
-	addLoadCode("}");
-    }
+	public void initLoadCode() throws NotFoundException {
+		addLoadCode("this."
+				+ fieldName
+				+ "= net.sourceforge.floggy.persistence.impl.SerializationHelper.readString(dis);");
+	}
 
-    public void initSaveCode() throws NotFoundException {
-	addSaveCode("if(this." + fieldName + " == null) {");
-	addSaveCode("dos.writeByte(1);");
-	addSaveCode("}");
-	addSaveCode("else {");
-	addSaveCode("dos.writeByte(0);");
-	addSaveCode("dos.writeUTF(this." + fieldName + ");");
-	addSaveCode("}");
-    }
+	public void initSaveCode() throws NotFoundException {
+		addSaveCode("net.sourceforge.floggy.persistence.impl.SerializationHelper.writeString(fos, "
+				+ fieldName + ");");
+	}
 
-    public boolean isInstanceOf() throws NotFoundException {
-	return classType.getName().equals(String.class.getName());
-    }
 }
