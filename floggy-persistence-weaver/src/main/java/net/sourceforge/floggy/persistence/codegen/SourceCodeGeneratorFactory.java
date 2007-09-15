@@ -23,37 +23,37 @@ public class SourceCodeGeneratorFactory {
 
 	private static char indexForIteration = 'a';
 
-	public static SourceCodeGenerator getSourceCodeGenerator(String fieldName,
-			CtClass classType) throws NotFoundException {
+	public static SourceCodeGenerator getSourceCodeGenerator(CtClass persistableType,
+			String fieldName, CtClass fieldType) throws NotFoundException {
 		SourceCodeGenerator generator= null;
 
-		String className = classType.getName();
+		String className = fieldType.getName();
 
 		// Primitive types
-		if (classType.isPrimitive()) {
-			generator = new PrimitiveTypeGenerator(fieldName, classType);
+		if (fieldType.isPrimitive()) {
+			generator = new PrimitiveTypeGenerator(fieldName, fieldType);
 			// Wrapper classes
-		} else if (isWrapper(classType)) {
-			generator = new WrapperGenerator(fieldName, classType);
+		} else if (isWrapper(fieldType)) {
+			generator = new WrapperGenerator(fieldName, fieldType);
 			// String
 		} else if (className.equals("java.lang.String")) {
-			generator = new StringGenerator(fieldName, classType);
+			generator = new StringGenerator(fieldName, fieldType);
 			// Date
 		} else if (className.equals("java.util.Date")) {
-			generator = new DateGenerator(fieldName, classType);
+			generator = new DateGenerator(fieldName, fieldType);
 			// Vector
 		} else if (className.equals("java.util.Vector")) {
-			generator = new VectorGenerator(fieldName, classType);
+			generator = new VectorGenerator(fieldName, fieldType);
 			((AttributeIterableGenerator) generator)
 					.setUpInterableVariable(getNextIndexForIteration());
 			// Array
-		} else if (classType.isArray()) {
-			generator = new ArrayGenerator(fieldName, classType);
+		} else if (fieldType.isArray()) {
+			generator = new ArrayGenerator(persistableType, fieldName, fieldType);
 			((AttributeIterableGenerator) generator)
 					.setUpInterableVariable(getNextIndexForIteration());
 			// Persistable
-		} else if (isPersistable(classType)) {
-			generator = new PersistableGenerator(fieldName, classType);
+		} else if (isPersistable(fieldType)) {
+			generator = new PersistableGenerator(persistableType, fieldName, fieldType);
 		}
 			
 

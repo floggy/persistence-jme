@@ -17,18 +17,20 @@ package net.sourceforge.floggy.persistence.codegen;
 
 import javassist.CtClass;
 import javassist.NotFoundException;
-import net.sourceforge.floggy.persistence.Persistable;
 
 public class PersistableGenerator extends SourceCodeGenerator {
+	
+	private CtClass persistableType;
 
-    public PersistableGenerator(String fieldName, CtClass classType) {
-	super(fieldName, classType);
+    public PersistableGenerator(CtClass persistableType, String fieldName, CtClass fieldType) {
+    	super(fieldName, fieldType);
+    	this.persistableType=persistableType;
     }
 
     public void initLoadCode() throws NotFoundException {
 	addLoadCode("if(dis.readByte() == 0) {");
-	addLoadCode("net.sourceforge.floggy.persistence.internal.__Persistable someClass = new "
-		+ classType.getName() + "();");
+	addLoadCode("net.sourceforge.floggy.persistence.impl.__Persistable someClass = new "
+		+ fieldType.getName() + "();");
 	addLoadCode("someClass.__load(dis.readInt());");
 	addLoadCode("this." + fieldName + " = someClass;");
 	addLoadCode("}");
@@ -39,27 +41,16 @@ public class PersistableGenerator extends SourceCodeGenerator {
 
     public void initSaveCode() throws NotFoundException {
 	addSaveCode("if(this." + fieldName + " == null) {");
-	addSaveCode("dos.writeByte(1);");
+	addSaveCode("fos.writeByte(1);");
 	addSaveCode("}");
 	addSaveCode("else {");
-	addSaveCode("dos.writeByte(0);");
-	// NÃO OTIMIZADO
-	// addSaveCode("((net.sourceforge.floggy.persistence.internal.__Persistable) this." +
-	// fieldName
-	// + ").__save();");
-	// addSaveCode("dos.writeInt(((net.sourceforge.floggy.persistence.internal.__Persistable)
-	// this."
-	// + fieldName + ").__getId());");
-
-	// OTIMIZADO
-	addSaveCode("dos.writeInt(((net.sourceforge.floggy.persistence.internal.__Persistable) this."
-		+ fieldName + ").__save());");
+	addSaveCode("fos.writeByte(0);\n");
+	if (persistableType.equals(fieldType)) {
+		addSaveCode("fos.writeInt(((net.sourceforge.floggy.persistence.impl.__Persistable)" + fieldName + ").__save(rs));\n");
+	} else {
+		addSaveCode("fos.writeInt(((net.sourceforge.floggy.persistence.impl.__Persistable)" + fieldName + ").__save());\n");
+	}
 	addSaveCode("}");
     }
 
-    public boolean isInstanceOf() throws NotFoundException {
-	CtClass persistableClass = classType.getClassPool().get(
-		Persistable.class.getName());
-	return classType.subtypeOf(persistableClass);
-    }
 }
