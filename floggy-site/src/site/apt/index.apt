@@ -1,3 +1,17 @@
+ ------
+ Welcome to Floggy
+ ------
+ Thiago Rossato
+ ------
+ 18 September 2007
+ ------
+ 
+News
+
+	<<18-Sep-07:>> Check out the plans for the future releases in the {{{./roadmap.html}Road Map}} section.
+	
+	<<22-Aug-07:>> Floggy 1.0.1 released.
+
 Welcome to Floggy
 	
 	Floggy is a <<free object persistence framework>> for J2ME/MIDP applications. The main goal of this framework is to abstract the data persistence details from the developer, reducing the development and maintenance effort. How? Check the examples in the {{{getting-started.html#framework}Getting Started}} section.

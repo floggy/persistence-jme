@@ -15,62 +15,75 @@
   limitations under the License.
 -->
 <faqs id="FAQ" title="Frequently Asked Questions">
- <part id="General">
-   <faq id="why-floggy">
-     <question>Why Floggy?</question>
-     <answer>
-       <p>The Floggy name was choosed by Priscila because she thought that it is pretty quilt.</p>
-     </answer>
-   </faq>
-   <faq id="floggy-license">
-     <question>Under which license is Floggy licensed?</question>
-     <answer>
-       <p>Floggy is licensed under the Apache License, Version 2.0 (http://www.apache.org/licenses/). So, you can use Floggy in open source and commercial applications.</p>
-     </answer>
-   </faq>
-   <faq id="floggy-proxy">
-     <question>I'm not able to download the Floggy artifacts for Maven 2 (http://floggy.sourceforge.net/maven2) neither to connect to the Eclipse Update site (http://floggy.soourceforge.net/eclipse). What's happend?</question>
-     <answer><p>This could occur because the name floggy is a super set of flog, abbreviation of fotolog and some rules of proxies could denied the access to the resource. Check this with your network administrator.</p></answer>
- 	</faq>
- </part>
- <part id="Technical">
-   <faq id="static-field">
-     <question>Are <i>static</i> fields persisted?</question>
-     <answer>
-       <p>No. These fields belows to the class and not to a instance of the class.</p>
-     </answer>
-   </faq>
-   <faq id="transient-field">
-     <question>Are <i>transient</i> fields persisted?</question>
-     <answer>
-       <p>No. A <i>transient</i> field means that it must not be persisted. More information are available <a href="http://java.sun.com/docs/books/vmspec/2nd-edition/html/Concepts.doc.html#29882">here</a>.</p>
-     </answer>
-   </faq>
-   <faq id="supported-profiles">
-     <question>Which profiles are supported?</question>
-     <answer>
-       <p>MIDP (1.0, 2.0 and 2.1) is the only profile that we tested. We have plans to expand to a maximum number of profiles</p>
-     </answer>
-   </faq>
-   <faq id="supported-configurations">
-     <question>Which configurations are supported?</question>
-     <answer>
-       <p>CLDC (1.0 and 1.1) is the only configuration that we tested. We have planes to expand to a maximum number of configurations</p>
-     </answer>
-   </faq>
-   <faq id="bytecode-generated">
-     <question>How can I view the bytecode generated?</question>
-     <answer>
-       <p>You can view the bytecode generated using the <a href="http://java.sun.com/javase/6/docs/technotes/tools/windows/javap.html">javap</a> 
-       application or the <a href="http://www.ej-technologies.com/products/jclasslib/overview.html">jClasslib</a>. 
-       Alternative you can flag the weaver to generated the code. Look at the configuration  menu to do that.</p>
-     </answer>
-   </faq>
- </part>
- <part id="Developers">
-   <faq id="invalid-pom">
-     <question>I'm getting the follow warning when build the project floggy-persistence-weaver: [WARNING] POM for 'net.sourceforge.floggy:floggy-persistence-framework:pom:1.1-SNAPSHOT:compile' is invalid. It will be ignored for artifact resolution. What's happend?</question>
-     <answer><p>This could occur because the variable wtk.home was not defined neither passed as parameter to Maven 2. Use this command 'mvn wtk.home=c:\WTK2.5 package' to build successfully.</p></answer>
- 	</faq>
- </part>
+	<part id="General">
+		<title>General</title>
+		<faq id="why-floggy">
+			<question>
+				Why Floggy?
+			</question>
+			<answer>
+				<p>The project name has been choosed by <a href="./team.html#Priscila">Priscila</a>. She says that it is pretty quilt.</p>
+			</answer>
+		</faq>
+		<faq id="floggy-license">
+			<question>
+				Under which license is Floggy licensed?
+			</question>
+			<answer>
+				<p>Floggy is licensed under the Apache License, Version 2.0 (http://www.apache.org/licenses/). This license allows you to use Floggy in open source and commercial applications.</p>
+			</answer>
+		</faq>
+	</part>
+	<part id="Technical">
+		<title>Technical</title>
+		<faq id="static-field">
+			<question>
+				Are <i>static</i> fields persisted?
+			</question>
+			<answer>
+				<p>No. Static fields belongs to the class and not to an object instance.</p>
+			</answer>
+		</faq>
+		<faq id="transient-field">
+			<question>
+				Are <i>transient</i> fields persisted?
+			</question>
+			<answer>
+				<p>No. Check the concept of a transient field in this <a href="http://java.sun.com/docs/books/vmspec/2nd-edition/html/Concepts.doc.html#29882">document</a>.</p>
+			</answer>
+		</faq>
+		<faq id="supported-profiles">
+			<question>
+				Which profiles are supported?
+			</question>
+			<answer>
+				<p>Floggy has been sucessfuly tested with MIDP 1.0, 2.0 and 2.1. If you have tested Floggy with other profiles please send us an <a href="mailto:floggy-developers@lists.sourceforge.net">e-mail</a> and let us know.</p>
+			</answer>
+		</faq>
+		<faq id="supported-configurations">
+			<question>Which configurations are supported?</question>
+			<answer>
+				<p>Floggy has been sucessfuly tested with CLDC 1.0 and 1.1. If you have tested Floggy with other configurations please send us an <a href="mailto:floggy-developers@lists.sourceforge.net">e-mail</a> and let us know.</p>
+			</answer>
+		</faq>
+		<faq id="bytecode-generated">
+			<question>Can I view the generated bytecode?</question>
+			<answer>
+				<p>You can view the generated bytecode using <a href="http://java.sun.com/javase/6/docs/technotes/tools/windows/javap.html">javap</a> 
+		or the <a href="http://www.ej-technologies.com/products/jclasslib/overview.html">jClasslib</a>. 
+		Alternatively you can set the weaver to generate the source code.</p>
+			</answer>
+		</faq>
+		</part>
+		<part id="Developers">
+			<title>Developers</title>
+			<faq id="invalid-pom">
+			<question>
+				I'm getting the follow warning when building the project floggy-persistence-weaver: [WARNING] POM for 'net.sourceforge.floggy:floggy-persistence-framework:pom:1.1-SNAPSHOT:compile' is invalid. It will be ignored for artifact resolution. What's happend?
+			</question>
+			<answer>
+				<p>This could occur because the variable wtk.home was not defined neither passed as parameter to Maven 2. Use this command 'mvn wtk.home=c:\WTK2.5 package' to build successfully.</p>
+			</answer>
+		</faq>
+	</part>
 </faqs>
