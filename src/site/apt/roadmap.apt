@@ -14,7 +14,7 @@ Road map
 	
 	* Support for new types: java.lang.StringBuffer, java.util.Calendar, java.util.Hashtable, java.util.Stack and java.util.Timezone;
 	
-	* A way to delete all objects from a given class with only method: PersistableManager.deleteAll(...)
+	* A way to delete all objects from a given class using a single method: PersistableManager.deleteAll(...)
 	
 	* Ability to persist non-static final fields;
 	
