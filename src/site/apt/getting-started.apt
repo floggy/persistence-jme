@@ -27,7 +27,7 @@ Using the {framework}
 
  It is really simple! All you have to do is to implement the empty interface {{{./modules/floggy-persistence-framework/apidocs/net/sourceforge/floggy/persistence/Persistable.html}<<net.sourceforge.floggy.persistence.Persistable>>}} or extend a class that implements it. 
  
- <<IMPORTANT>>: All concrete classes which implement this interface must have an empty constructor.
+ <<IMPORTANT>>: All concrete classes which implement this interface must have a <<public default constructor>>.
  
 +------------------------------+
 import net.sourceforge.floggy.persistence.Persistable;
@@ -45,7 +45,7 @@ public class Person implements Persistable {
  	// Transient fields aren't persisted 
  	private transient int age;
 	
-	// Each persistable class must have an empty constructor.
+	// Each persistable class must have a public default constructor.
 	public Person() {
 		// Do something ...
 	}
