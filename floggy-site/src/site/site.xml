@@ -106,5 +106,11 @@
 			<!--item name="Brazil" href="underconstruction.html" /-->
 		</menu>
 		<!--menu ref="reports"/-->
+
 	</body>
+	<poweredBy>
+		<logo name="Java.net" href="http://www.java.net/" img="http://today.java.net/images/javanet_button_90.gif"/>
+		<logo name="Sourceforge.net" href="http://sourceforge.net/" img="http://sflogo.sourceforge.net/sflogo.php?group_id&#61;139426&amp;type&#61;1"/>
+		<logo name="Maven" href="http://maven.apache.org/" img="http://maven.apache.org/images/logos/maven-button-3.png"/>
+	</poweredBy>
 </project>
