@@ -36,7 +36,7 @@
 		<head>
 			<meta name="description" content="Floggy is a persistence framework for J2ME/MIDP applications. It is free and can be used in open source and commercial applications."/>
 			<meta name="abstract" content="Floggy is a persistence framework for J2ME/MIDP applications. It is free and can be used in open source and commercial applications."/>
-			<meta name="keywords" content="floggy, persistence, framework, j2me, midp, mobile, java, api"/>
+			<meta name="keywords" content="j2me, framework, persistence, midp, midlet, mobile, api, library, jme, database, floggy"/>
 			<meta name="revisit-after" content="7 days"/>
 			<meta name="robot" content="index,follow"/>
 			<meta name="rating" content="general"/>
