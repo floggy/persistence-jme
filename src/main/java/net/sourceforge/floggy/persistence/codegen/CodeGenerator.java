@@ -294,6 +294,7 @@ public class CodeGenerator {
 		buffer.append("try {\n");
 		buffer.append("rs.deleteRecord(this.__id);\n");
 		buffer.append("} finally {\n");
+		buffer.append("this.__id = -1;\n");
 		buffer.append("net.sourceforge.floggy.persistence.impl.PersistableManagerImpl.closeRecordStore(rs);\n");
 		buffer.append("}\n");
 
