@@ -38,6 +38,7 @@ Floggy
 - adicionar ao FAQ o erro com o CLDC1.0 e a classe NoClassDefFoundError uando usamos construçoes "Class temp= Floggy.class"
 - adicionar ao FAQ o erro  java.lang.IllegalArgumentException: hello.Usuario is not a valid persistable class. Check the weaver execution! e sua solução mal configuração do weaver
 - adiconar checagem das classes que implementam Persistable se estas contêm um construtor publico e sem parametros, se não tiver adicionar caso esteja configurado
+- possibilitar abrir rMS de outros midlets suites
 - responder a pergunta e criar uma FAQ por versão??: http://www.javalobby.org/forums/thread.jspa?threadID=100688
 - fazer testcase para variáveis final
 - criar um arquivo de configuração floggy.xml
