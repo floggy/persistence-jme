@@ -112,14 +112,14 @@ public class Main {
 			outputFile = inputFile;
 		}
 
-		Weaver compiler = new Weaver();
+		Weaver weaver = new Weaver();
 
 		try {
-			compiler.setClasspath(classpath);
-			compiler.setOutputFile(outputFile);
-			compiler.setInputFile(inputFile);
-			compiler.setGenerateSource(generateSource);
-			compiler.execute();
+			weaver.setClasspath(classpath);
+			weaver.setOutputFile(outputFile);
+			weaver.setInputFile(inputFile);
+			//compiler.setGenerateSource(generateSource);
+			weaver.execute();
 		} catch (WeaverException e) {
 			e.printStackTrace();
 			System.out.println(e.getMessage());
@@ -131,7 +131,7 @@ public class Main {
 	 */
 	private static final void usage() {
 		System.out.println("Usage:");
-		System.out.println("java " + Weaver.class.getName()
+		System.out.println("java " + Main.class.getName()
 				+ " [-options] jarfile | zipfile | directory");
 		System.out.println();
 		System.out.println("Where options are:");
