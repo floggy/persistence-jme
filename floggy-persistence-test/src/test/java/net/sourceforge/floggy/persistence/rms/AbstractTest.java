@@ -30,6 +30,11 @@ import org.microemu.MIDletBridge;
 public abstract class AbstractTest extends TestCase {
 
 	protected PersistableManager manager;
+	
+	public AbstractTest() {
+		MIDletBridge.setMicroEmulator(RMSMemoryEmulator.getInstance());
+		manager = PersistableManager.getInstance();
+	}
 
 	protected void equals(Object o1, Object o2) {
 		if (o1 != null && o2.getClass().isArray()) {
@@ -85,36 +90,35 @@ public abstract class AbstractTest extends TestCase {
 				} catch (Exception e) {
 					throw new RuntimeException(e.getMessage());
 				}
-				if (temp != null && temp.getClass().isArray()) {
-					Class clazz = temp.getClass().getComponentType();
-					if (clazz == short.class) {
-						return Arrays.equals((short[]) temp, (short[]) array);
-					} else if (clazz == boolean.class) {
-						return Arrays.equals((boolean[]) temp,
-								(boolean[]) array);
-					} else if (clazz == byte.class) {
-						return Arrays.equals((byte[]) temp, (byte[]) array);
-					} else if (clazz == char.class) {
-						return Arrays.equals((char[]) temp, (char[]) array);
-					} else if (clazz == double.class) {
-						return Arrays.equals((double[]) temp, (double[]) array);
-					} else if (clazz == int.class) {
-						return Arrays.equals((int[]) temp, (int[]) array);
-					} else if (clazz == float.class) {
-						return Arrays.equals((float[]) temp, (float[]) array);
-					} else if (clazz == long.class) {
-						return Arrays.equals((long[]) temp, (long[]) array);
-					} else {
-						return Arrays.equals((Object[]) temp, (Object[]) array);
-					}
-				} else {
-					if (temp == null) {
-						return temp == array;
+				if (temp != null) {
+					if (temp.getClass().isArray()) {
+						Class clazz = temp.getClass().getComponentType();
+						if (clazz == short.class) {
+							return Arrays.equals((short[]) temp, (short[]) array);
+						} else if (clazz == boolean.class) {
+							return Arrays.equals((boolean[]) temp,
+									(boolean[]) array);
+						} else if (clazz == byte.class) {
+							return Arrays.equals((byte[]) temp, (byte[]) array);
+						} else if (clazz == char.class) {
+							return Arrays.equals((char[]) temp, (char[]) array);
+						} else if (clazz == double.class) {
+							return Arrays.equals((double[]) temp, (double[]) array);
+						} else if (clazz == int.class) {
+							return Arrays.equals((int[]) temp, (int[]) array);
+						} else if (clazz == float.class) {
+							return Arrays.equals((float[]) temp, (float[]) array);
+						} else if (clazz == long.class) {
+							return Arrays.equals((long[]) temp, (long[]) array);
+						} else {
+							return Arrays.equals((Object[]) temp, (Object[]) array);
+						}
 					} else {
 						return temp.equals(array);
 					}
+				} else 
+					return temp == array;
 				}
-			}
 		};
 	}
 
@@ -126,12 +130,6 @@ public abstract class AbstractTest extends TestCase {
 	}
 
 	public abstract Persistable newInstance();
-
-	protected void setUp() throws Exception {
-		super.setUp();
-		MIDletBridge.setMicroEmulator(RMSMemoryEmulator.getInstance());
-		manager = PersistableManager.getInstance();
-	}
 
 	protected void setX(Object object, Object param) throws Exception {
 		Method method = object.getClass().getMethod("setX",
@@ -185,7 +183,6 @@ public abstract class AbstractTest extends TestCase {
 			manager.delete(instance);
 			assertTrue("Nothing happend because nothing was saved!", true);
 		} catch (Exception e) {
-			e.printStackTrace();
 			fail("No exception should be throwed!");
 		}
 	}
@@ -259,5 +256,5 @@ public abstract class AbstractTest extends TestCase {
 			assertEquals(e.getClass(), IllegalArgumentException.class);
 		}
 	}
-
+	
 }
