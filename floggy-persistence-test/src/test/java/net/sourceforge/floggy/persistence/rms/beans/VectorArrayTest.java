@@ -24,7 +24,7 @@ import net.sourceforge.floggy.persistence.rms.AbstractTest;
 public class VectorArrayTest extends AbstractTest {
 
 	public Object getValueForSetMethod() {
-		return new Vector[] { new Vector(), null, VectorTest.vector };
+		return new Vector[] { new Vector(), null, (Vector)new VectorTest().getValueForSetMethod()};
 	}
 
 	public Persistable newInstance() {
