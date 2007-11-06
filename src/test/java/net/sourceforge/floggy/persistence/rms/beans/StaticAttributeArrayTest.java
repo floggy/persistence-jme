@@ -15,6 +15,8 @@
  */
 package net.sourceforge.floggy.persistence.rms.beans;
 
+import net.sourceforge.floggy.persistence.Filter;
+import net.sourceforge.floggy.persistence.ObjectSet;
 import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.beans.FloggyStaticAttributeArray;
 import net.sourceforge.floggy.persistence.rms.AbstractTest;
@@ -31,6 +33,23 @@ public class StaticAttributeArrayTest extends AbstractTest {
 
 	protected void tearDown() throws Exception {
 		FloggyStaticAttributeArray.x = null;
+	}
+	
+	public Filter getFilter() {
+		return new Filter() {
+			public boolean matches(Persistable o) {
+				return false;
+			}
+		};
+	}
+	
+	public void testFind() throws Exception {
+		Persistable object = newInstance();
+		setX(object, getValueForSetMethod());
+		manager.save(object);
+		ObjectSet set = manager.find(object.getClass(), getFilter(), null);
+		assertEquals(0, set.size());
+		manager.delete(object);
 	}
 
 	public void testNotNullAttribute() throws Exception {

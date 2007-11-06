@@ -26,9 +26,9 @@ import net.sourceforge.floggy.persistence.rms.AbstractTest;
 
 public class VectorTest extends AbstractTest {
 
-	static final Vector vector = new Vector();
+	private Vector vector = new Vector();
 
-	static {
+	public VectorTest() {
 		vector.add("floggy-framework");
 		vector.add(new Boolean(true));
 		vector.add(new Byte((byte) 34));
