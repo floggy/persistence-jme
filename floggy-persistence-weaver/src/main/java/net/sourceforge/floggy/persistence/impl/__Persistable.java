@@ -15,14 +15,13 @@
  */
 package net.sourceforge.floggy.persistence.impl;
 
-import javax.microedition.rms.RecordStore;
-
 import net.sourceforge.floggy.persistence.Persistable;
 
 /**
  * An internal <code>interface</code> that holds all methods used by the
  * persistence module. All classes identified as <b>persistable</b> ({@link Persistable})
- * will be modified at compilation time and they will automatically implement all methods of this <code>interface</code>.
+ * will be modified at compilation time and they will automatically implement
+ * all methods of this <code>interface</code>.
  * 
  * @since 1.0
  * @see Persistable
@@ -31,17 +30,11 @@ public interface __Persistable extends Persistable {
 
 	public int __getId();
 
-	public void __load(int id) throws Exception;
+	public void __setId(int id);
 
 	public void __deserialize(byte[] buffer) throws Exception;
 
-	public int __save() throws Exception;
-
-	public int __save(RecordStore rs) throws Exception;
-
-	public byte[] __serialize(RecordStore rs) throws Exception;
-
-	public void __delete() throws Exception;
+	public byte[] __serialize() throws Exception;
 
 	public PersistableMetadata __getPersistableMetadata();
 
