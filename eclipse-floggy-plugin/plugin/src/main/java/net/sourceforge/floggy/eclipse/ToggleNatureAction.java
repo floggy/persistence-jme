@@ -18,7 +18,6 @@ package net.sourceforge.floggy.eclipse;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Enumeration;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -28,7 +27,6 @@ import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
@@ -36,88 +34,44 @@ import org.eclipse.jdt.core.IClasspathAttribute;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.internal.core.builder.JavaBuilder;
 import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.ui.IObjectActionDelegate;
-import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.console.ConsolePlugin;
 import org.osgi.framework.Bundle;
 
-public class ToggleNatureAction implements IObjectActionDelegate {
+public class ToggleNatureAction extends AbstractFloggyAction {
 
-	private ISelection selection;
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
-	 */
-	public void run(IAction action) {
-		IProject project = getProject(action);
-		if (project != null) {
-			toggleNature(project, action);
+	private String getVersion(String path) {
+		String version = null;
+		int endIndex = path.lastIndexOf(".jar");
+		int startIndex = path.indexOf("work-") + 5;
+		if (startIndex != 4 && endIndex != -1 && startIndex < endIndex) {
+			version = path.substring(startIndex, endIndex);
 		}
+		return version;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction,
-	 *      org.eclipse.jface.viewers.ISelection)
-	 */
-	public void selectionChanged(IAction action, ISelection selection) {
-		this.selection = selection;
-		IProject project = getProject(action);
-		try {
-			if (project != null) {
-				if (project.hasNature(JavaCore.NATURE_ID)) {
-					action.setEnabled(true);
-					if (project.hasNature(FloggyNature.NATURE_ID)) {
-						// setting the new label
-						action.setText("Remove Floggy Nature");
-					} else {
-						action.setText("Add Floggy Nature");
-					}
+	private void reorderCommands(IProject project) throws CoreException {
+		IProjectDescription description = project.getDescription();
+		ICommand[] commands = description.getBuildSpec();
+		ICommand[] newOrder = new ICommand[commands.length];
+		int floggyIndex = -1;
+		for (int i = 0; i < commands.length; i++) {
+			if (commands[i].getBuilderName().equals(JavaCore.BUILDER_ID)) {
+				newOrder[i] = commands[i];
+				floggyIndex = i + 1;
+			} else if (commands[i].getBuilderName().equals(
+					FloggyBuilder.BUILDER_ID)) {
+				newOrder[floggyIndex] = commands[i];
+			} else {
+				if (floggyIndex != -1) {
+					newOrder[i + 1] = commands[i];
 				} else {
-					action.setEnabled(false);
-				}
-			}
-		} catch (CoreException e) {
-			IStatus status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1,
-					e.getMessage(), e);
-			ConsolePlugin.log(status);
-		}
-	}
-
-	/*
-	 * 
-	 * 
-	 * @see org.eclipse.ui.IObjectActionDelegate#setActivePart(org.eclipse.jface.action.IAction,
-	 *      org.eclipse.ui.IWorkbenchPart)
-	 */
-	public void setActivePart(IAction action, IWorkbenchPart targetPart) {
-	}
-
-	private IProject getProject(IAction action) {
-		IProject project = null;
-		if (selection instanceof IStructuredSelection) {
-			for (Iterator it = ((IStructuredSelection) selection).iterator(); it
-					.hasNext();) {
-				Object element = it.next();
-				if (element instanceof IProject) {
-					project = (IProject) element;
-				} else if (element instanceof IAdaptable) {
-					project = (IProject) ((IAdaptable) element)
-							.getAdapter(IProject.class);
-				}
-				if (project != null) {
-					break;
+					newOrder[i] = commands[i];
 				}
 			}
 		}
-		return project;
+		description.setBuildSpec(newOrder);
+		project.setDescription(description, null);
 	}
 
 	/**
@@ -127,7 +81,7 @@ public class ToggleNatureAction implements IObjectActionDelegate {
 	 *            to have sample nature added or removed
 	 * @param action
 	 */
-	private void toggleNature(IProject project, IAction action) {
+	public void run(IProject project, IAction action) {
 		try {
 			IProjectDescription description = project.getDescription();
 			String[] natures = description.getNatureIds();
@@ -142,13 +96,11 @@ public class ToggleNatureAction implements IObjectActionDelegate {
 
 					// verifing the synchronization
 					if (!project.isSynchronized(IResource.DEPTH_INFINITE)) {
-						project.refreshLocal(IResource.DEPTH_INFINITE, null);
+						// project.refreshLocal(IResource.DEPTH_INFINITE, null);
 					}
 
 					description.setNatureIds(newNatures);
 					project.setDescription(description, null);
-					// setting the new label
-					action.setText("Add Floggy Nature");
 					return;
 				}
 			}
@@ -160,14 +112,11 @@ public class ToggleNatureAction implements IObjectActionDelegate {
 			description.setNatureIds(newNatures);
 			project.setDescription(description, null);
 
-			
-			
-			// setting the new label
-			action.setText("Remove Floggy Nature");
-			
 			reorderCommands(project);
-			
+
 			updateClasspath(project);
+
+			setDefaultPersistentProperties(project);
 
 		} catch (Exception e) {
 			IStatus status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1,
@@ -175,39 +124,25 @@ public class ToggleNatureAction implements IObjectActionDelegate {
 			ConsolePlugin.log(status);
 		}
 	}
-	private void reorderCommands(IProject project) throws CoreException {
-		IProjectDescription description= project.getDescription();
-		ICommand[] commands= description.getBuildSpec();
-		ICommand[] newOrder= new ICommand[commands.length];
-		int floggyIndex= -1;
-		for (int i = 0; i < commands.length; i++) {
-			if (commands[i].getBuilderName().equals(JavaCore.BUILDER_ID)) {
-				newOrder[i]= commands[i];
-				floggyIndex= i+1;
-			} else if (commands[i].getBuilderName().equals(FloggyBuilder.BUILDER_ID)){
-				newOrder[floggyIndex]= commands[i];
-			} else {
-				if (floggyIndex != -1) {
-					newOrder[i+1]= commands[i];
-				} else {
-					newOrder[i]= commands[i];
-				}
-			}
-		}
-		description.setBuildSpec(newOrder);
-		project.setDescription(description, null);
+
+	private void setDefaultPersistentProperties(IProject project)
+			throws CoreException {
+		project.setPersistentProperty(SetGenerateSourceAction.PROPERTY_NAME,
+				String.valueOf(false));
+		project.setPersistentProperty(
+				SetAddDefaultConstructorAction.PROPERTY_NAME, String
+						.valueOf(true));
 	}
-	
-	private void updateClasspath(IProject project) throws Exception{
+
+	private void updateClasspath(IProject project) throws Exception {
 		Bundle bundle = Activator.getDefault().getBundle();
 		IJavaProject javaProject = JavaCore.create(project);
 		List rawClasspath = new LinkedList(Arrays.asList(javaProject
 				.getRawClasspath()));
-		
+
 		boolean contains = false;
 		for (int i = 0; i < rawClasspath.size(); i++) {
-			IClasspathEntry classpath = (IClasspathEntry) rawClasspath
-					.get(i);
+			IClasspathEntry classpath = (IClasspathEntry) rawClasspath.get(i);
 			if (classpath.getPath().toOSString().contains(
 					"floggy-persistence-framework")) {
 				contains = true;
@@ -220,14 +155,19 @@ public class ToggleNatureAction implements IObjectActionDelegate {
 				URL url = (URL) e.nextElement();
 				String path = FileLocator.toFileURL(url).getPath();
 				if (path.contains("floggy-persistence-framework")) {
-					String version= getVersion(path);
-					String javadocURL= "http://floggy.sourceforge.net/modules/floggy-persistence-framework/apidocs/"; 
+					String version = getVersion(path);
+					String javadocURL = "http://floggy.sourceforge.net/modules/floggy-persistence-framework/apidocs/";
 					if (version != null) {
-						javadocURL= "http://floggy.sourceforge.net/modules/floggy-persistence-framework/"+version+"/floggy-persistence-framework/apidocs/";
+						javadocURL = "http://floggy.sourceforge.net/modules/floggy-persistence-framework/"
+								+ version
+								+ "/floggy-persistence-framework/apidocs/";
 					}
-					IClasspathAttribute attribute= JavaCore.newClasspathAttribute("javadoc_location", javadocURL);
+					IClasspathAttribute attribute = JavaCore
+							.newClasspathAttribute("javadoc_location",
+									javadocURL);
 					IClasspathEntry varEntry = JavaCore.newLibraryEntry(
-							new Path(path), null, null, null, new IClasspathAttribute[]{attribute}, true);
+							new Path(path), null, null, null,
+							new IClasspathAttribute[] { attribute }, true);
 					rawClasspath.add(varEntry);
 					javaProject.setRawClasspath(
 							(IClasspathEntry[]) rawClasspath
@@ -235,16 +175,6 @@ public class ToggleNatureAction implements IObjectActionDelegate {
 				}
 			}
 		}
-	}
-	
-	private String getVersion(String path) {
-		String version= null;
-		int endIndex= path.lastIndexOf(".jar");
-		int startIndex= path.indexOf("work-")+5;
-		if (startIndex != 4 && endIndex != -1 && startIndex < endIndex) {
-			version= path.substring(startIndex, endIndex);
-		}
-		return version;
 	}
 
 }
