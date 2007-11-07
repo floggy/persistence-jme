@@ -25,6 +25,8 @@ import javassist.Modifier;
 import javassist.NotFoundException;
 import javassist.bytecode.AccessFlag;
 import net.sourceforge.floggy.persistence.ClassVerifier;
+import net.sourceforge.floggy.persistence.Configuration;
+import net.sourceforge.floggy.persistence.PersistableConfiguration;
 import net.sourceforge.floggy.persistence.Weaver;
 import net.sourceforge.floggy.persistence.formatter.CodeFormatter;
 
@@ -46,10 +48,8 @@ public class CodeGenerator {
 	 */
 	private CtClass ctClass;
 
-	private boolean generateSource;
-
-	private boolean addDefaultConstructor;
-
+	private Configuration configuration;
+	
 	private StringBuffer source;
 
 	/**
@@ -57,39 +57,12 @@ public class CodeGenerator {
 	 * 
 	 * @param ctClass
 	 *            Class to be modified.
+	 * @param configuration
+	 *            the configuration object
 	 */
-	public CodeGenerator(CtClass ctClass) {
-		this(ctClass, false, true);
-	}
-
-	/**
-	 * Creates a new code generator for the class.
-	 * 
-	 * @param ctClass
-	 *            Class to be modified.
-	 * @param generateSource
-	 *            indicate the generation or not of source code.
-	 */
-	public CodeGenerator(CtClass ctClass, boolean generateSource) {
-		this(ctClass, generateSource, true);
-	}
-
-	/**
-	 * Creates a new code generator for the class.
-	 * 
-	 * @param ctClass
-	 *            Class to be modified.
-	 * @param generateSource
-	 *            indicate the generation or not of source code.
-	 * @param addDefaultConstructor
-	 *            indicate when the weaver will add a default constructor or
-	 *            generate a exception.
-	 */
-	public CodeGenerator(CtClass ctClass, boolean generateSource,
-			boolean addDefaultConstructor) {
+	public CodeGenerator(CtClass ctClass, Configuration configuration) {
 		this.ctClass = ctClass;
-		this.generateSource = generateSource;
-		this.addDefaultConstructor = addDefaultConstructor;
+		this.configuration= configuration;
 	}
 
 	private void generateDefaultConstructor() throws NotFoundException,
@@ -103,7 +76,7 @@ public class CodeGenerator {
 								+ ctClass.getName());
 			}
 		} catch (NotFoundException e) {
-			if (addDefaultConstructor) {
+			if (configuration.isAddDefaultConstructor()) {
 				constructor = CtNewConstructor.defaultConstructor(ctClass);
 				ctClass.addConstructor(constructor);
 			} else {
@@ -135,7 +108,7 @@ public class CodeGenerator {
 	 * @throws CannotCompileException
 	 */
 	public void generateCode() throws NotFoundException, CannotCompileException {
-		if (generateSource) {
+		if (configuration.isGenerateSource()) {
 			source = new StringBuffer();
 		}
 		// Implements interface
@@ -152,13 +125,15 @@ public class CodeGenerator {
 		this.generatePersistableMetadataField();
 
 		// Methods
+		this.generateGetIdMethod();
+		this.generateSetIdMethod();
 		this.generateGetPersistableMetadata();
 		this.generateDeserializeMethod();
-		this.generateLoadFromIdMethod();
+//		this.generateLoadFromIdMethod();
 		this.generateSerializeMethod();
-		this.generateSaveWithRecordStoreParameterMethod();
-		this.generateSaveMethod();
-		this.generateDeleteMethod();
+//		this.generateSaveWithRecordStoreParameterMethod();
+//		this.generateSaveMethod();
+//		this.generateDeleteMethod();
 	}
 
 	/**
@@ -174,8 +149,18 @@ public class CodeGenerator {
 	 * @throws CannotCompileException
 	 */
 	private void generateIdField() throws CannotCompileException {
-		String buffer = "private int __id = -1;";
+		String buffer = "public int __id = -1;";
 
+		addField(buffer);
+	}
+	
+	/**
+	 * 
+	 * @throws CannotCompileException
+	 */
+	private void generatePersistableMetadataField() throws CannotCompileException {
+		PersistableConfiguration pConfig= configuration.getPersistableConfig(ctClass.getName());
+		String buffer = "private final static net.sourceforge.floggy.persistence.impl.PersistableMetadata __persistableMetadata = new net.sourceforge.floggy.persistence.impl.PersistableMetadata(\""+pConfig.getRecordStoreName()+"\");";
 		addField(buffer);
 	}
 
@@ -183,18 +168,32 @@ public class CodeGenerator {
 	 * 
 	 * @throws CannotCompileException
 	 */
-	private void generatePersistableMetadataField()
-			throws CannotCompileException {
-		String recordStoreName = ctClass.getSimpleName()
-				+ ctClass.getName().hashCode();
-		String buffer = "private final static net.sourceforge.floggy.persistence.impl.PersistableMetadata __persistableMetadata = new net.sourceforge.floggy.persistence.impl.PersistableMetadata(\""
-				+ recordStoreName + "\");";
+	private void generateGetIdMethod() throws CannotCompileException {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("public int __getId() {\n");
+		buffer.append("return __id;\n");
+		buffer.append("}\n");
 
-		addField(buffer);
+	    //adicionando a classe
+	    addMethod(buffer);
 	}
 
 	/**
-	 * 
+	 *
+	 * @throws CannotCompileException
+	 */
+	private void generateSetIdMethod() throws CannotCompileException {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("public void __setId(int id) {\n");
+		buffer.append("this.__id= id;\n");
+		buffer.append("}\n");
+
+	    //adicionando a classe
+	    addMethod(buffer);
+	}
+
+	/**
+	 *
 	 * @throws CannotCompileException
 	 */
 	private void generateGetPersistableMetadata() throws CannotCompileException {
@@ -253,7 +252,7 @@ public class CodeGenerator {
 				}
 
 				generator = SourceCodeGeneratorFactory.getSourceCodeGenerator(
-						null, field.getName(), field.getType());
+						ctClass, field.getName(), field.getType());
 				if (generator != null) {
 					buffer.append(generator.getLoadCode());
 				}
@@ -273,99 +272,99 @@ public class CodeGenerator {
 	 * 
 	 * @throws CannotCompileException
 	 */
-	private void generateLoadFromIdMethod() throws CannotCompileException {
-		StringBuffer buffer = new StringBuffer();
-
-		buffer
-				.append("public void __load(int id) throws java.lang.Exception {\n");
-
-		// RecordStore
-		buffer
-				.append("javax.microedition.rms.RecordStore rs = net.sourceforge.floggy.persistence.impl.PersistableManagerImpl.getRecordStore(__persistableMetadata);\n");
-		buffer.append("byte[] buffer= null;\n");
-		buffer.append("try {\n");
-		buffer.append("buffer = rs.getRecord(id);\n");
-		buffer.append("} finally {\n");
-		buffer
-				.append("net.sourceforge.floggy.persistence.impl.PersistableManagerImpl.closeRecordStore(rs);\n");
-		buffer.append("}\n");
-
-		// Load
-		buffer.append("if(buffer != null) {\n");
-		buffer.append("this.__deserialize(buffer);\n");
-		buffer.append("}\n");
-		buffer.append("this.__id = id;\n");
-		buffer.append("}");
-
-		// adicionando a classe
-		addMethod(buffer);
-	}
+//	private void generateLoadFromIdMethod() throws CannotCompileException {
+//		StringBuffer buffer = new StringBuffer();
+//
+//		buffer
+//				.append("public void __load(int id) throws java.lang.Exception {\n");
+//
+//		// RecordStore
+//		buffer
+//				.append("javax.microedition.rms.RecordStore rs = net.sourceforge.floggy.persistence.impl.PersistableManagerImpl.getRecordStore(__persistableMetadata);\n");
+//		buffer.append("byte[] buffer= null;\n");
+//		buffer.append("try {\n");
+//		buffer.append("buffer = rs.getRecord(id);\n");
+//		buffer.append("} finally {\n");
+//		buffer
+//				.append("net.sourceforge.floggy.persistence.impl.PersistableManagerImpl.closeRecordStore(rs);\n");
+//		buffer.append("}\n");
+//
+//		// Load
+//		buffer.append("if(buffer != null) {\n");
+//		buffer.append("this.__deserialize(buffer);\n");
+//		buffer.append("}\n");
+//		buffer.append("this.__id = id;\n");
+//		buffer.append("}");
+//
+//		// adicionando a classe
+//		addMethod(buffer);
+//	}
 
 	/**
 	 * 
 	 * @throws CannotCompileException
 	 */
-	private void generateDeleteMethod() throws CannotCompileException {
-		StringBuffer buffer = new StringBuffer();
-
-		buffer.append("public void __delete() throws java.lang.Exception {\n");
-
-		// verifing if the class has the void beforeDelete() method
-		boolean containsBeforeDeteleMethod = false;
-		try {
-			ctClass.getMethod("beforeDelete", "()V");
-			containsBeforeDeteleMethod = true;
-		} catch (NotFoundException e) {
-		}
-		if (containsBeforeDeteleMethod) {
-			buffer.append("this.beforeDelete();\n");
-		}
-
-		// RecordStore
-		buffer.append("if (this.__id != -1) {\n");
-		buffer
-				.append("javax.microedition.rms.RecordStore rs = net.sourceforge.floggy.persistence.impl.PersistableManagerImpl.getRecordStore(__persistableMetadata);\n");
-		buffer.append("try {\n");
-		buffer.append("rs.deleteRecord(this.__id);\n");
-		buffer.append("} finally {\n");
-		buffer.append("this.__id = -1;\n");
-		buffer
-				.append("net.sourceforge.floggy.persistence.impl.PersistableManagerImpl.closeRecordStore(rs);\n");
-		buffer.append("}\n");
-
-		buffer.append("}\n");
-		buffer.append("}");
-
-		// adicionando a classe
-		addMethod(buffer);
-	}
+//	private void generateDeleteMethod() throws CannotCompileException {
+//		StringBuffer buffer = new StringBuffer();
+//
+//		buffer.append("public void __delete() throws java.lang.Exception {\n");
+//
+//		// verifing if the class has the void beforeDelete() method
+//		boolean containsBeforeDeteleMethod = false;
+//		try {
+//			ctClass.getMethod("beforeDelete", "()V");
+//			containsBeforeDeteleMethod = true;
+//		} catch (NotFoundException e) {
+//		}
+//		if (containsBeforeDeteleMethod) {
+//			buffer.append("this.beforeDelete();\n");
+//		}
+//
+//		// RecordStore
+//		buffer.append("if (this.__id != -1) {\n");
+//		buffer
+//				.append("javax.microedition.rms.RecordStore rs = net.sourceforge.floggy.persistence.impl.PersistableManagerImpl.getRecordStore(__persistableMetadata);\n");
+//		buffer.append("try {\n");
+//		buffer.append("rs.deleteRecord(this.__id);\n");
+//		buffer.append("} finally {\n");
+//		buffer.append("this.__id = -1;\n");
+//		buffer
+//				.append("net.sourceforge.floggy.persistence.impl.PersistableManagerImpl.closeRecordStore(rs);\n");
+//		buffer.append("}\n");
+//
+//		buffer.append("}\n");
+//		buffer.append("}");
+//
+//		// adicionando a classe
+//		addMethod(buffer);
+//	}
 
 	/**
 	 * 
 	 * @throws CannotCompileException
 	 * @throws NotFoundException
 	 */
-	private void generateSaveWithRecordStoreParameterMethod()
-			throws CannotCompileException, NotFoundException {
-		StringBuffer buffer = new StringBuffer();
-		// Header
-		buffer
-				.append("public int __save(javax.microedition.rms.RecordStore rs) throws java.lang.Exception {\n");
-
-		// Code
-		buffer.append("byte[] buffer= __serialize(rs);\n");
-		buffer.append("if(this.__id == -1) {\n");
-		buffer.append("this.__id = rs.addRecord(buffer, 0, buffer.length);\n");
-		buffer.append("}\n");
-		buffer.append("else {\n");
-		buffer.append("rs.setRecord(this.__id, buffer, 0, buffer.length);\n");
-		buffer.append("}\n");
-		buffer.append("return this.__id;\n");
-		buffer.append("}\n");
-
-		addMethod(buffer);
-
-	}
+//	private void generateSaveWithRecordStoreParameterMethod()
+//			throws CannotCompileException, NotFoundException {
+//		StringBuffer buffer = new StringBuffer();
+//		// Header
+//		buffer
+//				.append("public int __save(javax.microedition.rms.RecordStore rs) throws java.lang.Exception {\n");
+//
+//		// Code
+//		buffer.append("byte[] buffer= __serialize(rs);\n");
+//		buffer.append("if(this.__id == -1) {\n");
+//		buffer.append("this.__id = rs.addRecord(buffer, 0, buffer.length);\n");
+//		buffer.append("}\n");
+//		buffer.append("else {\n");
+//		buffer.append("rs.setRecord(this.__id, buffer, 0, buffer.length);\n");
+//		buffer.append("}\n");
+//		buffer.append("return this.__id;\n");
+//		buffer.append("}\n");
+//
+//		addMethod(buffer);
+//
+//	}
 
 	/**
 	 * 
@@ -376,16 +375,14 @@ public class CodeGenerator {
 			NotFoundException {
 		StringBuffer buffer = new StringBuffer();
 		// Header
-		buffer
-				.append("public byte[] __serialize(javax.microedition.rms.RecordStore rs) throws java.lang.Exception {\n");
+		buffer.append("public byte[] __serialize() throws java.lang.Exception {\n");
 
 		// Streams
 		// buffer.append("java.io.ByteArrayOutputStream baos= new
 		// java.io.ByteArrayOutputStream();\n");
 		// buffer.append("java.io.DataOutputStream fos= new
 		// java.io.DataOutputStream(baos);\n");
-		buffer
-				.append("net.sourceforge.floggy.persistence.impl.FloggyOutputStream fos= new net.sourceforge.floggy.persistence.impl.FloggyOutputStream();\n");
+		buffer.append("net.sourceforge.floggy.persistence.impl.FloggyOutputStream fos= new net.sourceforge.floggy.persistence.impl.FloggyOutputStream();\n");
 
 		// Save the superclass if it is persistable.
 		CtClass superClass = this.ctClass.getSuperclass();
@@ -435,28 +432,29 @@ public class CodeGenerator {
 	 * @throws CannotCompileException
 	 * @throws NotFoundException
 	 */
-	private void generateSaveMethod() throws CannotCompileException,
-			NotFoundException {
-		StringBuffer buffer = new StringBuffer();
-		// Header
-		buffer.append("public int __save() throws java.lang.Exception {\n");
-
-		buffer
-				.append("javax.microedition.rms.RecordStore rs = net.sourceforge.floggy.persistence.impl.PersistableManagerImpl.getRecordStore(__persistableMetadata);\n");
-		buffer.append("try {\n");
-		buffer.append("return __save(rs);\n");
-		buffer.append("} finally {\n");
-		buffer
-				.append("net.sourceforge.floggy.persistence.impl.PersistableManagerImpl.closeRecordStore(rs);\n");
-		buffer.append("}\n");
-		buffer.append("}\n");
-		// adicionando a classe
-		addMethod(buffer);
-	}
+//	private void generateSaveMethod() throws CannotCompileException,
+//			NotFoundException {
+//		StringBuffer buffer = new StringBuffer();
+//		// Header
+//		buffer.append("public int __save() throws java.lang.Exception {\n");
+//
+//		buffer
+//				.append("javax.microedition.rms.RecordStore rs = net.sourceforge.floggy.persistence.impl.PersistableManagerImpl.getRecordStore(__persistableMetadata);\n");
+//		buffer.append("try {\n");
+//		buffer.append("return __save(rs);\n");
+//		buffer.append("} finally {\n");
+//		buffer
+//				.append("net.sourceforge.floggy.persistence.impl.PersistableManagerImpl.closeRecordStore(rs);\n");
+//		buffer.append("}\n");
+//		buffer.append("}\n");
+//		// adicionando a classe
+//		addMethod(buffer);
+//	}
 
 	private void addMethod(StringBuffer buffer) throws CannotCompileException {
-		if (generateSource) {
+		if (configuration.isGenerateSource()) {
 			source.append(CodeFormatter.format(buffer.toString()));
+			//System.out.println(source);
 		}
 		// if (ctClass.getName().contains("VectorArray")) {
 		// System.out.println(CodeFormatter.format(functionSave.toString()));
@@ -465,31 +463,13 @@ public class CodeGenerator {
 	}
 
 	private void addField(String buffer) throws CannotCompileException {
-		if (generateSource) {
-			source.append(CodeFormatter.format(toString()));
+		if (configuration.isGenerateSource()) {
+			source.append(CodeFormatter.format(buffer));
 		}
 		// if (ctClass.getName().contains("VectorArray")) {
 		// System.out.println(CodeFormatter.format(functionSave.toString()));
 		// }
 		ctClass.addField(CtField.make(buffer, ctClass));
-	}
-
-	/**
-	 * @return the generateSource
-	 */
-	public boolean isGenerateSource() {
-		return generateSource;
-	}
-
-	/**
-	 * @param generateSource
-	 *            the generateSource to set
-	 */
-	public void setGenerateSource(boolean generateSource) {
-		this.generateSource = generateSource;
-		if (generateSource) {
-			source = new StringBuffer();
-		}
 	}
 
 	public String getSource() {
