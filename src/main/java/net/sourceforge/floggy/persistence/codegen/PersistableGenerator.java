@@ -19,38 +19,24 @@ import javassist.CtClass;
 import javassist.NotFoundException;
 
 public class PersistableGenerator extends SourceCodeGenerator {
-	
-	private CtClass persistableType;
 
-    public PersistableGenerator(CtClass persistableType, String fieldName, CtClass fieldType) {
-    	super(fieldName, fieldType);
-    	this.persistableType=persistableType;
-    }
-
-    public void initLoadCode() throws NotFoundException {
-	addLoadCode("if(dis.readByte() == 0) {");
-	addLoadCode("net.sourceforge.floggy.persistence.impl.__Persistable someClass = new "
-		+ fieldType.getName() + "();");
-	addLoadCode("someClass.__load(dis.readInt());");
-	addLoadCode("this." + fieldName + " = someClass;");
-	addLoadCode("}");
-	addLoadCode("else {");
-	addLoadCode("this." + fieldName + " = null;");
-	addLoadCode("}");
-    }
-
-    public void initSaveCode() throws NotFoundException {
-	addSaveCode("if(this." + fieldName + " == null) {");
-	addSaveCode("fos.writeByte(1);");
-	addSaveCode("}");
-	addSaveCode("else {");
-	addSaveCode("fos.writeByte(0);\n");
-	if (persistableType.equals(fieldType)) {
-		addSaveCode("fos.writeInt(((net.sourceforge.floggy.persistence.impl.__Persistable)" + fieldName + ").__save(rs));\n");
-	} else {
-		addSaveCode("fos.writeInt(((net.sourceforge.floggy.persistence.impl.__Persistable)" + fieldName + ").__save());\n");
+	public PersistableGenerator(CtClass persistableType, String fieldName,
+			CtClass fieldType) {
+		super(fieldName, fieldType);
 	}
-	addSaveCode("}");
-    }
+
+	public void initLoadCode() throws NotFoundException {
+		addLoadCode("this."
+				+ fieldName
+				+ "= ("
+				+ fieldType.getName()
+				+ ")net.sourceforge.floggy.persistence.impl.SerializationHelper.readPersistable(dis, new "
+				+ fieldType.getName() + "());");
+	}
+
+	public void initSaveCode() throws NotFoundException {
+		addSaveCode("net.sourceforge.floggy.persistence.impl.SerializationHelper.writePersistable(fos, "
+				+ fieldName + ");");
+	}
 
 }
