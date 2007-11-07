@@ -3,6 +3,7 @@ package net.sourceforge.floggy.maven;
 import java.io.File;
 import java.util.List;
 
+import net.sourceforge.floggy.persistence.Configuration;
 import net.sourceforge.floggy.persistence.Weaver;
 
 import org.apache.commons.io.FileUtils;
@@ -37,7 +38,7 @@ public class PersistenceMojo extends AbstractMojo {
 	 * .
 	 * 
 	 * @parameter expression="false"
-	 * @required
+	 * @optional
 	 */
 	private boolean generateSource= false;
 
@@ -45,9 +46,16 @@ public class PersistenceMojo extends AbstractMojo {
 	 * .
 	 * 
 	 * @parameter expression="true"
-	 * @required
+	 * @optional
 	 */
 	private boolean addDefaultConstructor= true;
+
+	/**
+	 * 
+	 * 
+	 * @optional
+	 */
+	private File configFile;
 
 	/**
 	 * Location of the file.
@@ -67,8 +75,14 @@ public class PersistenceMojo extends AbstractMojo {
 			weaver.setOutputFile(temp);
 			weaver.setInputFile(input);
 			weaver.setClasspath((String[]) list.toArray(new String[0]));
-			weaver.setGenerateSource(generateSource);
-			weaver.setAddDefaultConstructor(addDefaultConstructor);
+			if (configFile == null) {
+				Configuration configuration= new Configuration();
+				configuration.setAddDefaultConstructor(addDefaultConstructor);
+				configuration.setGenerateSource(generateSource);
+				weaver.setConfiguration(configuration);
+			} else {
+				//TODO
+			}
 			weaver.execute();
 			FileUtils.copyDirectory(temp, output);
 			FileUtils.forceDelete(temp);
