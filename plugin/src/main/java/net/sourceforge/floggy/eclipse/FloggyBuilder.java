@@ -45,81 +45,94 @@ public class FloggyBuilder extends IncrementalProjectBuilder {
 
 	public static final String BUILDER_ID = "net.sourceforge.floggy.floggyBuilder";
 
-	public static final String RECORDSTORE_CLASS_NAME = "javax.microedition.rms.RecordStore";
-
 	public static final String PERSISTABLE_CLASS_NAME = "net.sourceforge.floggy.persistence.Persistable";
 
-	/**
-	 *
-	 *
-	 * @see org.eclipse.core.internal.events.InternalBuilder#build(int,
-	 *      java.util.Map, org.eclipse.core.runtime.IProgressMonitor)
-	 */
+	public static final String RECORDSTORE_CLASS_NAME = "javax.microedition.rms.RecordStore";
+
 	protected IProject[] build(int kind, Map args, IProgressMonitor monitor)
 			throws CoreException {
-		boolean generateSource = false;
 		try {
-			LogFactory.getFactory().setAttribute("org.apache.commons.logging.Log", EclipseLog.class.getName());
-			IProject project= getProject();
-			IJavaProject javaProject = JavaCore.create(project);
-			IClasspathEntry[] entries = javaProject.getResolvedClasspath(true);
+			LogFactory.getFactory().setAttribute(
+					"org.apache.commons.logging.Log",
+					EclipseLog.class.getName());
+			IProject project = getProject();
 
-			//creating the classpath
-			List classpathList = new ArrayList();
-			ClassPool classPool= new ClassPool();
-			for (int i = 0; i < entries.length; i++) {
-				IClasspathEntry classpathEntry= entries[i];
-				String path= classpathEntry.getPath().toOSString();
-				classpathList.add(path);
-				classPool.appendClassPath(path);
-			}
+			if (project.hasNature(FloggyNature.NATURE_ID)) {
+				IJavaProject javaProject = JavaCore.create(project);
+				IClasspathEntry[] entries = javaProject
+						.getResolvedClasspath(true);
 
-			final StringBuilder messages= new StringBuilder();
-			try {
-				classPool.get(PERSISTABLE_CLASS_NAME);
-			} catch (NotFoundException e) {
-				messages.append("You must to add the Floggy framework library to the build path.");
-			}
-			try {
-				classPool.get(RECORDSTORE_CLASS_NAME);
-			} catch (NotFoundException e) {
-				if (messages.length() != 0) {
-					messages.append('\n');
+				boolean generateSource = Boolean
+						.parseBoolean(project
+								.getPersistentProperty(SetGenerateSourceAction.PROPERTY_NAME));
+				boolean addDefaultConstructor = Boolean
+						.parseBoolean(project
+								.getPersistentProperty(SetAddDefaultConstructorAction.PROPERTY_NAME));
+
+				// creating the classpath
+				List classpathList = new ArrayList();
+				ClassPool classPool = new ClassPool();
+				for (int i = 0; i < entries.length; i++) {
+					IClasspathEntry classpathEntry = entries[i];
+					String path = classpathEntry.getPath().toOSString();
+					classpathList.add(path);
+					classPool.appendClassPath(path);
 				}
-				messages.append("You must to add the MIDP library to the build path.");
-			}
-			if (messages.length() != 0) {
-			   Display.getDefault().asyncExec(new Runnable() {
-					public void run() {
-						Shell shell = Display.getDefault().getActiveShell();
-						MessageDialog.openError(shell, "Floggy", messages.toString());
+
+				final StringBuilder messages = new StringBuilder();
+				try {
+					classPool.get(PERSISTABLE_CLASS_NAME);
+				} catch (NotFoundException e) {
+					messages
+							.append("You must to add the Floggy framework library to the build path.");
+				}
+				try {
+					classPool.get(RECORDSTORE_CLASS_NAME);
+				} catch (NotFoundException e) {
+					if (messages.length() != 0) {
+						messages.append('\n');
 					}
-				});
-
-			} else {
-				Weaver weaver = new Weaver(classPool);
-				IPath root= project.getLocation();
-				File input= root.removeLastSegments(1).append(javaProject.getOutputLocation()).toFile();
-
-				File temp = new File(root.toFile(), String
-						.valueOf(System.currentTimeMillis()));
-				FileUtils.forceMkdir(temp);
-				weaver.setOutputFile(temp);
-				weaver.setInputFile(input);
-				weaver.setClasspath((String[])classpathList.toArray(new String[0]));
-				weaver.setGenerateSource(generateSource);
-				weaver.execute();
-				FileUtils.copyDirectory(temp, input);
-				FileUtils.forceDelete(temp);
-
-				// verifing the synchronization
-				if (!project.isSynchronized(IResource.DEPTH_INFINITE)) {
-					project.refreshLocal(IResource.DEPTH_INFINITE, null);
+					messages
+							.append("You must to add the MIDP library to the build path.");
 				}
+				if (messages.length() != 0) {
+					Display.getDefault().asyncExec(new Runnable() {
+						public void run() {
+							Shell shell = Display.getDefault().getActiveShell();
+							MessageDialog.openError(shell, "Floggy", messages
+									.toString());
+						}
+					});
 
+				} else {
+					Weaver weaver = new Weaver(classPool);
+					IPath root = project.getLocation();
+					File input = root.removeLastSegments(1).append(
+							javaProject.getOutputLocation()).toFile();
+
+					File temp = new File(root.toFile(), String.valueOf(System
+							.currentTimeMillis()));
+					FileUtils.forceMkdir(temp);
+					weaver.setOutputFile(temp);
+					weaver.setInputFile(input);
+					weaver.setClasspath((String[]) classpathList
+							.toArray(new String[0]));
+					weaver.setAddDefaultConstructor(addDefaultConstructor);
+					weaver.setGenerateSource(generateSource);
+					weaver.execute();
+					FileUtils.copyDirectory(temp, input);
+					FileUtils.forceDelete(temp);
+
+					// verifing the synchronization
+					if (!project.isSynchronized(IResource.DEPTH_INFINITE)) {
+						// project.refreshLocal(IResource.DEPTH_INFINITE, null);
+					}
+
+				}
 			}
 		} catch (Exception e) {
-			IStatus status= new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1, e.getMessage(), e);
+			IStatus status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1,
+					e.getMessage(), e);
 			throw new CoreException(status);
 		}
 		return null;

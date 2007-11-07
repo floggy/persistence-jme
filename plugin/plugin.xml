@@ -45,18 +45,211 @@
          point="org.eclipse.ui.popupMenus">
       <objectContribution
             adaptable="true"
-            objectClass="org.eclipse.core.resources.IProject"
-            nameFilter="*"
-            id="net.sourceforge.floggy.contribution1">
+            id="net.sourceforge.floggy.oc"
+            objectClass="org.eclipse.core.resources.IProject">
+         <menu
+               id="net.sourceforge.floggy.menu"
+               label="Floggy">
+            <separator name="convertToFloggyProject"/>
+            <separator name="properties"/>
+         </menu>
+      </objectContribution>
+      <objectContribution
+            adaptable="true"
+            id="net.sourceforge.floggy.objectContribution1"
+            objectClass="org.eclipse.core.resources.IProject">
+         <visibility>
+            <and>
+            <objectState
+                  name="nature"
+                  value="net.sourceforge.floggy.floggyNature"/>
+   <and>
+      <objectState
+            name="persistentProperty"
+            value="net.sourceforge.floggy.generateSource=true"/>
+      <objectState
+            name="persistentProperty"
+            value="net.sourceforge.floggy.addDefaultConstructor=true"/>
+   </and>
+            </and>
+         </visibility>
+         <action
+               class="net.sourceforge.floggy.eclipse.SetGenerateSourceAction"
+               enablesFor="+"
+               icon="src/images/generateSourceOn.gif"
+               id="net.sourceforge.floggy.generateSource"
+               label="Generate source"
+               menubarPath="net.sourceforge.floggy.menu/properties"
+               style="push">
+         </action>
+         <action
+               class="net.sourceforge.floggy.eclipse.SetAddDefaultConstructorAction"
+               enablesFor="+"
+               icon="src/images/addDefaultConstructorOn.gif"
+               id="net.sourceforge.floggy.addDefaultConstructor"
+               label="Add default constructor"
+               menubarPath="net.sourceforge.floggy.menu/properties"
+               style="push"/>
+      </objectContribution>
+      <objectContribution
+            adaptable="true"
+            id="net.sourceforge.floggy.objectContribution2"
+            objectClass="org.eclipse.core.resources.IProject">
+         <visibility>
+            <and>
+            <objectState
+                  name="nature"
+                  value="net.sourceforge.floggy.floggyNature"/>
+   <and>
+      <objectState
+            name="persistentProperty"
+            value="net.sourceforge.floggy.generateSource=true"/>
+      <objectState
+            name="persistentProperty"
+            value="net.sourceforge.floggy.addDefaultConstructor=false"/>
+   </and>
+            </and>
+         </visibility>
+         <action
+               class="net.sourceforge.floggy.eclipse.SetGenerateSourceAction"
+               enablesFor="+"
+               icon="src/images/generateSourceOn.gif"
+               id="net.sourceforge.floggy.generateSource"
+               label="Generate source"
+               menubarPath="net.sourceforge.floggy.menu/properties"
+               style="push">
+         </action>
+         <action
+               class="net.sourceforge.floggy.eclipse.SetAddDefaultConstructorAction"
+               enablesFor="+"
+               icon="src/images/addDefaultConstructorOff.gif"
+               id="net.sourceforge.floggy.addDefaultConstructor"
+               label="Add default constructor"
+               menubarPath="net.sourceforge.floggy.menu/properties"
+               style="push"/>
+      </objectContribution>
+      <objectContribution
+            adaptable="true"
+            id="net.sourceforge.floggy.objectContribution3"
+            objectClass="org.eclipse.core.resources.IProject">
+         <visibility>
+            <and>
+            <objectState
+                  name="nature"
+                  value="net.sourceforge.floggy.floggyNature"/>
+   <and>
+      <objectState
+            name="persistentProperty"
+            value="net.sourceforge.floggy.generateSource=false"/>
+      <objectState
+            name="persistentProperty"
+            value="net.sourceforge.floggy.addDefaultConstructor=true"/>
+   </and>
+            </and>
+         </visibility>
+         <action
+               class="net.sourceforge.floggy.eclipse.SetGenerateSourceAction"
+               enablesFor="+"
+               icon="src/images/generateSourceOff.gif"
+               id="net.sourceforge.floggy.generateSource"
+               label="Generate source"
+               menubarPath="net.sourceforge.floggy.menu/properties"
+               style="push">
+         </action>
+         <action
+               class="net.sourceforge.floggy.eclipse.SetAddDefaultConstructorAction"
+               enablesFor="+"
+               icon="src/images/addDefaultConstructorOn.gif"
+               id="net.sourceforge.floggy.addDefaultConstructor"
+               label="Add default constructor"
+               menubarPath="net.sourceforge.floggy.menu/properties"
+               style="push"/>
+      </objectContribution>
+      <objectContribution
+            adaptable="true"
+            id="net.sourceforge.floggy.objectContribution4"
+            objectClass="org.eclipse.core.resources.IProject">
+         <visibility>
+            <and>
+            <objectState
+                  name="nature"
+                  value="net.sourceforge.floggy.floggyNature"/>
+   <and>
+      <objectState
+            name="persistentProperty"
+            value="net.sourceforge.floggy.generateSource=false"/>
+      <objectState
+            name="persistentProperty"
+            value="net.sourceforge.floggy.addDefaultConstructor=false"/>
+   </and>
+            </and>
+         </visibility>
+         <action
+               class="net.sourceforge.floggy.eclipse.SetGenerateSourceAction"
+               enablesFor="+"
+               icon="src/images/generateSourceOff.gif"
+               id="net.sourceforge.floggy.generateSource"
+               label="Generate source"
+               menubarPath="net.sourceforge.floggy.menu/properties"
+               style="push">
+         </action>
+         <action
+               class="net.sourceforge.floggy.eclipse.SetAddDefaultConstructorAction"
+               enablesFor="+"
+               icon="src/images/addDefaultConstructorOff.gif"
+               id="net.sourceforge.floggy.addDefaultConstructor"
+               label="Add default constructor"
+               menubarPath="net.sourceforge.floggy.menu/properties"
+               style="push"/>
+      </objectContribution>
+      <objectContribution
+            adaptable="true"
+            id="net.sourceforge.floggy.convert"
+            objectClass="org.eclipse.core.resources.IProject">
+         <visibility>
+            <and>
+               <objectState
+                     name="open"
+                     value="true"/>
+               <objectState
+                     name="nature"
+                     value="net.sourceforge.floggy.floggyNature"/>
+            </and>
+         </visibility>
          <action
                class="net.sourceforge.floggy.eclipse.ToggleNatureAction"
-               enablesFor="+"
-               icon="src/images/favicon.ico"
-               id="net.sourceforge.floggy.addRemoveNatureAction"
-               label="Add Floggy Nature"
-               menubarPath="additions"
-               >
-         </action>
+               icon="src/images/floggyOff.gif"
+               id="net.sourceforge.floggy.removeFloggyNature"
+               label="Remove Floggy nature"
+               menubarPath="net.sourceforge.floggy.menu/convertToFloggyProject"/>
+      </objectContribution>
+      <objectContribution
+            adaptable="true"
+            id="net.sourceforge.floggy.convert"
+            objectClass="org.eclipse.core.resources.IProject">
+         <visibility>
+            <and>
+               <objectState
+                     name="open"
+                     value="true"/>
+               <and>
+                  <objectState
+                        name="nature"
+                        value="org.eclipse.jdt.core.javanature"/>
+                  <not>
+                     <objectState
+                           name="nature"
+                           value="net.sourceforge.floggy.floggyNature"/>
+                  </not>
+               </and>
+            </and>
+         </visibility>
+         <action
+               class="net.sourceforge.floggy.eclipse.ToggleNatureAction"
+               icon="src/images/floggyOn.gif"
+               id="net.sourceforge.floggy.addFloggyNature"
+               label="Add Floggy nature"
+               menubarPath="net.sourceforge.floggy.menu/convertToFloggyProject"/>
       </objectContribution>
    </extension>
 
