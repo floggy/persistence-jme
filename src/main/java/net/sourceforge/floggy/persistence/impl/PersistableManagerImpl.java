@@ -15,6 +15,8 @@
  */
 package net.sourceforge.floggy.persistence.impl;
 
+import java.util.Hashtable;
+
 import javax.microedition.rms.RecordEnumeration;
 import javax.microedition.rms.RecordStore;
 import javax.microedition.rms.RecordStoreException;
@@ -35,7 +37,7 @@ import net.sourceforge.floggy.persistence.PersistableManager;
  */
 public class PersistableManagerImpl extends PersistableManager {
 
-	//this code is a workaround to the problem of missing  java.lang.NoClassDefFoundError.class in the CLDC 1.0
+	//this code is a workaround to the problem of missing java.lang.NoClassDefFoundError.class in the CLDC 1.0
 	private static Class __persistableClass;
 
 	static {
@@ -53,14 +55,26 @@ public class PersistableManagerImpl extends PersistableManager {
 	 */
 	public PersistableManagerImpl() {
 	}
+	
+	static Hashtable references= new Hashtable();
+	
+	private static class RecordStoreReference {
+		RecordStore recordStore;
+		int references= 0;
+	}
 
-	/**
-	* <b>IMPORTANT:</b> This method is for internal use only.
-	 */
 	public static RecordStore getRecordStore(PersistableMetadata metadata)
 			throws FloggyException {
 		try {
-			return RecordStore.openRecordStore(metadata.getRecordStoreName(), true);
+			String recordStoreName= metadata.getRecordStoreName(); 
+			RecordStoreReference rsr= (RecordStoreReference) references.get(recordStoreName);
+			if (rsr == null) {
+				rsr= new RecordStoreReference();
+				rsr.recordStore= RecordStore.openRecordStore(recordStoreName, true);
+				references.put(recordStoreName, rsr);
+			}
+			rsr.references++;
+			return rsr.recordStore;
 		} catch (RecordStoreException rsex) {
 			throw new FloggyException(rsex.getMessage());
 		}
@@ -69,8 +83,15 @@ public class PersistableManagerImpl extends PersistableManager {
 	public static void closeRecordStore(RecordStore rs) 
 		throws FloggyException {
 		try {
-			if (rs != null ) {
-				rs.closeRecordStore();
+			if (rs != null) {
+				RecordStoreReference rsr= (RecordStoreReference) references.get(rs.getName());
+				if (rsr != null) {
+					rsr.references--;
+					if (rsr.references == 0) {
+						references.remove(rs.getName());
+						rs.closeRecordStore();
+					}
+				}
 			}
 		} catch (RecordStoreException rsex) {
 			throw new FloggyException(rsex.getMessage());
@@ -97,12 +118,19 @@ public class PersistableManagerImpl extends PersistableManager {
 	 * @see #save(Persistable)
 	 */
 	public void load(Persistable persistable, int id) throws FloggyException {
+		__Persistable __persistable = checkArgumentAndCast(persistable);
+		// posso fazer cache do metadata
+		RecordStore rs = PersistableManagerImpl.getRecordStore(__persistable
+				.__getPersistableMetadata());
 		try {
-			checkArgumentsAndCast(persistable).__load(id);
-		} catch (RuntimeException e) {
-			throw e;
+			byte[] buffer = rs.getRecord(id);
+			if (buffer != null) {
+				__persistable.__deserialize(buffer);
+			}
 		} catch (Exception e) {
 			throw new FloggyException(e.getMessage());
+		} finally {
+			PersistableManagerImpl.closeRecordStore(rs);
 		}
 	}
 
@@ -125,15 +153,28 @@ public class PersistableManagerImpl extends PersistableManager {
 	 * @see #load(Persistable, int)
 	 */
 	public int save(Persistable persistable) throws FloggyException {
+		__Persistable __persistable = checkArgumentAndCast(persistable);
+		// posso fazer cache do metadata e um contador com as referencias!!!!!!!!!
+		RecordStore rs = PersistableManagerImpl.getRecordStore(__persistable
+				.__getPersistableMetadata());
 		try {
-			return checkArgumentsAndCast(persistable).__save();
-		} catch (RuntimeException e) {
-			throw e;
-		} catch (Exception ex) {
-			throw new FloggyException(ex.getMessage());
+			byte[] buffer= __persistable.__serialize();
+			int id= __persistable.__getId();
+	        if(id == -1) {
+	            id = rs.addRecord(buffer, 0, buffer.length);
+	            __persistable.__setId(id);
+	        }
+	        else {
+	            rs.setRecord(id, buffer, 0, buffer.length);
+	        }
+	        return id;
+		} catch (Exception e) {
+			throw new FloggyException(e.getMessage());
+		} finally {
+			PersistableManagerImpl.closeRecordStore(rs);
 		}
 	}
-
+	
 	/**
 	 * Removes an object from the repository. If the object is not stored in the
 	 * repository then a <code>FloggyException</code> will be thrown.
@@ -149,12 +190,19 @@ public class PersistableManagerImpl extends PersistableManager {
 	 *             object.
 	 */
 	public void delete(Persistable persistable) throws FloggyException {
-		try {
-			checkArgumentsAndCast(persistable).__delete();
-		} catch (RuntimeException e) {
-			throw e;
-		} catch (Exception e) {
-			throw new FloggyException(e.getMessage());
+		__Persistable __persistable = checkArgumentAndCast(persistable);
+		int id = __persistable.__getId();
+		if (id != -1) {
+			RecordStore rs = PersistableManagerImpl
+					.getRecordStore(__persistable.__getPersistableMetadata());
+			try {
+				rs.deleteRecord(id);
+				__persistable.__setId(0);
+			} catch (RecordStoreException e) {
+				throw new FloggyException(e.getMessage());
+			} finally {
+				PersistableManagerImpl.closeRecordStore(rs);
+			}
 		}
 	}
 
@@ -172,15 +220,20 @@ public class PersistableManagerImpl extends PersistableManager {
 	 *             object.
 	 */
 	public void deleteAll(Class persistableClass) throws FloggyException {
+		PersistableMetadata metadata= ((__Persistable)createInstance(persistableClass)).__getPersistableMetadata();
+		closeRecordStore(getRecordStore(metadata));
 		try {
-			PersistableMetadata metadata= ((__Persistable)createInstance(persistableClass)).__getPersistableMetadata();
-			closeRecordStore(getRecordStore(metadata));
 			RecordStore.deleteRecordStore(metadata.getRecordStoreName());
-		} catch (RuntimeException e) {
-			throw e;
 		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println(e.getMessage());
 			throw new FloggyException(e.getMessage());
 		}
+	}
+	
+	public boolean wasPersisted(Persistable persistable) {
+		__Persistable __persistable = checkArgumentAndCast(persistable);
+		return __persistable.__getId() != 0;
 	}
 
 	/**
@@ -230,7 +283,7 @@ public class PersistableManagerImpl extends PersistableManager {
 		// Searchs the repository and create an object set as result.
 		int[] ids = null;
 
-		PersistableMetadata metadata= checkArgumentsAndCast(persistable)
+		PersistableMetadata metadata= checkArgumentAndCast(persistable)
 		.__getPersistableMetadata();
 		RecordStore rs = getRecordStore(metadata);
 
@@ -247,6 +300,8 @@ public class PersistableManagerImpl extends PersistableManager {
 			en.destroy();
 		} catch (RecordStoreException e) {
 			throw new FloggyException(e.getMessage());
+		} finally {
+			PersistableManagerImpl.closeRecordStore(rs);
 		}
 
 		return new ObjectSetImpl(ids, persistableClass, this);
@@ -265,7 +320,7 @@ public class PersistableManagerImpl extends PersistableManager {
 		}
 	}
 
-	private static __Persistable checkArgumentsAndCast(Persistable persistable) {
+	private static __Persistable checkArgumentAndCast(Persistable persistable) {
 		if (persistable == null) {
 			throw new IllegalArgumentException(
 					"The persistable object cannot be null!");
