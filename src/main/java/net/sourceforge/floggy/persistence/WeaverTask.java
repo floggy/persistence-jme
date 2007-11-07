@@ -34,6 +34,8 @@ public class WeaverTask extends Task {
 	protected boolean generateSource= false;
 
 	protected boolean addDefaultConstructor= true;
+	
+	protected File configFile;
 
 	public void execute() throws BuildException {
 		AntLog.setTask(this);
@@ -43,8 +45,14 @@ public class WeaverTask extends Task {
 			weaver.setClasspath(classpath.list());
 			weaver.setInputFile(input);
 			weaver.setOutputFile(output);
-			weaver.setGenerateSource(generateSource);
-			weaver.setAddDefaultConstructor(addDefaultConstructor);
+			if (configFile == null) {
+				Configuration configuration= new Configuration();
+				configuration.setAddDefaultConstructor(addDefaultConstructor);
+				configuration.setGenerateSource(generateSource);
+				weaver.setConfiguration(configuration);
+			} else {
+				//TODO
+			}
 			weaver.execute();
 		} catch (WeaverException e) {
 			throw new BuildException(e);

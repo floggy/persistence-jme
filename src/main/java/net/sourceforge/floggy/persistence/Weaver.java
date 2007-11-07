@@ -44,14 +44,16 @@ import org.apache.commons.logging.LogFactory;
 public class Weaver {
 
 	public static final String __PERSISTABLE_CLASSNAME = "net.sourceforge.floggy.persistence.impl.__Persistable";
+
 	private static final Log LOG = LogFactory.getLog(Weaver.class);
+
 	public static final String PERSISTABLE_CLASSNAME = "net.sourceforge.floggy.persistence.Persistable";
 
-	private boolean addDefaultConstructor = true;
-
 	private ClassPool classpathPool;
+	
+	private File configFile;
 
-	private boolean generateSource = false;
+	private Configuration configuration = new Configuration();
 
 	private InputPool inputPool;
 
@@ -83,6 +85,12 @@ public class Weaver {
 		String superName = ctClass.getName();
 		do {
 			list.add(superName);
+			// adicionando
+			if (!configuration.containsPersistable(superName)) {
+				configuration
+						.addPersistable(createPersistableConfig(superClass));
+			}
+
 			superClass = superClass.getSuperclass();
 			superName = superClass.getName();
 		} while (!superName.equals("java.lang.Object")
@@ -90,15 +98,13 @@ public class Weaver {
 		return list;
 	}
 
-	private void embeddedUnderlineCoreClasses() throws IOException {
-		embeddedClass("/net/sourceforge/floggy/persistence/impl/FloggyOutputStream.class");
-		embeddedClass("/net/sourceforge/floggy/persistence/impl/ObjectComparator.class");
-		embeddedClass("/net/sourceforge/floggy/persistence/impl/ObjectFilter.class");
-		embeddedClass("/net/sourceforge/floggy/persistence/impl/ObjectSetImpl.class");
-		embeddedClass("/net/sourceforge/floggy/persistence/impl/__Persistable.class");
-		embeddedClass("/net/sourceforge/floggy/persistence/impl/PersistableManagerImpl.class");
-		embeddedClass("/net/sourceforge/floggy/persistence/impl/PersistableMetadata.class");
-		embeddedClass("/net/sourceforge/floggy/persistence/impl/SerializationHelper.class");
+	private PersistableConfiguration createPersistableConfig(CtClass ctClass) {
+		String className = ctClass.getName();
+		String recordStoreName = ctClass.getSimpleName() + className.hashCode();
+		PersistableConfiguration pConfig = new PersistableConfiguration();
+		pConfig.setClassName(className);
+		pConfig.setRecordStoreName(recordStoreName);
+		return pConfig;
 	}
 
 	private void embeddedClass(String fileName) throws IOException {
@@ -108,10 +114,23 @@ public class Weaver {
 		classpathPool.makeClass(fileURL.openStream());
 	}
 
+	private void embeddedUnderlineCoreClasses() throws IOException {
+		embeddedClass("/net/sourceforge/floggy/persistence/impl/FloggyOutputStream.class");
+		embeddedClass("/net/sourceforge/floggy/persistence/impl/ObjectComparator.class");
+		embeddedClass("/net/sourceforge/floggy/persistence/impl/ObjectFilter.class");
+		embeddedClass("/net/sourceforge/floggy/persistence/impl/ObjectSetImpl.class");
+		embeddedClass("/net/sourceforge/floggy/persistence/impl/__Persistable.class");
+		embeddedClass("/net/sourceforge/floggy/persistence/impl/PersistableManagerImpl.class");
+		embeddedClass("/net/sourceforge/floggy/persistence/impl/PersistableManagerImpl$RecordStoreReference.class");
+		embeddedClass("/net/sourceforge/floggy/persistence/impl/PersistableMetadata.class");
+		embeddedClass("/net/sourceforge/floggy/persistence/impl/SerializationHelper.class");
+	}
+
 	public void execute() throws WeaverException {
 		long time = System.currentTimeMillis();
 		LOG.info("CLDC version: " + ((isCLDC10()) ? "1.0" : "1.1"));
 		try {
+//			readConfiguration();
 			embeddedUnderlineCoreClasses();
 			List list = getClassThatImplementsPersistable();
 			int classCount = list.size();
@@ -124,9 +143,9 @@ public class Weaver {
 				LOG.info("Processing bytecode " + className + "!");
 
 				CodeGenerator codeGenerator = new CodeGenerator(ctClass,
-						generateSource, addDefaultConstructor);
+						configuration);
 				codeGenerator.generateCode();
-				if (generateSource) {
+				if (configuration.isGenerateSource()) {
 					byte[] source = codeGenerator.getSource().getBytes();
 					String fileName = className
 							.replace('.', File.separatorChar)
@@ -139,11 +158,11 @@ public class Weaver {
 				this.outputPool.addClass(ctClass);
 				LOG.debug("Bytecode modified.");
 			}
+//			writeConfiguration();
 		} catch (Exception e) {
 			LOG.error(e.getMessage(), e);
 			throw new WeaverException(e.getMessage());
 		}
-
 		// Status
 		time = System.currentTimeMillis() - time;
 		LOG.info("Time elapsed: " + time + "ms");
@@ -206,6 +225,19 @@ public class Weaver {
 		return list;
 	}
 
+//	private XStream getXStream() {
+//		XStream stream = new XStream();
+//		stream.alias("floggy", Configuration.class);
+//		stream.useAttributeFor(Configuration.class, "generateSource");
+//		stream.useAttributeFor(Configuration.class, "addDefaultConstructor");
+//
+//		stream.aliasType("persistables", ArrayList.class);
+//
+//		stream.alias("persistable", PersistableConfiguration.class);
+//		stream.useAttributeFor(PersistableConfiguration.class, "className");
+//		return stream;
+//	}
+
 	private boolean isCLDC10() {
 		try {
 			CtClass ctClass = classpathPool.get("java.io.DataInput");
@@ -216,9 +248,13 @@ public class Weaver {
 		return false;
 	}
 
-	public void setAddDefaultConstructor(boolean addDefaultConstructor) {
-		this.addDefaultConstructor = addDefaultConstructor;
-	}
+//	private void readConfiguration() throws IOException {
+//		if (configFile != null && configFile.exists()) {
+//			XStream stream = getXStream();
+//			configuration = (Configuration) stream
+//					.fromXML(new FileReader(configFile));
+//		}
+//	}
 
 	/**
 	 * Sets the classpath.
@@ -236,12 +272,8 @@ public class Weaver {
 		}
 	}
 
-	/**
-	 * @param generateSource
-	 *            the generateSource to set
-	 */
-	public void setGenerateSource(boolean generateSource) {
-		this.generateSource = generateSource;
+	public void setConfiguration(Configuration configuration) {
+		this.configuration = configuration;
 	}
 
 	/**
@@ -268,5 +300,13 @@ public class Weaver {
 	public void setOutputFile(File outputFile) throws WeaverException {
 		this.outputPool = PoolFactory.createOutputPool(outputFile);
 	}
+
+//	private void writeConfiguration() throws IOException {
+//		if (configFile == null) {
+//			configFile= new File("floggy.xml");
+//		}
+//		XStream stream = getXStream();
+//		stream.toXML(configuration, new FileWriter(configFile));
+//	}
 
 }
