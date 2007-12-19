@@ -18,6 +18,7 @@ package net.sourceforge.floggy.persistence.rms;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
+import junit.framework.Assert;
 import junit.framework.TestCase;
 import net.sourceforge.floggy.persistence.Filter;
 import net.sourceforge.floggy.persistence.FloggyException;
@@ -136,7 +137,7 @@ public abstract class AbstractTest extends TestCase {
 				getClassesFromObjects(new Object[] { param }));
 		method.invoke(object, new Object[] { param });
 	}
-
+	
 	public void testDelete() throws Exception {
 		Persistable object = newInstance();
 		int id = manager.save(object);
@@ -188,6 +189,15 @@ public abstract class AbstractTest extends TestCase {
 	}
 
 	public void testFind() throws Exception {
+		Persistable object = newInstance();
+		setX(object, getValueForSetMethod());
+		manager.save(object);
+		ObjectSet set = manager.find(object.getClass(), null, null);
+		assertTrue(1 <= set.size());
+		manager.delete(object);
+	}
+
+	public void testFindWithFilter() throws Exception {
 		Persistable object = newInstance();
 		setX(object, getValueForSetMethod());
 		int id = manager.save(object);

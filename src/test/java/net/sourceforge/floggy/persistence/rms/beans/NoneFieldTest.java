@@ -15,6 +15,7 @@
  */
 package net.sourceforge.floggy.persistence.rms.beans;
 
+import net.sourceforge.floggy.persistence.ObjectSet;
 import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.beans.FloggyNoneFields;
 import net.sourceforge.floggy.persistence.rms.AbstractTest;
@@ -28,8 +29,16 @@ public class NoneFieldTest extends AbstractTest {
 	public Persistable newInstance() {
 		return new FloggyNoneFields();
 	}
-
+	
 	public void testFind() throws Exception {
+		Persistable object = newInstance();
+		manager.save(object);
+		ObjectSet set = manager.find(object.getClass(), null, null);
+		assertTrue(1 <= set.size());
+		manager.delete(object);
+	}
+
+	public void testFindWithFilter() throws Exception {
 	}
 
 	public void testNotNullAttribute() throws Exception {

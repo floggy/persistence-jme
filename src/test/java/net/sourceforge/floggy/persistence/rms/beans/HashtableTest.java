@@ -21,9 +21,8 @@ import java.util.Vector;
 
 import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.beans.FloggyHashtable;
-import net.sourceforge.floggy.persistence.rms.AbstractTest;
 
-public class HashtableTest extends AbstractTest {
+public class HashtableTest /**extends AbstractTest*/ {
 
 	public final static Hashtable hashtable = new Hashtable();
 	
