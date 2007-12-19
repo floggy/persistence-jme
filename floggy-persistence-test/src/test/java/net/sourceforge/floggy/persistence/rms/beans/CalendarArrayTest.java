@@ -22,9 +22,12 @@ import net.sourceforge.floggy.persistence.beans.FloggyCalendarArray;
 import net.sourceforge.floggy.persistence.rms.AbstractTest;
 
 public class CalendarArrayTest extends AbstractTest {
+	
+	protected Calendar[] calendars= new Calendar[]{ CalendarTest.calendar, null, Calendar.getInstance() };
+
 
 	public Object getValueForSetMethod() {
-		return new Calendar[] { CalendarTest.calendar, null, Calendar.getInstance() };
+		return calendars;
 	}
 
 	public Persistable newInstance() {

@@ -32,7 +32,7 @@ public class TransientTest extends AbstractTest {
 		return new FloggyTransient();
 	}
 
-	public void testFind() throws Exception {
+	public void testFindWithFilter() throws Exception {
 		Persistable object = newInstance();
 		setX(object, getValueForSetMethod());
 		manager.save(object);
