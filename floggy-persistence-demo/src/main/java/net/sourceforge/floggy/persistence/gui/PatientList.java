@@ -42,7 +42,7 @@ public class PatientList extends List implements CommandListener {
 
         try {
             this.deleteAll();
-
+            
             pacientes = pm.find(Patient.class, null, new Comparator() {
                 public int compare(Persistable arg0, Persistable arg1) {
                     String s1 = arg0 == null ? "" : ((Patient) arg0).getNome();
@@ -64,7 +64,7 @@ public class PatientList extends List implements CommandListener {
             }
 
         } catch (FloggyException e) {
-            e.printStackTrace();
+        	HospitalMIDlet.showException(e);
         }
     }
 
@@ -100,7 +100,7 @@ public class PatientList extends List implements CommandListener {
                             .get(this.getSelectedIndex());
                     HospitalMIDlet.setCurrent(new PatientForm(paciente));
                 } catch (FloggyException e) {
-                    e.printStackTrace();
+                	HospitalMIDlet.showException(e);
                 }
             }
         } else if (cmd == this.cmdExcluir) {
@@ -112,7 +112,7 @@ public class PatientList extends List implements CommandListener {
                     PersistableManager.getInstance().delete(paciente);
                     this.iniciaDados();
                 } catch (FloggyException e) {
-                    e.printStackTrace();
+                	HospitalMIDlet.showException(e);
                 }
             }
         }

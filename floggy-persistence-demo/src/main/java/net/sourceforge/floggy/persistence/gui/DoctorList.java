@@ -59,7 +59,7 @@ public class DoctorList extends List implements CommandListener {
             }
 
         } catch (FloggyException e) {
-            e.printStackTrace();
+        	HospitalMIDlet.showException(e);
         }
     }
 
@@ -94,7 +94,7 @@ public class DoctorList extends List implements CommandListener {
                     medico = (Doctor) medicos.get(this.getSelectedIndex());
                     HospitalMIDlet.setCurrent(new DoctorForm(medico));
                 } catch (FloggyException e) {
-                    e.printStackTrace();
+                	HospitalMIDlet.showException(e);
                 }
             }
         } else if (cmd == this.cmdExcluir) {
@@ -106,7 +106,7 @@ public class DoctorList extends List implements CommandListener {
                     PersistableManager.getInstance().delete(medico);
                     this.iniciaDados();
                 } catch (FloggyException e) {
-                    e.printStackTrace();
+                	HospitalMIDlet.showException(e);
                 }
             }
         }

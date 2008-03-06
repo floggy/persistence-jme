@@ -42,10 +42,11 @@ public class BedList extends List implements CommandListener {
             for (int i = 0; i < leitos.size(); i++) {
                 Bed leito = (Bed) leitos.get(i);
                 this.append(leito.getNumber() + " - Andar " + leito.getFloor(), null);
+                pm.load(leito, 654);
             }
 
         } catch (FloggyException e) {
-            e.printStackTrace();
+        	HospitalMIDlet.showException(e);
         }
     }
 
@@ -80,7 +81,7 @@ public class BedList extends List implements CommandListener {
                     leito = (Bed) leitos.get(this.getSelectedIndex());
                     HospitalMIDlet.setCurrent(new BedForm(leito));
                 } catch (FloggyException e) {
-                    e.printStackTrace();
+                	HospitalMIDlet.showException(e);
                 }
             }
         } else if (cmd == this.cmdExcluir) {
@@ -91,7 +92,7 @@ public class BedList extends List implements CommandListener {
                     PersistableManager.getInstance().delete(leito);
                     this.iniciaDados();
                 } catch (FloggyException e) {
-                    e.printStackTrace();
+                	HospitalMIDlet.showException(e);
                 }
             }
         }

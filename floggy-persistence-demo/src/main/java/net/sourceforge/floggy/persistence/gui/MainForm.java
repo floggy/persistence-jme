@@ -6,9 +6,6 @@ import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.List;
 
 import net.sourceforge.floggy.persistence.HospitalMIDlet;
-import net.sourceforge.floggy.persistence.PersistableManager;
-import net.sourceforge.floggy.persistence.PersistableMetadata;
-import net.sourceforge.floggy.persistence.model.Formation;
 
 public class MainForm extends List implements CommandListener {
 
@@ -21,7 +18,6 @@ public class MainForm extends List implements CommandListener {
     }
 
     protected void cadastrosIniciais() {
-        PersistableManager pm = PersistableManager.getInstance();
     }
 
     protected void iniciaComponentes() {

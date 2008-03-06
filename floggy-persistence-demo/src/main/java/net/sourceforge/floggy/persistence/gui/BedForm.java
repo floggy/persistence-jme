@@ -57,7 +57,7 @@ public class BedForm extends Form implements CommandListener {
                 pm.save(leito);         
             
             } catch (FloggyException e) {
-                e.printStackTrace();
+            	HospitalMIDlet.showException(e);
             } 
         }
         
