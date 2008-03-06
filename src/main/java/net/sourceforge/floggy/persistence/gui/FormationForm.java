@@ -50,7 +50,7 @@ public class FormationForm extends Form implements CommandListener {
                 formacao.setFormacao(this.txtFormacao.getString());
                 pm.save(formacao);
             } catch (FloggyException e) {
-                e.printStackTrace();
+            	HospitalMIDlet.showException(e);
             }
         }
         

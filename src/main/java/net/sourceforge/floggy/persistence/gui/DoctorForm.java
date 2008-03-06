@@ -101,7 +101,7 @@ public class DoctorForm extends Form implements CommandListener {
                 pm.save(this.medico);
 
             } catch (FloggyException e) {
-                e.printStackTrace();
+            	HospitalMIDlet.showException(e);
             }
         }
         HospitalMIDlet.setCurrent(new DoctorList());
@@ -132,7 +132,7 @@ public class DoctorForm extends Form implements CommandListener {
             }
 
         } catch (FloggyException e) {
-            e.printStackTrace();
+        	HospitalMIDlet.showException(e);
         }
 
     }

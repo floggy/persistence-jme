@@ -64,7 +64,7 @@ public class InternmentList extends List implements CommandListener {
             }
 
         } catch (FloggyException e) {
-            e.printStackTrace();
+        	HospitalMIDlet.showException(e);
         }
     }
 
@@ -91,7 +91,7 @@ public class InternmentList extends List implements CommandListener {
                     PersistableManager.getInstance().save(internacao);
                     this.iniciaDados();
                 } catch (FloggyException e) {
-                    e.printStackTrace();
+                	HospitalMIDlet.showException(e);
                 }
             }
         }

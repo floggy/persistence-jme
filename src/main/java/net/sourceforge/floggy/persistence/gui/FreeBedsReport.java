@@ -52,7 +52,7 @@ public class FreeBedsReport extends List implements CommandListener {
 								return false;
 							}
 						} catch (FloggyException e) {
-							e.printStackTrace();
+				        	HospitalMIDlet.showException(e);
 						}
 					}
 
@@ -68,7 +68,7 @@ public class FreeBedsReport extends List implements CommandListener {
 			}
 
 		} catch (FloggyException e) {
-			e.printStackTrace();
+        	HospitalMIDlet.showException(e);
 		}
 	}
 

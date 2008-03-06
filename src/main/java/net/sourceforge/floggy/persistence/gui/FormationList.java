@@ -45,7 +45,7 @@ public class FormationList extends List implements CommandListener, Comparator {
             }
 
         } catch (FloggyException e) {
-            e.printStackTrace();
+        	HospitalMIDlet.showException(e);
         }
     }
 
@@ -81,7 +81,7 @@ public class FormationList extends List implements CommandListener, Comparator {
                             .get(this.getSelectedIndex());
                     HospitalMIDlet.setCurrent(new FormationForm(formacao));
                 } catch (FloggyException e) {
-                    e.printStackTrace();
+                	HospitalMIDlet.showException(e);
                 }
             }
         } else if (cmd == this.cmdExcluir) {
@@ -93,7 +93,7 @@ public class FormationList extends List implements CommandListener, Comparator {
                     PersistableManager.getInstance().delete(formacao);
                     this.iniciaDados();
                 } catch (FloggyException e) {
-                    e.printStackTrace();
+                	HospitalMIDlet.showException(e);
                 }
             }
         }

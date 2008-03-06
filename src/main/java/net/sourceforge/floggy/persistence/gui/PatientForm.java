@@ -103,7 +103,7 @@ public class PatientForm extends Form implements CommandListener {
                 pm.save(this.paciente);
 
             } catch (FloggyException e) {
-                e.printStackTrace();
+            	HospitalMIDlet.showException(e);
             }
         }
         HospitalMIDlet.setCurrent(new PatientList());

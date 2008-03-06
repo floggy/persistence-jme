@@ -112,7 +112,7 @@ public class InternmentForm extends Form implements CommandListener {
             }
 
         } catch (FloggyException e) {
-            e.printStackTrace();
+        	HospitalMIDlet.showException(e);
         }
 
     }
@@ -137,7 +137,7 @@ public class InternmentForm extends Form implements CommandListener {
             }
 
         } catch (FloggyException e) {
-            e.printStackTrace();
+        	HospitalMIDlet.showException(e);
         }
 
     }
@@ -152,7 +152,7 @@ public class InternmentForm extends Form implements CommandListener {
             }
 
         } catch (FloggyException e) {
-            e.printStackTrace();
+        	HospitalMIDlet.showException(e);
         }
 
     }
@@ -215,7 +215,7 @@ public class InternmentForm extends Form implements CommandListener {
                 this.internacao.setLeito(getLeitoSelecionado());
                 pm.save(this.internacao);
             } catch (FloggyException e) {
-                e.printStackTrace();
+            	HospitalMIDlet.showException(e);
             }
         }
         HospitalMIDlet.setCurrent(new MainForm());
