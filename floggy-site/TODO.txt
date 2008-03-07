@@ -11,7 +11,7 @@ Floggy
 - FEITO logomarca?? criar uma imagem.
 - FEITO criar script do netbenas, do maven, e shell scripts
 - documentar em código também
-- cuidado com o nome floggy pois é superset de flog (fotolog), regras de firewalls.
+- cuidado com o nome floggy pois é superset de flog (fotolog), regras de firewalls colocar no FAQ.
 - deixar mais claro para os usuários que o Floggy não usa reflection at runtime!
 - FEITO traduzir o digrama de execução do javac, floggy-weaver, preverifeir...
 - deixar claro nos datatypes que arrays de uma dimensão também são válidos
@@ -35,13 +35,14 @@ Floggy
 - translate this document
 - adicionar link para doações
 - FEITO adicionar link para o resultado dos testcases
-- adicionar ao FAQ o erro com o CLDC1.0 e a classe NoClassDefFoundError uando usamos construçoes "Class temp= Floggy.class"
+- FEITO adicionar ao FAQ o erro com o CLDC1.0 e a classe NoClassDefFoundError uando usamos construçoes "Class temp= Floggy.class"
 - adicionar ao FAQ o erro  java.lang.IllegalArgumentException: hello.Usuario is not a valid persistable class. Check the weaver execution! e sua solução mal configuração do weaver
 - adiconar checagem das classes que implementam Persistable se estas contêm um construtor publico e sem parametros, se não tiver adicionar caso esteja configurado
 - possibilitar abrir rMS de outros midlets suites
 - responder a pergunta e criar uma FAQ por versão??: http://www.javalobby.org/forums/thread.jspa?threadID=100688
 - fazer testcase para variáveis final
 - criar um arquivo de configuração floggy.xml
+- modificar os termos da licensa de 2006 para 2006-2008
 - postar notícias:
 	- FEITO www.javafree.org
 	- FEITO www.portaljava.com.br
@@ -95,6 +96,12 @@ MODULO DE PERSISTÊNCIA
 - na task ant setar o commons-logging para uma instancia do logger ant
 - transformar em opcional o atributo output da task ant
 - assinar digitalmente o plugin do Eclipse
+- resolver o BUG de usar o MIDP-1.0 (retirar os métodos read/writeFloat, read/writeBouble)
+- resolver o BUG de salvar uma subclasse de um objeto.
+- mudar FloggyException para estender RecordStoreException?????? acho que não adianta de nada, pensar melhor
+- melhorar o sistema de exceptions
+- trocar os bytes (0 e 1) de indicação de nullabilidade por campos static final. (NULL e NOT_NULL)
+- adicionar métodos para retornar a quantidade de itens salvos por entidade
 
 
 
