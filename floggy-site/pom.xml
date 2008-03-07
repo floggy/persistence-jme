@@ -6,7 +6,7 @@
 		<version>1.1</version>
 	</parent>
 	<artifactId>floggy-site</artifactId>
-	<version>1.0.1</version>
+	<version>1.1.0</version>
 	<repositories>
 		<repository>
 			<id>floggy</id>
@@ -27,4 +27,19 @@
 			</url>
 		</site>
 	</distributionManagement>
+	  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-changes-plugin</artifactId>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>changes-report</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+    </plugins>
+  </reporting>
 </project>
