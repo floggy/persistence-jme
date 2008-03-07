@@ -32,11 +32,13 @@
 			<id>floggy</id>
 			<url>http://floggy.sourceforge.net/repository</url>
 		</repository>
-		<repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
 			<id>pyx4j-web</id>
 			<url>http://www.pyx4j.com/maven2</url>
-		</repository>
-	</repositories>
+		</pluginRepository>
+	</pluginRepositories>
 	<scm>
 		<connection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/trunk/floggy-persistence-framework</connection>
 		<developerConnection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/trunk/floggy-persistence-framework</developerConnection>
@@ -75,6 +77,7 @@
 			<plugin>
 				<groupId>com.pyx4me</groupId>
 				<artifactId>j2me-maven-plugin</artifactId>
+				<version>2.0.1</version>
 				<executions>
 					<execution>
 						<goals>
