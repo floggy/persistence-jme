@@ -23,9 +23,10 @@ public class SourceCodeGeneratorFactory {
 
 	private static char indexForIteration = 'a';
 
-	public static SourceCodeGenerator getSourceCodeGenerator(CtClass persistableType,
-			String fieldName, CtClass fieldType) throws NotFoundException {
-		SourceCodeGenerator generator= null;
+	public static SourceCodeGenerator getSourceCodeGenerator(
+			CtClass persistableType, String fieldName, CtClass fieldType)
+			throws NotFoundException {
+		SourceCodeGenerator generator = null;
 
 		String className = fieldType.getName();
 
@@ -35,12 +36,27 @@ public class SourceCodeGeneratorFactory {
 			// Wrapper classes
 		} else if (isWrapper(fieldType)) {
 			generator = new WrapperGenerator(fieldName, fieldType);
-			// String
-		} else if (className.equals("java.lang.String")) {
-			generator = new StringGenerator(fieldName, fieldType);
+			// Calendar
+		} else if (className.equals("java.util.Calendar")) {
+			generator = new CalendarGenerator(fieldName, fieldType);
 			// Date
 		} else if (className.equals("java.util.Date")) {
 			generator = new DateGenerator(fieldName, fieldType);
+			// Hashtable
+		} else if (className.equals("java.util.Hashtable")) {
+			generator = new HashtableGenerator(fieldName, fieldType);
+			// Stack
+		} else if (className.equals("java.util.Stack")) {
+			generator = new StackGenerator(fieldName, fieldType);
+			// String
+		} else if (className.equals("java.lang.String")) {
+			generator = new StringGenerator(fieldName, fieldType);
+			// StringBuffer
+		} else if (className.equals("java.lang.StringBuffer")) {
+			generator = new StringBufferGenerator(fieldName, fieldType);
+			// TimeZone
+		} else if (className.equals("java.util.TimeZone")) {
+			generator = new TimeZoneGenerator(fieldName, fieldType);
 			// Vector
 		} else if (className.equals("java.util.Vector")) {
 			generator = new VectorGenerator(fieldName, fieldType);
@@ -48,14 +64,15 @@ public class SourceCodeGeneratorFactory {
 					.setUpInterableVariable(getNextIndexForIteration());
 			// Array
 		} else if (fieldType.isArray()) {
-			generator = new ArrayGenerator(persistableType, fieldName, fieldType);
+			generator = new ArrayGenerator(persistableType, fieldName,
+					fieldType);
 			((AttributeIterableGenerator) generator)
 					.setUpInterableVariable(getNextIndexForIteration());
 			// Persistable
 		} else if (isPersistable(fieldType)) {
-			generator = new PersistableGenerator(persistableType, fieldName, fieldType);
+			generator = new PersistableGenerator(persistableType, fieldName,
+					fieldType);
 		}
-			
 
 		if (generator == null) {
 			throw new NotFoundException("The class " + className
@@ -86,8 +103,9 @@ public class SourceCodeGeneratorFactory {
 				|| name.equals(Short.class.getName());
 
 	}
-	
-	private static boolean isPersistable(CtClass classType) throws NotFoundException {
+
+	private static boolean isPersistable(CtClass classType)
+			throws NotFoundException {
 		CtClass persistableClass = classType.getClassPool().get(
 				Persistable.class.getName());
 		return classType.subtypeOf(persistableClass);
