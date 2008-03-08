@@ -24,6 +24,10 @@ public class FloatTest extends AbstractTest {
 	static Float[] att = new Float[] { new Float(452.4354F),
 			new Float(56.345F), new Float(-3545.8989F) };
 
+	protected Class getParameterType() {
+		return Float[].class;
+	}
+	
 	public Object getValueForSetMethod() {
 		return att;
 	}

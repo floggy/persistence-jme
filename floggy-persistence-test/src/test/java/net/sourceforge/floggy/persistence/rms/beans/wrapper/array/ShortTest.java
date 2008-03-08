@@ -24,6 +24,10 @@ public class ShortTest extends AbstractTest {
 	static Short[] att = new Short[] { new Short((short) 2),
 			new Short((short) 56) };
 
+	protected Class getParameterType() {
+		return Short[].class;
+	}
+	
 	public Object getValueForSetMethod() {
 		return att;
 	}

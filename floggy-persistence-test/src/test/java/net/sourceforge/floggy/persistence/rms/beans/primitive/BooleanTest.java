@@ -20,12 +20,16 @@ import net.sourceforge.floggy.persistence.beans.primitive.TestBoolean;
 
 public class BooleanTest extends PrimitiveAbstractTest {
 
-	protected Class[] getClassesFromObjects(Object[] params) {
-		return new Class[] { boolean.class };
+	protected Class getParameterType() {
+		return boolean.class;
 	}
 
 	public Object getDefaultValue() {
 		return Boolean.FALSE;
+	}
+
+	public Object getNewValueForSetMethod() {
+		return Boolean.TRUE;
 	}
 
 	public Object getValueForSetMethod() {

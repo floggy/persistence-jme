@@ -21,6 +21,14 @@ import net.sourceforge.floggy.persistence.rms.AbstractTest;
 
 public class StringArrayTest extends AbstractTest {
 
+	protected Class getParameterType() {
+		return String[].class;
+	}
+	
+	public Object getNewValueForSetMethod() {
+		return new String[0];
+	}
+
 	public Object getValueForSetMethod() {
 		return new String[] { "floggy-framework", "batim" };
 	}

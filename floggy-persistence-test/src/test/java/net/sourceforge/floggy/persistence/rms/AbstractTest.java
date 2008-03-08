@@ -18,13 +18,15 @@ package net.sourceforge.floggy.persistence.rms;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
-import junit.framework.Assert;
+import javax.microedition.rms.InvalidRecordIDException;
+
 import junit.framework.TestCase;
 import net.sourceforge.floggy.persistence.Filter;
 import net.sourceforge.floggy.persistence.FloggyException;
 import net.sourceforge.floggy.persistence.ObjectSet;
 import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.PersistableManager;
+import net.sourceforge.floggy.persistence.beans.Person;
 
 import org.microemu.MIDletBridge;
 
@@ -69,17 +71,15 @@ public abstract class AbstractTest extends TestCase {
 						(Object[]) o1, (Object[]) o2));
 			}
 		} else {
+			if (o1 instanceof Person) {
+				System.out.println(((Person)o1).getX().getClass());
+				System.out.println(((Person)o2).getX().getClass());
+			}
 			assertEquals("Deveria ser igual!", o1, o2);
 		}
 	}
 
-	protected Class[] getClassesFromObjects(Object[] params) {
-		Class[] classes = new Class[params.length];
-		for (int i = 0; i < params.length; i++) {
-			classes[i] = params[i].getClass();
-		}
-		return classes;
-	}
+	protected abstract Class getParameterType();
 
 	public Filter getFilter() {
 		return new Filter() {
@@ -125,6 +125,10 @@ public abstract class AbstractTest extends TestCase {
 
 	public abstract Object getValueForSetMethod();
 
+	public Object getNewValueForSetMethod() {
+		return null;
+	}
+
 	protected Object getX(Object object) throws Exception {
 		Method method = object.getClass().getMethod("getX", new Class[0]);
 		return method.invoke(object, new Object[0]);
@@ -133,8 +137,7 @@ public abstract class AbstractTest extends TestCase {
 	public abstract Persistable newInstance();
 
 	protected void setX(Object object, Object param) throws Exception {
-		Method method = object.getClass().getMethod("setX",
-				getClassesFromObjects(new Object[] { param }));
+		Method method = object.getClass().getMethod("setX", new Class[]{getParameterType()});
 		method.invoke(object, new Object[] { param });
 	}
 	
@@ -266,5 +269,26 @@ public abstract class AbstractTest extends TestCase {
 			assertEquals(e.getClass(), IllegalArgumentException.class);
 		}
 	}
+	
+	public void testSaveAndEdit() throws Exception {
+		Persistable object = newInstance();
+		int id = manager.save(object);
+		assertTrue("Deveria ser diferente de -1!", id != -1);
+		object = newInstance();
+		manager.load(object, id);
+		setX(object, getNewValueForSetMethod());
+		int tempId= manager.save(object);
+		assertEquals(id, tempId);
+	}
+	
+	public void testSaveWithRecordIdThatDontExist() {
+		try {
+			manager.load(new Person(), 123234);
+			fail("A RecordStore exception must be throwed!");
+		} catch (Exception ex) {
+			assertEquals(InvalidRecordIDException.class.getName(), ex.getMessage());
+		}
+	}
+
 	
 }

@@ -21,6 +21,10 @@ import net.sourceforge.floggy.persistence.rms.AbstractTest;
 
 public class DoubleTest extends AbstractTest {
 
+	protected Class getParameterType() {
+		return Double.class;
+	}
+	
 	public Object getValueForSetMethod() {
 		return new Double(23434560.897987987);
 	}

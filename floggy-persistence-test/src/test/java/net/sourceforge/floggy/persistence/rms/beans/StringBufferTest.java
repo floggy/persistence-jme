@@ -23,6 +23,14 @@ import net.sourceforge.floggy.persistence.rms.AbstractTest;
 public class StringBufferTest extends AbstractTest {
 
 	public final static StringBuffer stringBuffer= new StringBuffer("floggy test");
+	
+	protected Class getParameterType() {
+		return StringBuffer.class;
+	}
+	
+	public Object getNewValueForSetMethod() {
+		return new StringBuffer();
+	}
 
 	public Object getValueForSetMethod() {
 		return stringBuffer;

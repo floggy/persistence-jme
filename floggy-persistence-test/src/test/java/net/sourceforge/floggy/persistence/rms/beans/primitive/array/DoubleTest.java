@@ -23,6 +23,10 @@ public class DoubleTest extends AbstractTest {
 
 	static double[] att = new double[] { -3242.2342, 56, Double.MAX_VALUE };
 
+	protected Class getParameterType() {
+		return double[].class;
+	}
+	
 	public Object getValueForSetMethod() {
 		return att;
 	}

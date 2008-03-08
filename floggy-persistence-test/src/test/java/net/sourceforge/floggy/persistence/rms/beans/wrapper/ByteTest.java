@@ -21,6 +21,10 @@ import net.sourceforge.floggy.persistence.rms.AbstractTest;
 
 public class ByteTest extends AbstractTest {
 
+	protected Class getParameterType() {
+		return Byte.class;
+	}
+	
 	public Object getValueForSetMethod() {
 		return new Byte((byte) 23);
 	}

@@ -19,13 +19,17 @@ import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.beans.primitive.TestLong;
 
 public class LongTest extends PrimitiveAbstractTest {
-
-	protected Class[] getClassesFromObjects(Object[] params) {
-		return new Class[] { long.class };
+	
+	protected Class getParameterType() {
+		return long.class;
 	}
-
+	
 	public Object getDefaultValue() {
 		return new Long(0);
+	}
+
+	public Object getNewValueForSetMethod() {
+		return new Long((long)654);
 	}
 
 	public Object getValueForSetMethod() {

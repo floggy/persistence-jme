@@ -24,6 +24,13 @@ public class TransientTest extends AbstractTest {
 
 	static final Object object = new Object();
 
+	protected Class getParameterType() {
+		return Object.class;
+	}
+	public Object getNewValueForSetMethod() {
+		return new Object();
+	}
+
 	public Object getValueForSetMethod() {
 		return object;
 	}

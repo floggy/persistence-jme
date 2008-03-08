@@ -23,6 +23,10 @@ public class IntTest extends AbstractTest {
 
 	static int[] att = new int[] { -2345, -34576, 2, 56 };
 
+	protected Class getParameterType() {
+		return int[].class;
+	}
+	
 	public Object getValueForSetMethod() {
 		return att;
 	}

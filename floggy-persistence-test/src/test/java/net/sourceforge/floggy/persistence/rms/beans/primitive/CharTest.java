@@ -20,12 +20,16 @@ import net.sourceforge.floggy.persistence.beans.primitive.TestChar;
 
 public class CharTest extends PrimitiveAbstractTest {
 
-	protected Class[] getClassesFromObjects(Object[] params) {
-		return new Class[] { char.class };
+	protected Class getParameterType() {
+		return char.class;
 	}
-
+	
 	public Object getDefaultValue() {
 		return new Character('\u0000');
+	}
+
+	public Object getNewValueForSetMethod() {
+		return new Character((char)654);
 	}
 
 	public Object getValueForSetMethod() {

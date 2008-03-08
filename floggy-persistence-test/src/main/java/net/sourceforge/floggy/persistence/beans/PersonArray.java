@@ -16,6 +16,7 @@
 package net.sourceforge.floggy.persistence.beans;
 
 import net.sourceforge.floggy.persistence.Persistable;
+import net.sourceforge.floggy.persistence.beans.animals.Bird;
 
 /**
  * @author Thiago Leão Moreira <thiagolm@users.sourceforge.net>
@@ -25,7 +26,7 @@ public class PersonArray implements Persistable {
 
 	protected String[] name;
 
-	protected Person[] x;
+	protected Bird[] x;
 
 	/**
 	 * 
@@ -65,7 +66,7 @@ public class PersonArray implements Persistable {
 		return name;
 	}
 
-	public Person[] getX() {
+	public Bird[] getX() {
 		return x;
 	}
 
@@ -77,7 +78,7 @@ public class PersonArray implements Persistable {
 		this.name = name;
 	}
 
-	public void setX(Person[] x) {
+	public void setX(Bird[] x) {
 		this.x = x;
 	}
 }

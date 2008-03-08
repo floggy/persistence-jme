@@ -23,6 +23,10 @@ public class CharTest extends AbstractTest {
 
 	static char[] att = new char[] { 'u', ',', 2, 56 };
 
+	protected Class getParameterType() {
+		return char[].class;
+	}
+	
 	public Object getValueForSetMethod() {
 		return att;
 	}

@@ -41,10 +41,18 @@ public class VectorTest extends AbstractTest {
 		vector.add(new Short(Short.MIN_VALUE));
 		vector.add(new Date(12345678));
 		Person person = new Person();
-		person.setAge(23);
-		person.setName("�çõí");
+		person.setCpf("23321654");
+		person.setNome("�çõí");
 		vector.add(person);
 		vector.add(null);
+	}
+
+	protected Class getParameterType() {
+		return Vector.class;
+	}
+	
+	public Object getNewValueForSetMethod() {
+		return new Vector();
 	}
 
 	public Object getValueForSetMethod() {
