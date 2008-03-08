@@ -229,6 +229,15 @@ public abstract class AbstractTest extends TestCase {
 			assertEquals(e.getClass(), IllegalArgumentException.class);
 		}
 	}
+	
+	public void testIsPersisted() throws Exception {
+		Persistable object = newInstance();
+		boolean isPersisted= manager.isPersisted(object);
+		assertFalse(isPersisted);
+		manager.save(object);
+		isPersisted= manager.isPersisted(object);
+		assertTrue(isPersisted);
+	}
 
 	public void testLoadWithNullObject() {
 		try {
