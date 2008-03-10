@@ -15,7 +15,9 @@
  */
 package net.sourceforge.floggy.persistence.rms.beans;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 import java.util.Vector;
 
 import net.sourceforge.floggy.persistence.Persistable;
@@ -40,6 +42,12 @@ public class VectorTest extends AbstractTest {
 		vector.add(new Long(Long.MAX_VALUE));
 		vector.add(new Short(Short.MIN_VALUE));
 		vector.add(new Date(12345678));
+		vector.add(TimeZone.getDefault());
+		Calendar c= Calendar.getInstance();
+		c.setTimeInMillis(233456567);
+		vector.add(c);
+//		break the build because the class StringBuffer doesn't implements the equals method. 
+//		vector.add(new StringBuffer("testestringbuffer"));
 		Person person = new Person();
 		person.setCpf("23321654");
 		person.setNome("�çõí");
@@ -76,5 +84,6 @@ public class VectorTest extends AbstractTest {
 					+ " doesn't is a persistable class!", e.getMessage());
 		}
 	}
+	
 
 }
