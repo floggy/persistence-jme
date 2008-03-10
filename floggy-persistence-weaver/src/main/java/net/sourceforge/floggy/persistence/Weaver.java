@@ -28,6 +28,7 @@ import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.NotFoundException;
 import net.sourceforge.floggy.persistence.codegen.CodeGenerator;
+import net.sourceforge.floggy.persistence.impl.FloggyProperties;
 import net.sourceforge.floggy.persistence.pool.InputPool;
 import net.sourceforge.floggy.persistence.pool.OutputPool;
 import net.sourceforge.floggy.persistence.pool.PoolFactory;
@@ -51,8 +52,6 @@ public class Weaver {
 
 	private ClassPool classpathPool;
 	
-	private File configFile;
-
 	private Configuration configuration = new Configuration();
 
 	private InputPool inputPool;
@@ -116,6 +115,7 @@ public class Weaver {
 
 	private void embeddedUnderlineCoreClasses() throws IOException {
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/FloggyOutputStream.class");
+		embeddedClass("/net/sourceforge/floggy/persistence/impl/FloggyProperties.class");
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/ObjectComparator.class");
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/ObjectFilter.class");
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/ObjectSetImpl.class");
@@ -128,6 +128,7 @@ public class Weaver {
 
 	public void execute() throws WeaverException {
 		long time = System.currentTimeMillis();
+		LOG.info("Floggy Persistence Weaver - "+FloggyProperties.CURRENT_VERSION);
 		LOG.info("CLDC version: " + ((isCLDC10()) ? "1.0" : "1.1"));
 		try {
 //			readConfiguration();
