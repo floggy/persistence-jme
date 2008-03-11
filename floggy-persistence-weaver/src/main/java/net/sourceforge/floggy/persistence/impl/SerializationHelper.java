@@ -105,10 +105,16 @@ public class SerializationHelper {
 
 	public final static Persistable readPersistable(DataInput in,
 			Persistable persistable) throws Exception {
-		if (in.readByte() == 0) {
+		switch (in.readByte()) {
+		case -1:
+			String className= in.readUTF();
+			persistable= (Persistable)Class.forName(className).newInstance();
+		case 0:
 			manager.load(persistable, in.readInt());
-		} else {
+			break;
+		case 1:
 			persistable = null;
+			break;
 		}
 		return persistable;
 	}
@@ -335,11 +341,17 @@ public class SerializationHelper {
 		}
 	}
 
-	public final static void writePersistable(DataOutput out, Persistable persistable) throws Exception {
+	public final static void writePersistable(DataOutput out, String defaultClassName, Persistable persistable) throws Exception {
 		if (persistable == null) {
 			out.writeByte(1);
 		} else {
-			out.writeByte(0);
+			String className= persistable.getClass().getName();
+			if (!defaultClassName.equals(className)) {
+				out.writeByte(-1);
+				out.writeUTF(className);
+			} else {
+				out.writeByte(0);
+			}
 			out.writeInt(manager.save(persistable));
 		}
 	}

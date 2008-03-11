@@ -35,8 +35,8 @@ public class PersistableGenerator extends SourceCodeGenerator {
 	}
 
 	public void initSaveCode() throws NotFoundException {
-		addSaveCode("net.sourceforge.floggy.persistence.impl.SerializationHelper.writePersistable(fos, "
-				+ fieldName + ");");
+		addSaveCode("net.sourceforge.floggy.persistence.impl.SerializationHelper.writePersistable(fos, \""
+				+fieldType.getName()+"\", "+ fieldName + ");");
 	}
 
 }
