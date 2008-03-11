@@ -2,7 +2,7 @@
 <feature
       id="net.sourceforge.floggy.feature"
       label="Floggy"
-      version="1.0.0"
+      version="1.1.0"
       provider-name="Floggy Open Source Group"
       plugin="net.sourceforge.floggy">
 
@@ -199,8 +199,9 @@
 
    <plugin
          id="net.sourceforge.floggy"
-         download-size="583"
-         install-size="583"
-         version="1.0.0"/>
+         download-size="602"
+         install-size="602"
+         version="1.1.0"
+         unpack="false"/>
 
 </feature>
