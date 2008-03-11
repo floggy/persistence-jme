@@ -201,6 +201,7 @@ public class PersistableManagerImpl extends PersistableManager {
 			RecordStore rs = PersistableManagerImpl
 					.getRecordStore(__persistable.__getPersistableMetadata());
 			try {
+				__persistable.__delete();
 				rs.deleteRecord(id);
 				__persistable.__setId(-1);
 			} catch (RecordStoreException ex) {

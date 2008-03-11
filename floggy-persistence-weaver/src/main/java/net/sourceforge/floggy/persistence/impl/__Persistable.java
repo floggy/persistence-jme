@@ -15,6 +15,7 @@
  */
 package net.sourceforge.floggy.persistence.impl;
 
+import net.sourceforge.floggy.persistence.FloggyException;
 import net.sourceforge.floggy.persistence.Persistable;
 
 /**
@@ -31,6 +32,8 @@ public interface __Persistable extends Persistable {
 	public int __getId();
 
 	public void __setId(int id);
+	
+	public void __delete() throws FloggyException;
 
 	public void __deserialize(byte[] buffer) throws Exception;
 
