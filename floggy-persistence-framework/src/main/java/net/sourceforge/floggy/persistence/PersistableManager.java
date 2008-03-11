@@ -157,8 +157,8 @@ public abstract class PersistableManager {
 	/**
 	 * Check if the object is already persisted.
 	 * <br>
-	 * The method only check if the underline system has an entry for the 
-	 * given persistable object. The method don't check if the fields have changed.
+	 * <b>WARNING</b> The method only checks if the underline system has an entry for the 
+	 * given persistable object. The method doesn't checks if the fields have changed.
 	 *    
 	 * @param persistable
 	 *            Object to be checked the persistable state.
