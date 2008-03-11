@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Floggy Plug-in
 Bundle-SymbolicName: net.sourceforge.floggy; singleton:=true
-Bundle-Version: 1.0.0
+Bundle-Version: 1.1.0
 Bundle-Activator: net.sourceforge.floggy.eclipse.Activator
 Bundle-Vendor: Floggy Open Source Group
 Require-Bundle: org.eclipse.ui,
@@ -15,8 +15,8 @@ Bundle-ClassPath: .,
  lib/commons-io-1.2.jar,
  lib/commons-logging-1.0.4.jar,
  lib/javassist-3.4.ga.jar,
- lib/floggy-persistence-framework-1.0.2.jar,
- lib/floggy-persistence-weaver-1.0.2.jar
+ lib/floggy-persistence-framework-1.1.0.jar,
+ lib/floggy-persistence-weaver-1.1.0.jar
 Export-Package: net,
  net.sourceforge,
  net.sourceforge.floggy,

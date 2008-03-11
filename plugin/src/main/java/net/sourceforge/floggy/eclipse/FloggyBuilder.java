@@ -22,6 +22,7 @@ import java.util.Map;
 
 import javassist.ClassPool;
 import javassist.NotFoundException;
+import net.sourceforge.floggy.persistence.Configuration;
 import net.sourceforge.floggy.persistence.Weaver;
 
 import org.apache.commons.io.FileUtils;
@@ -117,8 +118,10 @@ public class FloggyBuilder extends IncrementalProjectBuilder {
 					weaver.setInputFile(input);
 					weaver.setClasspath((String[]) classpathList
 							.toArray(new String[0]));
-					weaver.setAddDefaultConstructor(addDefaultConstructor);
-					weaver.setGenerateSource(generateSource);
+					Configuration configuration= new Configuration();
+					configuration.setAddDefaultConstructor(addDefaultConstructor);
+					configuration.setGenerateSource(generateSource);
+					weaver.setConfiguration(configuration);
 					weaver.execute();
 					FileUtils.copyDirectory(temp, input);
 					FileUtils.forceDelete(temp);
