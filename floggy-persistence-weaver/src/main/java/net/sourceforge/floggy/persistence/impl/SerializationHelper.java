@@ -448,7 +448,7 @@ public class SerializationHelper {
 				} else if (object instanceof Calendar) {
 					Calendar c= (Calendar) object;
 					out.writeUTF(c.getTimeZone().getID());
-					out.writeLong(c.getTimeInMillis());
+					out.writeLong(c.getTime().getTime());
 				} else if (object instanceof Date) {
 					out.writeLong(((Date) object).getTime());
 				} else if (object instanceof TimeZone) {
