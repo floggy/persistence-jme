@@ -22,7 +22,7 @@ public class SerializationHelper {
 	public final static Boolean readBoolean(DataInput in) throws IOException {
 		Boolean b = null;
 		if (in.readByte() == 0) {
-			b = (in.readBoolean()) ? Boolean.TRUE : Boolean.FALSE;
+			b = (in.readBoolean()) ? new Boolean(true) : new Boolean(false);
 		}
 		return b;
 	}
@@ -193,6 +193,75 @@ public class SerializationHelper {
 					}
 					if (className.equals("java.lang.Float")) {
 						v.addElement(new Float(in.readFloat()));
+						continue;
+					}
+					if (className.equals("java.lang.Integer")) {
+						v.addElement(new Integer(in.readInt()));
+						continue;
+					}
+					if (className.equals("java.lang.Long")) {
+						v.addElement(new Long(in.readLong()));
+						continue;
+					}
+					if (className.equals("java.lang.Short")) {
+						v.addElement(new Short(in.readShort()));
+						continue;
+					}
+					if (className.equals("java.lang.String")) {
+						v.addElement(in.readUTF());
+						continue;
+					}
+					if (className.equals("java.lang.StringBuffer")) {
+						v.addElement(new StringBuffer(in.readUTF()));
+						continue;
+					}
+					if (className.equals("java.util.Calendar")) {
+						String timeZoneID = in.readUTF();
+						Calendar c = Calendar.getInstance(TimeZone.getTimeZone(timeZoneID));
+						c.setTime(new Date(in.readLong()));
+						v.addElement(c);
+						continue;
+					}
+					if (className.equals("java.util.Date")) {
+						v.addElement(new Date(in.readLong()));
+						continue;
+					}
+					if (className.equals("java.util.TimeZone")) {
+						v.addElement(TimeZone.getTimeZone(in.readUTF()));
+						continue;
+					}
+					Class persistableClass = Class.forName(className);
+					Object object = persistableClass.newInstance();
+					manager.load((Persistable) object, in.readInt());
+					v.addElement(object);
+				}
+			}
+		}
+		return v;
+	}
+
+
+	public final static Vector readVectorCLDC10(DataInput in) throws Exception {
+		Vector v = null;
+		if (in.readByte() == 0) {
+			int size = in.readInt();
+			v = new Vector(size);
+			for (int i = 0; i < size; i++) {
+				if (in.readByte() == 1) {
+					v.addElement(null);
+					continue;
+				} else {
+					String className = in.readUTF();
+					if (className.equals("java.lang.Boolean")) {
+						v.addElement(new Boolean(in.readBoolean()));
+						continue;
+					}
+					if (className.equals("java.lang.Byte")) {
+						v.addElement(new Byte(in.readByte()));
+						continue;
+					}
+					if (className.equals("java.lang.Character")) {
+						v.addElement(new Character(in.readChar()));
 						continue;
 					}
 					if (className.equals("java.lang.Integer")) {
@@ -435,6 +504,67 @@ public class SerializationHelper {
 					out.writeDouble(((Double) object).doubleValue());
 				} else if (object instanceof Float) {
 					out.writeFloat(((Float) object).floatValue());
+				} else if (object instanceof Integer) {
+					out.writeInt(((Integer) object).intValue());
+				} else if (object instanceof Long) {
+					out.writeLong(((Long) object).longValue());
+				} else if (object instanceof Short) {
+					out.writeShort(((Short) object).shortValue());
+				} else if (object instanceof String) {
+					out.writeUTF(object.toString());
+				} else if (object instanceof StringBuffer) {
+					out.writeUTF(object.toString());
+				} else if (object instanceof Calendar) {
+					Calendar c= (Calendar) object;
+					out.writeUTF(c.getTimeZone().getID());
+					out.writeLong(c.getTime().getTime());
+				} else if (object instanceof Date) {
+					out.writeLong(((Date) object).getTime());
+				} else if (object instanceof TimeZone) {
+					TimeZone t= (TimeZone) object;
+					out.writeUTF(t.getID());
+				} else if (object instanceof __Persistable) {
+					int id = manager.save((Persistable) object);
+					out.writeInt(id);
+				} else {
+					throw new FloggyException("The class " + className
+							+ " doesn't is a persistable class!");
+				}
+			}
+		}
+	}
+
+
+	public final static void writeVectorCLDC10(DataOutput out, Vector v)
+			throws Exception {
+		if (v == null) {
+			out.writeByte(1);
+		} else {
+			out.writeByte(0);
+			int size = v.size();
+			out.writeInt(size);
+			for (int i = 0; i < size; i++) {
+				Object object = v.elementAt(i);
+				if (object == null) {
+					out.writeByte(1);
+					continue;
+				}
+				out.writeByte(0);
+				
+				String className = object.getClass().getName();
+				if (object instanceof Calendar) {
+					className= "java.util.Calendar";
+				} else if (object instanceof TimeZone) {
+					className= "java.util.TimeZone";
+				}
+				out.writeUTF(className);
+				
+				if (object instanceof Boolean) {
+					out.writeBoolean(((Boolean) object).booleanValue());
+				} else if (object instanceof Byte) {
+					out.writeByte(((Byte) object).byteValue());
+				} else if (object instanceof Character) {
+					out.writeChar(((Character) object).charValue());
 				} else if (object instanceof Integer) {
 					out.writeInt(((Integer) object).intValue());
 				} else if (object instanceof Long) {

@@ -24,8 +24,10 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import javassist.CannotCompileException;
 import javassist.ClassPool;
 import javassist.CtClass;
+import javassist.CtMethod;
 import javassist.NotFoundException;
 import net.sourceforge.floggy.persistence.codegen.CodeGenerator;
 import net.sourceforge.floggy.persistence.impl.FloggyProperties;
@@ -125,6 +127,38 @@ public class Weaver {
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/PersistableMetadata.class");
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/SerializationHelper.class");
 	}
+	
+	protected void adaptFrameworkToTargetCLDC() throws IOException, CannotCompileException, NotFoundException {
+		CtClass ctClass= this.classpathPool.get("net.sourceforge.floggy.persistence.impl.SerializationHelper");
+		if (isCLDC10()) {
+			CtMethod[] methods= ctClass.getMethods();
+			for (int i = 0; i < methods.length; i++) {
+				String methodName= methods[i].getName(); 
+				if (methodName.contains("Float") || methodName.contains("Double") || methodName.equals("readVector") || methodName.equals("writeVector")) {
+					ctClass.removeMethod(methods[i]);
+				}
+			}
+			//this is done in two steps because we can't guarantee that the read/writeVector methods will be removed before the rename step.   
+			for (int i = 0; i < methods.length; i++) {
+				String methodName= methods[i].getName(); 
+				if (methodName.equals("readVectorCLDC10")) {
+					methods[i].setName("readVector");
+				}
+				if (methodName.equals("writeVectorCLDC10")) {
+					methods[i].setName("writeVector");
+				}
+			}
+		} else {
+			CtMethod[] methods= ctClass.getMethods();
+			for (int i = 0; i < methods.length; i++) {
+				String methodName= methods[i].getName(); 
+				if (methodName.contains("CLDC10")) {
+					ctClass.removeMethod(methods[i]);
+				}
+			}
+		}
+		outputPool.addClass(ctClass);
+	}
 
 	public void execute() throws WeaverException {
 		long time = System.currentTimeMillis();
@@ -133,6 +167,7 @@ public class Weaver {
 		try {
 //			readConfiguration();
 			embeddedUnderlineCoreClasses();
+			adaptFrameworkToTargetCLDC();
 			List list = getClassThatImplementsPersistable();
 			int classCount = list.size();
 			LOG.info("Processing " + classCount + " bytecodes!");
