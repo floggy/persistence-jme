@@ -23,6 +23,14 @@ import net.sourceforge.floggy.persistence.rms.AbstractTest;
 
 public class StackArrayTest extends AbstractTest {
 
+	protected Class getParameterType() {
+		return Stack[].class;
+	}
+	
+	public Object getNewValueForSetMethod() {
+		return new Stack[0];
+	}
+
 	public Object getValueForSetMethod() {
 		return new Stack[] { StackTest.stack, null, new Stack() };
 	}

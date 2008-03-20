@@ -23,6 +23,13 @@ import net.sourceforge.floggy.persistence.rms.AbstractTest;
 
 public class VectorArrayTest extends AbstractTest {
 
+	protected Class getParameterType() {
+		return Vector[].class;
+	}
+	public Object getNewValueForSetMethod() {
+		return new Vector[0];
+	}
+
 	public Object getValueForSetMethod() {
 		return new Vector[] { new Vector(), null, (Vector)new VectorTest().getValueForSetMethod()};
 	}

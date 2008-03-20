@@ -22,6 +22,14 @@ import net.sourceforge.floggy.persistence.rms.AbstractTest;
 
 public class NoneFieldTest extends AbstractTest {
 
+	protected Class getParameterType() {
+		return null;
+	}
+	
+	public Object getNewValueForSetMethod() {
+		return null;
+	}
+
 	public Object getValueForSetMethod() {
 		return null;
 	}
@@ -58,6 +66,17 @@ public class NoneFieldTest extends AbstractTest {
 		object = newInstance();
 		manager.load(object, id);
 		manager.delete(object);
+	}
+	
+	public void testSaveAndEdit() throws Exception {
+		Persistable object = newInstance();
+		int id = manager.save(object);
+		assertTrue("Deveria ser diferente de -1!", id != -1);
+		object = newInstance();
+		manager.load(object, id);
+		//there is nothing to edit
+		int tempId= manager.save(object);
+		assertEquals(id, tempId);
 	}
 
 }

@@ -24,6 +24,10 @@ public class CharacterTest extends AbstractTest {
 	static Character[] att = new Character[] { new Character('u'),
 			new Character(','), new Character((char) 2), new Character('5') };
 
+	protected Class getParameterType() {
+		return Character[].class;
+	}
+	
 	public Object getValueForSetMethod() {
 		return att;
 	}

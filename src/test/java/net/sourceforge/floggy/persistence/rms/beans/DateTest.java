@@ -25,6 +25,16 @@ public class DateTest extends AbstractTest {
 
 	public final static Date date = new Date();
 
+	public final static Date newDate = new Date(1000*2000);
+
+	protected Class getParameterType() {
+		return Date.class;
+	}
+	
+	public Object getNewValueForSetMethod() {
+		return newDate;
+	}
+
 	public Object getValueForSetMethod() {
 		return date;
 	}

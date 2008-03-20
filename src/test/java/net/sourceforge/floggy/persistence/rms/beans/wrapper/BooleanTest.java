@@ -21,6 +21,10 @@ import net.sourceforge.floggy.persistence.rms.AbstractTest;
 
 public class BooleanTest extends AbstractTest {
 
+	protected Class getParameterType() {
+		return Boolean.class;
+	}
+	
 	public Object getValueForSetMethod() {
 		return Boolean.FALSE;
 	}

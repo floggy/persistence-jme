@@ -20,12 +20,16 @@ import net.sourceforge.floggy.persistence.beans.primitive.TestDouble;
 
 public class DoubleTest extends PrimitiveAbstractTest {
 
-	protected Class[] getClassesFromObjects(Object[] params) {
-		return new Class[] { double.class };
+	protected Class getParameterType() {
+		return double.class;
 	}
-
+	
 	public Object getDefaultValue() {
 		return new Double(0.0);
+	}
+
+	public Object getNewValueForSetMethod() {
+		return new Double((double)654);
 	}
 
 	public Object getValueForSetMethod() {

@@ -16,25 +16,30 @@
 package net.sourceforge.floggy.persistence.rms.beans;
 
 import net.sourceforge.floggy.persistence.Persistable;
-import net.sourceforge.floggy.persistence.beans.Person;
 import net.sourceforge.floggy.persistence.beans.PersonArray;
+import net.sourceforge.floggy.persistence.beans.animals.Bird;
 import net.sourceforge.floggy.persistence.rms.AbstractTest;
 
 public class PersonArrayTest extends AbstractTest {
 
-	static Person[] persons = new Person[2];
+	static Bird[] birds = new Bird[2];
 
 	static {
-		Person person = new Person();
-		person.setAge(21);
-		person.setName("floggy");
-		person.setX(new Person());
-		persons[0] = person;
-		persons[1] = new Person();
+		birds[0] = new Bird();
+		birds[0].setColor("red");
+		birds[1] = new Bird();
+	}
+
+	protected Class getParameterType() {
+		return Bird[].class;
+	}
+	
+	public Object getNewValueForSetMethod() {
+		return new Bird[0];
 	}
 
 	public Object getValueForSetMethod() {
-		return persons;
+		return birds;
 	}
 
 	public Persistable newInstance() {

@@ -26,6 +26,10 @@ public class CalendarArrayTest extends AbstractTest {
 	protected Calendar[] calendars= new Calendar[]{ CalendarTest.calendar, null, Calendar.getInstance() };
 
 
+	protected Class getParameterType() {
+		return Calendar[].class;
+	}
+	
 	public Object getValueForSetMethod() {
 		return calendars;
 	}

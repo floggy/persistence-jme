@@ -20,12 +20,16 @@ import net.sourceforge.floggy.persistence.beans.primitive.TestInt;
 
 public class IntTest extends PrimitiveAbstractTest {
 
-	protected Class[] getClassesFromObjects(Object[] params) {
-		return new Class[] { int.class };
+	protected Class getParameterType() {
+		return int.class;
 	}
 
 	public Object getDefaultValue() {
 		return new Integer(0);
+	}
+
+	public Object getNewValueForSetMethod() {
+		return new Integer(654);
 	}
 
 	public Object getValueForSetMethod() {

@@ -1,5 +1,5 @@
 /**
- *  Copyright 2006 Floggy Open Source Group
+ *  Copyright 2006-2008 Floggy Open Source Group
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,70 +15,120 @@
  */
 package net.sourceforge.floggy.persistence.beans;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import net.sourceforge.floggy.persistence.Persistable;
+import net.sourceforge.floggy.persistence.beans.animals.Bird;
 
-/**
- * @author Thiago Leão Moreira <thiagolm@users.sourceforge.net>
- */
 public class Person implements Persistable {
-	protected int age;
 
-	protected String name;
+    String cpf;
 
-	protected Person x;
+    String nome;
 
-	/**
-	 * 
-	 */
-	public Person() {
-		super();
-	}
+    Date dataNascimento;
 
-	/**
-	 * Returns <code>true</code> if this <code>Person</code> is the same as
-	 * the o argument.
-	 * 
-	 * @return <code>true</code> if this <code>Person</code> is the same as
-	 *         the o argument.
-	 */
-	public boolean equals(Object o) {
-		if (this == o) {
-			return true;
-		}
-		if (o == null) {
-			return false;
-		}
-		if (o.getClass() != getClass()) {
-			return false;
-		}
-		Person castedObj = (Person) o;
-		return ((this.age == castedObj.age)
-				&& (this.name == null ? castedObj.name == null : this.name
-						.equals(castedObj.name)) && (this.x == null ? castedObj.x == null
-				: this.x.equals(castedObj.x)));
-	}
+    transient int idade;
+    
+    private Bird x;
 
-	public int getAge() {
-		return age;
-	}
+    public Person() {
+        //
+    }
 
-	public String getName() {
-		return name;
-	}
+    public Person(String cpf, String nome, Date dataNascimento) {
+        setCpf(cpf);
+        setNome(nome);
+        setDataNascimento(dataNascimento);
+    }
 
-	public Person getX() {
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public Date getDataNascimento() {
+        return dataNascimento;
+    }
+
+    public void setDataNascimento(Date dataNascimento) {
+        this.dataNascimento = dataNascimento;
+        if (dataNascimento != null) {
+            Calendar c1 = Calendar.getInstance();
+            Calendar c2 = Calendar.getInstance();
+
+            c2.setTime(dataNascimento);
+            this.idade = c1.get(Calendar.YEAR) - c2.get(Calendar.YEAR);
+        } else {
+            this.idade = 0;
+        }
+
+    }
+
+    public int getIdade() {
+        return idade;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+	public Bird getX() {
 		return x;
 	}
 
-	public void setAge(int age) {
-		this.age = age;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public void setX(Person x) {
+	public void setX(Bird x) {
 		this.x = x;
 	}
+
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((cpf == null) ? 0 : cpf.hashCode());
+		result = prime * result
+				+ ((dataNascimento == null) ? 0 : dataNascimento.hashCode());
+		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
+		result = prime * result + ((x == null) ? 0 : x.hashCode());
+		return result;
+	}
+
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		final Person other = (Person) obj;
+		if (cpf == null) {
+			if (other.cpf != null)
+				return false;
+		} else if (!cpf.equals(other.cpf))
+			return false;
+		if (dataNascimento == null) {
+			if (other.dataNascimento != null)
+				return false;
+		} else if (!dataNascimento.equals(other.dataNascimento))
+			return false;
+		if (nome == null) {
+			if (other.nome != null)
+				return false;
+		} else if (!nome.equals(other.nome))
+			return false;
+		if (x == null) {
+			if (other.x != null)
+				return false;
+		} else if (!x.equals(other.x))
+			return false;
+		return true;
+	}
+
 }

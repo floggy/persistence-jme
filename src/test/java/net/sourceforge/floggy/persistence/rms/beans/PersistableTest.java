@@ -23,6 +23,14 @@ public class PersistableTest extends AbstractTest {
 
 	public final static FloggyPersistable persistable = new FloggyPersistable();
 
+	protected Class getParameterType() {
+		return FloggyPersistable.class;
+	}
+	
+	public Object getNewValueForSetMethod() {
+		return new FloggyPersistable();
+	}
+
 	public Object getValueForSetMethod() {
 		return persistable;
 	}

@@ -23,6 +23,14 @@ import net.sourceforge.floggy.persistence.rms.AbstractTest;
 
 public class TimeZoneArrayTest extends AbstractTest {
 
+	protected Class getParameterType() {
+		return TimeZone[].class;
+	}
+	
+	public Object getNewValueForSetMethod() {
+		return new TimeZone[0];
+	}
+
 	public Object getValueForSetMethod() {
 		return new TimeZone[] { TimeZoneTest.timeZone, null, TimeZone.getTimeZone("GMT") };
 	}

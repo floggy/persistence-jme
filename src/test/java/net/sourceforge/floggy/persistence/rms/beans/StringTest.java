@@ -21,6 +21,14 @@ import net.sourceforge.floggy.persistence.rms.AbstractTest;
 
 public class StringTest extends AbstractTest {
 
+	protected Class getParameterType() {
+		return String.class;
+	}
+	
+	public Object getNewValueForSetMethod() {
+		return "new-string";
+	}
+
 	public Object getValueForSetMethod() {
 		return "floggy-framework";
 	}

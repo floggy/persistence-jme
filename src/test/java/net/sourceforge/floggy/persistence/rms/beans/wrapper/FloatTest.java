@@ -21,6 +21,10 @@ import net.sourceforge.floggy.persistence.rms.AbstractTest;
 
 public class FloatTest extends AbstractTest {
 
+	protected Class getParameterType() {
+		return Float.class;
+	}
+	
 	public Object getValueForSetMethod() {
 		return new Float((float) 23.0987);
 	}

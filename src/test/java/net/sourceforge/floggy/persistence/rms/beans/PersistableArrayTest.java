@@ -31,6 +31,14 @@ public class PersistableArrayTest extends AbstractTest {
 		persistables[1] = new FloggyPersistable();
 	}
 
+	protected Class getParameterType() {
+		return FloggyPersistable[].class;
+	}
+	
+	public Object getNewValueForSetMethod() {
+		return new FloggyPersistable[0];
+	}
+
 	public Object getValueForSetMethod() {
 		return persistables;
 	}

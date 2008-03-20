@@ -21,6 +21,10 @@ import net.sourceforge.floggy.persistence.rms.AbstractTest;
 
 public class ShortTest extends AbstractTest {
 
+	protected Class getParameterType() {
+		return Short.class;
+	}
+	
 	public Object getValueForSetMethod() {
 		return new Short((short) 23);
 	}
