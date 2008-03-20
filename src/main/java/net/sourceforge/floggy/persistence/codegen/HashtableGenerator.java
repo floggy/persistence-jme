@@ -18,25 +18,21 @@ package net.sourceforge.floggy.persistence.codegen;
 import javassist.CtClass;
 import javassist.NotFoundException;
 
-public class PersistableGenerator extends SourceCodeGenerator {
+public class HashtableGenerator extends SourceCodeGenerator {
 
-	public PersistableGenerator(CtClass persistableType, String fieldName,
-			CtClass fieldType) {
-		super(fieldName, fieldType);
+	public HashtableGenerator(String fieldName, CtClass classType) {
+		super(fieldName, classType);
 	}
 
 	public void initLoadCode() throws NotFoundException {
 		addLoadCode("this."
 				+ fieldName
-				+ "= ("
-				+ fieldType.getName()
-				+ ")net.sourceforge.floggy.persistence.impl.SerializationHelper.readPersistable(dis, new "
-				+ fieldType.getName() + "());");
+				+ "= net.sourceforge.floggy.persistence.impl.SerializationHelper.readHashtable(dis);");
 	}
 
 	public void initSaveCode() throws NotFoundException {
-		addSaveCode("net.sourceforge.floggy.persistence.impl.SerializationHelper.writePersistable(fos, \""
-				+fieldType.getName()+"\", "+ fieldName + ");");
+		addSaveCode("net.sourceforge.floggy.persistence.impl.SerializationHelper.writeHashtable(fos, "
+				+ fieldName + ");");
 	}
 
 }

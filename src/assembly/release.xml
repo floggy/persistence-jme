@@ -28,9 +28,10 @@
 			<excludes>
 				<exclude>junit:junit</exclude>
 				<exclude>ant:ant</exclude>
+				<exclude>org.microemu:microemulator</exclude>
 			</excludes>
 			<outputDirectory>lib</outputDirectory>
-			<outputFileNameMapping>${artifactId}.${extension}</outputFileNameMapping>
+			<outputFileNameMapping>${artifact.artifactId}.${artifact.extension}</outputFileNameMapping>
 			<scope>runtime</scope>
 		</dependencySet>
 	</dependencySets>
@@ -57,11 +58,6 @@
 	</fileSets>
 	<files>
 		<file>
-			<destName>${artifactId}.${packaging}</destName>
-			<outputDirectory>lib</outputDirectory>
-			<source>target/${artifactId}-${version}.${packaging}</source>
-		</file>
-		<file>
 			<destName>LICENSE.txt</destName>
 			<lineEnding>crlf</lineEnding>
 			<source>LICENSE.txt</source>
@@ -70,12 +66,6 @@
 			<destName>NOTICE.txt</destName>
 			<lineEnding>crlf</lineEnding>
 			<source>NOTICE.txt</source>
-		</file>
-		<file>
-			<destName>samples/pom.xml</destName>
-			<filtered>true</filtered>
-			<lineEnding>crlf</lineEnding>
-			<source>src/samples/pom.xml</source>
 		</file>
 		<file>
 			<destName>README.txt</destName>
