@@ -34,7 +34,7 @@ public abstract class AbstractSetPropertyAction extends AbstractFloggyAction {
 
 	private boolean isEnabled(IProject project) throws CoreException {
 		String value = project.getPersistentProperty(propertyName);
-		return Boolean.parseBoolean(value);
+		return Boolean.valueOf(value).booleanValue();
 	}
 
 	public void run(IProject project, IAction action) {

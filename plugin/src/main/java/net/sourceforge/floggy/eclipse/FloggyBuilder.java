@@ -63,12 +63,11 @@ public class FloggyBuilder extends IncrementalProjectBuilder {
 				IClasspathEntry[] entries = javaProject
 						.getResolvedClasspath(true);
 
-				boolean generateSource = Boolean
-						.parseBoolean(project
-								.getPersistentProperty(SetGenerateSourceAction.PROPERTY_NAME));
+				boolean generateSource = Boolean.valueOf(project
+								.getPersistentProperty(SetGenerateSourceAction.PROPERTY_NAME)).booleanValue();
 				boolean addDefaultConstructor = Boolean
-						.parseBoolean(project
-								.getPersistentProperty(SetAddDefaultConstructorAction.PROPERTY_NAME));
+						.valueOf(project
+								.getPersistentProperty(SetAddDefaultConstructorAction.PROPERTY_NAME)).booleanValue();
 
 				// creating the classpath
 				List classpathList = new ArrayList();
@@ -80,7 +79,7 @@ public class FloggyBuilder extends IncrementalProjectBuilder {
 					classPool.appendClassPath(path);
 				}
 
-				final StringBuilder messages = new StringBuilder();
+				final StringBuffer messages = new StringBuffer();
 				try {
 					classPool.get(PERSISTABLE_CLASS_NAME);
 				} catch (NotFoundException e) {
