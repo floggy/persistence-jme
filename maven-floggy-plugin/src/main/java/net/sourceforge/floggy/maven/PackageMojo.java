@@ -2,6 +2,7 @@ package net.sourceforge.floggy.maven;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Enumeration;
@@ -122,7 +123,7 @@ public class PackageMojo extends AbstractMojo {
     private void saveJAD(Properties jad, File embbededJADFinalFile)
 	    throws IOException {
 	Enumeration keys = jad.keys();
-	PrintWriter writer = new PrintWriter(embbededJADFinalFile);
+	PrintWriter writer = new PrintWriter(new FileWriter(embbededJADFinalFile));
 	while (keys.hasMoreElements()) {
 	    String key = (String) keys.nextElement();
 	    writer.println(key + ": " + jad.getProperty(key));
