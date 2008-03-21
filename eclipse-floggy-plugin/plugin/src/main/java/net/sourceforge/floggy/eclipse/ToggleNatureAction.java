@@ -143,8 +143,8 @@ public class ToggleNatureAction extends AbstractFloggyAction {
 		boolean contains = false;
 		for (int i = 0; i < rawClasspath.size(); i++) {
 			IClasspathEntry classpath = (IClasspathEntry) rawClasspath.get(i);
-			if (classpath.getPath().toOSString().contains(
-					"floggy-persistence-framework")) {
+			if (classpath.getPath().toOSString().indexOf(
+					"floggy-persistence-framework") != -1) {
 				contains = true;
 				break;
 			}
@@ -154,7 +154,7 @@ public class ToggleNatureAction extends AbstractFloggyAction {
 			while (e.hasMoreElements()) {
 				URL url = (URL) e.nextElement();
 				String path = FileLocator.toFileURL(url).getPath();
-				if (path.contains("floggy-persistence-framework")) {
+				if (path.indexOf("floggy-persistence-framework") != -1) {
 					String version = getVersion(path);
 					String javadocURL = "http://floggy.sourceforge.net/modules/floggy-persistence-framework/apidocs/";
 					if (version != null) {
