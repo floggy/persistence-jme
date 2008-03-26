@@ -22,6 +22,12 @@
       <action dev="thiagolm" type="update">
         Improved the exception handler mechanism. 
       </action>
+      <action dev="thiagolm" type="update">
+        Updated the Eclipse plugin to be compliant to the new version of Floggy.
+      </action>
+      <action dev="thiagolm" type="fix">
+        Downgraded the source and target level of all sub projects of Floggy to 1.4. Now Floggy can run on JDK 1.4+.
+      </action>
     </release>
 
     <release version="1.0.1" date="08-21-2007" description="First public release">

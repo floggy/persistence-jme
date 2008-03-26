@@ -18,7 +18,7 @@
 	<skin>
 		<groupId>net.sourceforge.floggy</groupId>
 		<artifactId>floggy-site-skin</artifactId>
-		<version>1.0.1</version>
+		<version>1.0.2-SNAPSHOT</version>
 	</skin>
 	<publishDate position="left" format="dd MMM yyyy" />
 	<version value="1.0" />
@@ -86,9 +86,9 @@
 					href="modules/floggy-persistence-weaver/1.0-SNAPSHOT/floggy-persistence-weaver" />
 					</item-->
 			</item>
-			<item name="Test" href="modules/floggy-persistence-test/1.0.1/floggy-persistence-test/surefire-report.html"
+			<item name="Test" href="modules/floggy-persistence-test/1.1.1/floggy-persistence-test/surefire-report.html"
 				collapse="true">
-				<item name="Tests results" href="modules/floggy-persistence-test/1.0.1/floggy-persistence-test/surefire-report.html" />
+				<item name="Tests results" href="modules/floggy-persistence-test/1.1.1/floggy-persistence-test/surefire-report.html" />
 			</item>
 		</menu>
 
