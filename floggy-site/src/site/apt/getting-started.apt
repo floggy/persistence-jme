@@ -75,15 +75,15 @@ public class Phone implements Persistable {
  
  * All primitive types: boolean, byte, char, double, float, int, long and short;
  
- * Package java.lang: Boolean, Byte, Character, Double, Float, Integer, Long, Short, String;
+ * Package java.lang: Boolean, Byte, Character, Double, Float, Integer, Long, Short, String, StringBuffer;
  
- * Package java.util: Date, Vector;
+ * Package java.util: Calendar, Date, Stack, Vector;
  
  * All objects which implements net.sourceforge.floggy.persistence.Persistable;
  
  * One-dimensional array of any supported type like byte[], Integer[], Date[] or Persistable[].
  
- * <<Coming soon>>: java.lang.StringBuffer, java.util.Hashtable, java.util.Stack and java.util.Calendar.
+ * <<Coming soon>>: java.util.Hashtable
 
  []
  

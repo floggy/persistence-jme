@@ -97,11 +97,13 @@ MODULO DE PERSISTÊNCIA
 - transformar em opcional o atributo output da task ant
 - assinar digitalmente o plugin do Eclipse
 - resolver o BUG de usar o MIDP-1.0 (retirar os métodos read/writeFloat, read/writeBouble)
-- resolver o BUG de salvar uma subclasse de um objeto.
+- FEITO resolver o BUG de salvar uma subclasse de um objeto.
 - mudar FloggyException para estender RecordStoreException?????? acho que não adianta de nada, pensar melhor
 - melhorar o sistema de exceptions
 - trocar os bytes (0 e 1) de indicação de nullabilidade por campos static final. (NULL e NOT_NULL)
 - adicionar métodos para retornar a quantidade de itens salvos por entidade
+- adicionar ao site informações sobre possiveís problemas com obfuscação (por causa que os persistables num vector são salvos com o nome da classe)
+- adicionar ao site instruções de como contribuir com o projeto (criar um patch do trunk e enviar para os desenvolvedores).
 
 
 

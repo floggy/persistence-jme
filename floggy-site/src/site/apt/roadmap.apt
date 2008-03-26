@@ -10,7 +10,7 @@ Road map
 
 * Version 1.1.0
 
-	<<Estimated release date:>> last week of February, 2008
+	<<Estimated release date:>> last week of February, 2008.
 
 	* Support for new types: java.lang.StringBuffer, java.util.Calendar, java.util.Stack and java.util.Timezone;
 	

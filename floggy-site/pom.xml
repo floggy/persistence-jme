@@ -6,7 +6,7 @@
 		<version>1.1</version>
 	</parent>
 	<artifactId>floggy-site</artifactId>
-	<version>1.1.0</version>
+	<version>1.1.1</version>
 	<repositories>
 		<repository>
 			<id>floggy</id>
@@ -23,7 +23,7 @@
 			<id>sourceforge</id>
 			<name>SourceForge.net</name>
 			<url>
-				scp://${username}@shell.sourceforge.net:/home/groups/f/fl/floggy/htdocs/
+				scp://shell.sourceforge.net:/home/groups/f/fl/floggy/htdocs/
 			</url>
 		</site>
 	</distributionManagement>

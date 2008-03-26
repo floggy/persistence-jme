@@ -1,0 +1,33 @@
+<document>
+  <body>
+    <release version="1.1.1" date="03-26-2008" description="Second public release">
+      <action dev="thiagolm" type="add">
+        Added support for types of java.lang.StringBuffer, java.util.Calendar, java.util.Stack and java.util.Timezone.
+      </action>
+      <action dev="thiagolm" type="add">
+        Added 380 new tests to test new and old features.  
+      </action>
+      <action dev="thiagolm" type="add">
+        Added a method to PersistableManager class to delete all occurencies of all types. The method's signature is public void deleteAll()   
+      </action>
+      <action dev="thiagolm" type="add">
+        Added a method to PersistableManager class to delete all occurencies of a given type. The method's signature is public void deleteAll(java.lang.Class class)   
+      </action>
+      <action dev="thiagolm" type="add">
+        Added a method to PersistableManager class to check if an entity is already persisted. The method's signature is public void isPersisted(Persistable persistable)   
+      </action>
+      <action dev="thiagolm" type="update">
+        Improved the bytecode weave process to reduce the total amount of bytecode weaved. 
+      </action>
+      <action dev="thiagolm" type="update">
+        Improved the exception handler mechanism. 
+      </action>
+    </release>
+
+    <release version="1.0.1" date="08-21-2007" description="First public release">
+      <action dev="thiagolm" type="update">
+        Uploaded documentation and first public release.
+      </action>
+    </release>
+  </body>
+</document>
