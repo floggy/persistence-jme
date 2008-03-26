@@ -66,7 +66,7 @@ public class Weaver {
 	 * @param args
 	 */
 	public Weaver() {
-		this(ClassPool.getDefault());
+		this(new ClassPool());
 	}
 
 	/**
@@ -134,7 +134,7 @@ public class Weaver {
 			CtMethod[] methods= ctClass.getMethods();
 			for (int i = 0; i < methods.length; i++) {
 				String methodName= methods[i].getName(); 
-				if (methodName.contains("Float") || methodName.contains("Double") || methodName.equals("readVector") || methodName.equals("writeVector")) {
+				if (methodName.indexOf("Float") != -1 || methodName.indexOf("Double") != -1 || methodName.equals("readVector") || methodName.equals("writeVector")) {
 					ctClass.removeMethod(methods[i]);
 				}
 			}
@@ -152,7 +152,7 @@ public class Weaver {
 			CtMethod[] methods= ctClass.getMethods();
 			for (int i = 0; i < methods.length; i++) {
 				String methodName= methods[i].getName(); 
-				if (methodName.contains("CLDC10")) {
+				if (methodName.indexOf("CLDC10") != -1) {
 					ctClass.removeMethod(methods[i]);
 				}
 			}
