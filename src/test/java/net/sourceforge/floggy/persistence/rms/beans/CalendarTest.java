@@ -25,6 +25,10 @@ public class CalendarTest extends AbstractTest {
 
 	public final static Calendar calendar = Calendar.getInstance();
 
+	protected Class getParameterType() {
+		return Calendar.class;
+	}
+	
 	public Object getValueForSetMethod() {
 		return calendar;
 	}

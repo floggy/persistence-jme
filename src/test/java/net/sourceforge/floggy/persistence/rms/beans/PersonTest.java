@@ -17,20 +17,28 @@ package net.sourceforge.floggy.persistence.rms.beans;
 
 import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.beans.Person;
+import net.sourceforge.floggy.persistence.beans.animals.Bird;
 import net.sourceforge.floggy.persistence.rms.AbstractTest;
 
 public class PersonTest extends AbstractTest {
 
-	static Person person = new Person();
+	protected Bird bird;
+	
+	public PersonTest() {
+		bird = new Bird();
+		bird.setColor("blue");
+	}
 
-	static {
-		person.setAge(21);
-		person.setName("floggy");
-		person.setX(new Person());
+	protected Class getParameterType() {
+		return Bird.class;
+	}
+	
+	public Object getNewValueForSetMethod() {
+		return new Bird();
 	}
 
 	public Object getValueForSetMethod() {
-		return person;
+		return bird;
 	}
 
 	public Persistable newInstance() {

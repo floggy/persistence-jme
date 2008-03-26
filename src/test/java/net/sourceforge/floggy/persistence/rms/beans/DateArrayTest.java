@@ -23,6 +23,10 @@ import net.sourceforge.floggy.persistence.rms.AbstractTest;
 
 public class DateArrayTest extends AbstractTest {
 
+	protected Class getParameterType() {
+		return Date[].class;
+	}
+	
 	public Object getValueForSetMethod() {
 		return new Date[] { DateTest.date, null, new Date(1000253) };
 	}

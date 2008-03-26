@@ -20,10 +20,10 @@ import net.sourceforge.floggy.persistence.rms.AbstractTest;
 
 public abstract class PrimitiveAbstractTest extends AbstractTest {
 
-	protected abstract Class[] getClassesFromObjects(Object[] params);
-
 	public abstract Object getDefaultValue();
 
+	public abstract Object getNewValueForSetMethod();
+	
 	public void testNullAttribute() throws Exception {
 		Persistable object = newInstance();
 		int id = manager.save(object);

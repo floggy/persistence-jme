@@ -23,6 +23,10 @@ public class LongTest extends AbstractTest {
 
 	static long[] att = new long[] { -23543452, 56, 89375934 };
 
+	protected Class getParameterType() {
+		return long[].class;
+	}
+	
 	public Object getValueForSetMethod() {
 		return att;
 	}

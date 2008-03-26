@@ -20,12 +20,16 @@ import net.sourceforge.floggy.persistence.beans.primitive.TestByte;
 
 public class ByteTest extends PrimitiveAbstractTest {
 
-	protected Class[] getClassesFromObjects(Object[] params) {
-		return new Class[] { byte.class };
+	protected Class getParameterType() {
+		return byte.class;
 	}
 
 	public Object getDefaultValue() {
 		return new Byte((byte) 0);
+	}
+
+	public Object getNewValueForSetMethod() {
+		return new Byte((byte)654);
 	}
 
 	public Object getValueForSetMethod() {

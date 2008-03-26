@@ -20,12 +20,16 @@ import net.sourceforge.floggy.persistence.beans.primitive.TestFloat;
 
 public class FloatTest extends PrimitiveAbstractTest {
 
-	protected Class[] getClassesFromObjects(Object[] params) {
-		return new Class[] { float.class };
+	protected Class getParameterType() {
+		return float.class;
 	}
-
+	
 	public Object getDefaultValue() {
 		return new Float(0.0);
+	}
+	
+	public Object getNewValueForSetMethod() {
+		return new Float((float)654);
 	}
 
 	public Object getValueForSetMethod() {

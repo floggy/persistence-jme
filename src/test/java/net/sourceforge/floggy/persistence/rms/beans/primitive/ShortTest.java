@@ -20,12 +20,16 @@ import net.sourceforge.floggy.persistence.beans.primitive.TestShort;
 
 public class ShortTest extends PrimitiveAbstractTest {
 
-	protected Class[] getClassesFromObjects(Object[] params) {
-		return new Class[] { short.class };
+	protected Class getParameterType() {
+		return short.class;
 	}
 
 	public Object getDefaultValue() {
 		return new Short((short) 0);
+	}
+
+	public Object getNewValueForSetMethod() {
+		return new Short((short)654);
 	}
 
 	public Object getValueForSetMethod() {

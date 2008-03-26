@@ -34,6 +34,14 @@ public class StackTest extends AbstractTest {
 		stack.push(new FloggyStack());
 	}
 
+	protected Class getParameterType() {
+		return Stack.class;
+	}
+	
+	public Object getNewValueForSetMethod() {
+		return new Stack();
+	}
+
 	public Object getValueForSetMethod() {
 		return stack;
 	}

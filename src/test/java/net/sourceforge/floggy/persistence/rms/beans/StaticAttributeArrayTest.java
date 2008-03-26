@@ -23,6 +23,14 @@ import net.sourceforge.floggy.persistence.rms.AbstractTest;
 
 public class StaticAttributeArrayTest extends AbstractTest {
 
+	protected Class getParameterType() {
+		return Object[].class;
+	}
+	
+	public Object getNewValueForSetMethod() {
+		return new Object[0];
+	}
+
 	public Object getValueForSetMethod() {
 		return new Object[] { "floggy-framework", TransientTest.object };
 	}

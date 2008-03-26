@@ -21,6 +21,10 @@ import net.sourceforge.floggy.persistence.rms.AbstractTest;
 
 public class IntegerTest extends AbstractTest {
 
+	protected Class getParameterType() {
+		return Integer.class;
+	}
+	
 	public Object getValueForSetMethod() {
 		return new Integer(45676);
 	}

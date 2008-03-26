@@ -21,6 +21,10 @@ import net.sourceforge.floggy.persistence.rms.AbstractTest;
 
 public class LongTest extends AbstractTest {
 
+	protected Class getParameterType() {
+		return Long.class;
+	}
+	
 	public Object getValueForSetMethod() {
 		return new Long(456789);
 	}

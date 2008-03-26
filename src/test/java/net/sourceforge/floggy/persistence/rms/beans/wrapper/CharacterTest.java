@@ -21,6 +21,10 @@ import net.sourceforge.floggy.persistence.rms.AbstractTest;
 
 public class CharacterTest extends AbstractTest {
 
+	protected Class getParameterType() {
+		return Character.class;
+	}
+	
 	public Object getValueForSetMethod() {
 		return new Character('>');
 	}

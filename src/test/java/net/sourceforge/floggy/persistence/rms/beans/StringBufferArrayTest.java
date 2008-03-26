@@ -25,6 +25,14 @@ public class StringBufferArrayTest extends AbstractTest {
 	
 	protected StringBuffer[] buffers= new StringBuffer[] { StringBufferTest.stringBuffer, null, new StringBuffer("string") }; 
 
+	protected Class getParameterType() {
+		return StringBuffer[].class;
+	}
+	
+	public Object getNewValueForSetMethod() {
+		return new StringBuffer[0];
+	}
+
 	public Object getValueForSetMethod() {
 		return buffers;
 	}

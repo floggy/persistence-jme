@@ -23,6 +23,10 @@ public class BooleanTest extends AbstractTest {
 
 	static boolean[] att = new boolean[] { true, false, true };
 
+	protected Class getParameterType() {
+		return boolean[].class;
+	}
+	
 	public Object getValueForSetMethod() {
 		return att;
 	}

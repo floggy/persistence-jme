@@ -23,6 +23,10 @@ public class ByteTest extends AbstractTest {
 
 	static byte[] att = new byte[] { -128, 2, 56 };
 
+	protected Class getParameterType() {
+		return byte[].class;
+	}
+	
 	public Object getValueForSetMethod() {
 		return att;
 	}

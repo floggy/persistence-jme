@@ -25,6 +25,13 @@ public class TimeZoneTest extends AbstractTest {
 
 	public final static TimeZone timeZone = TimeZone.getDefault();
 
+	protected Class getParameterType() {
+		return TimeZone.class;
+	}
+	public Object getNewValueForSetMethod() {
+		return TimeZone.getTimeZone("PST");
+	}
+
 	public Object getValueForSetMethod() {
 		return timeZone;
 	}
