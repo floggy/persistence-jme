@@ -109,6 +109,16 @@ public abstract class PersistableManager {
 	/**
 	 * Removes all objects from the repository.
 	 * 
+	 * @throws FloggyException
+	 *             Exception thrown if an error occurs while removing the
+	 *             objects.
+	 */
+	public abstract void deleteAll() throws FloggyException;
+
+	/**
+	 * Removes all objects that belongs to the class passed as parameter 
+	 * from the repository.
+	 * 
 	 * @param persistableClass
 	 *            The persistable class to search the objects.
 	 * @throws IllegalArgumentException
@@ -117,7 +127,7 @@ public abstract class PersistableManager {
 	 *             <code>Persistable</code>.
 	 * @throws FloggyException
 	 *             Exception thrown if an error occurs while removing the
-	 *             object.
+	 *             objects.
 	 */
 	public abstract void deleteAll(Class persistableClass)
 			throws FloggyException;
@@ -143,4 +153,16 @@ public abstract class PersistableManager {
 	 */
 	public abstract ObjectSet find(Class persistableClass, Filter filter,
 			Comparator comparator) throws FloggyException;
+	
+	/**
+	 * Check if the object is already persisted.
+	 * <br>
+	 * <b>WARNING</b> The method only checks if the underline system has an entry for the 
+	 * given persistable object. The method doesn't checks if the fields have changed.
+	 *    
+	 * @param persistable
+	 *            Object to be checked the persistable state.
+	 * @return true if the object is already persisted in the underline system, false otherwise.
+	 */
+	public abstract boolean isPersisted(Persistable persistable); 
 }

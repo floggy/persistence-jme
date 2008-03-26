@@ -22,7 +22,7 @@
 		<version>1.1</version>
 	</parent>
 	<artifactId>floggy-persistence-framework</artifactId>
-	<version>1.0.2-SNAPSHOT</version>
+	<version>1.1.1</version>
 	<name>Floggy Persistence Framework</name>
 	<description>
 		A JME Persistence Framework for JME applications
@@ -32,15 +32,17 @@
 			<id>floggy</id>
 			<url>http://floggy.sourceforge.net/repository</url>
 		</repository>
-		<repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
 			<id>pyx4j-web</id>
 			<url>http://www.pyx4j.com/maven2</url>
-		</repository>
-	</repositories>
+		</pluginRepository>
+	</pluginRepositories>
 	<scm>
-		<connection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/trunk/floggy-persistence-framework</connection>
-		<developerConnection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/trunk/floggy-persistence-framework</developerConnection>
-		<url>http://floggy.svn.sourceforge.net/viewvc/floggy/trunk/floggy-persistence-framework</url>
+		<connection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/tags/floggy-persistence-framework-1.1.1</connection>
+		<developerConnection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/tags/floggy-persistence-framework-1.1.1</developerConnection>
+		<url>http://floggy.svn.sourceforge.net/viewvc/floggy/tags/floggy-persistence-framework-1.1.1</url>
 	</scm>
 	<dependencies>
 		<dependency>
@@ -75,6 +77,7 @@
 			<plugin>
 				<groupId>com.pyx4me</groupId>
 				<artifactId>j2me-maven-plugin</artifactId>
+				<version>2.0.1</version>
 				<executions>
 					<execution>
 						<goals>
