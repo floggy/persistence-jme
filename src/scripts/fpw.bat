@@ -108,7 +108,7 @@ GOTO Win9xApp
 @REM Reaching here means variables are defined and arguments have been captured
 :endInit
 
-SET cp=%FLOGGY_HOME%\lib\floggy-persistence-weaver.jar;%FLOGGY_HOME%\lib\floggy-persistence-framework.jar;%FLOGGY_HOME%\lib\rms4test.jar;%FLOGGY_HOME%\lib\commons-io.jar;%FLOGGY_HOME%\lib\javassist.jar;%FLOGGY_HOME%\lib\commons-logging.jar;
+SET cp=%FLOGGY_HOME%\lib\floggy-persistence-weaver.jar;%FLOGGY_HOME%\lib\floggy-persistence-framework.jar;%FLOGGY_HOME%\lib\commons-io.jar;%FLOGGY_HOME%\lib\javassist.jar;%FLOGGY_HOME%\lib\commons-logging.jar;
 
 "%JAVA_HOME%"\bin\java.exe -cp %cp% net.sourceforge.floggy.persistence.Main %FLOGGY_CMD_LINE_ARGS%
 

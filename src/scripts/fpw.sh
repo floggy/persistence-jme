@@ -136,7 +136,7 @@ if $cygwin; then
     HOME=`cygpath --path --windows "$HOME"`
 fi
 
-cp=$FLOGGY_HOME/lib/floggy-persistence-weaver.jar:$FLOGGY_HOME/lib/floggy-persistence-framework.jar:$FLOGGY_HOME/lib/rms4test.jar:$FLOGGY_HOME/lib/commons-io.jar:$FLOGGY_HOME/lib/javassist.jar:$FLOGGY_HOME/lib/commons-logging.jar
+cp=$FLOGGY_HOME/lib/floggy-persistence-weaver.jar:$FLOGGY_HOME/lib/floggy-persistence-framework.jar:$FLOGGY_HOME/lib/commons-io.jar:$FLOGGY_HOME/lib/javassist.jar:$FLOGGY_HOME/lib/commons-logging.jar
 
 exec "$JAVACMD" \
   -classpath "$cp" \
