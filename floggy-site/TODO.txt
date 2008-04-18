@@ -3,6 +3,7 @@ Floggy
   - FEITO criar pulgin (maven-floggy-plugin)
   - documentação do plugin
   - o que é mais caro criar um DataInputStream ou executar um metodo synchronized
+  - svn cp . https://floggy.svn.sourceforge.net/svnroot/floggy/tags/eclipse-floggy-plugin-1.1.1
   
 - diagramas da arquitetura
 - diagrama de classes e de sequência
