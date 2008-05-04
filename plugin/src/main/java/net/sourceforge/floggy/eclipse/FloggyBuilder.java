@@ -15,7 +15,10 @@
  */
 package net.sourceforge.floggy.eclipse;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +30,8 @@ import net.sourceforge.floggy.persistence.Weaver;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.LogFactory;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
@@ -122,14 +127,11 @@ public class FloggyBuilder extends IncrementalProjectBuilder {
 					configuration.setGenerateSource(generateSource);
 					weaver.setConfiguration(configuration);
 					weaver.execute();
-					FileUtils.copyDirectory(temp, input);
+					
+					IFolder outputLocation= project.getFolder(javaProject.getOutputLocation().lastSegment());
+					copyFiles(temp, temp, outputLocation, monitor);
+					outputLocation.refreshLocal(IResource.DEPTH_INFINITE, monitor);
 					FileUtils.forceDelete(temp);
-
-					// verifing the synchronization
-					if (!project.isSynchronized(IResource.DEPTH_INFINITE)) {
-						// project.refreshLocal(IResource.DEPTH_INFINITE, null);
-					}
-
 				}
 			}
 		} catch (Exception e) {
@@ -139,4 +141,55 @@ public class FloggyBuilder extends IncrementalProjectBuilder {
 		}
 		return null;
 	}
+	
+	protected void copyFiles(final File sourceRoot, File sourceFolder, IFolder targetRoot, IProgressMonitor monitor) throws CoreException, IOException {
+		int index= sourceRoot.getAbsolutePath().length()+1;
+		File[] childrens= sourceFolder.listFiles();
+		for (int i = 0; i < childrens.length; i++) {
+			if (childrens[i].isFile() && childrens[i].getName().endsWith(".class")) {
+				String filePath= childrens[i].getAbsolutePath().substring(index);
+				
+				byte[] data= FileUtils.readFileToByteArray(childrens[i]);
+				InputStream is = new ByteArrayInputStream(data);
+				
+				IFolder packageFolder = createPackageFolder(filePath, targetRoot, monitor);
+				IFile outputFile = packageFolder.getFile(childrens[i].getName());
+				
+				if (!outputFile.exists()) {
+					outputFile.create(is, true, monitor);
+				} else {
+					outputFile.setContents(is, true, false, monitor);
+				}
+			} else {
+				copyFiles(sourceRoot, childrens[i], targetRoot, monitor);
+			}
+		}
+
+	}
+	
+	/**
+	 * Create a folder matching the package name.
+	 * 
+	 * @param outputFolder
+	 * @param results
+	 * @return
+	 * @throws CoreException 
+	 */
+	private IFolder createPackageFolder(String filePath, IFolder outputFolder, IProgressMonitor monitor) throws CoreException {
+		String[] components = filePath.split("/");
+		IFolder currentFolder = outputFolder;
+		
+		for (int i = 0; i < components.length - 1; i++) {
+			String component = components[i];
+			currentFolder = currentFolder.getFolder(component);
+			if (!currentFolder.exists()) {
+				currentFolder.create(true, true, monitor);
+			}
+		}
+
+		return currentFolder;
+	}
+
+
+
 }
