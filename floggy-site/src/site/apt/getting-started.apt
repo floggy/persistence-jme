@@ -107,12 +107,18 @@ public class Phone implements Persistable {
  
  * {{{#Deleting} Deleting a previously saved object}}
  
+ * {{{#Deleting_all_entities_based_on_its_class} Deleting all entities based on its class}}
+ 
+ * {{{#Deleting_all_entities_stored_by_the_midlet} Deleting all entities stored by the midlet}}
+ 
+ * {{{#Checking} Checking if the object is already persisted}}
+ 
  * {{{#Listing} Listing all objects}}
 
  * {{{#filter} Using a filter to find specific objects}}
 
  * {{{#comparator} Using a comparator to sort the results of a search}}
-
+ 
 ** {Saving} a new object
  
 +------------------------------+
@@ -162,6 +168,48 @@ try {
 
 	// Delete the object.
 	PersistableManager.getInstance().delete(person);
+} catch (FloggyException e) {
+	...
+}
++-----------------------------+
+
+* {Deleting all entities based on its class}.
+	
++------------------------------+
+try {
+	// Delete all objects based on its class.
+	PersistableManager.getInstance().deleteAll(Person.class);
+} catch (FloggyException e) {
+	...
+}
++-----------------------------+
+
+* {Deleting all entities stored by the midlet}.
+	
++------------------------------+
+try {
+	// Delete all objetcs.
+	PersistableManager.getInstance().deleteAll();
+} catch (FloggyException e) {
+	...
+}
++-----------------------------+
+
+* {Checking} if the object is already persisted.
+	
++------------------------------+
+Person person = new Person();
+
+try {
+	// Checks if the object is persisted. This will return false
+	boolean persisted= PersistableManager.getInstance().isPersisted(person);
+	
+	// To load an object, use the object ID 
+	// generated previously by a save() operation.
+	PersistableManager.getInstance().load(person, id);
+
+	//This will return true
+	persisted= PersistableManager.getInstance().isPersisted(person);
 } catch (FloggyException e) {
 	...
 }

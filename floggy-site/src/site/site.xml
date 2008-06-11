@@ -93,12 +93,7 @@
 		</menu>
 
 		<menu name="Support">
-			<item name="Email"
-				href="http://sourceforge.net/mail/?group_id=139426" />
-			<item name="Issue Tracking"
-				href="http://sourceforge.net/tracker/?group_id=139426" />
-			<item name="Tasks"
-				href="http://sourceforge.net/pm/?group_id=139426" />
+			<item name="How to get help?" href="howtogethelp.html" />
 		</menu>
 
 		<menu name="About us">
