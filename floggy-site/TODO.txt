@@ -44,6 +44,9 @@ Floggy
 - fazer testcase para variáveis final
 - criar um arquivo de configuração floggy.xml
 - modificar os termos da licensa de 2006 para 2006-2008
+- criar uma exception mais especializada para identificar campos que nao possam salvar e mostrar no plugin do eclipse
+- criar uma seção no site para chamar contribuições da comunidade. (how to help)
+- criar um marquivo do tipo sitemap.xml
 - postar notícias:
 	- FEITO www.javafree.org
 	- FEITO www.portaljava.com.br
@@ -58,7 +61,7 @@ Floggy
 
 - publicar artigo:
 	- java magazine
-	- mundo java
+FEITO 	- mundo java
 	- web mobile
 			
 
@@ -92,12 +95,12 @@ MODULO DE PERSISTÊNCIA
 - lazy load, carregar todo o objeto ou carregar somente o primeiro objeto ou carregar a árvore de objetos a um certo nível.
 - attributes embebbeds (EJB 3.0)
 - adicionar teste unitários aos projetos framework e weaver
-- no plugin do eclipse setar a URL do JAVAdoc e o código fonte se possível
+- FEITO no plugin do eclipse setar a URL do JAVAdoc e o código fonte se possível
 - FEITO verificar porque a classe VectorGenerator está com problemas na hora de realizar a tag/release
 - na task ant setar o commons-logging para uma instancia do logger ant
 - transformar em opcional o atributo output da task ant
 - assinar digitalmente o plugin do Eclipse
-- resolver o BUG de usar o MIDP-1.0 (retirar os métodos read/writeFloat, read/writeBouble)
+- FEITO resolver o BUG de usar o MIDP-1.0 (retirar os métodos read/writeFloat, read/writeBouble)
 - FEITO resolver o BUG de salvar uma subclasse de um objeto.
 - mudar FloggyException para estender RecordStoreException?????? acho que não adianta de nada, pensar melhor
 - melhorar o sistema de exceptions
