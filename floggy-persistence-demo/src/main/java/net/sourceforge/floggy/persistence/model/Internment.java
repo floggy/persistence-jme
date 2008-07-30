@@ -20,65 +20,65 @@ import java.util.Date;
 import net.sourceforge.floggy.persistence.Persistable;
 
 public class Internment implements Persistable {
-    
-    Date dtEntrada;
-    
-    Date dtSaida;    
-    
-    String motivo;
-    
-    Patient paciente;
-    
-    Doctor medico;
-    
-    Bed leito;
 
-    public Date getDtEntrada() {
-        return dtEntrada;
-    }
+	protected Date enterDate;
 
-    public void setDtEntrada(Date dtEntrada) {
-        this.dtEntrada = dtEntrada;
-    }
+	protected Date exitDate;
 
-    public Date getDtSaida() {
-        return dtSaida;
-    }
+	protected String reason;
 
-    public void setDtSaida(Date dtSaida) {
-        this.dtSaida = dtSaida;
-    }
+	protected Patient patient;
 
-    public Bed getLeito() {
-        return leito;
-    }
+	protected Doctor doctor;
 
-    public void setLeito(Bed leito) {
-        this.leito = leito;
-    }
+	protected Bed bed;
 
-    public Doctor getMedico() {
-        return medico;
-    }
+	public Date getEnterDate() {
+		return enterDate;
+	}
 
-    public void setMedico(Doctor medico) {
-        this.medico = medico;
-    }
+	public void setEnterDate(Date enterDate) {
+		this.enterDate = enterDate;
+	}
 
-    public String getMotivo() {
-        return motivo;
-    }
+	public Date getExitDate() {
+		return exitDate;
+	}
 
-    public void setMotivo(String motivo) {
-        this.motivo = motivo;
-    }
+	public void setExitDate(Date exitDate) {
+		this.exitDate = exitDate;
+	}
 
-    public Patient getPaciente() {
-        return paciente;
-    }
+	public Bed getBed() {
+		return bed;
+	}
 
-    public void setPaciente(Patient paciente) {
-        this.paciente = paciente;
-    }
-       
+	public void setBed(Bed bed) {
+		this.bed = bed;
+	}
+
+	public Doctor getDoctor() {
+		return doctor;
+	}
+
+	public void setDoctor(Doctor doctor) {
+		this.doctor = doctor;
+	}
+
+	public String getReason() {
+		return reason;
+	}
+
+	public void setReason(String reason) {
+		this.reason = reason;
+	}
+
+	public Patient getPatient() {
+		return patient;
+	}
+
+	public void setPatient(Patient patient) {
+		this.patient = patient;
+	}
+
 }

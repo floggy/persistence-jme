@@ -29,42 +29,43 @@ import net.sourceforge.floggy.persistence.PersistableManager;
 import net.sourceforge.floggy.persistence.model.Doctor;
 
 public class DoctorList extends List implements CommandListener {
-    ObjectSet medicos;
+	
+    protected ObjectSet doctors;
 
-    Command cmdInserir;
+    protected Command cmdCreate;
 
-    Command cmdAlterar;
+    protected Command cmdEdit;
 
-    Command cmdExcluir;
+    protected Command cmdDelete;
 
-    Command cmdVoltar;
+    protected Command cmdBack;
 
     public DoctorList() {
-        super("Lista de Médicos", List.IMPLICIT);
+        super("Doctors list", List.IMPLICIT);
 
-        iniciaDados();
-        iniciaComponentes();
+        startData();
+        startComponents();
     }
 
-    private void iniciaDados() {
+    private void startData() {
         PersistableManager pm = PersistableManager.getInstance();
 
         try {
             this.deleteAll();
 
-            medicos = pm.find(Doctor.class, null, new Comparator() {
+            doctors = pm.find(Doctor.class, null, new Comparator() {
                 public int compare(Persistable arg0, Persistable arg1) {
-                    String s1 = arg0 == null ? "" : ((Doctor) arg0).getNome();
-                    String s2 = arg1 == null ? "" : ((Doctor) arg1).getNome();
+                    String s1 = arg0 == null ? "" : ((Doctor) arg0).getName();
+                    String s2 = arg1 == null ? "" : ((Doctor) arg1).getName();
 
                     return s1.compareTo(s2);
                 }
 
             });
 
-            for (int i = 0; i < medicos.size(); i++) {
-                Doctor medico = (Doctor) medicos.get(i);
-                this.append(medico.getNome() + " - CRM " + medico.getCrm(),
+            for (int i = 0; i < doctors.size(); i++) {
+                Doctor doctor = (Doctor) doctors.get(i);
+                this.append(doctor.getName() + " - CRM " + doctor.getCrm(),
                         null);
             }
 
@@ -73,48 +74,48 @@ public class DoctorList extends List implements CommandListener {
         }
     }
 
-    private void iniciaComponentes() {
-        this.cmdVoltar = new Command("Voltar", Command.BACK, 0);
-        this.addCommand(this.cmdVoltar);
+    private void startComponents() {
+        this.cmdBack = new Command("Back", Command.BACK, 0);
+        this.addCommand(this.cmdBack);
 
-        this.cmdInserir = new Command("Inserir", Command.ITEM, 1);
-        this.addCommand(this.cmdInserir);
+        this.cmdCreate = new Command("Create", Command.ITEM, 1);
+        this.addCommand(this.cmdCreate);
 
-        this.cmdAlterar = new Command("Alterar", Command.ITEM, 2);
-        this.addCommand(this.cmdAlterar);
+        this.cmdEdit = new Command("Edit", Command.ITEM, 2);
+        this.addCommand(this.cmdEdit);
 
-        this.cmdExcluir = new Command("Excluir", Command.ITEM, 3);
-        this.addCommand(this.cmdExcluir);
+        this.cmdDelete = new Command("Delete", Command.ITEM, 3);
+        this.addCommand(this.cmdDelete);
 
         this.setCommandListener(this);
     }
 
     public void commandAction(Command cmd, Displayable dsp) {
-        if (cmd == this.cmdVoltar) {
+        if (cmd == this.cmdBack) {
             MainForm mainForm = new MainForm();
             HospitalMIDlet.setCurrent(mainForm);
-        } else if (cmd == this.cmdInserir) {
-            Doctor medico = new Doctor();
-            HospitalMIDlet.setCurrent(new DoctorForm(medico));
-        } else if (cmd == this.cmdAlterar) {
+        } else if (cmd == this.cmdCreate) {
+            Doctor doctor = new Doctor();
+            HospitalMIDlet.setCurrent(new DoctorForm(doctor));
+        } else if (cmd == this.cmdEdit) {
             if (this.getSelectedIndex() != -1) {
-                Doctor medico = null;
+                Doctor doctor = null;
 
                 try {
-                    medico = (Doctor) medicos.get(this.getSelectedIndex());
-                    HospitalMIDlet.setCurrent(new DoctorForm(medico));
+                    doctor = (Doctor) doctors.get(this.getSelectedIndex());
+                    HospitalMIDlet.setCurrent(new DoctorForm(doctor));
                 } catch (FloggyException e) {
                 	HospitalMIDlet.showException(e);
                 }
             }
-        } else if (cmd == this.cmdExcluir) {
+        } else if (cmd == this.cmdDelete) {
             if (this.getSelectedIndex() != -1) {
 
                 try {
-                    Doctor medico = (Doctor) medicos.get(this
+                    Doctor doctor = (Doctor) doctors.get(this
                             .getSelectedIndex());
-                    PersistableManager.getInstance().delete(medico);
-                    this.iniciaDados();
+                    PersistableManager.getInstance().delete(doctor);
+                    this.startData();
                 } catch (FloggyException e) {
                 	HospitalMIDlet.showException(e);
                 }

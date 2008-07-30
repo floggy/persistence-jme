@@ -29,35 +29,34 @@ import net.sourceforge.floggy.persistence.model.BedComparator;
 
 public class BedList extends List implements CommandListener {
 
-    ObjectSet leitos;
+    protected ObjectSet beds;
 
-    Command cmdInserir;
+    protected Command cmdCreate;
 
-    Command cmdAlterar;
+    protected Command cmdEdit;
 
-    Command cmdExcluir;
+    protected Command cmdDelete;
 
-    Command cmdVoltar;
+    protected Command cmdBack;
 
     public BedList() {
-        super("Lista de Leitos", List.IMPLICIT);
+        super("Beds list", List.IMPLICIT);
 
-        iniciaDados();
-        iniciaComponentes();
+        startData();
+        startComponents();
     }
 
-    private void iniciaDados() {
+    private void startData() {
         PersistableManager pm = PersistableManager.getInstance();
 
         try {
             this.deleteAll();
 
-            leitos = pm.find(Bed.class, null, new BedComparator());
+            beds = pm.find(Bed.class, null, new BedComparator());
 
-            for (int i = 0; i < leitos.size(); i++) {
-                Bed leito = (Bed) leitos.get(i);
-                this.append(leito.getNumber() + " - Andar " + leito.getFloor(), null);
-                pm.load(leito, 654);
+            for (int i = 0; i < beds.size(); i++) {
+                Bed bed = (Bed) beds.get(i);
+                this.append(bed.getNumber() + " - Floor " + bed.getFloor(), null);
             }
 
         } catch (FloggyException e) {
@@ -65,47 +64,47 @@ public class BedList extends List implements CommandListener {
         }
     }
 
-    private void iniciaComponentes() {
-        this.cmdVoltar = new Command("Voltar", Command.BACK, 0);
-        this.addCommand(this.cmdVoltar);
+    private void startComponents() {
+        this.cmdBack = new Command("Back", Command.BACK, 0);
+        this.addCommand(this.cmdBack);
 
-        this.cmdInserir = new Command("Inserir", Command.ITEM, 1);
-        this.addCommand(this.cmdInserir);
+        this.cmdCreate = new Command("Create", Command.ITEM, 1);
+        this.addCommand(this.cmdCreate);
 
-        this.cmdAlterar = new Command("Alterar", Command.ITEM, 2);
-        this.addCommand(this.cmdAlterar);
+        this.cmdEdit = new Command("Edit", Command.ITEM, 2);
+        this.addCommand(this.cmdEdit);
 
-        this.cmdExcluir = new Command("Excluir", Command.ITEM, 3);
-        this.addCommand(this.cmdExcluir);
+        this.cmdDelete = new Command("Delete", Command.ITEM, 3);
+        this.addCommand(this.cmdDelete);
 
         this.setCommandListener(this);
     }
 
     public void commandAction(Command cmd, Displayable dsp) {
-        if (cmd == this.cmdVoltar) {
+        if (cmd == this.cmdBack) {
             MainForm mainForm = new MainForm();
             HospitalMIDlet.setCurrent(mainForm);
-        } else if (cmd == this.cmdInserir) {
-            Bed leito = new Bed();
-            HospitalMIDlet.setCurrent(new BedForm(leito));
-        } else if (cmd == this.cmdAlterar) {
+        } else if (cmd == this.cmdCreate) {
+            Bed bed = new Bed();
+            HospitalMIDlet.setCurrent(new BedForm(bed));
+        } else if (cmd == this.cmdEdit) {
             if (this.getSelectedIndex() != -1) {
-                Bed leito = null;
+                Bed bed = null;
 
                 try {
-                    leito = (Bed) leitos.get(this.getSelectedIndex());
-                    HospitalMIDlet.setCurrent(new BedForm(leito));
+                    bed = (Bed) beds.get(this.getSelectedIndex());
+                    HospitalMIDlet.setCurrent(new BedForm(bed));
                 } catch (FloggyException e) {
                 	HospitalMIDlet.showException(e);
                 }
             }
-        } else if (cmd == this.cmdExcluir) {
+        } else if (cmd == this.cmdDelete) {
             if (this.getSelectedIndex() != -1) {
 
                 try {
-                    Bed leito = (Bed) leitos.get(this.getSelectedIndex());
-                    PersistableManager.getInstance().delete(leito);
-                    this.iniciaDados();
+                    Bed bed = (Bed) beds.get(this.getSelectedIndex());
+                    PersistableManager.getInstance().delete(bed);
+                    this.startData();
                 } catch (FloggyException e) {
                 	HospitalMIDlet.showException(e);
                 }

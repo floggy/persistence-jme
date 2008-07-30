@@ -36,57 +36,57 @@ import net.sourceforge.floggy.persistence.model.Doctor;
 
 public class DoctorForm extends Form implements CommandListener {
 
-    Doctor medico;
+    protected Doctor doctor;
 
-    ObjectSet formacoes;
+    protected ObjectSet formations;
 
-    TextField txtNome;
+    protected TextField txtName;
 
-    TextField txtCPF;
+    protected TextField txtPassport;
 
-    DateField dtNascimento;
+    protected DateField dtBornDate;
 
-    TextField txtCRM;
+    protected TextField txtCRM;
 
-    ChoiceGroup cgFormacao;
+    protected ChoiceGroup cgFormation;
 
-    Command cmdOk;
+    protected Command cmdOk;
 
-    Command cmdCancelar;
+    protected Command cmdCancel;
 
-    public DoctorForm(Doctor medico) {
-        super("Médico");
+    public DoctorForm(Doctor doctor) {
+        super("Doctor");
 
-        this.medico = medico;
+        this.doctor = doctor;
 
-        iniciaComponentes();
+        startComponents();
 
-        iniciaFormacao();
+        startFormations();
     }
 
-    private void iniciaComponentes() {
-        this.txtNome = new TextField("Nome", medico.getNome(), 30,
+    private void startComponents() {
+        this.txtName = new TextField("Name", doctor.getName(), 30,
                 TextField.ANY);
-        this.append(this.txtNome);
+        this.append(this.txtName);
 
-        this.txtCPF = new TextField("CPF", medico.getCpf(), 30, TextField.ANY);
-        this.append(this.txtCPF);
+        this.txtPassport = new TextField("Passport", doctor.getPassport(), 30, TextField.ANY);
+        this.append(this.txtPassport);
 
-        this.dtNascimento = new DateField("Data Nascimento", DateField.DATE);
-        this.dtNascimento.setDate(medico.getDataNascimento());
-        this.append(this.dtNascimento);
+        this.dtBornDate = new DateField("Born date", DateField.DATE);
+        this.dtBornDate.setDate(doctor.getBornDate());
+        this.append(this.dtBornDate);
 
-        this.txtCRM = new TextField("CRM", medico.getCrm(), 30, TextField.ANY);
+        this.txtCRM = new TextField("CRM", doctor.getCrm(), 30, TextField.ANY);
         this.append(this.txtCRM);
 
-        this.cgFormacao = new ChoiceGroup("Formação", ChoiceGroup.MULTIPLE);
-        this.append(cgFormacao);
+        this.cgFormation = new ChoiceGroup("Formation", ChoiceGroup.MULTIPLE);
+        this.append(cgFormation);
 
         this.cmdOk = new Command("Ok", Command.OK, 0);
         this.addCommand(this.cmdOk);
 
-        this.cmdCancelar = new Command("Cancelar", Command.CANCEL, 1);
-        this.addCommand(this.cmdCancelar);
+        this.cmdCancel = new Command("Cancel", Command.CANCEL, 1);
+        this.addCommand(this.cmdCancel);
 
         this.setCommandListener(this);
     }
@@ -96,24 +96,24 @@ public class DoctorForm extends Form implements CommandListener {
             PersistableManager pm = PersistableManager.getInstance();
 
             try {
-                this.medico.setNome(this.txtNome.getString());
-                this.medico.setCpf(this.txtCPF.getString());
-                this.medico.setCrm(this.txtCRM.getString());
-                this.medico.setDataNascimento(this.dtNascimento.getDate());
+                this.doctor.setName(this.txtName.getString());
+                this.doctor.setPassport(this.txtPassport.getString());
+                this.doctor.setCrm(this.txtCRM.getString());
+                this.doctor.setBornDate(this.dtBornDate.getDate());
 
-                if(this.medico.getFormacoes() != null) {
-                    this.medico.getFormacoes().removeAllElements();
+                if(this.doctor.getFormations() != null) {
+                    this.doctor.getFormations().removeAllElements();
                 }
                 else {
-                    this.medico.setFormacoes(new Vector());
+                    this.doctor.setFormations(new Vector());
                 }
-                for (int i = 0; i < this.cgFormacao.size(); i++) {
-                    if (this.cgFormacao.isSelected(i) ) {
-                        this.medico.getFormacoes().addElement(this.formacoes.get(i));                        
+                for (int i = 0; i < this.cgFormation.size(); i++) {
+                    if (this.cgFormation.isSelected(i) ) {
+                        this.doctor.getFormations().addElement(this.formations.get(i));                        
                     } 
                 }
 
-                pm.save(this.medico);
+                pm.save(this.doctor);
 
             } catch (FloggyException e) {
             	HospitalMIDlet.showException(e);
@@ -122,26 +122,26 @@ public class DoctorForm extends Form implements CommandListener {
         HospitalMIDlet.setCurrent(new DoctorList());
     }
 
-    public void iniciaFormacao() {
+    public void startFormations() {
        
         PersistableManager pm = PersistableManager.getInstance();
         try {
-            formacoes = pm.find(Formation.class, null, new Comparator() {
+            formations = pm.find(Formation.class, null, new Comparator() {
 
                 public int compare(Persistable arg0, Persistable arg1) {
                     Formation f1 = (Formation) arg0;
                     Formation f2 = (Formation) arg1;
 
-                    return f1.getFormacao().compareTo(f2.getFormacao());
+                    return f1.getFormation().compareTo(f2.getFormation());
                 }
 
             });
 
-            for (int i = 0; i < formacoes.size(); i++) {
-                Formation formacao = (Formation) formacoes.get(i);
-                int index = this.cgFormacao.append(formacao.getFormacao(), null);
-                if ((medico.getFormacoes() != null) && (this.medico.getFormacoes().contains(formacao))) {
-                    this.cgFormacao.setSelectedIndex(index, true);
+            for (int i = 0; i < formations.size(); i++) {
+                Formation formation = (Formation) formations.get(i);
+                int index = this.cgFormation.append(formation.getFormation(), null);
+                if ((doctor.getFormations() != null) && (this.doctor.getFormations().contains(formation))) {
+                    this.cgFormation.setSelectedIndex(index, true);
                 }
 
             }

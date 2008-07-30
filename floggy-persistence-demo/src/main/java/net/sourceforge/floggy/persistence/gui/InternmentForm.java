@@ -39,86 +39,87 @@ import net.sourceforge.floggy.persistence.model.Patient;
 
 public class InternmentForm extends Form implements CommandListener {
 
-    Internment internacao;
+    protected Internment internment;
 
-    ObjectSet pacientes;
+    protected ObjectSet patients;
 
-    ObjectSet medicos;
+    protected ObjectSet doctors;
 
-    ObjectSet leitos;
+    protected ObjectSet beds;
 
-    DateField dtEntrada;
+    protected DateField dtEnter;
 
-    TextField txtMotivo;
+    protected TextField txtReason;
 
-    ChoiceGroup cgPacientes;
+    protected ChoiceGroup cgPatients;
 
-    ChoiceGroup cgMedicos;
+    protected ChoiceGroup cgDoctors;
 
-    ChoiceGroup cgLeitos;
+    protected ChoiceGroup cgBeds;
 
-    Command cmdOk;
+    protected Command cmdOk;
 
-    Command cmdCancelar;
+    protected Command cmdCancel;
 
     public InternmentForm() {
-        super("Internação");
+        super("Internment");
 
-        this.internacao = new Internment();
+        this.internment = new Internment();
         
-        iniciaComponentes();
+        startComponents();
 
-        iniciaPacientes();
+        startPatients();
 
-        iniciaMedicos();
+        startDoctors();
 
-        iniciaLeitos();
+        startBeds();
 
     }
 
-    private void iniciaComponentes() {
-        this.dtEntrada = new DateField("Data Entrada", DateField.DATE);
-        this.dtEntrada.setDate(new Date());
-        this.append(this.dtEntrada);
+    private void startComponents() {
+        this.dtEnter = new DateField("Enter date", DateField.DATE);
+        this.dtEnter.setDate(new Date());
+        this.append(this.dtEnter);
 
-        this.txtMotivo = new TextField("Motivo", internacao.getMotivo(), 100,
+        this.txtReason = new TextField("Reason", internment.getReason(), 100,
                 TextField.ANY);
-        this.append(this.txtMotivo);
+        this.append(this.txtReason);
 
-        this.cgPacientes = new ChoiceGroup("Patient", ChoiceGroup.EXCLUSIVE);
-        this.append(cgPacientes);
+        this.cgPatients = new ChoiceGroup("Patient", ChoiceGroup.EXCLUSIVE);
+        this.append(cgPatients);
 
-        this.cgMedicos = new ChoiceGroup("Doctor", ChoiceGroup.EXCLUSIVE);
-        this.append(cgMedicos);
+        this.cgDoctors = new ChoiceGroup("Doctor", ChoiceGroup.EXCLUSIVE);
+        this.append(cgDoctors);
 
-        this.cgLeitos = new ChoiceGroup("Leitos", ChoiceGroup.EXCLUSIVE);
-        this.append(cgLeitos);
+        this.cgBeds = new ChoiceGroup("Beds", ChoiceGroup.EXCLUSIVE);
+        this.append(cgBeds);
 
         this.cmdOk = new Command("Ok", Command.OK, 0);
         this.addCommand(this.cmdOk);
 
-        this.cmdCancelar = new Command("Cancelar", Command.CANCEL, 1);
-        this.addCommand(this.cmdCancelar);
+        this.cmdCancel = new Command("Cancel", Command.CANCEL, 1);
+        this.addCommand(this.cmdCancel);
 
         this.setCommandListener(this);
     }
 
-    public void iniciaPacientes() {
+    public void startPatients() {
         PersistableManager pm = PersistableManager.getInstance();
         try {
-            pacientes = pm.find(Patient.class, null, new Comparator() {
+            patients = pm.find(Patient.class, null, new Comparator() {
 
                 public int compare(Persistable arg0, Persistable arg1) {
                     Patient p1 = (Patient) arg0;
                     Patient p2 = (Patient) arg1;
 
-                    return p1.getNome().compareTo(p2.getNome());
+                    return p1.getName().compareTo(p2.getName());
                 }
 
             });
-            for (int i = 0; i < pacientes.size(); i++) {
-                Patient paciente = (Patient) pacientes.get(i);
-                this.cgPacientes.append(paciente.getNome(), null);
+            Patient patient = new Patient();
+            for (int i = 0; i < patients.size(); i++) {
+            	patients.get(i, patient);
+                this.cgPatients.append(patient.getName(), null);
             }
 
         } catch (FloggyException e) {
@@ -127,23 +128,24 @@ public class InternmentForm extends Form implements CommandListener {
 
     }
 
-    public void iniciaMedicos() {
+    public void startDoctors() {
         PersistableManager pm = PersistableManager.getInstance();
         try {
-            medicos = pm.find(Doctor.class, null, new Comparator() {
+            doctors = pm.find(Doctor.class, null, new Comparator() {
 
                 public int compare(Persistable arg0, Persistable arg1) {
                     Doctor p1 = (Doctor) arg0;
                     Doctor p2 = (Doctor) arg1;
 
-                    return p1.getNome().compareTo(p2.getNome());
+                    return p1.getName().compareTo(p2.getName());
                 }
 
             });
 
-            for (int i = 0; i < medicos.size(); i++) {
-                Doctor medico = (Doctor) medicos.get(i);
-                this.cgMedicos.append(medico.getNome(), null);
+            Doctor doctor= new Doctor();
+            for (int i = 0; i < doctors.size(); i++) {
+                doctors.get(i, doctor);
+                this.cgDoctors.append(doctor.getName(), null);
             }
 
         } catch (FloggyException e) {
@@ -152,26 +154,26 @@ public class InternmentForm extends Form implements CommandListener {
 
     }
 
-    public void iniciaLeitos() {
+    public void startBeds() {
         PersistableManager pm = PersistableManager.getInstance();
         try {
-            leitos = pm.find(Bed.class, null, new BedComparator());
-            for (int i = 0; i < leitos.size(); i++) {
-                Bed leito = (Bed) leitos.get(i);
-                this.cgLeitos.append(String.valueOf(leito.getNumber()), null);
+            beds = pm.find(Bed.class, null, new BedComparator());
+            Bed bed= new Bed();
+            for (int i = 0; i < beds.size(); i++) {
+            	beds.get(i, bed);
+                this.cgBeds.append(String.valueOf(bed.getNumber()), null);
             }
-
         } catch (FloggyException e) {
         	HospitalMIDlet.showException(e);
         }
 
     }
 
-    public Patient getPacienteSelecionado() {
-        for (int i = 0; i < this.cgPacientes.size(); i++) {
-            if (this.cgPacientes.isSelected(i)) {
+    public Patient getSelectedPatient() {
+        for (int i = 0; i < this.cgPatients.size(); i++) {
+            if (this.cgPatients.isSelected(i)) {
                 try {
-                    return (Patient) this.pacientes.get(i);
+                    return (Patient) this.patients.get(i);
                 } catch (Exception e) {
                     // 
                 }
@@ -182,11 +184,11 @@ public class InternmentForm extends Form implements CommandListener {
         return null;
     }
     
-    public Doctor getMedicoSelecionado() {
-        for (int i = 0; i < this.cgMedicos.size(); i++) {
-            if (this.cgMedicos.isSelected(i)) {
+    public Doctor getSelectedDoctor() {
+        for (int i = 0; i < this.cgDoctors.size(); i++) {
+            if (this.cgDoctors.isSelected(i)) {
                 try {
-                    return (Doctor) this.medicos.get(i);
+                    return (Doctor) this.doctors.get(i);
                 } catch (Exception e) {
                     // 
                 }
@@ -198,11 +200,11 @@ public class InternmentForm extends Form implements CommandListener {
     }
 
 
-    public Bed getLeitoSelecionado() {
-        for (int i = 0; i < this.cgLeitos.size(); i++) {
-            if (this.cgLeitos.isSelected(i)) {
+    public Bed getSelectedBed() {
+        for (int i = 0; i < this.cgBeds.size(); i++) {
+            if (this.cgBeds.isSelected(i)) {
                 try {
-                    return (Bed) this.leitos.get(i);
+                    return (Bed) this.beds.get(i);
                 } catch (Exception e) {
                     // 
                 }
@@ -218,12 +220,12 @@ public class InternmentForm extends Form implements CommandListener {
             PersistableManager pm = PersistableManager.getInstance();
 
             try {
-                this.internacao.setDtEntrada(this.dtEntrada.getDate());
-                this.internacao.setMotivo(this.txtMotivo.getString());
-                this.internacao.setPaciente(getPacienteSelecionado());
-                this.internacao.setMedico(getMedicoSelecionado());
-                this.internacao.setLeito(getLeitoSelecionado());
-                pm.save(this.internacao);
+                this.internment.setEnterDate(this.dtEnter.getDate());
+                this.internment.setReason(this.txtReason.getString());
+                this.internment.setPatient(getSelectedPatient());
+                this.internment.setDoctor(getSelectedDoctor());
+                this.internment.setBed(getSelectedBed());
+                pm.save(this.internment);
             } catch (FloggyException e) {
             	HospitalMIDlet.showException(e);
             }

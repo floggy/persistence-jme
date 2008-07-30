@@ -32,45 +32,46 @@ import net.sourceforge.floggy.persistence.PersistableManager;
 import net.sourceforge.floggy.persistence.model.Internment;
 
 public class InternmentList extends List implements CommandListener {
-    ObjectSet internacoes;
+	
+    protected ObjectSet internments;
 
-    Command cmdAlta;
+    protected Command cmdLeave;
 
-    Command cmdVoltar;
+    protected Command cmdBack;
 
     public InternmentList() {
-        super("Internações", List.IMPLICIT);
+        super("Internments", List.IMPLICIT);
 
-        iniciaDados();
-        iniciaComponentes();
+        startData();
+        startComponents();
     }
 
-    private void iniciaDados() {
+    private void startData() {
         PersistableManager pm = PersistableManager.getInstance();
 
         try {
             this.deleteAll();
 
-            internacoes = pm.find(Internment.class, new Filter() {
+            internments = pm.find(Internment.class, new Filter() {
 
                 public boolean matches(Persistable arg0) {
-                    return ((Internment) arg0).getDtSaida() == null;
+                    return ((Internment) arg0).getExitDate() == null;
                 }
 
             }, new Comparator() {
                 public int compare(Persistable arg0, Persistable arg1) {
-                    String s1 = ((Internment) arg0).getPaciente().getNome();
-                    String s2 = ((Internment) arg1).getPaciente().getNome();
+                    String s1 = ((Internment) arg0).getPatient().getName();
+                    String s2 = ((Internment) arg1).getPatient().getName();
 
                     return s1.compareTo(s2);
                     
                 }
             });
 
-            for (int i = 0; i < internacoes.size(); i++) {
-                Internment element = (Internment) internacoes.get(i);
-                this.append(element.getPaciente().getNome() + " - "
-                        + element.getLeito().getNumber(), null);
+            for (int i = 0; i < internments.size(); i++) {
+                Internment internment = (Internment) internments.get(i);
+                this.append(internment.getPatient().getName() + " - "
+                        + internment.getBed().getNumber(), null);
             }
 
         } catch (FloggyException e) {
@@ -78,28 +79,28 @@ public class InternmentList extends List implements CommandListener {
         }
     }
 
-    private void iniciaComponentes() {
-        this.cmdVoltar = new Command("Voltar", Command.BACK, 0);
-        this.addCommand(this.cmdVoltar);
+    private void startComponents() {
+        this.cmdBack = new Command("Back", Command.BACK, 0);
+        this.addCommand(this.cmdBack);
 
-        this.cmdAlta = new Command("Alta", Command.ITEM, 1);
-        this.addCommand(this.cmdAlta);
+        this.cmdLeave = new Command("Leave", Command.ITEM, 1);
+        this.addCommand(this.cmdLeave);
 
         this.setCommandListener(this);
     }
 
     public void commandAction(Command cmd, Displayable dsp) {
-        if (cmd == this.cmdVoltar) {
+        if (cmd == this.cmdBack) {
             MainForm mainForm = new MainForm();
             HospitalMIDlet.setCurrent(mainForm);
-        } else if (cmd == this.cmdAlta) {
+        } else if (cmd == this.cmdLeave) {
             if (this.getSelectedIndex() != -1) {
                 try {
-                    Internment internacao = (Internment) internacoes.get(this
+                    Internment internment = (Internment) internments.get(this
                             .getSelectedIndex());
-                    internacao.setDtSaida(new Date());
-                    PersistableManager.getInstance().save(internacao);
-                    this.iniciaDados();
+                    internment.setExitDate(new Date());
+                    PersistableManager.getInstance().save(internment);
+                    this.startData();
                 } catch (FloggyException e) {
                 	HospitalMIDlet.showException(e);
                 }

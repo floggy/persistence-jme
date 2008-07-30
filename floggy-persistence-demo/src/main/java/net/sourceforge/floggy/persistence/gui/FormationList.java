@@ -30,33 +30,33 @@ import net.sourceforge.floggy.persistence.model.Formation;
 
 public class FormationList extends List implements CommandListener, Comparator {
 
-    ObjectSet formacoes;
+	protected ObjectSet formations;
 
-    Command cmdInserir;
+	protected Command cmdCreate;
 
-    Command cmdAlterar;
+	protected Command cmdEdit;
 
-    Command cmdExcluir;
+	protected Command cmdDelete;
 
-    Command cmdVoltar;
+	protected Command cmdBack;
 
     public FormationList() {
-        super("Lista de Formações", List.IMPLICIT);
+        super("Formation list", List.IMPLICIT);
 
-        iniciaDados();
-        iniciaComponentes();
+        startData();
+        startComponents();
     }
 
-    private void iniciaDados() {
+    private void startData() {
         PersistableManager pm = PersistableManager.getInstance();
 
         try {
             this.deleteAll();
 
-            formacoes = pm.find(Formation.class, null, this);
-            for (int i = 0; i < formacoes.size(); i++) {
-                Formation element = (Formation) formacoes.get(i);
-                this.append(element.getFormacao(), null);
+            formations = pm.find(Formation.class, null, this);
+            for (int i = 0; i < formations.size(); i++) {
+                Formation element = (Formation) formations.get(i);
+                this.append(element.getFormation(), null);
             }
 
         } catch (FloggyException e) {
@@ -64,49 +64,49 @@ public class FormationList extends List implements CommandListener, Comparator {
         }
     }
 
-    private void iniciaComponentes() {
-        this.cmdVoltar = new Command("Voltar", Command.BACK, 0);
-        this.addCommand(this.cmdVoltar);
+    private void startComponents() {
+        this.cmdBack = new Command("Back", Command.BACK, 0);
+        this.addCommand(this.cmdBack);
 
-        this.cmdInserir = new Command("Inserir", Command.ITEM, 1);
-        this.addCommand(this.cmdInserir);
+        this.cmdCreate = new Command("Create", Command.ITEM, 1);
+        this.addCommand(this.cmdCreate);
 
-        this.cmdAlterar = new Command("Alterar", Command.ITEM, 2);
-        this.addCommand(this.cmdAlterar);
+        this.cmdEdit = new Command("Edit", Command.ITEM, 2);
+        this.addCommand(this.cmdEdit);
 
-        this.cmdExcluir = new Command("Excluir", Command.ITEM, 3);
-        this.addCommand(this.cmdExcluir);
+        this.cmdDelete = new Command("Delete", Command.ITEM, 3);
+        this.addCommand(this.cmdDelete);
 
         this.setCommandListener(this);
     }
 
     public void commandAction(Command cmd, Displayable dsp) {
-        if (cmd == this.cmdVoltar) {
+        if (cmd == this.cmdBack) {
             MainForm mainForm = new MainForm();
             HospitalMIDlet.setCurrent(mainForm);
-        } else if (cmd == this.cmdInserir) {
-            Formation formacao = new Formation();
-            HospitalMIDlet.setCurrent(new FormationForm(formacao));
-        } else if (cmd == this.cmdAlterar) {
+        } else if (cmd == this.cmdCreate) {
+            Formation formation = new Formation();
+            HospitalMIDlet.setCurrent(new FormationForm(formation));
+        } else if (cmd == this.cmdEdit) {
             if (this.getSelectedIndex() != -1) {
-                Formation formacao = null;
+                Formation formation = null;
 
                 try {
-                    formacao = (Formation) formacoes
+                	formation = (Formation) formations
                             .get(this.getSelectedIndex());
-                    HospitalMIDlet.setCurrent(new FormationForm(formacao));
+                    HospitalMIDlet.setCurrent(new FormationForm(formation));
                 } catch (FloggyException e) {
                 	HospitalMIDlet.showException(e);
                 }
             }
-        } else if (cmd == this.cmdExcluir) {
+        } else if (cmd == this.cmdDelete) {
             if (this.getSelectedIndex() != -1) {
 
                 try {
-                    Formation formacao = (Formation) formacoes.get(this
+                    Formation formation = (Formation) formations.get(this
                             .getSelectedIndex());
-                    PersistableManager.getInstance().delete(formacao);
-                    this.iniciaDados();
+                    PersistableManager.getInstance().delete(formation);
+                    this.startData();
                 } catch (FloggyException e) {
                 	HospitalMIDlet.showException(e);
                 }
@@ -118,6 +118,6 @@ public class FormationList extends List implements CommandListener, Comparator {
         Formation f1 = (Formation) p1;
         Formation f2 = (Formation) p2;
 
-        return f1.getFormacao().compareTo(f2.getFormacao());
+        return f1.getFormation().compareTo(f2.getFormation());
     }
 }

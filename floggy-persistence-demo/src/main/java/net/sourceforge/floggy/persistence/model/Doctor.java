@@ -21,13 +21,9 @@ import net.sourceforge.floggy.persistence.Persistable;
 
 public class Doctor extends Person implements Persistable {
 
-    String crm;
+    protected String crm;
 
-    Vector formacoes;
-
-    public Doctor() {
-        //
-    }
+    protected Vector formations;
 
     public String getCrm() {
         return crm;
@@ -37,11 +33,11 @@ public class Doctor extends Person implements Persistable {
         this.crm = crm;
     }
 
-    public Vector getFormacoes() {
-        return formacoes;
+    public Vector getFormations() {
+        return formations;
     }
 
-    public void setFormacoes(Vector formacoes) {
-        this.formacoes = formacoes;
+    public void setFormations(Vector formations) {
+        this.formations = formations;
     }
 }

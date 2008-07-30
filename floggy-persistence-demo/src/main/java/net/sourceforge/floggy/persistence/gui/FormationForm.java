@@ -28,31 +28,31 @@ import net.sourceforge.floggy.persistence.model.Formation;
 
 public class FormationForm extends Form implements CommandListener {
     
-    Formation formacao;
+    protected Formation formation;
     
-    TextField txtFormacao;
+    protected TextField txtFormation;
     
-    Command cmdOk;
+    protected Command cmdOk;
     
-    Command cmdCancelar;
+    protected Command cmdCancel;
     
-    public FormationForm(Formation formacao) {
-        super("Formação");
+    public FormationForm(Formation formation) {
+        super("Formation");
         
-        this.formacao = formacao;
+        this.formation = formation;
         
-        iniciaComponentes();
+        startComponents();
     }
     
-    private void iniciaComponentes() {
-        this.txtFormacao = new TextField("Formação", formacao.getFormacao(), 30, TextField.ANY);
-        this.append(this.txtFormacao);
+    private void startComponents() {
+        this.txtFormation = new TextField("Formation", formation.getFormation(), 30, TextField.ANY);
+        this.append(this.txtFormation);
         
         this.cmdOk = new Command("Ok", Command.OK, 0);
         this.addCommand(this.cmdOk);
         
-        this.cmdCancelar = new Command("Cancelar", Command.CANCEL, 1);
-        this.addCommand(this.cmdCancelar);
+        this.cmdCancel = new Command("Cancel", Command.CANCEL, 1);
+        this.addCommand(this.cmdCancel);
         
         this.setCommandListener(this);
     }
@@ -62,8 +62,8 @@ public class FormationForm extends Form implements CommandListener {
             PersistableManager pm = PersistableManager.getInstance();
             
             try {
-                formacao.setFormacao(this.txtFormacao.getString());
-                pm.save(formacao);
+                formation.setFormation(this.txtFormation.getString());
+                pm.save(formation);
             } catch (FloggyException e) {
             	HospitalMIDlet.showException(e);
             }

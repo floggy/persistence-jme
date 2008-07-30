@@ -24,37 +24,33 @@ import net.sourceforge.floggy.persistence.HospitalMIDlet;
 
 public class MainForm extends List implements CommandListener {
 
-    Command cmdSair;
+	protected Command cmdExit;
 
     public MainForm() {
         super("Hospital", List.IMPLICIT);
 
-        iniciaComponentes();
+        startComponents();
     }
 
-    protected void cadastrosIniciais() {
-    }
-
-    protected void iniciaComponentes() {
-        this.append("Cadastrar Formação", null);
-        this.append("Cadastrar Bed", null);
-        this.append("Cadastrar Médico", null);
-        this.append("Cadastrar Patient", null);
+    protected void startComponents() {
+        this.append("Formations", null);
+        this.append("Beds", null);
+        this.append("Doctors", null);
+        this.append("Patients", null);
         this.append("-----", null);
-        this.append("Incluir Internação", null);
-        this.append("Autorizar Alta", null);        
+        this.append("Add internment", null);
+        this.append("Leave patient", null);        
         this.append("-----", null);
-        this.append("Relatório de Leitos Livres", null);
-        this.append("Relatório de Internações por Médicos", null);        
+        this.append("Free beds report", null);
         
-        this.cmdSair = new Command("Sair", Command.ITEM, 3);
-        this.addCommand(this.cmdSair);
+        this.cmdExit = new Command("Exit", Command.ITEM, 3);
+        this.addCommand(this.cmdExit);
 
         this.setCommandListener(this);
     }
 
     public void commandAction(Command cmd, Displayable dsp) {
-        if (cmd == this.cmdSair) {
+        if (cmd == this.cmdExit) {
             HospitalMIDlet.exit();   
         } else if (cmd == List.SELECT_COMMAND) {
             switch (this.getSelectedIndex()) {

@@ -28,36 +28,36 @@ import net.sourceforge.floggy.persistence.model.Bed;
 
 public class BedForm extends Form implements CommandListener {
     
-    Bed leito;
+    protected Bed bed;
     
-    TextField txtNumeroLeito;
+    protected TextField txtBedNumber;
     
-    TextField txtAndarLeito;
+    protected TextField txtBedFloor;
     
-    Command cmdOk;
+    protected Command cmdOk;
     
-    Command cmdCancelar;
+    protected Command cmdCancel;
     
-    public BedForm(Bed leito) {
+    public BedForm(Bed bed) {
         super("Bed");
         
-        this.leito = leito;
+        this.bed = bed;
         
-        iniciaComponentes();
+        startComponents();
     }
     
-    private void iniciaComponentes() {
-        this.txtNumeroLeito = new TextField("Número do Bed", String.valueOf(leito.getNumber()), 3, TextField.NUMERIC);
-        this.append(this.txtNumeroLeito);
+    private void startComponents() {
+        this.txtBedNumber = new TextField("Bed number", String.valueOf(bed.getNumber()), 3, TextField.NUMERIC);
+        this.append(this.txtBedNumber);
 
-        this.txtAndarLeito  = new TextField("Andar do Bed", String.valueOf(leito.getFloor()), 15, TextField.NUMERIC);
-        this.append(this.txtAndarLeito);        
+        this.txtBedFloor  = new TextField("Bed floor", String.valueOf(bed.getFloor()), 15, TextField.NUMERIC);
+        this.append(this.txtBedFloor);        
                
         this.cmdOk = new Command("Ok", Command.OK, 0);
         this.addCommand(this.cmdOk);
         
-        this.cmdCancelar = new Command("Cancelar", Command.CANCEL, 1);
-        this.addCommand(this.cmdCancelar);
+        this.cmdCancel = new Command("Cancel", Command.CANCEL, 1);
+        this.addCommand(this.cmdCancel);
         
         this.setCommandListener(this);
     }
@@ -67,9 +67,9 @@ public class BedForm extends Form implements CommandListener {
             PersistableManager pm = PersistableManager.getInstance();
             
             try {
-                leito.setNumber(Integer.parseInt(this.txtNumeroLeito.getString()));
-                leito.setFloor(Integer.parseInt(this.txtAndarLeito.getString()));
-                pm.save(leito);         
+                bed.setNumber(Integer.parseInt(this.txtBedNumber.getString()));
+                bed.setFloor(Integer.parseInt(this.txtBedFloor.getString()));
+                pm.save(bed);         
             
             } catch (FloggyException e) {
             	HospitalMIDlet.showException(e);

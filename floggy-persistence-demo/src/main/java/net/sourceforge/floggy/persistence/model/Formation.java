@@ -19,28 +19,27 @@ import net.sourceforge.floggy.persistence.Persistable;
 
 public class Formation implements Persistable {
 
-    String formacao;
+    protected String formation;
 
-    public Formation() {
-        
+    public Formation() {        
     }
     
-    public Formation(String formacao) {
-        this.formacao = formacao;
+    public Formation(String formation) {
+        this.formation = formation;
     }
 
-    public String getFormacao() {
-        return formacao;
+    public String getFormation() {
+        return formation;
     }
 
-    public void setFormacao(String formacao) {
-        this.formacao = formacao;
+    public void setFormation(String formation) {
+        this.formation = formation;
     }
     
     public boolean equals(Object object) {
         if (object instanceof Formation) {
-            Formation formacao = (Formation) object;
-            return this.formacao.equals(formacao.getFormacao());
+            Formation formation = (Formation) object;
+            return this.formation.equals(formation.getFormation());
         }
         
         return false;

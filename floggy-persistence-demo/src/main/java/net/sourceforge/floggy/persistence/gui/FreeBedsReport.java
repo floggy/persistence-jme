@@ -32,38 +32,38 @@ import net.sourceforge.floggy.persistence.model.Internment;
 
 public class FreeBedsReport extends List implements CommandListener {
 
-	Command cmdVoltar;
+	protected Command cmdBack;
 
 	public FreeBedsReport() {
-		super("Leitos Livres", List.IMPLICIT);
+		super("Free beds", List.IMPLICIT);
 
-		iniciaDados();
-		iniciaComponentes();
+		startData();
+		startComponents();
 	}
 
-	private void iniciaDados() {
+	private void startData() {
 		PersistableManager pm = PersistableManager.getInstance();
 
 		try {
 			this.deleteAll();
 
-			final ObjectSet internacoes = pm.find(Internment.class,
+			final ObjectSet internments = pm.find(Internment.class,
 					new Filter() {
 						public boolean matches(Persistable arg0) {
-							return ((Internment) arg0).getDtSaida() == null;
+							return ((Internment) arg0).getExitDate() == null;
 						}
 					}, null);
 
-			ObjectSet leitosLivres = pm.find(Bed.class, new Filter() {
+			ObjectSet freeBeds = pm.find(Bed.class, new Filter() {
 
 				public boolean matches(Persistable arg0) {
-					Bed leito = (Bed) arg0;
+					Bed bed = (Bed) arg0;
 
-					for (int i = 0; i < internacoes.size(); i++) {
+					for (int i = 0; i < internments.size(); i++) {
 
 						try {
-							if (((Internment) internacoes.get(i)).getLeito()
-									.getNumber()== leito.getNumber()) {
+							if (((Internment) internments.get(i)).getBed()
+									.getNumber()== bed.getNumber()) {
 								return false;
 							}
 						} catch (FloggyException e) {
@@ -76,10 +76,10 @@ public class FreeBedsReport extends List implements CommandListener {
 
 			}, new BedComparator());
 
-        	            for (int i = 0; i < leitosLivres.size(); i++) {
-        	                Bed leito = (Bed) leitosLivres.get(i);
-        			this.append(leito.getNumber() + " - "
-        					+ leito.getFloor(), null);
+        	            for (int i = 0; i < freeBeds.size(); i++) {
+        	                Bed bed = (Bed) freeBeds.get(i);
+        			this.append(bed.getNumber() + " - "
+        					+ bed.getFloor(), null);
 			}
 
 		} catch (FloggyException e) {
@@ -87,15 +87,15 @@ public class FreeBedsReport extends List implements CommandListener {
 		}
 	}
 
-	private void iniciaComponentes() {
-		this.cmdVoltar = new Command("Voltar", Command.BACK, 0);
-		this.addCommand(this.cmdVoltar);
+	private void startComponents() {
+		this.cmdBack = new Command("Back", Command.BACK, 0);
+		this.addCommand(this.cmdBack);
 
 		this.setCommandListener(this);
 	}
 
 	public void commandAction(Command cmd, Displayable dsp) {
-		if (cmd == this.cmdVoltar) {
+		if (cmd == this.cmdBack) {
 			MainForm mainForm = new MainForm();
 			HospitalMIDlet.setCurrent(mainForm);
 		}

@@ -19,68 +19,68 @@ import net.sourceforge.floggy.persistence.Persistable;
 
 public class Patient extends Person implements Persistable {
 
-    private static int TELEFONE_CASA = 0;
+	private static int HOME_PHONE = 0;
 
-    private static int TELEFONE_CELULAR = 1;
+	private static int CELL_PHONE = 1;
 
-    private static int TELEFONE_TRABALHO = 2;
+	private static int WORK_PHONE = 2;
 
-    private String address;
+	private String address;
 
-    private String[] phones;
+	private String[] phones;
 
-    private boolean insuredByGoverment;
+	private boolean insuredByGoverment;
 
-    public Patient() {
-        this.phones = new String[3];
-    }
+	public Patient() {
+		this.phones = new String[3];
+	}
 
-    public String getAddress() {
-        return address;
-    }
+	public String getAddress() {
+		return address;
+	}
 
-    public void setAddress(String endereco) {
-        this.address = endereco;
-    }
+	public void setAddress(String address) {
+		this.address = address;
+	}
 
-    public boolean isInsuredByGoverment() {
-        return insuredByGoverment;
-    }
+	public boolean isInsuredByGoverment() {
+		return insuredByGoverment;
+	}
 
-    public void setInsuredByGoverment(boolean particular) {
-        this.insuredByGoverment = particular;
-    }
-    
-    public String[] getPhones() {
+	public void setInsuredByGoverment(boolean insuredByGoverment) {
+		this.insuredByGoverment = insuredByGoverment;
+	}
+
+	public String[] getPhones() {
 		return phones;
 	}
-    
-    public void setPhones(String[] telefones) {
-		this.phones = telefones;
+
+	public void setPhones(String[] phones) {
+		this.phones = phones;
 	}
 
-    public String getTelefoneCasa() {
-        return this.phones[TELEFONE_CASA];
-    }
+	public String getHomePhone() {
+		return this.phones[HOME_PHONE];
+	}
 
-    public void setTelefoneCasa(String telefone) {
-        this.phones[TELEFONE_CASA] = telefone;
-    }
+	public void setHomePhone(String homePhone) {
+		this.phones[HOME_PHONE] = homePhone;
+	}
 
-    public String getTelefoneCelular() {
-        return this.phones[TELEFONE_CELULAR];
-    }
+	public String getCellPhone() {
+		return this.phones[CELL_PHONE];
+	}
 
-    public void setTelefoneCelular(String telefone) {
-        this.phones[TELEFONE_CELULAR] = telefone;
-    }
+	public void setCellPhone(String cellPhone) {
+		this.phones[CELL_PHONE] = cellPhone;
+	}
 
-    public String getTelefoneTrabalho() {
-        return this.phones[TELEFONE_TRABALHO];
-    }
+	public String getWorkPhone() {
+		return this.phones[WORK_PHONE];
+	}
 
-    public void setTelefoneTrabalho(String telefone) {
-        this.phones[TELEFONE_TRABALHO] = telefone;
-    }
+	public void setWorkPhone(String workPhone) {
+		this.phones[WORK_PHONE] = workPhone;
+	}
 
 }

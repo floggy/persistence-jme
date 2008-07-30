@@ -31,96 +31,103 @@ import net.sourceforge.floggy.persistence.model.Patient;
 
 public class PatientForm extends Form implements CommandListener {
 
-    Patient paciente;
+	protected Patient patient;
 
-    ObjectSet formacoes;
+	protected ObjectSet formations;
 
-    TextField txtNome;
+	protected TextField txtName;
 
-    TextField txtCPF;
+	protected TextField txtPassport;
 
-    DateField dtNascimento;
+	protected DateField dtBornDate;
 
-    TextField txtEndereco;
+	protected TextField txtAddress;
 
-    ChoiceGroup cgConvenio;
+	protected ChoiceGroup cgInsuredByGoverment;
 
-    TextField txtTelefoneCasa;
+	protected TextField txtHomePhone;
 
-    TextField txtTelefoneCelular;
+	protected TextField txtCellPhone;
 
-    TextField txtTelefoneTrabalho;
+	protected TextField txtWorkPhone;
 
-    Command cmdOk;
+	protected Command cmdOk;
 
-    Command cmdCancelar;
+	protected Command cmdCancel;
 
-    public PatientForm(Patient paciente) {
-        super("Patient");
+	public PatientForm(Patient paciente) {
+		super("Patient");
 
-        this.paciente = paciente;
+		this.patient = paciente;
 
-        iniciaComponentes();
-    }
+		startComponents();
+	}
 
-    private void iniciaComponentes() {
-        this.txtNome = new TextField("Nome", paciente.getNome(), 30,
-                TextField.ANY);
-        this.append(this.txtNome);
+	private void startComponents() {
+		this.txtName = new TextField("Name", patient.getName(), 30,
+				TextField.ANY);
+		this.append(this.txtName);
 
-        this.txtCPF = new TextField("CPF", paciente.getCpf(), 30, TextField.ANY);
-        this.append(this.txtCPF);
+		this.txtPassport = new TextField("Passport", patient.getPassport(), 30,
+				TextField.ANY);
+		this.append(this.txtPassport);
 
-        this.dtNascimento = new DateField("Data Nascimento", DateField.DATE);
-        this.dtNascimento.setDate(paciente.getDataNascimento());
-        this.append(this.dtNascimento);
+		this.dtBornDate = new DateField("Born date", DateField.DATE);
+		this.dtBornDate.setDate(patient.getBornDate());
+		this.append(this.dtBornDate);
 
-        this.txtEndereco = new TextField("Endereço", paciente.getAddress(),
-                100, TextField.ANY);
-        this.append(txtEndereco);
+		this.txtAddress = new TextField("Address", patient.getAddress(),
+				100, TextField.ANY);
+		this.append(txtAddress);
 
-        this.append("Telefones");
-        this.txtTelefoneCasa = new TextField("Casa", paciente.getTelefoneCasa(), 20, TextField.PHONENUMBER);
-        this.append(this.txtTelefoneCasa);
-        this.txtTelefoneCelular = new TextField("Celular", paciente.getTelefoneCelular(), 20, TextField.PHONENUMBER);
-        this.append(this.txtTelefoneCelular);
-        this.txtTelefoneTrabalho = new TextField("Trabalho", paciente.getTelefoneTrabalho(), 20, TextField.PHONENUMBER);
-        this.append(this.txtTelefoneTrabalho);
+		this.append("Phones");
+		this.txtHomePhone = new TextField("Home", patient.getHomePhone(),
+				20, TextField.PHONENUMBER);
+		this.append(this.txtHomePhone);
+		this.txtCellPhone = new TextField("Cell", patient
+				.getCellPhone(), 20, TextField.PHONENUMBER);
+		this.append(this.txtCellPhone);
+		this.txtWorkPhone = new TextField("Work", patient
+				.getCellPhone(), 20, TextField.PHONENUMBER);
+		this.append(this.txtWorkPhone);
 
-        this.cgConvenio = new ChoiceGroup("Tipo:", ChoiceGroup.EXCLUSIVE);
-        this.cgConvenio.append("Particular", null);
-        this.cgConvenio.append("Convênio", null);
-        this.cgConvenio.setSelectedIndex(0, paciente.isInsuredByGoverment());
-        this.cgConvenio.setSelectedIndex(1, !paciente.isInsuredByGoverment());
-        this.append(cgConvenio);
-        
-        this.cmdOk = new Command("Ok", Command.OK, 0);
-        this.addCommand(this.cmdOk);
+		this.cgInsuredByGoverment = new ChoiceGroup("Type:", ChoiceGroup.EXCLUSIVE);
+		this.cgInsuredByGoverment.append("Private", null);
+		this.cgInsuredByGoverment.append("Goverment", null);
+		this.cgInsuredByGoverment.setSelectedIndex(0, patient.isInsuredByGoverment());
+		this.cgInsuredByGoverment.setSelectedIndex(1, !patient.isInsuredByGoverment());
+		this.append(cgInsuredByGoverment);
 
-        this.cmdCancelar = new Command("Cancelar", Command.CANCEL, 1);
-        this.addCommand(this.cmdCancelar);
+		this.cmdOk = new Command("Ok", Command.OK, 0);
+		this.addCommand(this.cmdOk);
 
-        this.setCommandListener(this);
-    }
+		this.cmdCancel = new Command("Cancel", Command.CANCEL, 1);
+		this.addCommand(this.cmdCancel);
 
-    public void commandAction(Command cmd, Displayable dsp) {
-        if (cmd == this.cmdOk) {
-            PersistableManager pm = PersistableManager.getInstance();
+		this.setCommandListener(this);
+	}
 
-            try {
-                this.paciente.setNome(this.txtNome.getString());
-                this.paciente.setCpf(this.txtCPF.getString());
-                this.paciente.setDataNascimento(this.dtNascimento.getDate());
-                this.paciente.setInsuredByGoverment(this.cgConvenio.isSelected(0));
-                this.paciente.setTelefoneCasa(this.txtTelefoneCasa.getString());
-                this.paciente.setTelefoneCelular(this.txtTelefoneCelular.getString());
-                this.paciente.setTelefoneTrabalho(this.txtTelefoneTrabalho.getString());
-                pm.save(this.paciente);
+	public void commandAction(Command cmd, Displayable dsp) {
+		if (cmd == this.cmdOk) {
+			PersistableManager pm = PersistableManager.getInstance();
 
-            } catch (FloggyException e) {
-            	HospitalMIDlet.showException(e);
-            }
-        }
-        HospitalMIDlet.setCurrent(new PatientList());
-    }
+			try {
+				this.patient.setName(this.txtName.getString());
+				this.patient.setPassport(this.txtPassport.getString());
+				this.patient.setBornDate(this.dtBornDate.getDate());
+				this.patient.setInsuredByGoverment(this.cgInsuredByGoverment
+						.isSelected(0));
+				this.patient.setHomePhone(this.txtHomePhone.getString());
+				this.patient.setCellPhone(this.txtCellPhone
+						.getString());
+				this.patient.setWorkPhone(this.txtWorkPhone
+						.getString());
+				pm.save(this.patient);
+
+			} catch (FloggyException e) {
+				HospitalMIDlet.showException(e);
+			}
+		}
+		HospitalMIDlet.setCurrent(new PatientList());
+	}
 }

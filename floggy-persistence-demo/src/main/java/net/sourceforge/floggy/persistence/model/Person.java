@@ -22,60 +22,59 @@ import net.sourceforge.floggy.persistence.Persistable;
 
 public class Person implements Persistable {
 
-    String cpf;
+    protected String passport;
 
-    String nome;
+    protected String name;
 
-    Date dataNascimento;
+    protected Date bornDate;
 
-    transient int idade;
-
+    protected transient int age;
+    
     public Person() {
-        //
+	}
+
+    public Person(String passport, String nome, Date dataNascimento) {
+        setPassport(passport);
+        setName(nome);
+        setBornDate(dataNascimento);
     }
 
-    public Person(String cpf, String nome, Date dataNascimento) {
-        setCpf(cpf);
-        setNome(nome);
-        setDataNascimento(dataNascimento);
+    public String getPassport() {
+        return passport;
     }
 
-    public String getCpf() {
-        return cpf;
+    public void setPassport(String passport) {
+        this.passport = passport;
     }
 
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
+    public Date getBornDate() {
+        return bornDate;
     }
 
-    public Date getDataNascimento() {
-        return dataNascimento;
-    }
-
-    public void setDataNascimento(Date dataNascimento) {
-        this.dataNascimento = dataNascimento;
+    public void setBornDate(Date dataNascimento) {
+        this.bornDate = dataNascimento;
         if (dataNascimento != null) {
             Calendar c1 = Calendar.getInstance();
             Calendar c2 = Calendar.getInstance();
 
             c2.setTime(dataNascimento);
-            this.idade = c1.get(Calendar.YEAR) - c2.get(Calendar.YEAR);
+            this.age = c1.get(Calendar.YEAR) - c2.get(Calendar.YEAR);
         } else {
-            this.idade = 0;
+            this.age = 0;
         }
 
     }
 
-    public int getIdade() {
-        return idade;
+    public int getAge() {
+        return age;
     }
 
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setName(String nome) {
+        this.name = nome;
     }
 
 }
