@@ -128,7 +128,13 @@ public class FloggyBuilder extends IncrementalProjectBuilder {
 					weaver.setConfiguration(configuration);
 					weaver.execute();
 					
-					IFolder outputLocation= project.getFolder(javaProject.getOutputLocation().lastSegment());
+					IPath path= javaProject.getOutputLocation();
+					
+					if (path.segmentCount() > 1) {
+						path= path.removeFirstSegments(1);
+					}
+					
+					IFolder outputLocation= project.getFolder(path);
 					copyFiles(temp, temp, outputLocation, monitor);
 					outputLocation.refreshLocal(IResource.DEPTH_INFINITE, monitor);
 					FileUtils.forceDelete(temp);
@@ -146,7 +152,7 @@ public class FloggyBuilder extends IncrementalProjectBuilder {
 		int index= sourceRoot.getAbsolutePath().length()+1;
 		File[] childrens= sourceFolder.listFiles();
 		for (int i = 0; i < childrens.length; i++) {
-			if (childrens[i].isFile() && childrens[i].getName().endsWith(".class")) {
+			if (childrens[i].isFile()) {
 				String filePath= childrens[i].getAbsolutePath().substring(index);
 				
 				byte[] data= FileUtils.readFileToByteArray(childrens[i]);
