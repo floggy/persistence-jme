@@ -46,7 +46,9 @@ Floggy
 - modificar os termos da licensa de 2006 para 2006-2008
 - criar uma exception mais especializada para identificar campos que nao possam salvar e mostrar no plugin do eclipse
 - criar uma seção no site para chamar contribuições da comunidade. (how to help)
+- adicionar um plugin para executar diretamente o DEMO (microemulator)
 - criar um marquivo do tipo sitemap.xml
+- criar uma FAQ sobre o FloggyUML
 - postar notícias:
 	- FEITO www.javafree.org
 	- FEITO www.portaljava.com.br
