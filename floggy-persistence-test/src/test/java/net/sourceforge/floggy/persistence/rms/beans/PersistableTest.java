@@ -15,6 +15,8 @@
  */
 package net.sourceforge.floggy.persistence.rms.beans;
 
+import javax.microedition.rms.InvalidRecordIDException;
+
 import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.beans.FloggyPersistable;
 import net.sourceforge.floggy.persistence.rms.AbstractTest;
@@ -38,5 +40,28 @@ public class PersistableTest extends AbstractTest {
 	public Persistable newInstance() {
 		return new FloggyPersistable();
 	}
+	
+	public void testFieldDeleted() {
+		FloggyPersistable container= new FloggyPersistable();
+		FloggyPersistable field= new FloggyPersistable();
+
+		int containerId;
+		try {
+			manager.save(field);
+			
+			container.setX(field);
+			
+			containerId= manager.save(container);
+			
+			manager.delete(field);
+			
+			manager.load(container, containerId);
+			fail();
+			
+		} catch (Exception ex) {
+			assertEquals(InvalidRecordIDException.class.getName(), ex.getMessage());
+		}
+	}
+	
 
 }
