@@ -26,6 +26,7 @@ import net.sourceforge.floggy.persistence.FloggyException;
 import net.sourceforge.floggy.persistence.ObjectSet;
 import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.PersistableManager;
+import net.sourceforge.floggy.persistence.RMSMemoryMicroEmulator;
 import net.sourceforge.floggy.persistence.beans.Person;
 
 import org.microemu.MIDletBridge;
@@ -35,7 +36,7 @@ public abstract class AbstractTest extends TestCase {
 	protected PersistableManager manager;
 	
 	public AbstractTest() {
-		MIDletBridge.setMicroEmulator(RMSMemoryEmulator.getInstance());
+		MIDletBridge.setMicroEmulator(RMSMemoryMicroEmulator.getInstance());
 		manager = PersistableManager.getInstance();
 	}
 

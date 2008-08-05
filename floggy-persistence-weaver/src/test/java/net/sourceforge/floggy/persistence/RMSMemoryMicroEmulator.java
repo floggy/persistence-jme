@@ -13,24 +13,24 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package net.sourceforge.floggy.persistence.rms;
+package net.sourceforge.floggy.persistence;
 
 import org.microemu.MIDletContext;
 import org.microemu.MicroEmulator;
 import org.microemu.RecordStoreManager;
 import org.microemu.util.MemoryRecordStoreManager;
 
-public class RMSMemoryEmulator implements MicroEmulator {
+public class RMSMemoryMicroEmulator implements MicroEmulator {
 
-	private static RMSMemoryEmulator instance = new RMSMemoryEmulator();
+	private static RMSMemoryMicroEmulator instance = new RMSMemoryMicroEmulator();
 
-	public static RMSMemoryEmulator getInstance() {
+	public static RMSMemoryMicroEmulator getInstance() {
 		return instance;
 	}
 
 	private RecordStoreManager rsManager = new MemoryRecordStoreManager();
 
-	private RMSMemoryEmulator() {
+	private RMSMemoryMicroEmulator() {
 
 	}
 

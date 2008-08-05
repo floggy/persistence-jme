@@ -42,17 +42,24 @@
 		<url>http://floggy.svn.sourceforge.net/viewvc/floggy/trunk/floggy-persistence-test</url>
 	</scm>
 	<dependencies>
-        	<dependency>
-        		<groupId>org.microemu</groupId>
-        		<artifactId>microemulator</artifactId>
-        		<version>2.0.1</version>
-        		<scope>provided</scope>
-        	</dependency>
+       	<dependency>
+       		<groupId>org.microemu</groupId>
+       		<artifactId>microemulator</artifactId>
+       		<version>2.0.1</version>
+       		<scope>provided</scope>
+       	</dependency>
 		<dependency>
 			<groupId>net.sourceforge.floggy</groupId>
 			<artifactId>floggy-persistence-framework</artifactId>
 			<version>1.1.1</version>
 			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.sourceforge.floggy</groupId>
+			<artifactId>floggy-persistence-weaver</artifactId>
+			<version>1.1.2-SNAPSHOT</version>
+			<classifier>tests</classifier>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
