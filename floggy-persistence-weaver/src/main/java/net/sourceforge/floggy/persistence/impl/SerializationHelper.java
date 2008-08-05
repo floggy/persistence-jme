@@ -16,12 +16,14 @@ import net.sourceforge.floggy.persistence.PersistableManager;
 
 public class SerializationHelper {
 
+	private static final int NOT_NULL=0;
+	private static final int NULL=1; 
 	private static PersistableManager manager = PersistableManager
 			.getInstance();
 
 	public final static Boolean readBoolean(DataInput in) throws IOException {
 		Boolean b = null;
-		if (in.readByte() == 0) {
+		if (in.readByte() == NOT_NULL) {
 			b = (in.readBoolean()) ? new Boolean(true) : new Boolean(false);
 		}
 		return b;
@@ -29,7 +31,7 @@ public class SerializationHelper {
 
 	public final static Byte readByte(DataInput in) throws IOException {
 		Byte b = null;
-		if (in.readByte() == 0) {
+		if (in.readByte() == NOT_NULL) {
 			b = new Byte(in.readByte());
 		}
 		return b;
@@ -37,7 +39,7 @@ public class SerializationHelper {
 
 	public final static Calendar readCalendar(DataInput in) throws IOException {
 		Calendar c = null;
-		if (in.readByte() == 0) {
+		if (in.readByte() == NOT_NULL) {
 			String timeZoneID = in.readUTF();
 			c = Calendar.getInstance(TimeZone.getTimeZone(timeZoneID));
 			c.setTime(new Date(in.readLong()));
@@ -47,7 +49,7 @@ public class SerializationHelper {
 
 	public final static Character readChar(DataInput in) throws IOException {
 		Character c = null;
-		if (in.readByte() == 0) {
+		if (in.readByte() == NOT_NULL) {
 			c = new Character(in.readChar());
 		}
 		return c;
@@ -55,7 +57,7 @@ public class SerializationHelper {
 
 	public final static Date readDate(DataInput in) throws IOException {
 		Date d = null;
-		if (in.readByte() == 0) {
+		if (in.readByte() == NOT_NULL) {
 			d = new Date(in.readLong());
 		}
 		return d;
@@ -63,7 +65,7 @@ public class SerializationHelper {
 
 	public final static Double readDouble(DataInput in) throws IOException {
 		Double d = null;
-		if (in.readByte() == 0) {
+		if (in.readByte() == NOT_NULL) {
 			d = new Double(in.readDouble());
 		}
 		return d;
@@ -71,7 +73,7 @@ public class SerializationHelper {
 
 	public final static Float readFloat(DataInput in) throws IOException {
 		Float f = null;
-		if (in.readByte() == 0) {
+		if (in.readByte() == NOT_NULL) {
 			f = new Float(in.readFloat());
 		}
 		return f;
@@ -80,7 +82,7 @@ public class SerializationHelper {
 	public final static Hashtable readHashtable(DataInput in)
 			throws IOException {
 		Hashtable h = null;
-		if (in.readByte() == 0) {
+		if (in.readByte() == NOT_NULL) {
 			h = new Hashtable();
 			// TODO
 		}
@@ -89,7 +91,7 @@ public class SerializationHelper {
 
 	public final static Integer readInt(DataInput in) throws IOException {
 		Integer i = null;
-		if (in.readByte() == 0) {
+		if (in.readByte() == NOT_NULL) {
 			i = new Integer(in.readInt());
 		}
 		return i;
@@ -97,7 +99,7 @@ public class SerializationHelper {
 
 	public final static Long readLong(DataInput in) throws IOException {
 		Long l = null;
-		if (in.readByte() == 0) {
+		if (in.readByte() == NOT_NULL) {
 			l = new Long(in.readLong());
 		}
 		return l;
@@ -109,10 +111,10 @@ public class SerializationHelper {
 		case -1:
 			String className= in.readUTF();
 			persistable= (Persistable)Class.forName(className).newInstance();
-		case 0:
+		case NOT_NULL:
 			manager.load(persistable, in.readInt());
 			break;
-		case 1:
+		case NULL:
 			persistable = null;
 			break;
 		}
@@ -121,7 +123,7 @@ public class SerializationHelper {
 
 	public final static Short readShort(DataInput in) throws IOException {
 		Short s = null;
-		if (in.readByte() == 0) {
+		if (in.readByte() == NOT_NULL) {
 			s = new Short(in.readShort());
 		}
 		return s;
@@ -141,7 +143,7 @@ public class SerializationHelper {
 
 	public final static String readString(DataInput in) throws IOException {
 		String s = null;
-		if (in.readByte() == 0) {
+		if (in.readByte() == NOT_NULL) {
 			s = in.readUTF();
 		}
 		return s;
@@ -150,7 +152,7 @@ public class SerializationHelper {
 	public final static StringBuffer readStringBuffer(DataInput in)
 			throws IOException {
 		StringBuffer s = null;
-		if (in.readByte() == 0) {
+		if (in.readByte() == NOT_NULL) {
 			s = new StringBuffer(in.readUTF());
 		}
 		return s;
@@ -158,7 +160,7 @@ public class SerializationHelper {
 
 	public final static TimeZone readTimeZone(DataInput in) throws IOException {
 		TimeZone t = null;
-		if (in.readByte() == 0) {
+		if (in.readByte() == NOT_NULL) {
 			t = TimeZone.getTimeZone(in.readUTF());
 		}
 		return t;
@@ -166,11 +168,11 @@ public class SerializationHelper {
 
 	public final static Vector readVector(DataInput in) throws Exception {
 		Vector v = null;
-		if (in.readByte() == 0) {
+		if (in.readByte() == NOT_NULL) {
 			int size = in.readInt();
 			v = new Vector(size);
 			for (int i = 0; i < size; i++) {
-				if (in.readByte() == 1) {
+				if (in.readByte() == NULL) {
 					v.addElement(null);
 					continue;
 				} else {
@@ -243,11 +245,11 @@ public class SerializationHelper {
 
 	public final static Vector readVectorCLDC10(DataInput in) throws Exception {
 		Vector v = null;
-		if (in.readByte() == 0) {
+		if (in.readByte() == NOT_NULL) {
 			int size = in.readInt();
 			v = new Vector(size);
 			for (int i = 0; i < size; i++) {
-				if (in.readByte() == 1) {
+				if (in.readByte() == NULL) {
 					v.addElement(null);
 					continue;
 				} else {
@@ -312,9 +314,9 @@ public class SerializationHelper {
 	public final static void writeBoolean(DataOutput out, Boolean b)
 			throws IOException {
 		if (b == null) {
-			out.writeByte(1);
+			out.writeByte(NULL);
 		} else {
-			out.writeByte(0);
+			out.writeByte(NOT_NULL);
 			out.writeBoolean(b.booleanValue());
 		}
 	}
@@ -322,9 +324,9 @@ public class SerializationHelper {
 	public final static void writeByte(DataOutput out, Byte b)
 			throws IOException {
 		if (b == null) {
-			out.writeByte(1);
+			out.writeByte(NULL);
 		} else {
-			out.writeByte(0);
+			out.writeByte(NOT_NULL);
 			out.writeByte(b.byteValue());
 		}
 	}
@@ -332,9 +334,9 @@ public class SerializationHelper {
 	public final static void writeCalendar(DataOutput out, Calendar c)
 			throws IOException {
 		if (c == null) {
-			out.writeByte(1);
+			out.writeByte(NULL);
 		} else {
-			out.writeByte(0);
+			out.writeByte(NOT_NULL);
 			out.writeUTF(c.getTimeZone().getID());
 			out.writeLong(c.getTime().getTime());
 		}
@@ -343,9 +345,9 @@ public class SerializationHelper {
 	public final static void writeChar(DataOutput out, Character c)
 			throws IOException {
 		if (c == null) {
-			out.writeByte(1);
+			out.writeByte(NULL);
 		} else {
-			out.writeByte(0);
+			out.writeByte(NOT_NULL);
 			out.writeChar(c.charValue());
 		}
 	}
@@ -353,9 +355,9 @@ public class SerializationHelper {
 	public final static void writeDate(DataOutput out, Date d)
 			throws IOException {
 		if (d == null) {
-			out.writeByte(1);
+			out.writeByte(NULL);
 		} else {
-			out.writeByte(0);
+			out.writeByte(NOT_NULL);
 			out.writeLong(d.getTime());
 		}
 	}
@@ -363,9 +365,9 @@ public class SerializationHelper {
 	public final static void writeDouble(DataOutput out, Double d)
 			throws IOException {
 		if (d == null) {
-			out.writeByte(1);
+			out.writeByte(NULL);
 		} else {
-			out.writeByte(0);
+			out.writeByte(NOT_NULL);
 			out.writeDouble(d.doubleValue());
 		}
 	}
@@ -373,9 +375,9 @@ public class SerializationHelper {
 	public final static void writeFloat(DataOutput out, Float f)
 			throws IOException {
 		if (f == null) {
-			out.writeByte(1);
+			out.writeByte(NULL);
 		} else {
-			out.writeByte(0);
+			out.writeByte(NOT_NULL);
 			out.writeFloat(f.floatValue());
 		}
 	}
@@ -383,9 +385,9 @@ public class SerializationHelper {
 	public final static void writeHashtable(DataOutput out, Hashtable h)
 			throws IOException {
 		if (h == null) {
-			out.writeByte(1);
+			out.writeByte(NULL);
 		} else {
-			out.writeByte(0);
+			out.writeByte(NOT_NULL);
 			// TODO
 		}
 	}
@@ -393,9 +395,9 @@ public class SerializationHelper {
 	public final static void writeInt(DataOutput out, Integer i)
 			throws IOException {
 		if (i == null) {
-			out.writeByte(1);
+			out.writeByte(NULL);
 		} else {
-			out.writeByte(0);
+			out.writeByte(NOT_NULL);
 			out.writeInt(i.intValue());
 		}
 	}
@@ -403,23 +405,23 @@ public class SerializationHelper {
 	public final static void writeLong(DataOutput out, Long l)
 			throws IOException {
 		if (l == null) {
-			out.writeByte(1);
+			out.writeByte(NULL);
 		} else {
-			out.writeByte(0);
+			out.writeByte(NOT_NULL);
 			out.writeLong(l.longValue());
 		}
 	}
 
 	public final static void writePersistable(DataOutput out, String defaultClassName, Persistable persistable) throws Exception {
 		if (persistable == null) {
-			out.writeByte(1);
+			out.writeByte(NULL);
 		} else {
 			String className= persistable.getClass().getName();
 			if (!defaultClassName.equals(className)) {
 				out.writeByte(-1);
 				out.writeUTF(className);
 			} else {
-				out.writeByte(0);
+				out.writeByte(NOT_NULL);
 			}
 			out.writeInt(manager.save(persistable));
 		}
@@ -428,9 +430,9 @@ public class SerializationHelper {
 	public final static void writeShort(DataOutput out, Short s)
 			throws IOException {
 		if (s == null) {
-			out.writeByte(1);
+			out.writeByte(NULL);
 		} else {
-			out.writeByte(0);
+			out.writeByte(NOT_NULL);
 			out.writeChar(s.shortValue());
 		}
 	}
@@ -443,9 +445,9 @@ public class SerializationHelper {
 	public final static void writeString(DataOutput out, String s)
 			throws IOException {
 		if (s == null) {
-			out.writeByte(1);
+			out.writeByte(NULL);
 		} else {
-			out.writeByte(0);
+			out.writeByte(NOT_NULL);
 			out.writeUTF(s);
 		}
 	}
@@ -453,9 +455,9 @@ public class SerializationHelper {
 	public final static void writeStringBuffer(DataOutput out, StringBuffer s)
 			throws IOException {
 		if (s == null) {
-			out.writeByte(1);
+			out.writeByte(NULL);
 		} else {
-			out.writeByte(0);
+			out.writeByte(NOT_NULL);
 			out.writeUTF(s.toString());
 		}
 	}
@@ -463,9 +465,9 @@ public class SerializationHelper {
 	public final static void writeTimeZone(DataOutput out, TimeZone t)
 			throws IOException {
 		if (t == null) {
-			out.writeByte(1);
+			out.writeByte(NULL);
 		} else {
-			out.writeByte(0);
+			out.writeByte(NOT_NULL);
 			out.writeUTF(t.getID());
 		}
 	}
@@ -473,18 +475,18 @@ public class SerializationHelper {
 	public final static void writeVector(DataOutput out, Vector v)
 			throws Exception {
 		if (v == null) {
-			out.writeByte(1);
+			out.writeByte(NULL);
 		} else {
-			out.writeByte(0);
+			out.writeByte(NOT_NULL);
 			int size = v.size();
 			out.writeInt(size);
 			for (int i = 0; i < size; i++) {
 				Object object = v.elementAt(i);
 				if (object == null) {
-					out.writeByte(1);
+					out.writeByte(NULL);
 					continue;
 				}
-				out.writeByte(0);
+				out.writeByte(NOT_NULL);
 				
 				String className = object.getClass().getName();
 				if (object instanceof Calendar) {
@@ -538,18 +540,18 @@ public class SerializationHelper {
 	public final static void writeVectorCLDC10(DataOutput out, Vector v)
 			throws Exception {
 		if (v == null) {
-			out.writeByte(1);
+			out.writeByte(NULL);
 		} else {
-			out.writeByte(0);
+			out.writeByte(NOT_NULL);
 			int size = v.size();
 			out.writeInt(size);
 			for (int i = 0; i < size; i++) {
 				Object object = v.elementAt(i);
 				if (object == null) {
-					out.writeByte(1);
+					out.writeByte(NULL);
 					continue;
 				}
-				out.writeByte(0);
+				out.writeByte(NOT_NULL);
 				
 				String className = object.getClass().getName();
 				if (object instanceof Calendar) {
