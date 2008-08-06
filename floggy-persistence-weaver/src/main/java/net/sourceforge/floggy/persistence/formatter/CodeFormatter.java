@@ -20,6 +20,9 @@ import java.util.StringTokenizer;
 public class CodeFormatter {
 
     public static String format(String source) {
+    	if (source == null) {
+    		throw new IllegalArgumentException();
+    	}
 	StringBuffer formatted = new StringBuffer();
 	StringTokenizer tokenizer = new StringTokenizer(source, "\n");
 
