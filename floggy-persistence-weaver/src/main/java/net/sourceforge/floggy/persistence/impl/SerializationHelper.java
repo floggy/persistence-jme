@@ -24,7 +24,7 @@ public class SerializationHelper {
 	public final static Boolean readBoolean(DataInput in) throws IOException {
 		Boolean b = null;
 		if (in.readByte() == NOT_NULL) {
-			b = (in.readBoolean()) ? new Boolean(true) : new Boolean(false);
+			b = new Boolean(in.readBoolean());
 		}
 		return b;
 	}
