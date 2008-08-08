@@ -72,7 +72,7 @@
 		<developer>
 			<name>Thiago Leao Moreira</name>
 			<id>thiagolm</id>
-			<email>tmoreira20202020@gmail.com</email>
+			<email>tmoreira2020@gmail.com</email>
 			<organization>Floggy Open Source Group</organization>
 			<roles>
 				<role>Java Developer</role>
@@ -103,4 +103,33 @@
 			<timezone>-3</timezone>
 		</developer>
 	</developers>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>com.google.code</groupId>
+				<artifactId>maven-license-plugin</artifactId>
+				<inherited>true</inherited>
+				<configuration>
+					<header>${project.basedir}/src/etc/header.txt</header>
+					<includes>
+						<include>src/**</include>
+					</includes>
+					<excludes>
+						<exclude>target/**</exclude>
+					</excludes>
+					<properties>
+						<year>2008</year>
+						<organizationName>${organization.name}</organizationName>
+					</properties>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	<modules>
+		<module>floggy-persistence-framework</module>
+		<module>floggy-persistence-weaver</module>
+		<module>maven-floggy-plugin</module>
+		<module>floggy-persistence-test</module>
+		<module>floggy-persistence-demo</module>
+	</modules>
 </project>
