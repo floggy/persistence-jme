@@ -110,7 +110,7 @@
 				<artifactId>maven-license-plugin</artifactId>
 				<inherited>true</inherited>
 				<configuration>
-					<header>${project.basedir}/src/etc/header.txt</header>
+					<header>${project.basedir}/src/etc/license-template.txt</header>
 					<includes>
 						<include>src/**</include>
 					</includes>
