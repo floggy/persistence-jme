@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -182,7 +183,7 @@ public class FloggyBuilder extends IncrementalProjectBuilder {
 	 * @throws CoreException 
 	 */
 	private IFolder createPackageFolder(String filePath, IFolder outputFolder, IProgressMonitor monitor) throws CoreException {
-		String[] components = filePath.split("/");
+		String[] components = splitFilePath(filePath);
 		IFolder currentFolder = outputFolder;
 		
 		for (int i = 0; i < components.length - 1; i++) {
@@ -194,6 +195,23 @@ public class FloggyBuilder extends IncrementalProjectBuilder {
 		}
 
 		return currentFolder;
+	}
+	
+	private String[] splitFilePath(String filePath) {
+		List components= new LinkedList();
+		int beginIndex= -1;
+		int endIndex= 0;
+		do {
+			beginIndex++;
+			endIndex= filePath.indexOf(File.separatorChar, beginIndex+1);
+			if (endIndex == -1) {
+				endIndex= filePath.length();
+			}
+			String component= filePath.substring(beginIndex, endIndex);
+			components.add(component);
+			beginIndex= filePath.indexOf(File.separatorChar, endIndex);
+		} while (beginIndex != -1);
+		return (String[])components.toArray(new String[components.size()]);
 	}
 
 
