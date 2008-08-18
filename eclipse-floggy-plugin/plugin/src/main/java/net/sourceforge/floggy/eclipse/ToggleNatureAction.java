@@ -135,7 +135,6 @@ public class ToggleNatureAction extends AbstractFloggyAction {
 	}
 
 	private void updateClasspath(IProject project) throws Exception {
-		Bundle bundle = Activator.getDefault().getBundle();
 		IJavaProject javaProject = JavaCore.create(project);
 		List rawClasspath = new LinkedList(Arrays.asList(javaProject
 				.getRawClasspath()));
@@ -150,6 +149,7 @@ public class ToggleNatureAction extends AbstractFloggyAction {
 			}
 		}
 		if (!contains) {
+			Bundle bundle = Activator.getDefault().getBundle();
 			Enumeration e = bundle.findEntries("/", "*.jar", true);
 			while (e.hasMoreElements()) {
 				URL url = (URL) e.nextElement();
