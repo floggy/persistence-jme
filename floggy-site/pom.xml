@@ -1,5 +1,5 @@
 <!-- 
-	Copyright (c) 2005-2008 Floggy Open Source Group. All rights reserved.
+	Copyright (c) 2006-2008 Floggy Open Source Group. All rights reserved.
 	
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
@@ -18,16 +18,10 @@
 	<parent>
 		<groupId>net.sourceforge.floggy</groupId>
 		<artifactId>floggy</artifactId>
-		<version>1.1</version>
+		<version>1.2-SNAPSHOT</version>
 	</parent>
 	<artifactId>floggy-site</artifactId>
 	<version>1.1.1</version>
-	<repositories>
-		<repository>
-			<id>floggy</id>
-			<url>http://floggy.sourceforge.net/repository</url>
-		</repository>
-	</repositories>
 	<scm>
 		<connection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/trunk/floggy-site</connection>
 		<developerConnection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/trunk/floggy-site</developerConnection>
@@ -37,9 +31,7 @@
 		<site>
 			<id>sourceforge</id>
 			<name>SourceForge.net</name>
-			<url>
-				scp://shell.sourceforge.net:/home/groups/f/fl/floggy/htdocs/
-			</url>
+			<url>scp://shell.sourceforge.net:/home/groups/f/fl/floggy/htdocs/</url>
 		</site>
 	</distributionManagement>
 	  <reporting>
