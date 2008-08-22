@@ -21,7 +21,7 @@ Floggy
 - verificar antes da adição dos métodos e campos se eles já não existem e dai gerar uma exception
 - formatar o código
 - FEITO adicionar a licensa aos projetos
-- se o objeto ainda não estiver salvo e alguem querer deletar?!?!!?
+- FEITO se o objeto ainda não estiver salvo e alguem querer deletar?!?!!?
 - medir a performance
 - FEITO preverificação
 - FEITO criar um repositório do maven para abrigar as bibliotecas de J2ME desenvolvidas no projeto me4se (para executar os testcases).
@@ -43,12 +43,13 @@ Floggy
 - responder a pergunta e criar uma FAQ por versão??: http://www.javalobby.org/forums/thread.jspa?threadID=100688
 - fazer testcase para variáveis final
 - criar um arquivo de configuração floggy.xml
-- modificar os termos da licensa de 2006 para 2006-2008
+- FEITO modificar os termos da licensa de 2006 para 2006-2008
 - criar uma exception mais especializada para identificar campos que nao possam salvar e mostrar no plugin do eclipse
 - criar uma seção no site para chamar contribuições da comunidade. (how to help)
-- adicionar um plugin para executar diretamente o DEMO (microemulator)
+- FEITO adicionar um plugin para executar diretamente o DEMO (microemulator)
 - criar um marquivo do tipo sitemap.xml
 - criar uma FAQ sobre o FloggyUML
+- adicionar a ferramenta para manipular a licensa em todos os projetos
 - postar notícias:
 	- FEITO www.javafree.org
 	- FEITO www.portaljava.com.br
@@ -106,7 +107,7 @@ MODULO DE PERSISTÊNCIA
 - FEITO resolver o BUG de salvar uma subclasse de um objeto.
 - mudar FloggyException para estender RecordStoreException?????? acho que não adianta de nada, pensar melhor
 - melhorar o sistema de exceptions
-- trocar os bytes (0 e 1) de indicação de nullabilidade por campos static final. (NULL e NOT_NULL)
+- FEITO trocar os bytes (0 e 1) de indicação de nullabilidade por campos static final. (NULL e NOT_NULL)
 - adicionar métodos para retornar a quantidade de itens salvos por entidade
 - adicionar ao site informações sobre possiveís problemas com obfuscação (por causa que os persistables num vector são salvos com o nome da classe)
 - adicionar ao site instruções de como contribuir com o projeto (criar um patch do trunk e enviar para os desenvolvedores).
