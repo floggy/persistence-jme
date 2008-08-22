@@ -1,5 +1,6 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <!-- 
-	Copyright (c) 2005-2008 Floggy Open Source Group. All rights reserved.
+	Copyright (c) 2006-2008 Floggy Open Source Group. All rights reserved.
 	
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
@@ -18,7 +19,7 @@
 	<parent>
 		<groupId>net.sourceforge.floggy</groupId>
 		<artifactId>floggy</artifactId>
-		<version>1.1</version>
+		<version>1.2-SNAPSHOT</version>
 	</parent>
 	<artifactId>floggy-persistence-weaver</artifactId>
 	<version>1.1.2-SNAPSHOT</version>
@@ -27,12 +28,6 @@
 		A microedition development tool to weave bytecode responsable
 		for persistence.
 	</description>
-	<repositories>
-		<repository>
-			<id>floggy</id>
-			<url>http://floggy.sourceforge.net/repository</url>
-		</repository>
-	</repositories>
 	<scm>
 		<connection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/trunk/floggy-persistence-weaver</connection>
 		<developerConnection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/trunk/floggy-persistence-weaver</developerConnection>
@@ -91,20 +86,6 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<configuration>
-					<skip>false</skip>
-				</configuration>
-			</plugin>
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>1.3</source>
-					<target>1.3</target>
-				</configuration>
-			</plugin>
-			<plugin>
 				<artifactId>maven-jar-plugin</artifactId>
 				<executions>
 					<execution>
@@ -116,95 +97,27 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>
-								net.sourceforge.floggy.persistence.Main
-							</mainClass>
+							<mainClass>net.sourceforge.floggy.persistence.Main</mainClass>
 							<!--addClasspath>true</addClasspath-->
 						</manifest>
 					</archive>
 				</configuration>
 			</plugin>
 			<plugin>
+				<groupId>com.google.code.maven-license-plugin</groupId>
+				<artifactId>maven-license-plugin</artifactId>
+				<configuration>
+					<header>${project.parent.basedir}/src/main/resources/license-header-template.txt</header>
+				</configuration>
+			</plugin>
+			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
-				<version>2.2-beta-2</version>
 				<configuration>
 					<descriptors>
-						<descriptor>
-							src/assembly/release.xml
-						</descriptor>
+						<descriptor>src/assembly/release.xml</descriptor>
 					</descriptors>
 				</configuration>
 			</plugin>
-			<plugin>
-				<artifactId>maven-release-plugin</artifactId>
-				<configuration>
-					<tagBase>
-						https://floggy.svn.sourceforge.net/svnroot/floggy/tags
-					</tagBase>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>cobertura-maven-plugin</artifactId>
-			</plugin>
 		</plugins>
 	</build>
-	<reporting>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-report-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>
-					maven-project-info-reports-plugin
-				</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<configuration>
-					<minmemory>128m</minmemory>
-					<maxmemory>512</maxmemory>
-					<stylesheet>maven</stylesheet>
-					<!-- stylesheetfile>css/maven-theme.css</stylesheetfile-->
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jxr-plugin</artifactId>
-				<configuration>
-					<linkJavadoc>true</linkJavadoc>
-					<javadocDir>/apidocs/</javadocDir>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>cobertura-maven-plugin</artifactId>
-			</plugin>
-			<!--plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-changelog-plugin</artifactId>
-				</plugin-->
-			<!--plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>findbugs-maven-plugin</artifactId>
-				<configuration>
-					<effort>Max</effort>
-					<threshold>Low</threshold>
-					<xlOutput>true</xmlOutput>
-					<xmlOutputDirectory>directory location of xml findbugs report</xmlOutputDirectory>
-					<excludeFilterFile>findbugs-exclude.xml</excludeFilterFile>
-					<includeFilterFile>findbugs-include.xml</includeFilterFile>
-					<visitors>FindDeadLocalStores,UnreadFields</visitors>
-					<omitVisitors>FindDeadLocalStores,UnreadFields</omitVisitors>
-					<onlyAnalyze>org.codehaus.mojo.findbugs.*</onlyAnalyze>
-					<pluginList>/libs/fb-contrib/fb-contrib-2.8.0.jar</pluginList>
-					<debug>true|false</debug>
-					<relaxed>true|false</relaxed>
-				</configuration>
-			</plugin-->
-		</plugins>
-	</reporting>
 </project>
