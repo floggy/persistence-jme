@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Floggy Plug-in
 Bundle-SymbolicName: net.sourceforge.floggy; singleton:=true
-Bundle-Version: 1.1.2
+Bundle-Version: 1.1.3
 Bundle-Activator: net.sourceforge.floggy.eclipse.Activator
 Bundle-Vendor: Floggy Open Source Group
 Require-Bundle: org.eclipse.ui,
@@ -17,10 +17,7 @@ Bundle-ClassPath: .,
  lib/javassist-3.4.ga.jar,
  lib/floggy-persistence-framework-1.1.1.jar,
  lib/floggy-persistence-weaver-1.1.1.jar
-Export-Package: META-INF,
- META-INF.maven.net.sourceforge.floggy.floggy-persistence-framework,
- META-INF.maven.net.sourceforge.floggy.floggy-persistence-weaver,
- javassist,
+Export-Package: javassist,
  javassist.bytecode,
  javassist.bytecode.annotation,
  javassist.compiler,
@@ -51,3 +48,4 @@ Export-Package: META-INF,
  org.apache.commons.logging,
  org.apache.commons.logging.impl
 Bundle-Localization: plugin
+Bundle-RequiredExecutionEnvironment: J2SE-1.4
