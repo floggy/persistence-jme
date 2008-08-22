@@ -8,6 +8,8 @@
  
 News
 
+	<<22-Aug-08:>> Floggy completed 1 year old. To celebrate the date we made a release (1.1.3) of Eclipse plugin. You can install it following this {{{./configuration/eclipse.html}steps}}.
+
 	<<23-Jul-08:>> A article about the project was published on the 30th edition of a Brazilian magazine called Mundo Java. For futher information take a look at the {{{http://mundojava.com.br/NovoSite/30destaque.shtml}30th edition's}} url.
 
 	<<11-Jun-08:>> Improved the site documentation. Added new method's description to the getting started page. Refactored the support page.
