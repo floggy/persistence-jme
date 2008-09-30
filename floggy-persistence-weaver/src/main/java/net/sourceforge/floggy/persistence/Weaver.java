@@ -134,18 +134,18 @@ public class Weaver {
 			CtMethod[] methods= ctClass.getMethods();
 			for (int i = 0; i < methods.length; i++) {
 				String methodName= methods[i].getName(); 
-				if (methodName.indexOf("Float") != -1 || methodName.indexOf("Double") != -1 || methodName.equals("readVector") || methodName.equals("writeVector")) {
+				if (methodName.indexOf("Float") != -1 || methodName.indexOf("Double") != -1 || methodName.equals("readObject") || methodName.equals("writeObject")) {
 					ctClass.removeMethod(methods[i]);
 				}
 			}
 			//this is done in two steps because we can't guarantee that the read/writeVector methods will be removed before the rename step.   
 			for (int i = 0; i < methods.length; i++) {
 				String methodName= methods[i].getName(); 
-				if (methodName.equals("readVectorCLDC10")) {
-					methods[i].setName("readVector");
+				if (methodName.equals("readObjectCLDC10")) {
+					methods[i].setName("readObject");
 				}
-				if (methodName.equals("writeVectorCLDC10")) {
-					methods[i].setName("writeVector");
+				if (methodName.equals("writeObjectCLDC10")) {
+					methods[i].setName("writeObject");
 				}
 			}
 		} else {

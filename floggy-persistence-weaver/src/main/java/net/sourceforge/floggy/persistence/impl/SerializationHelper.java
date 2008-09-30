@@ -5,6 +5,7 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Stack;
 import java.util.TimeZone;
@@ -16,8 +17,10 @@ import net.sourceforge.floggy.persistence.PersistableManager;
 
 public class SerializationHelper {
 
-	private static final int NOT_NULL=0;
-	private static final int NULL=1; 
+	private static final int NOT_NULL = 0;
+
+	private static final int NULL = 1;
+
 	private static PersistableManager manager = PersistableManager
 			.getInstance();
 
@@ -80,11 +83,16 @@ public class SerializationHelper {
 	}
 
 	public final static Hashtable readHashtable(DataInput in)
-			throws IOException {
+			throws Exception {
 		Hashtable h = null;
 		if (in.readByte() == NOT_NULL) {
-			h = new Hashtable();
-			// TODO
+			int size = in.readInt();
+			h = new Hashtable(size);
+			for (int i = 0; i < size; i++) {
+				Object key = readObject(in);
+				Object value = readObject(in);
+				h.put(key, value);
+			}
 		}
 		return h;
 	}
@@ -105,12 +113,86 @@ public class SerializationHelper {
 		return l;
 	}
 
+	public final static Object readObject(DataInput in) throws Exception {
+		Object o = null;
+		String className = in.readUTF();
+		if (className.equals("java.lang.Boolean")) {
+			o = new Boolean(in.readBoolean());
+		} else if (className.equals("java.lang.Byte")) {
+			o = new Byte(in.readByte());
+		} else if (className.equals("java.lang.Character")) {
+			o = new Character(in.readChar());
+		} else if (className.equals("java.lang.Double")) {
+			o = new Double(in.readDouble());
+		} else if (className.equals("java.lang.Float")) {
+			o = new Float(in.readFloat());
+		} else if (className.equals("java.lang.Integer")) {
+			o = new Integer(in.readInt());
+		} else if (className.equals("java.lang.Long")) {
+			o = new Long(in.readLong());
+		} else if (className.equals("java.lang.Short")) {
+			o = new Short(in.readShort());
+		} else if (className.equals("java.lang.String")) {
+			o = in.readUTF();
+		} else if (className.equals("java.lang.StringBuffer")) {
+			o = new StringBuffer(in.readUTF());
+		} else if (className.equals("java.util.Calendar")) {
+			String timeZoneID = in.readUTF();
+			Calendar c = Calendar.getInstance(TimeZone.getTimeZone(timeZoneID));
+			c.setTime(new Date(in.readLong()));
+			o = c;
+		} else if (className.equals("java.util.Date")) {
+			o = new Date(in.readLong());
+		} else if (className.equals("java.util.TimeZone")) {
+			o = TimeZone.getTimeZone(in.readUTF());
+		} else {
+			o = PersistableManagerImpl.createInstance(Class.forName(className));
+			manager.load((Persistable) o, in.readInt());
+		}
+		return o;
+	}
+
+	public final static Object readObjectCLDC10(DataInput in) throws Exception {
+		Object o = null;
+		String className = in.readUTF();
+		if (className.equals("java.lang.Boolean")) {
+			o = new Boolean(in.readBoolean());
+		} else if (className.equals("java.lang.Byte")) {
+			o = new Byte(in.readByte());
+		} else if (className.equals("java.lang.Character")) {
+			o = new Character(in.readChar());
+		} else if (className.equals("java.lang.Integer")) {
+			o = new Integer(in.readInt());
+		} else if (className.equals("java.lang.Long")) {
+			o = new Long(in.readLong());
+		} else if (className.equals("java.lang.Short")) {
+			o = new Short(in.readShort());
+		} else if (className.equals("java.lang.String")) {
+			o = in.readUTF();
+		} else if (className.equals("java.lang.StringBuffer")) {
+			o = new StringBuffer(in.readUTF());
+		} else if (className.equals("java.util.Calendar")) {
+			String timeZoneID = in.readUTF();
+			Calendar c = Calendar.getInstance(TimeZone.getTimeZone(timeZoneID));
+			c.setTime(new Date(in.readLong()));
+			o = c;
+		} else if (className.equals("java.util.Date")) {
+			o = new Date(in.readLong());
+		} else if (className.equals("java.util.TimeZone")) {
+			o = TimeZone.getTimeZone(in.readUTF());
+		} else {
+			o = PersistableManagerImpl.createInstance(Class.forName(className));
+			manager.load((Persistable) o, in.readInt());
+		}
+		return o;
+	}
+
 	public final static Persistable readPersistable(DataInput in,
 			Persistable persistable) throws Exception {
 		switch (in.readByte()) {
 		case -1:
-			String className= in.readUTF();
-			persistable= (Persistable)Class.forName(className).newInstance();
+			String className = in.readUTF();
+			persistable = (Persistable) Class.forName(className).newInstance();
 		case NOT_NULL:
 			manager.load(persistable, in.readInt());
 			break;
@@ -131,9 +213,9 @@ public class SerializationHelper {
 
 	public final static Stack readStack(DataInput in) throws Exception {
 		Stack s = null;
-		Vector v= readVector(in);
+		Vector v = readVector(in);
 		if (v != null) {
-			s= new Stack();
+			s = new Stack();
 			for (int i = 0; i < v.size(); i++) {
 				s.push(v.elementAt(i));
 			}
@@ -174,137 +256,8 @@ public class SerializationHelper {
 			for (int i = 0; i < size; i++) {
 				if (in.readByte() == NULL) {
 					v.addElement(null);
-					continue;
 				} else {
-					String className = in.readUTF();
-					if (className.equals("java.lang.Boolean")) {
-						v.addElement(new Boolean(in.readBoolean()));
-						continue;
-					}
-					if (className.equals("java.lang.Byte")) {
-						v.addElement(new Byte(in.readByte()));
-						continue;
-					}
-					if (className.equals("java.lang.Character")) {
-						v.addElement(new Character(in.readChar()));
-						continue;
-					}
-					if (className.equals("java.lang.Double")) {
-						v.addElement(new Double(in.readDouble()));
-						continue;
-					}
-					if (className.equals("java.lang.Float")) {
-						v.addElement(new Float(in.readFloat()));
-						continue;
-					}
-					if (className.equals("java.lang.Integer")) {
-						v.addElement(new Integer(in.readInt()));
-						continue;
-					}
-					if (className.equals("java.lang.Long")) {
-						v.addElement(new Long(in.readLong()));
-						continue;
-					}
-					if (className.equals("java.lang.Short")) {
-						v.addElement(new Short(in.readShort()));
-						continue;
-					}
-					if (className.equals("java.lang.String")) {
-						v.addElement(in.readUTF());
-						continue;
-					}
-					if (className.equals("java.lang.StringBuffer")) {
-						v.addElement(new StringBuffer(in.readUTF()));
-						continue;
-					}
-					if (className.equals("java.util.Calendar")) {
-						String timeZoneID = in.readUTF();
-						Calendar c = Calendar.getInstance(TimeZone.getTimeZone(timeZoneID));
-						c.setTime(new Date(in.readLong()));
-						v.addElement(c);
-						continue;
-					}
-					if (className.equals("java.util.Date")) {
-						v.addElement(new Date(in.readLong()));
-						continue;
-					}
-					if (className.equals("java.util.TimeZone")) {
-						v.addElement(TimeZone.getTimeZone(in.readUTF()));
-						continue;
-					}
-					Class persistableClass = Class.forName(className);
-					Object object = persistableClass.newInstance();
-					manager.load((Persistable) object, in.readInt());
-					v.addElement(object);
-				}
-			}
-		}
-		return v;
-	}
-
-
-	public final static Vector readVectorCLDC10(DataInput in) throws Exception {
-		Vector v = null;
-		if (in.readByte() == NOT_NULL) {
-			int size = in.readInt();
-			v = new Vector(size);
-			for (int i = 0; i < size; i++) {
-				if (in.readByte() == NULL) {
-					v.addElement(null);
-					continue;
-				} else {
-					String className = in.readUTF();
-					if (className.equals("java.lang.Boolean")) {
-						v.addElement(new Boolean(in.readBoolean()));
-						continue;
-					}
-					if (className.equals("java.lang.Byte")) {
-						v.addElement(new Byte(in.readByte()));
-						continue;
-					}
-					if (className.equals("java.lang.Character")) {
-						v.addElement(new Character(in.readChar()));
-						continue;
-					}
-					if (className.equals("java.lang.Integer")) {
-						v.addElement(new Integer(in.readInt()));
-						continue;
-					}
-					if (className.equals("java.lang.Long")) {
-						v.addElement(new Long(in.readLong()));
-						continue;
-					}
-					if (className.equals("java.lang.Short")) {
-						v.addElement(new Short(in.readShort()));
-						continue;
-					}
-					if (className.equals("java.lang.String")) {
-						v.addElement(in.readUTF());
-						continue;
-					}
-					if (className.equals("java.lang.StringBuffer")) {
-						v.addElement(new StringBuffer(in.readUTF()));
-						continue;
-					}
-					if (className.equals("java.util.Calendar")) {
-						String timeZoneID = in.readUTF();
-						Calendar c = Calendar.getInstance(TimeZone.getTimeZone(timeZoneID));
-						c.setTime(new Date(in.readLong()));
-						v.addElement(c);
-						continue;
-					}
-					if (className.equals("java.util.Date")) {
-						v.addElement(new Date(in.readLong()));
-						continue;
-					}
-					if (className.equals("java.util.TimeZone")) {
-						v.addElement(TimeZone.getTimeZone(in.readUTF()));
-						continue;
-					}
-					Class persistableClass = Class.forName(className);
-					Object object = persistableClass.newInstance();
-					manager.load((Persistable) object, in.readInt());
-					v.addElement(object);
+					v.addElement(readObject(in));
 				}
 			}
 		}
@@ -383,12 +336,18 @@ public class SerializationHelper {
 	}
 
 	public final static void writeHashtable(DataOutput out, Hashtable h)
-			throws IOException {
+			throws Exception {
 		if (h == null) {
 			out.writeByte(NULL);
 		} else {
 			out.writeByte(NOT_NULL);
-			// TODO
+			out.writeInt(h.size());
+			Enumeration keys = h.keys();
+			while (keys.hasMoreElements()) {
+				Object o = keys.nextElement();
+				writeObject(out, o);
+				writeObject(out, h.get(o));
+			}
 		}
 	}
 
@@ -412,11 +371,104 @@ public class SerializationHelper {
 		}
 	}
 
-	public final static void writePersistable(DataOutput out, String defaultClassName, Persistable persistable) throws Exception {
+	public final static void writeObject(DataOutput out, Object o)
+			throws Exception {
+		String className = o.getClass().getName();
+		if (o instanceof Calendar) {
+			className = "java.util.Calendar";
+		} else if (o instanceof TimeZone) {
+			className = "java.util.TimeZone";
+		}
+		out.writeUTF(className);
+
+		if (o instanceof Boolean) {
+			out.writeBoolean(((Boolean) o).booleanValue());
+		} else if (o instanceof Byte) {
+			out.writeByte(((Byte) o).byteValue());
+		} else if (o instanceof Character) {
+			out.writeChar(((Character) o).charValue());
+		} else if (o instanceof Double) {
+			out.writeDouble(((Double) o).doubleValue());
+		} else if (o instanceof Float) {
+			out.writeFloat(((Float) o).floatValue());
+		} else if (o instanceof Integer) {
+			out.writeInt(((Integer) o).intValue());
+		} else if (o instanceof Long) {
+			out.writeLong(((Long) o).longValue());
+		} else if (o instanceof Short) {
+			out.writeShort(((Short) o).shortValue());
+		} else if (o instanceof String) {
+			out.writeUTF(o.toString());
+		} else if (o instanceof StringBuffer) {
+			out.writeUTF(o.toString());
+		} else if (o instanceof Calendar) {
+			Calendar c = (Calendar) o;
+			out.writeUTF(c.getTimeZone().getID());
+			out.writeLong(c.getTime().getTime());
+		} else if (o instanceof Date) {
+			out.writeLong(((Date) o).getTime());
+		} else if (o instanceof TimeZone) {
+			TimeZone t = (TimeZone) o;
+			out.writeUTF(t.getID());
+		} else if (o instanceof __Persistable) {
+			int id = manager.save((Persistable) o);
+			out.writeInt(id);
+		} else {
+			throw new FloggyException("The class " + className
+					+ " doesn't is a persistable class!");
+		}
+	}
+
+	public final static void writeObjectCLDC10(DataOutput out, Object o)
+			throws Exception {
+		String className = o.getClass().getName();
+		if (o instanceof Calendar) {
+			className = "java.util.Calendar";
+		} else if (o instanceof TimeZone) {
+			className = "java.util.TimeZone";
+		}
+		out.writeUTF(className);
+
+		if (o instanceof Boolean) {
+			out.writeBoolean(((Boolean) o).booleanValue());
+		} else if (o instanceof Byte) {
+			out.writeByte(((Byte) o).byteValue());
+		} else if (o instanceof Character) {
+			out.writeChar(((Character) o).charValue());
+		} else if (o instanceof Integer) {
+			out.writeInt(((Integer) o).intValue());
+		} else if (o instanceof Long) {
+			out.writeLong(((Long) o).longValue());
+		} else if (o instanceof Short) {
+			out.writeShort(((Short) o).shortValue());
+		} else if (o instanceof String) {
+			out.writeUTF(o.toString());
+		} else if (o instanceof StringBuffer) {
+			out.writeUTF(o.toString());
+		} else if (o instanceof Calendar) {
+			Calendar c = (Calendar) o;
+			out.writeUTF(c.getTimeZone().getID());
+			out.writeLong(c.getTime().getTime());
+		} else if (o instanceof Date) {
+			out.writeLong(((Date) o).getTime());
+		} else if (o instanceof TimeZone) {
+			TimeZone t = (TimeZone) o;
+			out.writeUTF(t.getID());
+		} else if (o instanceof __Persistable) {
+			int id = manager.save((Persistable) o);
+			out.writeInt(id);
+		} else {
+			throw new FloggyException("The class " + className
+					+ " doesn't is a persistable class!");
+		}
+	}
+
+	public final static void writePersistable(DataOutput out,
+			String defaultClassName, Persistable persistable) throws Exception {
 		if (persistable == null) {
 			out.writeByte(NULL);
 		} else {
-			String className= persistable.getClass().getName();
+			String className = persistable.getClass().getName();
 			if (!defaultClassName.equals(className)) {
 				out.writeByte(-1);
 				out.writeUTF(className);
@@ -484,114 +536,9 @@ public class SerializationHelper {
 				Object object = v.elementAt(i);
 				if (object == null) {
 					out.writeByte(NULL);
-					continue;
-				}
-				out.writeByte(NOT_NULL);
-				
-				String className = object.getClass().getName();
-				if (object instanceof Calendar) {
-					className= "java.util.Calendar";
-				} else if (object instanceof TimeZone) {
-					className= "java.util.TimeZone";
-				}
-				out.writeUTF(className);
-				
-				if (object instanceof Boolean) {
-					out.writeBoolean(((Boolean) object).booleanValue());
-				} else if (object instanceof Byte) {
-					out.writeByte(((Byte) object).byteValue());
-				} else if (object instanceof Character) {
-					out.writeChar(((Character) object).charValue());
-				} else if (object instanceof Double) {
-					out.writeDouble(((Double) object).doubleValue());
-				} else if (object instanceof Float) {
-					out.writeFloat(((Float) object).floatValue());
-				} else if (object instanceof Integer) {
-					out.writeInt(((Integer) object).intValue());
-				} else if (object instanceof Long) {
-					out.writeLong(((Long) object).longValue());
-				} else if (object instanceof Short) {
-					out.writeShort(((Short) object).shortValue());
-				} else if (object instanceof String) {
-					out.writeUTF(object.toString());
-				} else if (object instanceof StringBuffer) {
-					out.writeUTF(object.toString());
-				} else if (object instanceof Calendar) {
-					Calendar c= (Calendar) object;
-					out.writeUTF(c.getTimeZone().getID());
-					out.writeLong(c.getTime().getTime());
-				} else if (object instanceof Date) {
-					out.writeLong(((Date) object).getTime());
-				} else if (object instanceof TimeZone) {
-					TimeZone t= (TimeZone) object;
-					out.writeUTF(t.getID());
-				} else if (object instanceof __Persistable) {
-					int id = manager.save((Persistable) object);
-					out.writeInt(id);
 				} else {
-					throw new FloggyException("The class " + className
-							+ " doesn't is a persistable class!");
-				}
-			}
-		}
-	}
-
-
-	public final static void writeVectorCLDC10(DataOutput out, Vector v)
-			throws Exception {
-		if (v == null) {
-			out.writeByte(NULL);
-		} else {
-			out.writeByte(NOT_NULL);
-			int size = v.size();
-			out.writeInt(size);
-			for (int i = 0; i < size; i++) {
-				Object object = v.elementAt(i);
-				if (object == null) {
-					out.writeByte(NULL);
-					continue;
-				}
-				out.writeByte(NOT_NULL);
-				
-				String className = object.getClass().getName();
-				if (object instanceof Calendar) {
-					className= "java.util.Calendar";
-				} else if (object instanceof TimeZone) {
-					className= "java.util.TimeZone";
-				}
-				out.writeUTF(className);
-				
-				if (object instanceof Boolean) {
-					out.writeBoolean(((Boolean) object).booleanValue());
-				} else if (object instanceof Byte) {
-					out.writeByte(((Byte) object).byteValue());
-				} else if (object instanceof Character) {
-					out.writeChar(((Character) object).charValue());
-				} else if (object instanceof Integer) {
-					out.writeInt(((Integer) object).intValue());
-				} else if (object instanceof Long) {
-					out.writeLong(((Long) object).longValue());
-				} else if (object instanceof Short) {
-					out.writeShort(((Short) object).shortValue());
-				} else if (object instanceof String) {
-					out.writeUTF(object.toString());
-				} else if (object instanceof StringBuffer) {
-					out.writeUTF(object.toString());
-				} else if (object instanceof Calendar) {
-					Calendar c= (Calendar) object;
-					out.writeUTF(c.getTimeZone().getID());
-					out.writeLong(c.getTime().getTime());
-				} else if (object instanceof Date) {
-					out.writeLong(((Date) object).getTime());
-				} else if (object instanceof TimeZone) {
-					TimeZone t= (TimeZone) object;
-					out.writeUTF(t.getID());
-				} else if (object instanceof __Persistable) {
-					int id = manager.save((Persistable) object);
-					out.writeInt(id);
-				} else {
-					throw new FloggyException("The class " + className
-							+ " doesn't is a persistable class!");
+					out.writeByte(NOT_NULL);
+					writeObject(out, object);
 				}
 			}
 		}

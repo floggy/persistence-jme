@@ -21,11 +21,13 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Hashtable;
 import java.util.Stack;
 import java.util.TimeZone;
 import java.util.Vector;
 
 import junit.framework.TestCase;
+import net.sourceforge.floggy.persistence.FloggyException;
 import net.sourceforge.floggy.persistence.RMSMemoryMicroEmulator;
 
 import org.jmock.Mockery;
@@ -36,6 +38,7 @@ public class SerializationHelperTest extends TestCase {
 	private static final int NOT_NULL = 0;
 
 	private static final int NULL = 1;
+
 	protected Mockery context = new Mockery();
 
 	public SerializationHelperTest() {
@@ -209,10 +212,39 @@ public class SerializationHelperTest extends TestCase {
 		assertNull(result);
 	}
 
-	public void testReadHashtableNotNull() throws IOException {
+	public void testReadHashtableNotNull() throws Exception {
+		Hashtable expected = new Hashtable();
+		expected.put(Boolean.TRUE, Boolean.TRUE);
+		expected.put(new Byte((byte) 23), new Byte((byte) 23));
+		expected.put(new Character('1'), new Character('1'));
+		FloggyOutputStream fos = new FloggyOutputStream();
+
+		fos.writeByte(NOT_NULL);
+		fos.writeInt(3);
+		// first
+		fos.writeUTF("java.lang.Boolean");
+		fos.writeBoolean(true);
+		fos.writeUTF("java.lang.Boolean");
+		fos.writeBoolean(true);
+		// second
+		fos.writeUTF("java.lang.Byte");
+		fos.writeByte((byte) 23);
+		fos.writeUTF("java.lang.Byte");
+		fos.writeByte((byte) 23);
+		// third
+		fos.writeUTF("java.lang.Character");
+		fos.writeChar('1');
+		fos.writeUTF("java.lang.Character");
+		fos.writeChar('1');
+
+		DataInput in = getDataInput(fos);
+
+		Hashtable actual = SerializationHelper.readHashtable(in);
+
+		assertEquals(expected, actual);
 	}
 
-	public void testReadHashtableNull() throws IOException {
+	public void testReadHashtableNull() throws Exception {
 		DataInput in = getDataInputToNullTestMethods();
 
 		Object result = SerializationHelper.readHashtable(in);
@@ -262,6 +294,192 @@ public class SerializationHelperTest extends TestCase {
 		Object result = SerializationHelper.readLong(in);
 
 		assertNull(result);
+	}
+
+	public void testReadObjectNotNull() throws Exception {
+		FloggyOutputStream fos = new FloggyOutputStream();
+
+		// Boolean
+		Boolean expectedBoolean = Boolean.TRUE;
+		fos.writeUTF(expectedBoolean.getClass().getName());
+		fos.writeBoolean(expectedBoolean.booleanValue());
+		// Byte
+		Byte expectedByte = new Byte((byte) 34);
+		fos.writeUTF(expectedByte.getClass().getName());
+		fos.writeByte(expectedByte.byteValue());
+		// Character
+		Character expectedCharacter = new Character('d');
+		fos.writeUTF(expectedCharacter.getClass().getName());
+		fos.writeChar(expectedCharacter.charValue());
+		// Double
+		Double expectedDouble = new Double(23d);
+		fos.writeUTF(expectedDouble.getClass().getName());
+		fos.writeDouble(expectedDouble.doubleValue());
+		// Float
+		Float expectedFloat = new Float(2343f);
+		fos.writeUTF(expectedFloat.getClass().getName());
+		fos.writeFloat(expectedFloat.floatValue());
+		// Integer
+		Integer expectedInteger = new Integer(99);
+		fos.writeUTF(expectedInteger.getClass().getName());
+		fos.writeInt(expectedInteger.intValue());
+		// Long
+		Long expectedLong = new Long(898798798);
+		fos.writeUTF(expectedLong.getClass().getName());
+		fos.writeLong(expectedLong.longValue());
+		// Short
+		Short expectedShort = new Short((short) 234);
+		fos.writeUTF(expectedShort.getClass().getName());
+		fos.writeShort(expectedShort.shortValue());
+		// String
+		String expectedString = "flogggy";
+		fos.writeUTF(expectedString.getClass().getName());
+		fos.writeUTF(expectedString);
+		// StringBuffer
+		StringBuffer expectedStringBuffer = new StringBuffer("floggy");
+		fos.writeUTF(expectedStringBuffer.getClass().getName());
+		fos.writeUTF(expectedStringBuffer.toString());
+		// Calendar
+		Calendar expectedCalendar = Calendar.getInstance();
+		fos.writeUTF("java.util.Calendar");
+		fos.writeUTF(expectedCalendar.getTimeZone().getID());
+		fos.writeLong(expectedCalendar.getTimeInMillis());
+		// Date
+		Date expectedDate = new Date();
+		fos.writeUTF(expectedDate.getClass().getName());
+		fos.writeLong(expectedDate.getTime());
+		// TimeZone
+		TimeZone expectedTimeZone = TimeZone.getDefault();
+		fos.writeUTF("java.util.TimeZone");
+		fos.writeUTF(expectedTimeZone.getID());
+
+		DataInput in = getDataInput(fos);
+
+		// Boolean
+		Object actual = SerializationHelper.readObject(in);
+		assertEquals(expectedBoolean, actual);
+		// Byte
+		actual = SerializationHelper.readObject(in);
+		assertEquals(expectedByte, actual);
+		// Character
+		actual = SerializationHelper.readObject(in);
+		assertEquals(expectedCharacter, actual);
+		// Double
+		actual = SerializationHelper.readObject(in);
+		assertEquals(expectedDouble, actual);
+		// Float
+		actual = SerializationHelper.readObject(in);
+		assertEquals(expectedFloat, actual);
+		// Integer
+		actual = SerializationHelper.readObject(in);
+		assertEquals(expectedInteger, actual);
+		// Long
+		actual = SerializationHelper.readObject(in);
+		assertEquals(expectedLong, actual);
+		// Short
+		actual = SerializationHelper.readObject(in);
+		assertEquals(expectedShort, actual);
+		// String
+		actual = SerializationHelper.readObject(in);
+		assertEquals(expectedString, actual);
+		// StringBuffer
+		actual = SerializationHelper.readObject(in);
+		assertEquals(expectedStringBuffer.toString(), actual.toString());
+		// Calendar
+		actual = SerializationHelper.readObject(in);
+		assertEquals(expectedCalendar, actual);
+		// Date
+		actual = SerializationHelper.readObject(in);
+		assertEquals(expectedDate, actual);
+		// TimeZone
+		actual = SerializationHelper.readObject(in);
+		assertEquals(expectedTimeZone, actual);
+	}
+
+	public void testReadObjectCLDC10NotNull() throws Exception {
+		FloggyOutputStream fos = new FloggyOutputStream();
+
+		// Boolean
+		Boolean expectedBoolean = Boolean.TRUE;
+		fos.writeUTF(expectedBoolean.getClass().getName());
+		fos.writeBoolean(expectedBoolean.booleanValue());
+		// Byte
+		Byte expectedByte = new Byte((byte) 34);
+		fos.writeUTF(expectedByte.getClass().getName());
+		fos.writeByte(expectedByte.byteValue());
+		// Character
+		Character expectedCharacter = new Character('d');
+		fos.writeUTF(expectedCharacter.getClass().getName());
+		fos.writeChar(expectedCharacter.charValue());
+		// Integer
+		Integer expectedInteger = new Integer(99);
+		fos.writeUTF(expectedInteger.getClass().getName());
+		fos.writeInt(expectedInteger.intValue());
+		// Long
+		Long expectedLong = new Long(898798798);
+		fos.writeUTF(expectedLong.getClass().getName());
+		fos.writeLong(expectedLong.longValue());
+		// Short
+		Short expectedShort = new Short((short) 234);
+		fos.writeUTF(expectedShort.getClass().getName());
+		fos.writeShort(expectedShort.shortValue());
+		// String
+		String expectedString = "flogggy";
+		fos.writeUTF(expectedString.getClass().getName());
+		fos.writeUTF(expectedString);
+		// StringBuffer
+		StringBuffer expectedStringBuffer = new StringBuffer("floggy");
+		fos.writeUTF(expectedStringBuffer.getClass().getName());
+		fos.writeUTF(expectedStringBuffer.toString());
+		// Calendar
+		Calendar expectedCalendar = Calendar.getInstance();
+		fos.writeUTF("java.util.Calendar");
+		fos.writeUTF(expectedCalendar.getTimeZone().getID());
+		fos.writeLong(expectedCalendar.getTimeInMillis());
+		// Date
+		Date expectedDate = new Date();
+		fos.writeUTF(expectedDate.getClass().getName());
+		fos.writeLong(expectedDate.getTime());
+		// TimeZone
+		TimeZone expectedTimeZone = TimeZone.getDefault();
+		fos.writeUTF("java.util.TimeZone");
+		fos.writeUTF(expectedTimeZone.getID());
+
+		DataInput in = getDataInput(fos);
+
+		// Boolean
+		Object actual = SerializationHelper.readObjectCLDC10(in);
+		assertEquals(expectedBoolean, actual);
+		// Byte
+		actual = SerializationHelper.readObjectCLDC10(in);
+		assertEquals(expectedByte, actual);
+		// Character
+		actual = SerializationHelper.readObjectCLDC10(in);
+		assertEquals(expectedCharacter, actual);
+		// Integer
+		actual = SerializationHelper.readObjectCLDC10(in);
+		assertEquals(expectedInteger, actual);
+		// Long
+		actual = SerializationHelper.readObjectCLDC10(in);
+		assertEquals(expectedLong, actual);
+		// Short
+		actual = SerializationHelper.readObjectCLDC10(in);
+		assertEquals(expectedShort, actual);
+		// String
+		actual = SerializationHelper.readObjectCLDC10(in);
+		assertEquals(expectedString, actual);
+		// StringBuffer
+		actual = SerializationHelper.readObjectCLDC10(in);
+		assertEquals(expectedStringBuffer.toString(), actual.toString());
+		// Calendar
+		actual = SerializationHelper.readObjectCLDC10(in);
+		assertEquals(expectedCalendar, actual);
+		// Date
+		actual = SerializationHelper.readObjectCLDC10(in);
+		assertEquals(expectedDate, actual);
+		// TimeZone
+		actual = SerializationHelper.readObjectCLDC10(in);
+		assertEquals(expectedTimeZone, actual);
 	}
 
 	public void testReadPersistableNotNull() throws Exception {
@@ -409,130 +627,8 @@ public class SerializationHelperTest extends TestCase {
 		assertEquals(value, result);
 	}
 
-	public void testReadVectorCLDC10NotNullEmpty() throws Exception {
-		Vector value = new Vector();
-		FloggyOutputStream fos = new FloggyOutputStream();
-
-		fos.writeByte(NOT_NULL);
-		fos.writeInt(0);
-
-		DataInput in = getDataInput(fos);
-
-		Object result = SerializationHelper.readVectorCLDC10(in);
-
-		assertEquals(value, result);
-	}
-
-	public void testReadVectorCLDC10NotNullNotEmptyNotNullObjects()
-			throws Exception {
-		Vector value = new Vector();
-		FloggyOutputStream fos = new FloggyOutputStream();
-
-		fos.writeByte(NOT_NULL);
-		fos.writeInt(11);
-		fos.writeByte(NOT_NULL);
-		fos.writeUTF("java.lang.Boolean");
-		fos.writeBoolean(true);
-		value.add(Boolean.TRUE);
-
-		fos.writeByte(NOT_NULL);
-		fos.writeUTF("java.lang.Byte");
-		fos.writeByte(255);
-		value.add(new Byte((byte) 255));
-
-		fos.writeByte(NOT_NULL);
-		fos.writeUTF("java.lang.Character");
-		fos.writeChar('q');
-		value.add(new Character('q'));
-
-		fos.writeByte(NOT_NULL);
-		fos.writeUTF("java.lang.Integer");
-		fos.writeInt(2323);
-		value.add(new Integer(2323));
-
-		fos.writeByte(NOT_NULL);
-		fos.writeUTF("java.lang.Long");
-		fos.writeLong(2342343);
-		value.add(new Long(2342343));
-
-		fos.writeByte(NOT_NULL);
-		fos.writeUTF("java.lang.Short");
-		fos.writeShort(23);
-		value.add(new Short((short) 23));
-
-		fos.writeByte(NOT_NULL);
-		fos.writeUTF("java.lang.String");
-		fos.writeUTF("floggy");
-		value.add("floggy");
-
-		// break the build because the class StringBuffer doesn't implements the
-		// equals method.
-		// fos.writeByte(NOT_NULL);
-		// fos.writeUTF("java.lang.StringBuffer");
-		// fos.writeUTF("floggy");
-		// value.add(new StringBuffer("floggy"));
-
-		Calendar calendar = Calendar.getInstance();
-		fos.writeByte(NOT_NULL);
-		fos.writeUTF("java.util.Calendar");
-		fos.writeUTF(calendar.getTimeZone().getID());
-		fos.writeLong(calendar.getTimeInMillis());
-		value.add(calendar);
-
-		Date date = new Date();
-		fos.writeByte(NOT_NULL);
-		fos.writeUTF("java.util.Date");
-		fos.writeLong(date.getTime());
-		value.add(date);
-
-		TimeZone timeZone = TimeZone.getDefault();
-		fos.writeByte(NOT_NULL);
-		fos.writeUTF("java.util.TimeZone");
-		fos.writeUTF(timeZone.getID());
-		value.add(timeZone);
-
-		fos.writeByte(NULL);
-		value.add(null);
-
-		DataInput in = getDataInput(fos);
-
-		Object result = SerializationHelper.readVector(in);
-
-		assertEquals(value, result);
-	}
-
-	public void testReadVectorCLDC10NotNullNotEmptyNullObjects()
-			throws Exception {
-		Vector value = new Vector();
-		value.add(null);
-		value.add(null);
-		value.add(null);
-
-		FloggyOutputStream fos = new FloggyOutputStream();
-
-		fos.writeByte(NOT_NULL);
-		fos.writeInt(3);
-		fos.writeByte(NULL);
-		fos.writeByte(NULL);
-		fos.writeByte(NULL);
-
-		DataInput in = getDataInput(fos);
-
-		Object result = SerializationHelper.readVectorCLDC10(in);
-
-		assertEquals(value, result);
-	}
-
 	public void testReadVectorCLDC10NotNullNotEmptyThrowException()
 			throws Exception {
-	}
-
-	public void testReadVectorCLDC10Null() throws Exception {
-		DataInput in = getDataInputToNullTestMethods();
-
-		Object result = SerializationHelper.readVectorCLDC10(in);
-
-		assertNull(result);
 	}
 
 	public void testReadVectorNotNullEmpty() throws Exception {
@@ -850,19 +946,50 @@ public class SerializationHelperTest extends TestCase {
 		assertEquals(0, dis.available());
 	}
 
-	public void testWriteHashtableNotNull() throws IOException {
-		// FloggyOutputStream fos= new FloggyOutputStream();
-		//		
-		// Hashtable value= new Hashtable();
-		// SerializationHelper.writeHashtable(fos, value);
-		//		
-		// DataInputStream dis= new DataInputStream(new
-		// ByteArrayInputStream(fos.toByteArray()));
-		//		
-		// assertEquals(NOT_NULL, dis.readByte());
+	public void testWriteHashtableEmptyNotNull() throws Exception {
+		FloggyOutputStream fos = new FloggyOutputStream();
+
+		Hashtable value = new Hashtable();
+		SerializationHelper.writeHashtable(fos, value);
+
+		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(fos
+				.toByteArray()));
+
+		assertEquals(NOT_NULL, dis.readByte());
 	}
 
-	public void testWriteHashtableNull() throws IOException {
+	public void testWriteHashtableNotEmptyNotNull() throws Exception {
+		FloggyOutputStream fos = new FloggyOutputStream();
+
+		Hashtable value = new Hashtable();
+		value.put("1", Boolean.TRUE);
+		// value.put("2", new Byte((byte)90));
+		// value.put("3", new Character('1'));
+		// value.put("4", new Double(34d));
+		// value.put("5", new Float(45f));
+		// value.put("6", new Integer(940));
+		// value.put("7", new Long(390));
+		// value.put("8", new Short((short)43));
+		SerializationHelper.writeHashtable(fos, value);
+
+		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(fos
+				.toByteArray()));
+
+		assertEquals(NOT_NULL, dis.readByte());
+		assertEquals(value.size(), dis.readInt());
+
+		assertEquals("java.lang.String", dis.readUTF());
+		assertEquals("1", dis.readUTF());
+		assertEquals("java.lang.Boolean", dis.readUTF());
+		assertEquals(Boolean.TRUE, new Boolean(dis.readBoolean()));
+		// //second
+		// assertEquals("java.lang.String", dis.readUTF());
+		// assertEquals("2", dis.readUTF());
+		// assertEquals("java.lang.Byte", dis.readUTF());
+		// assertEquals(new Byte((byte)90), new Byte(dis.readByte()));
+	}
+
+	public void testWriteHashtableNull() throws Exception {
 		FloggyOutputStream fos = new FloggyOutputStream();
 
 		SerializationHelper.writeHashtable(fos, null);
@@ -924,6 +1051,200 @@ public class SerializationHelperTest extends TestCase {
 
 		assertEquals(NULL, dis.readByte());
 		assertEquals(0, dis.available());
+	}
+
+	public void testWriteObjectNotNull() throws Exception {
+		FloggyOutputStream fos = new FloggyOutputStream();
+
+		// Boolean
+		Boolean expectedBoolean = Boolean.FALSE;
+		SerializationHelper.writeObject(fos, expectedBoolean);
+		// Byte
+		Byte expectedByte = new Byte((byte) 34);
+		SerializationHelper.writeObject(fos, expectedByte);
+		// Character
+		Character expectedCharacter = new Character('w');
+		SerializationHelper.writeObject(fos, expectedCharacter);
+		// Double
+		Double expectedDouble = new Double(23465d);
+		SerializationHelper.writeObject(fos, expectedDouble);
+		// Float
+		Float expectedFloat = new Float(654887f);
+		SerializationHelper.writeObject(fos, expectedFloat);
+		// Integer
+		Integer expectedInteger = new Integer(987);
+		SerializationHelper.writeObject(fos, expectedInteger);
+		// Long
+		Long expectedLong = new Long(34563457);
+		SerializationHelper.writeObject(fos, expectedLong);
+		// Short
+		Short expectedShort = new Short((short) 34);
+		SerializationHelper.writeObject(fos, expectedShort);
+		// String
+		String expectedString = "asdkljf";
+		SerializationHelper.writeObject(fos, expectedString);
+		// StringBuffer
+		StringBuffer expectedStringBuffer = new StringBuffer("flogggyter");
+		SerializationHelper.writeObject(fos, expectedStringBuffer);
+		// Calendar
+		Calendar expectedCalendar = Calendar.getInstance();
+		SerializationHelper.writeObject(fos, expectedCalendar);
+		// Date
+		Date expectedDate = new Date();
+		SerializationHelper.writeObject(fos, expectedDate);
+		// TimeZone
+		TimeZone expectedTimeZone = TimeZone.getDefault();
+		SerializationHelper.writeObject(fos, expectedTimeZone);
+
+		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(fos
+				.toByteArray()));
+
+		// Boolean
+		assertEquals("java.lang.Boolean", dis.readUTF());
+		assertEquals(expectedBoolean, new Boolean(dis.readBoolean()));
+		// Byte
+		assertEquals("java.lang.Byte", dis.readUTF());
+		assertEquals(expectedByte, new Byte(dis.readByte()));
+		// Character
+		assertEquals("java.lang.Character", dis.readUTF());
+		assertEquals(expectedCharacter, new Character(dis.readChar()));
+		// Double
+		assertEquals("java.lang.Double", dis.readUTF());
+		assertEquals(expectedDouble, new Double(dis.readDouble()));
+		// Float
+		assertEquals("java.lang.Float", dis.readUTF());
+		assertEquals(expectedFloat, new Float(dis.readFloat()));
+		// Integer
+		assertEquals("java.lang.Integer", dis.readUTF());
+		assertEquals(expectedInteger, new Integer(dis.readInt()));
+		// Long
+		assertEquals("java.lang.Long", dis.readUTF());
+		assertEquals(expectedLong, new Long(dis.readLong()));
+		// Short
+		assertEquals("java.lang.Short", dis.readUTF());
+		assertEquals(expectedShort, new Short(dis.readShort()));
+		// String
+		assertEquals("java.lang.String", dis.readUTF());
+		assertEquals(expectedString, dis.readUTF());
+		// StringBuffer
+		assertEquals("java.lang.StringBuffer", dis.readUTF());
+		assertEquals(expectedStringBuffer.toString(), new StringBuffer(dis
+				.readUTF()).toString());
+		// Calendar
+		assertEquals("java.util.Calendar", dis.readUTF());
+		Calendar actual = Calendar.getInstance(TimeZone.getTimeZone(dis
+				.readUTF()));
+		actual.setTimeInMillis(dis.readLong());
+		assertEquals(expectedCalendar, actual);
+		// Date
+		assertEquals("java.util.Date", dis.readUTF());
+		assertEquals(expectedDate, new Date(dis.readLong()));
+		// TimeZone
+		assertEquals("java.util.TimeZone", dis.readUTF());
+		assertEquals(expectedTimeZone, TimeZone.getTimeZone(dis.readUTF()));
+		assertEquals(0, dis.available());
+	}
+
+	public void testWriteObjectThrowingException() throws Exception {
+		FloggyOutputStream fos = new FloggyOutputStream();
+
+		try {
+			SerializationHelper.writeObject(fos, new Object());
+			fail("Must throw a FloggyException");
+		} catch (Exception e) {
+			assertEquals(FloggyException.class, e.getClass());
+		}
+	}
+
+	public void testWriteObjectCLDC10NotNull() throws Exception {
+		FloggyOutputStream fos = new FloggyOutputStream();
+
+		// Boolean
+		Boolean expectedBoolean = Boolean.FALSE;
+		SerializationHelper.writeObjectCLDC10(fos, expectedBoolean);
+		// Byte
+		Byte expectedByte = new Byte((byte) 34);
+		SerializationHelper.writeObjectCLDC10(fos, expectedByte);
+		// Character
+		Character expectedCharacter = new Character('w');
+		SerializationHelper.writeObjectCLDC10(fos, expectedCharacter);
+		// Integer
+		Integer expectedInteger = new Integer(987);
+		SerializationHelper.writeObjectCLDC10(fos, expectedInteger);
+		// Long
+		Long expectedLong = new Long(34563457);
+		SerializationHelper.writeObjectCLDC10(fos, expectedLong);
+		// Short
+		Short expectedShort = new Short((short) 34);
+		SerializationHelper.writeObjectCLDC10(fos, expectedShort);
+		// String
+		String expectedString = "asdkljf";
+		SerializationHelper.writeObjectCLDC10(fos, expectedString);
+		// StringBuffer
+		StringBuffer expectedStringBuffer = new StringBuffer("flogggyter");
+		SerializationHelper.writeObjectCLDC10(fos, expectedStringBuffer);
+		// Calendar
+		Calendar expectedCalendar = Calendar.getInstance();
+		SerializationHelper.writeObjectCLDC10(fos, expectedCalendar);
+		// Date
+		Date expectedDate = new Date();
+		SerializationHelper.writeObjectCLDC10(fos, expectedDate);
+		// TimeZone
+		TimeZone expectedTimeZone = TimeZone.getDefault();
+		SerializationHelper.writeObjectCLDC10(fos, expectedTimeZone);
+
+		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(fos
+				.toByteArray()));
+
+		// Boolean
+		assertEquals("java.lang.Boolean", dis.readUTF());
+		assertEquals(expectedBoolean, new Boolean(dis.readBoolean()));
+		// Byte
+		assertEquals("java.lang.Byte", dis.readUTF());
+		assertEquals(expectedByte, new Byte(dis.readByte()));
+		// Character
+		assertEquals("java.lang.Character", dis.readUTF());
+		assertEquals(expectedCharacter, new Character(dis.readChar()));
+		// Integer
+		assertEquals("java.lang.Integer", dis.readUTF());
+		assertEquals(expectedInteger, new Integer(dis.readInt()));
+		// Long
+		assertEquals("java.lang.Long", dis.readUTF());
+		assertEquals(expectedLong, new Long(dis.readLong()));
+		// Short
+		assertEquals("java.lang.Short", dis.readUTF());
+		assertEquals(expectedShort, new Short(dis.readShort()));
+		// String
+		assertEquals("java.lang.String", dis.readUTF());
+		assertEquals(expectedString, dis.readUTF());
+		// StringBuffer
+		assertEquals("java.lang.StringBuffer", dis.readUTF());
+		assertEquals(expectedStringBuffer.toString(), new StringBuffer(dis
+				.readUTF()).toString());
+		// Calendar
+		assertEquals("java.util.Calendar", dis.readUTF());
+		Calendar actual = Calendar.getInstance(TimeZone.getTimeZone(dis
+				.readUTF()));
+		actual.setTimeInMillis(dis.readLong());
+		assertEquals(expectedCalendar, actual);
+		// Date
+		assertEquals("java.util.Date", dis.readUTF());
+		assertEquals(expectedDate, new Date(dis.readLong()));
+		// TimeZone
+		assertEquals("java.util.TimeZone", dis.readUTF());
+		assertEquals(expectedTimeZone, TimeZone.getTimeZone(dis.readUTF()));
+		assertEquals(0, dis.available());
+	}
+
+	public void testWriteObjectCLDC10ThrowingException() throws Exception {
+		FloggyOutputStream fos = new FloggyOutputStream();
+
+		try {
+			SerializationHelper.writeObjectCLDC10(fos, new Object());
+			fail("Must throw a FloggyException");
+		} catch (Exception e) {
+			assertEquals(FloggyException.class, e.getClass());
+		}
 	}
 
 	public void testWritePersistableNotNull() throws IOException {
@@ -1159,6 +1480,29 @@ public class SerializationHelperTest extends TestCase {
 	}
 
 	public void testWriteVectorNotNullNotEmptyNotNullObjects() throws Exception {
+		FloggyOutputStream fos = new FloggyOutputStream();
+
+		Vector value = new Vector();
+		value.add(Boolean.TRUE);
+		value.add(new Byte((byte) 3));
+		value.add(new Character('q'));
+		SerializationHelper.writeVector(fos, value);
+
+		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(fos
+				.toByteArray()));
+
+		assertEquals(NOT_NULL, dis.readByte());
+		assertEquals(value.size(), dis.readInt());
+		assertEquals(NOT_NULL, dis.readByte());
+		assertEquals("java.lang.Boolean", dis.readUTF());
+		assertEquals(Boolean.TRUE, new Boolean(dis.readBoolean()));
+		assertEquals(NOT_NULL, dis.readByte());
+		assertEquals("java.lang.Byte", dis.readUTF());
+		assertEquals(new Byte((byte) 3), new Byte(dis.readByte()));
+		assertEquals(NOT_NULL, dis.readByte());
+		assertEquals("java.lang.Character", dis.readUTF());
+		assertEquals(new Character('q'), new Character(dis.readChar()));
+		assertEquals(0, dis.available());
 	}
 
 	public void testWriteVectorNull() throws Exception {
