@@ -17,4 +17,14 @@ package net.sourceforge.floggy.persistence.beans.animals;
 
 public class Falcon extends Bird {
 
+	private Boolean x;
+
+	public Boolean getX() {
+		return x;
+	}
+
+	public void setX(Boolean prey) {
+		this.x = prey;
+	}
+
 }

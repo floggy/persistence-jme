@@ -26,6 +26,7 @@ public class SuperClassGenerator {
 		source += "byte[] superClassBuffer = superRS.getRecord(superClassId);\n";
 		source += "net.sourceforge.floggy.persistence.impl.PersistableManagerImpl.closeRecordStore(superRS);\n";
 		source += "super.__deserialize(superClassBuffer);\n";
+		source += "super.__setId(superClassId);\n";
 		source += "\n";
 		return source;
 	}
