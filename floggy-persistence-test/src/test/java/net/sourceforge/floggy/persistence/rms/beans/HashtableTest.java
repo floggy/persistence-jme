@@ -16,24 +16,32 @@
 package net.sourceforge.floggy.persistence.rms.beans;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Hashtable;
-import java.util.Vector;
+import java.util.TimeZone;
 
 import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.beans.FloggyHashtable;
+import net.sourceforge.floggy.persistence.rms.AbstractTest;
 
-public class HashtableTest /**extends AbstractTest*/ {
+public class HashtableTest extends AbstractTest {
 
 	public final static Hashtable hashtable = new Hashtable();
-	
-	static {
-		hashtable.put("test", "test");
-		hashtable.put(new Integer(9), "foo");
-		hashtable.put("key", new Long(89));
-		hashtable.put(Calendar.getInstance(), Boolean.TRUE);
-		hashtable.put(new Vector(), Boolean.FALSE);
-	}
 
+	static {
+		hashtable.put(Boolean.TRUE, Boolean.TRUE);
+		hashtable.put(new Byte((byte) 90), new Byte((byte) 90));
+		hashtable.put(new Character('2'), new Character('2'));
+		hashtable.put(new Double(23d), new Double(23d));
+		hashtable.put(new Float(45f), new Float(45f));
+		hashtable.put(new Integer(87), new Integer(87));
+		hashtable.put(new Long(89), new Long(89));
+		hashtable.put(new Short((short)78), new Short((short)78));
+		hashtable.put("key", "value");
+		hashtable.put(new Date(), new Date());
+		hashtable.put(Calendar.getInstance(), Calendar.getInstance());
+		hashtable.put(TimeZone.getDefault(), TimeZone.getDefault());
+	}
 
 	public Object getValueForSetMethod() {
 		return hashtable;
@@ -41,6 +49,10 @@ public class HashtableTest /**extends AbstractTest*/ {
 
 	public Persistable newInstance() {
 		return new FloggyHashtable();
+	}
+
+	protected Class getParameterType() {
+		return Hashtable.class;
 	}
 
 }

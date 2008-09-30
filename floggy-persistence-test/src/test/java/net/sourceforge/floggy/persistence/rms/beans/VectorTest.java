@@ -31,28 +31,28 @@ public class VectorTest extends AbstractTest {
 	private Vector vector = new Vector();
 
 	public VectorTest() {
-		vector.add("floggy-framework");
-		vector.add(new Boolean(true));
-		vector.add(new Byte((byte) 34));
-		vector.add(new Character('f'));
-		vector.add(null);
-		vector.add(new Double(23.87));
-		vector.add(new Float(23.87));
-		vector.add(new Integer(234));
-		vector.add(new Long(Long.MAX_VALUE));
-		vector.add(new Short(Short.MIN_VALUE));
-		vector.add(new Date(12345678));
-		vector.add(TimeZone.getDefault());
+		vector.addElement("floggy-framework");
+		vector.addElement(new Boolean(true));
+		vector.addElement(new Byte((byte) 34));
+		vector.addElement(new Character('f'));
+		vector.addElement(null);
+		vector.addElement(new Double(23.87));
+		vector.addElement(new Float(23.87));
+		vector.addElement(new Integer(234));
+		vector.addElement(new Long(Long.MAX_VALUE));
+		vector.addElement(new Short(Short.MIN_VALUE));
+		vector.addElement(new Date(12345678));
+		vector.addElement(TimeZone.getDefault());
 		Calendar c= Calendar.getInstance();
 		c.setTimeInMillis(233456567);
-		vector.add(c);
+		vector.addElement(c);
 //		break the build because the class StringBuffer doesn't implements the equals method. 
-//		vector.add(new StringBuffer("testestringbuffer"));
+//		vector.addElement(new StringBuffer("testestringbuffer"));
 		Person person = new Person();
 		person.setCpf("23321654");
 		person.setNome("�çõí");
-		vector.add(person);
-		vector.add(null);
+		vector.addElement(person);
+		vector.addElement(null);
 	}
 
 	protected Class getParameterType() {
@@ -74,7 +74,7 @@ public class VectorTest extends AbstractTest {
 	public void testClassThatNotImplementsPersistable() {
 		FloggyVector test = new FloggyVector();
 		Vector vector = new Vector();
-		vector.add(new Animal());
+		vector.addElement(new Animal());
 		test.setX(vector);
 		try {
 			manager.save(test);

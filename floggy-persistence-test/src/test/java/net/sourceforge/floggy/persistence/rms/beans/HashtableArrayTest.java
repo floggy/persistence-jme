@@ -19,8 +19,9 @@ import java.util.Hashtable;
 
 import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.beans.FloggyHashtableArray;
+import net.sourceforge.floggy.persistence.rms.AbstractTest;
 
-public class HashtableArrayTest /**extends AbstractTest*/ {
+public class HashtableArrayTest extends AbstractTest {
 
 	public Object getValueForSetMethod() {
 		return new Hashtable[] { HashtableTest.hashtable, null, new Hashtable() };
@@ -28,6 +29,10 @@ public class HashtableArrayTest /**extends AbstractTest*/ {
 
 	public Persistable newInstance() {
 		return new FloggyHashtableArray();
+	}
+	
+	protected Class getParameterType() {
+		return Hashtable[].class;
 	}
 
 }

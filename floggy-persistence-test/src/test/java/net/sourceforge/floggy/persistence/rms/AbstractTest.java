@@ -72,10 +72,6 @@ public abstract class AbstractTest extends TestCase {
 						(Object[]) o1, (Object[]) o2));
 			}
 		} else {
-			if (o1 instanceof Person) {
-				System.out.println(((Person)o1).getX().getClass());
-				System.out.println(((Person)o2).getX().getClass());
-			}
 			assertEquals("Deveria ser igual!", o1, o2);
 		}
 	}
