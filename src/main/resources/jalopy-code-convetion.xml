@@ -255,11 +255,11 @@
                 <continuation>1</continuation>
                 <deep>55</deep>
                 <extends>-1</extends>
-                <general>2</general>
+                <general>4</general>
                 <implements>-1</implements>
                 <leading>0</leading>
-                <tabs>2</tabs>
-                <throws>-1</throws>
+                <tabs>4</tabs>
+                <throws>4</throws>
                 <trailingComment>1</trailingComment>
             </sizes>
             <tabs>
@@ -355,7 +355,7 @@
             <general>
                 <beforeOperator>true</beforeOperator>
                 <enable>true</enable>
-                <lineLength>100</lineLength>
+                <lineLength>80</lineLength>
             </general>
             <ondemand>
                 <after>
