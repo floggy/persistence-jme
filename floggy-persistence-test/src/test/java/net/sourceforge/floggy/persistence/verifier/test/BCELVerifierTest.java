@@ -41,18 +41,23 @@ public class BCELVerifierTest extends AbstractVerifierTest {
 		assertEquals(vr.getMessage(), vr, VerificationResult.VR_OK);
 
 		if (vr == VerificationResult.VR_OK) {
-			JavaClass jc = Repository.lookupClass(className);
-			Method[] methods = jc.getMethods();
-
-			for (int i = 0; i < methods.length; i++) {
-				// pass 3a
-				vr = verifier.doPass3a(i);
-				assertEquals("Method: " + methods[i].getName() + "\n"
-						+ vr.getMessage(), vr, VerificationResult.VR_OK);
-
-				// pass 3b
-				vr = verifier.doPass3b(i);
-				assertEquals(vr.getMessage(), vr, VerificationResult.VR_OK);
+			JavaClass jc;
+			try {
+                                jc = Repository.lookupClass(className);
+                		Method[] methods = jc.getMethods();
+                
+                		for (int i = 0; i < methods.length; i++) {
+                		    // pass 3a
+                		    vr = verifier.doPass3a(i);
+                		    assertEquals("Method: " + methods[i].getName() + "\n"
+                			    + vr.getMessage(), vr, VerificationResult.VR_OK);
+                
+                		    // pass 3b
+                		    vr = verifier.doPass3b(i);
+                		    assertEquals(vr.getMessage(), vr, VerificationResult.VR_OK);
+                		}
+			} catch (ClassNotFoundException e) {
+			    fail(e.getMessage());
 			}
 		}
 
