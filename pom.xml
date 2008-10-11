@@ -210,6 +210,26 @@
 					<javadocDir>/apidocs/</javadocDir>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<inherited>true</inherited>
+				<configuration>
+					<configLocation>config/sun_checks.xml</configLocation>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>scmchangelog-maven-plugin</artifactId>
+				<inherited>true</inherited>
+				<configuration>
+					<trackerUrlPattern>http://sourceforge.net/tracker/index.php?func=detail&amp;group_id=139426&amp;atid=743541&amp;aid={0}</trackerUrlPattern>
+					<trackerType>sourceforge</trackerType>
+					<grammar>MANU</grammar>
+					<connectionUrl>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/trunk/${artifactId}</connectionUrl>
+					<tagBase>https://floggy.svn.sourceforge.net/svnroot/floggy/tags</tagBase>
+				</configuration>
+			</plugin>
 		</plugins>
 	</reporting>
 	<modules>
