@@ -76,17 +76,17 @@
 		<site>
 			<id>sourceforge</id>
 			<name>SourceForge.net</name>
-			<url>scp://${username}@shell.sourceforge.net:/home/groups/f/fl/floggy/htdocs/modules/${artifactId}/${version}</url>
+			<url>scp://${username}@web.sourceforge.net:/home/groups/f/fl/floggy/htdocs/modules/${artifactId}/${version}</url>
 		</site>
 		<repository>
 			<id>sourceforge</id>
 			<name>SourceForge.net</name>
-			<url>scp://${username}@shell.sourceforge.net:/home/groups/f/fl/floggy/htdocs/repository</url>
+			<url>scp://${username}@web.sourceforge.net:/home/groups/f/fl/floggy/htdocs/repository</url>
 		</repository>
 		<snapshotRepository>
 			<id>sourceforge</id>
 			<name>SourceForge.net</name>
-			<url>scp://${username}@shell.sourceforge.net:/home/groups/f/fl/floggy/htdocs/repository</url>
+			<url>scp://${username}@web.sourceforge.net:/home/groups/f/fl/floggy/htdocs/repository</url>
 		</snapshotRepository>
 	</distributionManagement>
 	<developers>
