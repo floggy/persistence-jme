@@ -30,7 +30,7 @@ Floggy
 - FEITO Permitir que o usuário final veja o código gerado.
 - FEITO adicionar a dependencia do floggy-framework ao jar final da aplicação.
 - FEITO adicionar a licensa a todos os codigos fontes dos projetos
-- criar a aplicação de exemplo e deixa-la pronta para ser usado pelos usuários (liberada numa url, utilizar o tinyurl.com)
+- criar a aplicação de exemplo e deixa-la pronta para ser usado pelos usuários ChurrasCalculator|Hospital-ME(liberada numa url, utilizar o tinyurl.com)
 - FEITO criar as listas de discussão
 - FEITO adicionar este arquivo ao floggy-site
 - translate this document
@@ -47,9 +47,12 @@ Floggy
 - criar uma exception mais especializada para identificar campos que nao possam salvar e mostrar no plugin do eclipse
 - criar uma seção no site para chamar contribuições da comunidade. (how to help)
 - FEITO adicionar um plugin para executar diretamente o DEMO (microemulator)
-- criar um marquivo do tipo sitemap.xml
+- criar um arquivo do tipo sitemap.xml
 - criar uma FAQ sobre o FloggyUML
 - adicionar a ferramenta para manipular a licensa em todos os projetos
+- testar com ASM objectweb
+- botar no site as versões do eclipse que o plugin roda
+- Another question, suppose we have DomesticCat extends Cat, is it possible in Floggy a query like pm.find(Cat.class) returns instances not only Cat, but also subclasses like DomesticCat?
 - postar notícias:
 	- FEITO www.javafree.org
 	- FEITO www.portaljava.com.br
