@@ -15,6 +15,18 @@
 -->
 <document>
   <body>
+    <!--release version="1.2.0" date="10-09-2008" description="Third public release">
+      <action dev="thiagolm" type="add">
+        Added support for java.util.Hashtable class.
+      </action>
+      <action dev="thiagolm" type="add">
+        Added 158 new tests to test new and old features.  
+      </action>
+      <action dev="thiagolm" type="fix" issue="2105288">
+		Fixed a bug when deleting composed objects that uses the inheritance. 
+      </action>
+    </release-->
+    
     <release version="1.1.1" date="03-26-2008" description="Second public release">
       <action dev="thiagolm" type="add">
         Added support for types of java.lang.StringBuffer, java.util.Calendar, java.util.Stack and java.util.Timezone.
