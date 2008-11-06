@@ -114,6 +114,7 @@ MODULO DE PERSISTÊNCIA
 - adicionar métodos para retornar a quantidade de itens salvos por entidade
 - adicionar ao site informações sobre possiveís problemas com obfuscação (por causa que os persistables num vector são salvos com o nome da classe)
 - adicionar ao site instruções de como contribuir com o projeto (criar um patch do trunk e enviar para os desenvolvedores).
+- criar no PM um mapeamento das classes persistiveis com o nome de seus respectivos RMS.
 
 
 
