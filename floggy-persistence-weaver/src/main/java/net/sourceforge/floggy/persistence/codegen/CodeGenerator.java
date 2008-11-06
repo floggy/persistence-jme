@@ -218,7 +218,7 @@ public class CodeGenerator {
 		StringBuffer buffer = new StringBuffer();
 		// Header
 		buffer
-				.append("public void __deserialize(byte[] buffer) throws java.lang.Exception {\n");
+				.append("public void __deserialize(byte[] buffer, boolean lazy) throws java.lang.Exception {\n");
 
 		// Streams
 		buffer
@@ -254,7 +254,17 @@ public class CodeGenerator {
 				generator = SourceCodeGeneratorFactory.getSourceCodeGenerator(
 						ctClass, field.getName(), field.getType());
 				if (generator != null) {
-					buffer.append(generator.getLoadCode());
+				    	if (generator instanceof PersistableGenerator) {
+                                            buffer.append("if (!lazy) {\n");
+                                            buffer.append(generator.getLoadCode());
+                                            buffer.append("} else {\n");
+                                            buffer.append("this.");
+                                            buffer.append(field.getName());
+                                            buffer.append("= null;\n");
+                                            buffer.append("}\n");
+				    	} else {
+				    	    buffer.append(generator.getLoadCode());
+				    	}
 				}
 			}
 		}

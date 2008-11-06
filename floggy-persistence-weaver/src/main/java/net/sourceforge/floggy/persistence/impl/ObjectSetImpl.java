@@ -44,6 +44,11 @@ class ObjectSetImpl implements ObjectSet {
 	protected PersistableManagerImpl manager;
 
 	/**
+	 * The lazy flag.
+	 */
+	protected boolean lazy;
+
+	/**
 	 * Creates a new instance of ObjectSetImpl.
 	 * 
 	 * @param ids
@@ -53,7 +58,7 @@ class ObjectSetImpl implements ObjectSet {
 	 *                objects.
 	 * @param manager TODO
 	 */
-	protected ObjectSetImpl(int[] ids, Class persistableClass, PersistableManagerImpl manager) {
+	protected ObjectSetImpl(int[] ids, Class persistableClass, PersistableManagerImpl manager, boolean lazy) {
 		this.ids = ids;
 		this.persistableClass = persistableClass;
 
@@ -62,6 +67,8 @@ class ObjectSetImpl implements ObjectSet {
 
 		// Retrieve the manager instance
 		this.manager = manager;
+		
+		this.lazy = lazy;
 	}
 	
 	
@@ -90,7 +97,7 @@ class ObjectSetImpl implements ObjectSet {
 		}
 
 		// Load the data from the repository.
-		manager.load(persistable, getId(index));
+		manager.load(persistable, getId(index), lazy);
 	}
 
 	/**

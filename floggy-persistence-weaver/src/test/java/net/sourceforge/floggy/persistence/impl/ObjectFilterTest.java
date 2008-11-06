@@ -34,11 +34,11 @@ public class ObjectFilterTest extends TestCase {
         
         final Filter filter= (Filter) context.mock(Filter.class);
 
-        ObjectFilter objectFilter= new ObjectFilter(persistable, filter);
+        ObjectFilter objectFilter= new ObjectFilter(persistable, filter, false);
 
         // expectations
         context.checking(new Expectations() {{
-            ((__Persistable)one(persistable)).__deserialize(data);
+            ((__Persistable)one(persistable)).__deserialize(data, false);
             ((Filter)one(filter)).matches(persistable);
             will(returnValue(Boolean.TRUE));
         }});

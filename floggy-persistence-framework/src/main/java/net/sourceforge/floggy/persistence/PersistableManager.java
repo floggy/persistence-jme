@@ -70,6 +70,25 @@ public abstract class PersistableManager {
         throws FloggyException;
 
     /**
+     * Load an previously stored object from the repository using the
+     * object ID.<br>
+     * The object ID is the result of a save operation or you can obtain it
+     * executing a search.
+     *
+     * @param persistable An instance where the object data will be loaded
+     *        into. Cannot be <code>null</code>.
+     * @param id The ID of the object to be loaded from the repository.
+     * @param lazy A flag indicating to load or not all composite relationships.
+     *
+     * @throws FloggyException Exception thrown if an error occurs while
+     *         loading the object.
+     *
+     * @see #save(Persistable)
+     */
+    public abstract void load(Persistable persistable, int id, boolean lazy)
+        throws FloggyException;
+
+    /**
      * Store an object in the repository. If the object is already in
      * the repository, the object data will be overwritten.<br>
      * The object ID obtained from this operation can be used in the load
@@ -140,6 +159,30 @@ public abstract class PersistableManager {
      */
     public abstract ObjectSet find(Class persistableClass, Filter filter,
                                    Comparator comparator)
+        throws FloggyException;
+
+    /**
+     * Searches objects of an especific persistable class from the
+     * repository. <br>
+     * <br>
+     * An optional application-defined search criteria can be  defined using a <code>Filter</code>.<br>
+     * <br>
+     * An optional application-defined sort order can be defined using a
+     * <code>Comparator</code>.
+     *
+     * @param persistableClass The persistable class to search the objects.
+     * @param filter An optional application-defined criteria for searching
+     *        objects.
+     * @param comparator An optional application-defined criteria for sorting
+     *        objects.
+     * @param lazy A flag indicating to load or not all composite relationships.
+     *
+     * @return List of objects that matches the defined criteria.
+     *
+     * @throws FloggyException DOCUMENT ME!
+     */
+    public abstract ObjectSet find(Class persistableClass, Filter filter,
+                                   Comparator comparator, boolean lazy)
         throws FloggyException;
 
     /**

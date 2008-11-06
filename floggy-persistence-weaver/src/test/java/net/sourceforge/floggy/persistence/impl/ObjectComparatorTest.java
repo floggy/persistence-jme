@@ -34,12 +34,12 @@ public class ObjectComparatorTest extends TestCase {
        
        final Comparator comparator= (Comparator) context.mock(Comparator.class);
 
-       ObjectComparator objectComparator= new ObjectComparator(comparator, p1, p2);
+       ObjectComparator objectComparator= new ObjectComparator(comparator, p1, p2, false);
 
        // expectations
        context.checking(new Expectations() {{
-           ((__Persistable)one(p1)).__deserialize(data);
-           ((__Persistable)one(p2)).__deserialize(data);
+           ((__Persistable)one(p1)).__deserialize(data, false);
+           ((__Persistable)one(p2)).__deserialize(data, false);
            ((Comparator)one(comparator)).compare(p1, p2);
            will(returnValue(new Integer(0)));
        }});

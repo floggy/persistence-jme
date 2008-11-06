@@ -52,7 +52,6 @@ public class PersistableManagerImpl extends PersistableManager {
 		}
 	}
 
-
 	/**
 	 * Creates a new instance of PersistableManager.
 	 */
@@ -122,6 +121,29 @@ public class PersistableManagerImpl extends PersistableManager {
 	 * @see #save(Persistable)
 	 */
 	public void load(Persistable persistable, int id) throws FloggyException {
+	    load(persistable, id, false);
+	}
+
+	/**
+	 * Load an previously stored object from the repository using the object ID.<br>
+	 * The object ID is the result of a save operation or you can obtain it
+	 * executing a search.
+	 *
+	 * @param persistable
+	 *            An instance where the object data will be loaded into. Cannot
+	 *            be <code>null</code>.
+	 * @param id
+	 *            The ID of the object to be loaded from the repository.
+	 * @throws IllegalArgumentException
+	 *             Exception thrown if <code>object</code> is
+	 *             <code>null</code> or not an instance of
+	 *             <code>Persistable</code>.
+	 * @throws FloggyException
+	 *             Exception thrown if an error occurs while loading the object.
+	 *
+	 * @see #save(Persistable)
+	 */
+	public void load(Persistable persistable, int id, boolean lazy) throws FloggyException {
 		__Persistable __persistable = checkArgumentAndCast(persistable);
 		// posso fazer cache do metadata
 		RecordStore rs = PersistableManagerImpl.getRecordStore(__persistable
@@ -129,7 +151,7 @@ public class PersistableManagerImpl extends PersistableManager {
 		try {
 			byte[] buffer = rs.getRecord(id);
 			if (buffer != null) {
-				__persistable.__deserialize(buffer);
+				__persistable.__deserialize(buffer, lazy);
 			}
 			__persistable.__setId(id);
 		} catch (Exception ex) {
@@ -267,6 +289,7 @@ public class PersistableManagerImpl extends PersistableManager {
 		return __persistable.__getId() != -1;
 	}
 
+
 	/**
 	 * Searches objects of an especific persistable class from the repository.
 	 * <br>
@@ -288,6 +311,30 @@ public class PersistableManagerImpl extends PersistableManager {
 	 */
 	public ObjectSet find(Class persistableClass, Filter filter,
 			Comparator comparator) throws FloggyException {
+	    return find(persistableClass, filter, comparator, false);
+	}
+	
+	/**
+	 * Searches objects of an especific persistable class from the repository.
+	 * <br>
+	 * <br>
+	 * An optional application-defined search criteria can be defined using a
+	 * <code>Filter</code>.<br>
+	 * <br>
+	 * An optional application-defined sort order can be defined using a
+	 * <code>Comparator</code>.
+	 *
+	 * @param persistableClass
+	 *            The persistable class to search the objects.
+	 * @param filter
+	 *            An optional application-defined criteria for searching
+	 *            objects.
+	 * @param comparator
+	 *            An optional application-defined criteria for sorting objects.
+	 * @return List of objects that matches the defined criteria.
+	 */
+	public ObjectSet find(Class persistableClass, Filter filter,
+			Comparator comparator, boolean lazy) throws FloggyException {
 
 		ObjectFilter objectFilter = null;
 		ObjectComparator objectComparator = null;
@@ -301,14 +348,14 @@ public class PersistableManagerImpl extends PersistableManager {
 
 		// Creates an auxiliar filter (if necessary)
 		if (filter != null) {
-			objectFilter = new ObjectFilter(persistable, filter);
+			objectFilter = new ObjectFilter(persistable, filter, lazy);
 		}
 
 		// Creates an auxiliar comparator (if necessary)
 		if (comparator != null) {
 			objectComparator = new ObjectComparator(comparator,
 					createInstance(persistableClass),
-					createInstance(persistableClass));
+					createInstance(persistableClass), lazy);
 		}
 
 		// Searchs the repository and create an object set as result.
@@ -335,7 +382,7 @@ public class PersistableManagerImpl extends PersistableManager {
 			PersistableManagerImpl.closeRecordStore(rs);
 		}
 
-		return new ObjectSetImpl(ids, persistableClass, this);
+		return new ObjectSetImpl(ids, persistableClass, this, lazy);
 	}
 	
 	public String getAPIVersion() {

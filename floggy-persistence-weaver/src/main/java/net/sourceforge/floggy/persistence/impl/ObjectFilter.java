@@ -30,14 +30,17 @@ class ObjectFilter implements RecordFilter {
 
 	private final Filter f;
 
-	ObjectFilter(__Persistable p, Filter f) {
+	private final boolean lazy;
+
+	ObjectFilter(__Persistable p, Filter f, boolean lazy) {
 		this.p = p;
 		this.f = f;
+		this.lazy = lazy;
 	}
 
 	public boolean matches(byte[] b) {
 		try {
-			p.__deserialize(b);
+			p.__deserialize(b, lazy);
 		} catch (Exception e) {
 			// Ignore
 		}

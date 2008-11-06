@@ -31,17 +31,20 @@ class ObjectComparator implements RecordComparator {
 	private final __Persistable p1;
 
 	private final __Persistable p2;
+	
+	private final boolean lazy;
 
-	public ObjectComparator(Comparator c, __Persistable p1, __Persistable p2) {
+	public ObjectComparator(Comparator c, __Persistable p1, __Persistable p2, boolean lazy) {
 		this.p1 = p1;
 		this.p2 = p2;
 		this.c = c;
+		this.lazy = lazy;
 	}
 
 	public int compare(byte[] b1, byte[] b2) {
 		try {
-			p1.__deserialize(b1);
-			p2.__deserialize(b2);
+			p1.__deserialize(b1, lazy);
+			p2.__deserialize(b2, lazy);
 		} catch (Exception e) {
 			// Ignore
 		}

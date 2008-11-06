@@ -35,7 +35,7 @@ public interface __Persistable extends Persistable {
 	
 	public void __delete() throws FloggyException;
 
-	public void __deserialize(byte[] buffer) throws Exception;
+	public void __deserialize(byte[] buffer, boolean lazy) throws Exception;
 
 	public byte[] __serialize() throws Exception;
 

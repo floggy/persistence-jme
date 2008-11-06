@@ -79,7 +79,7 @@
 		<dependency>
 			<groupId>net.sourceforge.floggy</groupId>
 			<artifactId>floggy-persistence-framework</artifactId>
-			<version>1.1.1</version>
+			<version>1.1.2-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>
