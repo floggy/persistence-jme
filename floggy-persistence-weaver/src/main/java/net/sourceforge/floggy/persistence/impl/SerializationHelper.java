@@ -188,17 +188,28 @@ public class SerializationHelper {
 	}
 
 	public final static Persistable readPersistable(DataInput in,
-			Persistable persistable) throws Exception {
-		switch (in.readByte()) {
-		case -1:
-			String className = in.readUTF();
-			persistable = (Persistable) Class.forName(className).newInstance();
-		case NOT_NULL:
-			manager.load(persistable, in.readInt());
-			break;
-		case NULL:
-			persistable = null;
-			break;
+			Persistable persistable, boolean lazy) throws Exception {
+		if (lazy) {
+			switch (in.readByte()) {
+			case -1:
+				in.readUTF();
+			case NOT_NULL:
+				in.readInt();
+			case NULL:
+				persistable = null;
+			}
+		} else {
+			switch (in.readByte()) {
+			case -1:
+				String className = in.readUTF();
+				persistable = (Persistable) Class.forName(className).newInstance();
+			case NOT_NULL:
+				manager.load(persistable, in.readInt());
+				break;
+			case NULL:
+				persistable = null;
+				break;
+			}
 		}
 		return persistable;
 	}

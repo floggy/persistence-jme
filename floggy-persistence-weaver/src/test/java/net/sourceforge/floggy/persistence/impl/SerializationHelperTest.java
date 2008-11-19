@@ -488,7 +488,7 @@ public class SerializationHelperTest extends TestCase {
 	public void testReadPersistableNull() throws Exception {
 		DataInput in = getDataInputToNullTestMethods();
 
-		Object result = SerializationHelper.readPersistable(in, null);
+		Object result = SerializationHelper.readPersistable(in, null, false);
 
 		assertNull(result);
 	}
