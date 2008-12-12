@@ -1,0 +1,321 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?><Production_Data Version="4.02"><HTMLTemplateFile>FlashTemplate.htm</HTMLTemplateFile>
+<HTMLTemplateBodyFile>FlashTemplate-body.htm</HTMLTemplateBodyFile>
+<HTMLTemplateHeaderFile>FlashTemplate-header.htm</HTMLTemplateHeaderFile>
+<VideoFilenameWithPath>D:\Projetos\Floggy\videos\netbeans\netbeans.swf</VideoFilenameWithPath>
+<AddIPodFileSize>0 bytes</AddIPodFileSize>
+<AddMP3FileSize>0 bytes</AddMP3FileSize>
+<AddPPTFileSize>0 bytes</AddPPTFileSize>
+<ProjectName>netbeans</ProjectName>
+<MediaDir></MediaDir>
+<ShouldCreateMediaDir>0</ShouldCreateMediaDir>
+<MaxTimelineWidth>1016</MaxTimelineWidth>
+<MaxTimelineHeight>724</MaxTimelineHeight>
+<MaxTimelineFPS>10,00</MaxTimelineFPS>
+<MaxVideoWidth>1016</MaxVideoWidth>
+<MaxVideoHeight>724</MaxVideoHeight>
+<MaxVideoFPS>10,00</MaxVideoFPS>
+<MaxPIPWidth>0</MaxPIPWidth>
+<MaxPIPHeight>0</MaxPIPHeight>
+<MaxPIPFPS>0,00</MaxPIPFPS>
+<VideoDuration>53,60</VideoDuration>
+<PIPVideoDuration>0,00</PIPVideoDuration>
+<VideoFPS>10,00</VideoFPS>
+<PIPVideoFPS>10,00</PIPVideoFPS>
+<VideoWidth>765</VideoWidth>
+<VideoHeight>600</VideoHeight>
+<ActualVideoWidth>765</ActualVideoWidth>
+<ActualVideoHeight>545</ActualVideoHeight>
+<PIPVideoWidth>0</PIPVideoWidth>
+<PIPVideoHeight>0</PIPVideoHeight>
+<TOCWidth>-1</TOCWidth>
+<MinTOCWidth>160</MinTOCWidth>
+<TOCDividerHeight>28</TOCDividerHeight>
+<TimelineHasAudio>0</TimelineHasAudio>
+<TimelineDuration>536000000</TimelineDuration>
+<SWFControllerTotalHeight>55</SWFControllerTotalHeight>
+<SWFMinWidth>320</SWFMinWidth>
+<SWFTOCXPos>0</SWFTOCXPos>
+<SWFTOCYPos>0</SWFTOCYPos>
+<SWFTOCWidth>-1</SWFTOCWidth>
+<SWFTOCHeight>0</SWFTOCHeight>
+<SWFHasPIPOverlay>0</SWFHasPIPOverlay>
+<SWFControllerColor></SWFControllerColor>
+<SWFTimeDispFontColor>0x000000</SWFTimeDispFontColor>
+<SWFPlaybackConfigFileName>netbeans_config.xml</SWFPlaybackConfigFileName>
+<SWFPlaybackControllerFileName>netbeans_controller.swf</SWFPlaybackControllerFileName>
+<SWFPreloaderFileName>netbeans_preload.swf</SWFPreloaderFileName>
+<StripWhitespace>0</StripWhitespace>
+<WritingImages>0</WritingImages>
+<WritePreviewXML>0</WritePreviewXML>
+<DisableTOC>0</DisableTOC>
+<AutoPlay>1</AutoPlay>
+<CancelledProduction>0</CancelledProduction>
+<CancelledProdLength>535000000</CancelledProdLength>
+<Hotspot_Array>
+<Hotspot_Array_Object>
+               <array>
+               <hotspot>
+               </hotspot>
+               <hotspot>
+               </hotspot>
+               <hotspot>
+               </hotspot>
+               <hotspot>
+                  <start>35.500000</start>
+                  <end>40.500000</end>
+                  <x0 type="Number">513</x0>
+                  <y0 type="Number">141</y0>
+                  <x1 type="Number">719</x1>
+                  <y1 type="Number">277</y1>
+                  <PauseAtEnd type="Boolean">0</PauseAtEnd>
+                  <JumpURL>http://floggy.sourceforge.net/configuration/netbeans.html#build</JumpURL>
+                  <OpenURLInNewWindow type="Number">1</OpenURLInNewWindow>
+               </hotspot>
+               <hotspot>
+               </hotspot>
+               </array>
+</Hotspot_Array_Object>
+</Hotspot_Array>
+<AdjGlobalRenderRangeStart>-1</AdjGlobalRenderRangeStart>
+<AdjGlobalRenderRangeStop>-1</AdjGlobalRenderRangeStop>
+<AdjRenderRange_Array>
+<AdjRenderRange_Obj>
+<AdjRenderRangeStart>0</AdjRenderRangeStart>
+<AdjRenderRangeStop>536000000</AdjRenderRangeStop>
+</AdjRenderRange_Obj>
+</AdjRenderRange_Array>
+<AdjMarkerDuration_Array>
+<AdjMarkerDuration_Obj>
+<AdjMarkerDuration>536000000</AdjMarkerDuration>
+</AdjMarkerDuration_Obj>
+</AdjMarkerDuration_Array>
+<AdjMarkerTimes_Array>
+<AdjMarkerTime_Obj>
+<AdjMarkerTime>0</AdjMarkerTime>
+</AdjMarkerTime_Obj>
+</AdjMarkerTimes_Array>
+<HasQuizQuestions>0</HasQuizQuestions>
+<m_strQuizQuestionOfString>Question @ of @</m_strQuizQuestionOfString>
+<m_strQuizPrevString>Prev</m_strQuizPrevString>
+<m_strQuizSubmitString>Submit</m_strQuizSubmitString>
+<m_strQuizNextString>Next</m_strQuizNextString>
+<m_strQuizDoneString>Done</m_strQuizDoneString>
+<m_strQuizPreviewString>Preview</m_strQuizPreviewString>
+<m_strQuizSendString>Send</m_strQuizSendString>
+<m_strQuizMainMessageString>You have reached the end of the questions and this video. Your answers are ready to be sent.</m_strQuizMainMessageString>
+<m_strQuizEmailContentsString>E-mail Contents</m_strQuizEmailContentsString>
+<m_strQuizEmailToString>E-mail to </m_strQuizEmailToString>
+<m_strQuizAnswersSentString>Your answers have been sent.</m_strQuizAnswersSentString>
+<m_strQuizSummaryString>You have completed @ of @ questions.</m_strQuizSummaryString>
+<m_strQuizScoreString>Score = @/@</m_strQuizScoreString>
+<m_strQuizSummaryTitleString>Answers Summary</m_strQuizSummaryTitleString>
+<Quiz_Array>
+</Quiz_Array>
+<Markers_Array>
+<Marker_Object>
+<MarkerName>How to configure Floggy with Netbeans</MarkerName>
+<MarkerImage></MarkerImage>
+<MarkerTime>0</MarkerTime>
+<IndentLevel>0</IndentLevel>
+<ShouldIgnore>0</ShouldIgnore>
+</Marker_Object>
+</Markers_Array>
+<CaptionPlayerXML_Array>
+</CaptionPlayerXML_Array>
+<CaptionFontHeight>23</CaptionFontHeight>
+<MaxCaptionsCharsPerLine>32</MaxCaptionsCharsPerLine>
+<TimelineCaptionCount>0</TimelineCaptionCount>
+<CaptionHeight>0</CaptionHeight>
+<CloseCaptions_Array>
+</CloseCaptions_Array>
+<NumMetaDataTypes>4</NumMetaDataTypes>
+<MetaData_Array>
+<MetaData_Object>
+<MetaDataType>Date</MetaDataType>
+<MetaDataValue>2007</MetaDataValue>
+<MetaDataEmbedName>DC.date</MetaDataEmbedName>
+</MetaData_Object>
+<MetaData_Object>
+<MetaDataType>Title</MetaDataType>
+<MetaDataValue>Netbeans + Floggy</MetaDataValue>
+<MetaDataEmbedName>DC.title</MetaDataEmbedName>
+</MetaData_Object>
+<MetaData_Object>
+<MetaDataType>Keywords</MetaDataType>
+<MetaDataValue>floggy j2me persistence framework</MetaDataValue>
+<MetaDataEmbedName>itunes.keywords</MetaDataEmbedName>
+</MetaData_Object>
+<MetaData_Object>
+<MetaDataType>貐೦豠೦覐೦㨡艙ǃȌ貨೦豸೦觘೦袡సǆȌ賀೦貐೦計೦謏坽ǅȌ賘೦貨೦訸೦깊鐩ǈȌ賰೦賀೦詨೦禉뢪ǏȌ贈೦賘೦誘೦ఘ렵ǲȌ贠೦賰೦諠೦Ჸ蜮ǱȔ荨ᝁ贈೦謐೦쮇￱츎O\ǵȈ퉘೜身䂤蘔䣭瘤裄ⴖ⁊恊ࠐ譄蠒᠒Ȅ⢁ꋑ昄ሥ⯉鄠૽⑈肯쯦ꄉ睧즳鬦덙㒩鱝翋置ﶳ咆맽꩗���＾羯鮏眷뱿䳪㟿呦閭蛤㇏ꟛ㽟䓋⫾潣䪗棿╤텏⣾拃籯깷뿆〆迯﯆ﾕ轢쏆畎葤卑駶锄ᶖ늶���ԙ좙⫽襒鯂���釈镓赏���쵩ᥛ㱊㑖㸶餳琹ꧧ횹䥶咂���䪆���䷢㟏虗㏭唩枠盱컉㏪몣吲뱝ꙥ錌콀绔摿묆흢麳ﶋ୚㹆兡䧬⬀ۀ뚷鮂饏涩鏣畀Ểᴙ䟾팔���瓴뚠햵頳쮪鄧膁鴝璨���᳟ҝ㌣ಗ粤珒ᰒ킬峜ꊪ唱誩梷㞌袻���䝔ꪎ㭸���ᦐ弽ꥫ嫥㬗塚鏃䚎儣언Ⱄ泴咗ĥ欑횋���͓䞵谣㸑섦謥멆ᕄ⅄㴯澳풟���뀍Ⲍఎ瓴좋♺㵟巣绬욍虋짝㐈暕㜆侗䣄ㄕ㼥惺摺薵꘽᎗馜坢렝赴艙磔挽᳇鶊ମゆऩ⾈⽱ᘜ铹퉏㡋贞蚕灉漊���ꂒ⴪↬ଣꂪሆ憽栦Ⰶ⴫ڷ伜拓孟숦攙Ꙧﱯ䗡ゎ墉濯쾸㺤愆���⪖ꚿ㌪羍Ϳ튣셢於舖ހ뎔侒彇㿠絹쟗���膸䧲Ϊ광㍟ᝣ쁎蔑ݻ䅯ல螺ퟭ睢ቃ꜈���ǽ쁿뢖补럏팢쌩ﰲ뻹���宗⊊戝ꚶ徻抯梗៧￤諺᷵䯚̅	\őȈݸǒ</MetaDataType>
+<MetaDataValue>EN</MetaDataValue>
+<MetaDataEmbedName>DC.language</MetaDataEmbedName>
+</MetaData_Object>
+</MetaData_Array>
+<NumFileTypesUsedByProduction>9</NumFileTypesUsedByProduction>
+<FileTypesUsed_Array>
+<FileTypeUsed_Object>
+<FileTypeName>Video</FileTypeName>
+</FileTypeUsed_Object>
+<FileTypeUsed_Object>
+<FileTypeName>HTMLFile</FileTypeName>
+</FileTypeUsed_Object>
+<FileTypeUsed_Object>
+<FileTypeName>StyleSheet</FileTypeName>
+</FileTypeUsed_Object>
+<FileTypeUsed_Object>
+<FileTypeName>EmbededPlayerJS</FileTypeName>
+</FileTypeUsed_Object>
+<FileTypeUsed_Object>
+<FileTypeName>FlashConfig</FileTypeName>
+</FileTypeUsed_Object>
+<FileTypeUsed_Object>
+<FileTypeName>FlashController</FileTypeName>
+</FileTypeUsed_Object>
+<FileTypeUsed_Object>
+<FileTypeName>FlashPreloader</FileTypeName>
+</FileTypeUsed_Object>
+<FileTypeUsed_Object>
+<FileTypeName>FlashNoPlayerBGImage</FileTypeName>
+</FileTypeUsed_Object>
+<FileTypeUsed_Object>
+<FileTypeName>ProductionInfoXML</FileTypeName>
+</FileTypeUsed_Object>
+</FileTypesUsed_Array>
+<NumFilesTotal>10</NumFilesTotal>
+<ProducedFiles_Array>
+<ProducedFile_Object>
+<FileName>D:\Projetos\Floggy\videos\netbeans\netbeans.swf</FileName>
+<FileSize>1296276</FileSize>
+<FileType>Video</FileType>
+<WhichFilesOfCurType>0</WhichFilesOfCurType>
+<TotalFilesOfCurType>1</TotalFilesOfCurType>
+</ProducedFile_Object>
+<ProducedFile_Object>
+<FileName>D:\Projetos\Floggy\videos\netbeans\netbeans.html</FileName>
+<FileSize>2003</FileSize>
+<FileType>HTMLFile</FileType>
+<WhichFilesOfCurType>0</WhichFilesOfCurType>
+<TotalFilesOfCurType>1</TotalFilesOfCurType>
+</ProducedFile_Object>
+<ProducedFile_Object>
+<FileName>D:\Projetos\Floggy\videos\netbeans\cam_style.css</FileName>
+<FileSize>0</FileSize>
+<FileType>StyleSheet</FileType>
+<WhichFilesOfCurType>0</WhichFilesOfCurType>
+<TotalFilesOfCurType>1</TotalFilesOfCurType>
+</ProducedFile_Object>
+<ProducedFile_Object>
+<FileName>D:\Projetos\Floggy\videos\netbeans\netbeans_player_embed.js</FileName>
+<FileSize>0</FileSize>
+<FileType>EmbededPlayerJS</FileType>
+<WhichFilesOfCurType>0</WhichFilesOfCurType>
+<TotalFilesOfCurType>1</TotalFilesOfCurType>
+</ProducedFile_Object>
+<ProducedFile_Object>
+<FileName>D:\Projetos\Floggy\videos\netbeans\netbeans_config.xml</FileName>
+<FileSize>8877</FileSize>
+<FileType>FlashConfig</FileType>
+<WhichFilesOfCurType>0</WhichFilesOfCurType>
+<TotalFilesOfCurType>1</TotalFilesOfCurType>
+</ProducedFile_Object>
+<ProducedFile_Object>
+<FileName>D:\Projetos\Floggy\videos\netbeans\netbeans_controller.swf</FileName>
+<FileSize>656749</FileSize>
+<FileType>FlashController</FileType>
+<WhichFilesOfCurType>0</WhichFilesOfCurType>
+<TotalFilesOfCurType>1</TotalFilesOfCurType>
+</ProducedFile_Object>
+<ProducedFile_Object>
+<FileName>netbeans_preload.swf</FileName>
+<FileSize>0</FileSize>
+<FileType>FlashPreloader</FileType>
+<WhichFilesOfCurType>0</WhichFilesOfCurType>
+<TotalFilesOfCurType>1</TotalFilesOfCurType>
+</ProducedFile_Object>
+<ProducedFile_Object>
+<FileName>D:\Projetos\Floggy\videos\netbeans\netbeans_nofp_bg.gif</FileName>
+<FileSize>10868</FileSize>
+<FileType>FlashNoPlayerBGImage</FileType>
+<WhichFilesOfCurType>0</WhichFilesOfCurType>
+<TotalFilesOfCurType>1</TotalFilesOfCurType>
+</ProducedFile_Object>
+<ProducedFile_Object>
+<FileName>D:\Projetos\Floggy\videos\netbeans\ProductionInfo.xml</FileName>
+<FileSize>14761</FileSize>
+<FileType>ProductionInfoXML</FileType>
+<WhichFilesOfCurType>0</WhichFilesOfCurType>
+<TotalFilesOfCurType>1</TotalFilesOfCurType>
+</ProducedFile_Object>
+</ProducedFiles_Array>
+<OutputBasePath>D:\Projetos\Floggy\videos\netbeans\</OutputBasePath>
+<ProductionFormat>SWF</ProductionFormat>
+<NumVideoSegments>1</NumVideoSegments>
+<NumHTMLFiles>1</NumHTMLFiles>
+<TotalProductionSize>2011269</TotalProductionSize>
+<m_cf_rtRenderRangeStart>-1</m_cf_rtRenderRangeStart>
+<m_cf_rtRenderRangeStop>-1</m_cf_rtRenderRangeStop>
+<m_cf_strTempDir>C:\DOCUME~1\USURIO~1\CONFIG~1\Temp\</m_cf_strTempDir>
+<m_cf_bWritePIPFile>0</m_cf_bWritePIPFile>
+<m_cf_bDisablePIPVideo>1</m_cf_bDisablePIPVideo>
+<m_cf_bWriteIndex>0</m_cf_bWriteIndex>
+<m_cf_bWriteMultipleFiles>0</m_cf_bWriteMultipleFiles>
+<m_cf_strHTMLTemplateName>FlashTemplate.htm</m_cf_strHTMLTemplateName>
+<m_cf_HTMLAlignment>1</m_cf_HTMLAlignment>
+<m_cf_bSCORMOutput>0</m_cf_bSCORMOutput>
+<m_cf_bController>1</m_cf_bController>
+<m_cf_bAutoPlay>1</m_cf_bAutoPlay>
+<m_cf_bNumberIndexMarkers>0</m_cf_bNumberIndexMarkers>
+<m_cf_bShortenIndexNames>1</m_cf_bShortenIndexNames>
+<m_cf_nShortenedIndexLength>17</m_cf_nShortenedIndexLength>
+<m_cf_bQuizShowFeedback>1</m_cf_bQuizShowFeedback>
+<m_cf_bEMailQuizResults>0</m_cf_bEMailQuizResults>
+<m_cf_bEMailIncludeScore>0</m_cf_bEMailIncludeScore>
+<m_cf_bHTMLOutput>1</m_cf_bHTMLOutput>
+<m_cf_SCORMVersion>0</m_cf_SCORMVersion>
+<m_cf_strManifestID>COURSE_ID</m_cf_strManifestID>
+<m_cf_strManifestTitle></m_cf_strManifestTitle>
+<m_cf_strDuration>00:00:00</m_cf_strDuration>
+<m_cf_strSubject></m_cf_strSubject>
+<m_cf_strManifestDescription></m_cf_strManifestDescription>
+<m_cf_strLanguage>en</m_cf_strLanguage>
+<m_cf_SCORMPackage>2</m_cf_SCORMPackage>
+<m_cf_strSCOTitle></m_cf_strSCOTitle>
+<m_cf_ProductionFormat>8</m_cf_ProductionFormat>
+<m_cf_strTitle></m_cf_strTitle>
+<m_cf_strAuthor></m_cf_strAuthor>
+<m_cf_strCopyright></m_cf_strCopyright>
+<m_cf_strDescription></m_cf_strDescription>
+<m_cf_MultiFileOutputStyle>0</m_cf_MultiFileOutputStyle>
+<m_cf_strVideoCompressor>Techsmith Screen Capture Codec</m_cf_strVideoCompressor>
+<m_cf_bWriteCCInfo>1</m_cf_bWriteCCInfo>
+<m_cf_strCaptionFontFamily>Microsoft Sans Serif</m_cf_strCaptionFontFamily>
+<m_cf_bAddIPODFileToProduction>0</m_cf_bAddIPODFileToProduction>
+<m_cf_bAddMP3FileToProduction>0</m_cf_bAddMP3FileToProduction>
+<m_cf_bAddPPTFileToProduction>0</m_cf_bAddPPTFileToProduction>
+<m_cf_strPPTFileToAddToProduction></m_cf_strPPTFileToAddToProduction>
+<m_cf_bAviEncodeAudio>1</m_cf_bAviEncodeAudio>
+<m_cf_AVIFrameRate>10</m_cf_AVIFrameRate>
+<m_cf_nKeyFrameRate>30</m_cf_nKeyFrameRate>
+<m_cf_nVideoCodec>4</m_cf_nVideoCodec>
+<m_cf_PIP_nKeyFrameRate>30</m_cf_PIP_nKeyFrameRate>
+<m_cf_PIP_nVideoCodec>4</m_cf_PIP_nVideoCodec>
+<m_cf_PIP_AVIFrameRate>0</m_cf_PIP_AVIFrameRate>
+<m_cf_SwfPlaybackControls>2</m_cf_SwfPlaybackControls>
+<m_cf_strControllerSkinName>goog</m_cf_strControllerSkinName>
+<m_cf_nSwfTargetVersion>7</m_cf_nSwfTargetVersion>
+<m_cf_bSwfMatchPreloadMovieSize>0</m_cf_bSwfMatchPreloadMovieSize>
+<m_cf_bSwfPauseAtStart>0</m_cf_bSwfPauseAtStart>
+<m_cf_bSwfPreloadAdvanced>1</m_cf_bSwfPreloadAdvanced>
+<m_cf_nSwfMainMovieLoadPercent>10</m_cf_nSwfMainMovieLoadPercent>
+<m_cf_nSwfPreloadMinDisplayTime>3</m_cf_nSwfPreloadMinDisplayTime>
+<m_cf_clrSwfControlColor>0x00C0C0C0</m_cf_clrSwfControlColor>
+<m_cf_bSwfShowAboutBtn>1</m_cf_bSwfShowAboutBtn>
+<m_cf_strSwfAboutBoxTxt></m_cf_strSwfAboutBoxTxt>
+<m_cf_strSwfTimeDisplayFormat>MM:SS</m_cf_strSwfTimeDisplayFormat>
+<m_cf_bSwfShowMovieDuration>1</m_cf_bSwfShowMovieDuration>
+<m_cf_bSwfShowTimeElapsed>1</m_cf_bSwfShowTimeElapsed>
+<m_cf_strSwfTimeFont>Arial</m_cf_strSwfTimeFont>
+<m_cf_clrSwfTimeFontColor>0x00000000</m_cf_clrSwfTimeFontColor>
+<m_cf_SwfEndAction>0</m_cf_SwfEndAction>
+<m_cf_strSwfEndActionUrl>http://</m_cf_strSwfEndActionUrl>
+</Production_Data>

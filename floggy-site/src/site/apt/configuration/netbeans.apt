@@ -10,7 +10,7 @@ Netbeans
 
   <<Important:>> We assume that you are using {{{http://www.netbeans.org}Netbeans}} 5.5.1 (or later) with the {{{http://www.netbeans.org/products/mobility}Netbeans Mobility Pack}}.
  
-  It is really simple to configure Floggy within your environment. You can watch this {{{http://floggy.sourceforge.net/videos/netbeans/netbeans.html}video}} or read the steps bellow.
+  It is really simple to configure Floggy within your environment. You can watch this {{{videos/netbeans/netbeans.html}video}} or read the steps bellow.
  
   The 2 main steps are:
  
