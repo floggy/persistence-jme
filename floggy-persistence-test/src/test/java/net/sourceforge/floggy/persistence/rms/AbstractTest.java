@@ -127,14 +127,14 @@ public abstract class AbstractTest extends TestCase {
 	}
 
 	protected Object getX(Object object) throws Exception {
-		Method method = object.getClass().getMethod("getX", new Class[0]);
+		Method method = object.getClass().getMethod(getNameForGetMethod(), new Class[0]);
 		return method.invoke(object, new Object[0]);
 	}
 
 	public abstract Persistable newInstance();
 
 	protected void setX(Object object, Object param) throws Exception {
-		Method method = object.getClass().getMethod("setX", new Class[]{getParameterType()});
+		Method method = object.getClass().getMethod(getNameForSetMethod(), new Class[]{getParameterType()});
 		method.invoke(object, new Object[] { param });
 	}
 	
@@ -294,6 +294,14 @@ public abstract class AbstractTest extends TestCase {
 		} catch (Exception ex) {
 			assertEquals(InvalidRecordIDException.class.getName(), ex.getMessage());
 		}
+	}
+
+	public String getNameForGetMethod() {
+	    return "getX";
+	}
+
+	public String getNameForSetMethod() {
+	    return "setX";
 	}
 
 	
