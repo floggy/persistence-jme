@@ -21,7 +21,7 @@ public class SuperClassGenerator {
 
 	public static String generateLoadSource(CtClass superClass) {
 		String source = "\n";
-		source += "javax.microedition.rms.RecordStore superRS = net.sourceforge.floggy.persistence.impl.PersistableManagerImpl.getRecordStore(super.__getPersistableMetadata());\n";
+		source += "javax.microedition.rms.RecordStore superRS = net.sourceforge.floggy.persistence.impl.PersistableManagerImpl.getRecordStore(super.getRecordStoreName());\n";
 		source += "int superClassId = dis.readInt();\n";
 		source += "byte[] superClassBuffer = superRS.getRecord(superClassId);\n";
 		source += "net.sourceforge.floggy.persistence.impl.PersistableManagerImpl.closeRecordStore(superRS);\n";
@@ -33,7 +33,7 @@ public class SuperClassGenerator {
 
 	public static String generateSaveSource(CtClass superClass) {
 		String source = "\n";
-		source += "javax.microedition.rms.RecordStore superRS = net.sourceforge.floggy.persistence.impl.PersistableManagerImpl.getRecordStore(super.__getPersistableMetadata());\n";
+		source += "javax.microedition.rms.RecordStore superRS = net.sourceforge.floggy.persistence.impl.PersistableManagerImpl.getRecordStore(super.getRecordStoreName());\n";
 		source += "byte[] superBuffer= super.__serialize();\n";
 		source += "int superId= super.__getId();\n";
 		source += "if(superId == -1) {\n";

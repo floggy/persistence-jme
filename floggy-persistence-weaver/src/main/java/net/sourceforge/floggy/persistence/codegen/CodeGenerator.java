@@ -111,8 +111,7 @@ public class CodeGenerator {
 		if (configuration.isGenerateSource()) {
 			source = new StringBuffer();
 		}
-		// Implements interface
-		this.generatePersistableInterface();
+		
 
 		// Constructor
 		this.generateDefaultConstructor();
@@ -128,12 +127,16 @@ public class CodeGenerator {
 		this.generateGetIdMethod();
 		this.generateSetIdMethod();
 		this.generateGetPersistableMetadata();
+		this.generateGetRecordStoreNameMethod();
 		this.generateDeserializeMethod();
 //		this.generateLoadFromIdMethod();
 		this.generateSerializeMethod();
 //		this.generateSaveWithRecordStoreParameterMethod();
 //		this.generateSaveMethod();
 		this.generateDeleteMethod();
+		
+		// Implements interface
+		this.generatePersistableInterface();
 	}
 
 	/**
@@ -163,7 +166,7 @@ public class CodeGenerator {
 		String buffer = "private final static net.sourceforge.floggy.persistence.impl.PersistableMetadata __persistableMetadata = new net.sourceforge.floggy.persistence.impl.PersistableMetadata(\""+pConfig.getRecordStoreName()+"\");";
 		addField(buffer);
 	}
-
+	
 	/**
 	 * 
 	 * @throws CannotCompileException
@@ -176,6 +179,24 @@ public class CodeGenerator {
 
 	    //adicionando a classe
 	    addMethod(buffer);
+	}
+
+	/**
+	 * 
+	 * @throws CannotCompileException
+	 */
+	private void generateGetRecordStoreNameMethod() throws CannotCompileException {
+		try {
+			ctClass.getDeclaredMethod("getRecordStoreName");
+		} catch (NotFoundException nfex) {
+			StringBuffer buffer = new StringBuffer();
+			buffer.append("public String getRecordStoreName() {\n");
+			buffer.append("return __persistableMetadata.getRecordStoreName();\n");
+			buffer.append("}\n");
+
+		    //adicionando a classe
+		    addMethod(buffer);
+		}
 	}
 
 	/**
@@ -315,7 +336,7 @@ public class CodeGenerator {
 		ClassVerifier verifier = new ClassVerifier(superClass);
 		if (verifier.isPersistable()) {
 			buffer.append("super.__delete();\n");
-			buffer.append("javax.microedition.rms.RecordStore superRS = net.sourceforge.floggy.persistence.impl.PersistableManagerImpl.getRecordStore(super.__getPersistableMetadata());\n");
+			buffer.append("javax.microedition.rms.RecordStore superRS = net.sourceforge.floggy.persistence.impl.PersistableManagerImpl.getRecordStore(super.getRecordStoreName());\n");
 			buffer.append("try {\n");
 			buffer.append("superRS.deleteRecord(super.__getId());\n");
 			buffer.append("super.__setId(-1);\n");

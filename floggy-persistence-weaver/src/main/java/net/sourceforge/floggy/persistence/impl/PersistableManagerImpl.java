@@ -66,10 +66,9 @@ public class PersistableManagerImpl extends PersistableManager {
 		int references= 0;
 	}
 
-	public static RecordStore getRecordStore(PersistableMetadata metadata)
+	public static RecordStore getRecordStore(String recordStoreName)
 			throws FloggyException {
 		try {
-			String recordStoreName= metadata.getRecordStoreName(); 
 			RecordStoreReference rsr= (RecordStoreReference) references.get(recordStoreName);
 			if (rsr == null) {
 				rsr= new RecordStoreReference();
@@ -147,7 +146,7 @@ public class PersistableManagerImpl extends PersistableManager {
 		__Persistable __persistable = checkArgumentAndCast(persistable);
 		// posso fazer cache do metadata
 		RecordStore rs = PersistableManagerImpl.getRecordStore(__persistable
-				.__getPersistableMetadata());
+				.getRecordStoreName());
 		try {
 			byte[] buffer = rs.getRecord(id);
 			if (buffer != null) {
@@ -183,7 +182,7 @@ public class PersistableManagerImpl extends PersistableManager {
 		__Persistable __persistable = checkArgumentAndCast(persistable);
 		// posso fazer cache do metadata e um contador com as referencias!!!!!!!!!
 		RecordStore rs = PersistableManagerImpl.getRecordStore(__persistable
-				.__getPersistableMetadata());
+				.getRecordStoreName());
 		try {
 			byte[] buffer= __persistable.__serialize();
 			int id= __persistable.__getId();
@@ -221,7 +220,7 @@ public class PersistableManagerImpl extends PersistableManager {
 		int id = __persistable.__getId();
 		if (id != -1) {
 			RecordStore rs = PersistableManagerImpl
-					.getRecordStore(__persistable.__getPersistableMetadata());
+					.getRecordStore(__persistable.getRecordStoreName());
 			try {
 				__persistable.__delete();
 				rs.deleteRecord(id);
@@ -275,10 +274,10 @@ public class PersistableManagerImpl extends PersistableManager {
 	 *             object.
 	 */
 	public void deleteAll(Class persistableClass) throws FloggyException {
-		PersistableMetadata metadata= ((__Persistable)createInstance(persistableClass)).__getPersistableMetadata();
-		closeRecordStore(getRecordStore(metadata));
+		__Persistable persistable = createInstance(persistableClass);
+		closeRecordStore(getRecordStore(persistable.getRecordStoreName()));
 		try {
-			RecordStore.deleteRecordStore(metadata.getRecordStoreName());
+			RecordStore.deleteRecordStore(persistable.getRecordStoreName());
 		} catch (Exception ex) {
 			throw handleException(ex);
 		}
@@ -361,9 +360,7 @@ public class PersistableManagerImpl extends PersistableManager {
 		// Searchs the repository and create an object set as result.
 		int[] ids = null;
 
-		PersistableMetadata metadata= checkArgumentAndCast(persistable)
-		.__getPersistableMetadata();
-		RecordStore rs = getRecordStore(metadata);
+		RecordStore rs = getRecordStore(persistable.getRecordStoreName());
 
 		try {
 			RecordEnumeration en = rs.enumerateRecords(objectFilter,

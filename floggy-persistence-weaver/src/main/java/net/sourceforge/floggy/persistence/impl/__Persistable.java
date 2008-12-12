@@ -16,6 +16,7 @@
 package net.sourceforge.floggy.persistence.impl;
 
 import net.sourceforge.floggy.persistence.FloggyException;
+import net.sourceforge.floggy.persistence.Nameable;
 import net.sourceforge.floggy.persistence.Persistable;
 
 /**
@@ -27,7 +28,7 @@ import net.sourceforge.floggy.persistence.Persistable;
  * @since 1.0
  * @see Persistable
  */
-public interface __Persistable extends Persistable {
+public interface __Persistable extends Persistable, Nameable {
 
 	public int __getId();
 
