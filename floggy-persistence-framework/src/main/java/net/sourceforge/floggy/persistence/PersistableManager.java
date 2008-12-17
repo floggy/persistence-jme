@@ -78,7 +78,8 @@ public abstract class PersistableManager {
      * @param persistable An instance where the object data will be loaded
      *        into. Cannot be <code>null</code>.
      * @param id The ID of the object to be loaded from the repository.
-     * @param lazy A flag indicating to load or not all composite relationships.
+     * @param lazy A flag indicating to load or not all composite
+     *        relationships.
      *
      * @throws FloggyException Exception thrown if an error occurs while
      *         loading the object.
@@ -175,7 +176,8 @@ public abstract class PersistableManager {
      *        objects.
      * @param comparator An optional application-defined criteria for sorting
      *        objects.
-     * @param lazy A flag indicating to load or not all composite relationships.
+     * @param lazy A flag indicating to load or not all composite
+     *        relationships.
      *
      * @return List of objects that matches the defined criteria.
      *

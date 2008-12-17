@@ -39,12 +39,10 @@ package net.sourceforge.floggy.persistence;
  */
 public interface Nameable {
     /**
-     * It is used to retrieve the name of the RecordStore where the class will 
-     * be stored.
-     *
+     * It is used to retrieve the name of the RecordStore where the
+     * class will be stored.
      *
      * @return the name of the RecordStore.
      */
     String getRecordStoreName();
-
 }
