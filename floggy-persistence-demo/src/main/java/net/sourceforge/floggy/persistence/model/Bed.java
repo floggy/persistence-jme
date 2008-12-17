@@ -15,9 +15,10 @@
  */
 package net.sourceforge.floggy.persistence.model;
 
+import net.sourceforge.floggy.persistence.Nameable;
 import net.sourceforge.floggy.persistence.Persistable;
 
-public class Bed implements Persistable {
+public class Bed implements Persistable, Nameable {
 
 	private int floor;
 
@@ -45,6 +46,10 @@ public class Bed implements Persistable {
 
 	public void setNumber(int number) {
 		this.number = number;
+	}
+	
+	public String getRecordStoreName() {
+		return "Bed";
 	}
 
 }
