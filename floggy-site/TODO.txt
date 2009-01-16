@@ -4,6 +4,7 @@ Floggy
   - documentação do plugin
   - o que é mais caro criar um DataInputStream ou executar um metodo synchronized
   - svn cp . https://floggy.svn.sourceforge.net/svnroot/floggy/tags/eclipse-floggy-plugin-1.1.1
+  - @operation:issue;comments
   
 - diagramas da arquitetura
 - diagrama de classes e de sequência
@@ -53,6 +54,7 @@ Floggy
 - testar com ASM objectweb
 - botar no site as versões do eclipse que o plugin roda
 - Another question, suppose we have DomesticCat extends Cat, is it possible in Floggy a query like pm.find(Cat.class) returns instances not only Cat, but also subclasses like DomesticCat?
+- add a UpdateManager to helps the developers to update his application, the PM.getInstance() will check if all RMS and persistable classes has the same structure if not it will throw a exception??
 - postar notícias:
 	- FEITO www.javafree.org
 	- FEITO www.portaljava.com.br
@@ -98,7 +100,7 @@ MODULO DE PERSISTÊNCIA
 - gerar uma classe que será responsável por saber os metadados da aplicação (criar um RMS com a descrição das classes)
 - modificar task do Ant
 - deve funcionar sem o modulo de sincronização
-- lazy load, carregar todo o objeto ou carregar somente o primeiro objeto ou carregar a árvore de objetos a um certo nível.
+DONE - lazy load, carregar todo o objeto ou carregar somente o primeiro objeto ou carregar a árvore de objetos a um certo nível.
 - attributes embebbeds (EJB 3.0)
 - adicionar teste unitários aos projetos framework e weaver
 - FEITO no plugin do eclipse setar a URL do JAVAdoc e o código fonte se possível
@@ -115,7 +117,8 @@ MODULO DE PERSISTÊNCIA
 - adicionar ao site informações sobre possiveís problemas com obfuscação (por causa que os persistables num vector são salvos com o nome da classe)
 - adicionar ao site instruções de como contribuir com o projeto (criar um patch do trunk e enviar para os desenvolvedores).
 - criar no PM um mapeamento das classes persistiveis com o nome de seus respectivos RMS.
-
+- refatorar a class AbstractClass para se utilizada por todas os testes que requerem um PersistableManager
+- colocar uma estrelinha na novas noticias quando postadas
 
 
 MODULO DE SINCRONIZAÇÃO
