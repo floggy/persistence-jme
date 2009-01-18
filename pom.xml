@@ -230,6 +230,14 @@
 					<tagBase>https://floggy.svn.sourceforge.net/svnroot/floggy/tags</tagBase>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<inherited>true</inherited>
+				<configuration>
+					<preparationGoals>clean verify</preparationGoals>
+				</configuration>
+			</plugin>
 		</plugins>
 	</reporting>
 	<modules>
