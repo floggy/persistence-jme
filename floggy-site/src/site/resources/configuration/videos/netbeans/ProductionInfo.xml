@@ -1,3 +1,20 @@
+<!--
+
+    Copyright (c) 2006-2009 Floggy Open Source Group. All rights reserved.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
 ﻿<?xml version="1.0" encoding="UTF-8" ?><Production_Data Version="4.02"><HTMLTemplateFile>FlashTemplate.htm</HTMLTemplateFile>
 <HTMLTemplateBodyFile>FlashTemplate-body.htm</HTMLTemplateBodyFile>
 <HTMLTemplateHeaderFile>FlashTemplate-header.htm</HTMLTemplateHeaderFile>
@@ -146,7 +163,7 @@
 <MetaDataEmbedName>itunes.keywords</MetaDataEmbedName>
 </MetaData_Object>
 <MetaData_Object>
-<MetaDataType>貐೦豠೦覐೦㨡艙ǃȌ貨೦豸೦觘೦袡సǆȌ賀೦貐೦計೦謏坽ǅȌ賘೦貨೦訸೦깊鐩ǈȌ賰೦賀೦詨೦禉뢪ǏȌ贈೦賘೦誘೦ఘ렵ǲȌ贠೦賰೦諠೦Ჸ蜮ǱȔ荨ᝁ贈೦謐೦쮇￱츎O\ǵȈ퉘೜身䂤蘔䣭瘤裄ⴖ⁊恊ࠐ譄蠒᠒Ȅ⢁ꋑ昄ሥ⯉鄠૽⑈肯쯦ꄉ睧즳鬦덙㒩鱝翋置ﶳ咆맽꩗���＾羯鮏眷뱿䳪㟿呦閭蛤㇏ꟛ㽟䓋⫾潣䪗棿╤텏⣾拃籯깷뿆〆迯﯆ﾕ轢쏆畎葤卑駶锄ᶖ늶���ԙ좙⫽襒鯂���釈镓赏���쵩ᥛ㱊㑖㸶餳琹ꧧ횹䥶咂���䪆���䷢㟏虗㏭唩枠盱컉㏪몣吲뱝ꙥ錌콀绔摿묆흢麳ﶋ୚㹆兡䧬⬀ۀ뚷鮂饏涩鏣畀Ểᴙ䟾팔���瓴뚠햵頳쮪鄧膁鴝璨���᳟ҝ㌣ಗ粤珒ᰒ킬峜ꊪ唱誩梷㞌袻���䝔ꪎ㭸���ᦐ弽ꥫ嫥㬗塚鏃䚎儣언Ⱄ泴咗ĥ欑횋���͓䞵谣㸑섦謥멆ᕄ⅄㴯澳풟���뀍Ⲍఎ瓴좋♺㵟巣绬욍虋짝㐈暕㜆侗䣄ㄕ㼥惺摺薵꘽᎗馜坢렝赴艙磔挽᳇鶊ମゆऩ⾈⽱ᘜ铹퉏㡋贞蚕灉漊���ꂒ⴪↬ଣꂪሆ憽栦Ⰶ⴫ڷ伜拓孟숦攙Ꙧﱯ䗡ゎ墉濯쾸㺤愆���⪖ꚿ㌪羍Ϳ튣셢於舖ހ뎔侒彇㿠絹쟗���膸䧲Ϊ광㍟ᝣ쁎蔑ݻ䅯ல螺ퟭ睢ቃ꜈���ǽ쁿뢖补럏팢쌩ﰲ뻹���宗⊊戝ꚶ徻抯梗៧￤諺᷵䯚̅	\őȈݸǒ</MetaDataType>
+<MetaDataType>貐೦豠೦覐೦㨡艙ǃȌ貨೦豸೦觘೦袡సǆȌ賀೦貐೦計೦謏坽ǅȌ賘೦貨೦訸೦깊鐩ǈȌ賰೦賀೦詨೦禉뢪ǏȌ贈೦賘೦誘೦ఘ렵ǲȌ贠೦賰೦諠೦Ჸ蜮ǱȔ荨ᝁ贈೦謐೦쮇￱츎O\ǵȈ퉘೜身䂤蘔䣭瘤裄ⴖ⁊恊ࠐ譄蠒᠒Ȅ⢁ꋑ昄ሥ⯉鄠૽⑈肯쯦ꄉ睧즳鬦덙㒩鱝翋置ﶳ咆맽꩗?＾羯鮏眷뱿䳪㟿呦閭蛤㇏ꟛ㽟䓋⫾潣䪗棿╤텏⣾拃籯깷뿆〆迯﯆ﾕ轢쏆畎葤卑駶锄ᶖ늶?ԙ좙⫽襒鯂?釈镓赏?쵩ᥛ㱊㑖㸶餳琹ꧧ횹䥶咂?䪆?䷢㟏虗㏭唩枠盱컉㏪몣吲뱝ꙥ錌콀绔摿묆흢麳ﶋ୚㹆兡䧬⬀ۀ뚷鮂饏涩鏣畀Ểᴙ䟾팔?瓴뚠햵頳쮪鄧膁鴝璨?᳟ҝ㌣ಗ粤珒ᰒ킬峜ꊪ唱誩梷㞌袻?䝔ꪎ㭸?ᦐ弽ꥫ嫥㬗塚鏃䚎儣언Ⱄ泴咗ĥ欑횋?͓䞵谣㸑섦謥멆ᕄ⅄㴯澳풟?뀍Ⲍఎ瓴좋♺㵟巣绬욍虋짝㐈暕㜆侗䣄ㄕ㼥惺摺薵꘽᎗馜坢렝赴艙磔挽᳇鶊ମゆऩ⾈⽱ᘜ铹퉏㡋贞蚕灉漊?ꂒ⴪↬ଣꂪሆ憽栦Ⰶ⴫ڷ伜拓孟숦攙Ꙧﱯ䗡ゎ墉濯쾸㺤愆?⪖ꚿ㌪羍Ϳ튣셢於舖ހ뎔侒彇㿠絹쟗?膸䧲Ϊ광㍟ᝣ쁎蔑ݻ䅯ல螺ퟭ睢ቃ꜈?ǽ쁿뢖补럏팢쌩ﰲ뻹?宗⊊戝ꚶ徻抯梗៧￤諺᷵䯚̅	\őȈݸǒ</MetaDataType>
 <MetaDataValue>EN</MetaDataValue>
 <MetaDataEmbedName>DC.language</MetaDataEmbedName>
 </MetaData_Object>
