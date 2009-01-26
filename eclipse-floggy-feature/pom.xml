@@ -21,7 +21,7 @@
 		<version>1.2-SNAPSHOT</version>
 	</parent>
 	<artifactId>eclipse-floggy-feature</artifactId>
-	<version>1.1.3</version>
+	<version>1.2.0.SNAPSHOT</version>
 	<name>Floggy feature for Eclipse</name>
 	<description>A Floggy feature for Eclipse.</description>
 	<scm>
@@ -42,6 +42,18 @@
 			</resource>
 		</resources>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<configuration>
+					<projectnatures>
+						<projectnature>org.eclipse.pde.FeatureNature</projectnature>
+					</projectnatures>
+					<buildcommands>
+						<buildcommand>org.eclipse.pde.FeatureBuilder</buildcommand>
+					</buildcommands>
+				</configuration>
+			</plugin>		
 			<plugin>
 				<groupId>com.google.code.maven-license-plugin</groupId>
 				<artifactId>maven-license-plugin</artifactId>

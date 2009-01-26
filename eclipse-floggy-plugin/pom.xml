@@ -19,7 +19,7 @@
 		<version>1.2-SNAPSHOT</version>
 	</parent>
 	<artifactId>eclipse-floggy-plugin</artifactId>
-	<version>1.1.3</version>
+	<version>1.2.0.SNAPSHOT</version>
 	<packaging>bundle</packaging>
 	<name>Floggy plugin for Eclipse</name>
 	<description>A Floggy plugin for Eclipse.</description>
@@ -50,26 +50,66 @@
 		<dependency>
 			<groupId>net.sourceforge.floggy</groupId>
 			<artifactId>floggy-persistence-framework</artifactId>
-			<version>1.1.1</version>
+			<version>1.1.2-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>net.sourceforge.floggy</groupId>
 			<artifactId>floggy-persistence-weaver</artifactId>
-			<version>1.1.1</version>
+			<version>1.1.2-SNAPSHOT</version>
 			<scope>compile</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>ant</groupId>
+					<artifactId>ant</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.microemu</groupId>
+					<artifactId>microemulator</artifactId>
+				</exclusion>
+			</exclusions> 
 		</dependency>
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>3.8.2</version>
-			<scope>test</scope>
+			<groupId>org.eclipse.osgi</groupId>
+			<artifactId>org.eclipse.osgi</artifactId>
+			<version>3.3.2</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.jmock</groupId>
-			<artifactId>jmock</artifactId>
-			<version>2.0.0</version>
-			<scope>test</scope>
+			<groupId>org.eclipse.core</groupId>
+			<artifactId>org.eclipse.core.runtime</artifactId>
+			<version>3.3.100</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.core</groupId>
+			<artifactId>org.eclipse.core.resources</artifactId>
+			<version>3.3.1</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.ui</groupId>
+			<artifactId>org.eclipse.ui</artifactId>
+			<version>3.3.1</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.ui</groupId>
+			<artifactId>org.eclipse.ui.console</artifactId>
+			<version>3.2.2</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jdt</groupId>
+			<artifactId>org.eclipse.jdt.core</artifactId>
+			<version>3.3.3</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.swt.gtk.linux</groupId>
+			<artifactId>x86</artifactId>
+			<version>3.3.0-v3346</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 	<build>
@@ -93,25 +133,76 @@
 		</resources>
 		<plugins>
 			<plugin>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<configuration>
+					<pde>true</pde>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>process-sources</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/lib</outputDirectory>
+							<overWriteReleases>false</overWriteReleases>
+							<overWriteSnapshots>true</overWriteSnapshots>
+							<overWriteIfNewer>true</overWriteIfNewer>
+							<excludeScope>provided</excludeScope>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-clean-plugin</artifactId>
+				<configuration>
+					<filesets>
+						<fileset>
+							<directory>${basedir}/lib</directory>
+						</fileset>
+					</filesets>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>  
+						<manifestFile>${pom.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+					</archive> 
+				</configuration>
+			</plugin>  
+			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
 				<extensions>true</extensions>
 				<configuration>
+					<manifestLocation>META-INF</manifestLocation>
 					<unpackBundle>true</unpackBundle>
 					<instructions>
 						<Export-Package>net.sourceforge.floggy.eclipse;uses:="org.eclipse.jface.action,org.eclipse.core.runtime,org.eclipse.ui,org.eclipse.core.resources,org.eclipse.ui.plugin,org.eclipse.jface.viewers,org.osgi.framework,org.apache.commons.logging.impl"</Export-Package>
-						<Bundle-SymbolicName>${pom.groupId}; singleton:=true</Bundle-SymbolicName>
+						<Bundle-SymbolicName>${pom.groupId};singleton:=true</Bundle-SymbolicName>
 						<Bundle-Activator>${pom.groupId}.eclipse.Activator</Bundle-Activator>
 						<Embed-Dependency>*;scope=compile</Embed-Dependency>
 						<Embed-Directory>lib</Embed-Directory>
-						<Require-Bundle>org.eclipse.ui,org.eclipse.core.runtime,org.eclipse.core.resources,org.eclipse.jdt.core,org.eclipse.ui.console</Require-Bundle>
+						<Require-Bundle>org.eclipse.osgi,org.eclipse.ui,org.eclipse.core.runtime,org.eclipse.core.resources,org.eclipse.jdt.core,org.eclipse.ui.console</Require-Bundle>
 						<Bundle-RequiredExecutionEnvironment>J2SE-1.4</Bundle-RequiredExecutionEnvironment>
-						<Import-Package>!javax.microedition.rms,!org.apache.log,!org.apache.avalon.*,!net.sourceforge.floggy.eclipse,!org.eclipse.equinox.*,!com.sun.*,*</Import-Package>
-						<Eclipse-LazyStart>true</Eclipse-LazyStart>
-						<Bundle-ActivationPolicy>true</Bundle-ActivationPolicy>
-						<Bundle-Localization>plugin</Bundle-Localization>
+						<Import-Package>!javax.microedition.rms*,!org.apache.tools.ant*,!org.apache.log*,!org.apache.avalon*,!com.sun.jdi*,*</Import-Package>
+						<Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
 					</instructions>
 				</configuration>
+				<executions>
+					<execution>
+						<id>bundle-manifest</id>
+						<phase>process-classes</phase>
+						<goals>    
+							<goal>manifest</goal>
+						</goals>   
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>com.google.code.maven-license-plugin</groupId>

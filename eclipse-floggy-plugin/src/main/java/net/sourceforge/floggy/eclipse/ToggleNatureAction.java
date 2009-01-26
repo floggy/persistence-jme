@@ -119,8 +119,12 @@ public class ToggleNatureAction extends AbstractFloggyAction {
 			setDefaultPersistentProperties(project);
 
 		} catch (Exception e) {
-			IStatus status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1,
-					e.getMessage(), e);
+			String message = e.getMessage();
+			if (message == null) {
+				message = e.getClass().getName();
+			}
+			IStatus status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, IStatus.ERROR,
+					message, e);
 			ConsolePlugin.log(status);
 		}
 	}

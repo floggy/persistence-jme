@@ -29,7 +29,7 @@
       </builder>
    </extension>
    <extension
-         id="floggyNature"
+         id="net.sourceforge.floggy.floggyNature"
          name="Floggy Nature"
          point="org.eclipse.core.resources.natures">
       <runtime>
