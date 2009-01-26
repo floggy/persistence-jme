@@ -1,5 +1,5 @@
 <!-- 
-	Copyright (c) 2006-2008 Floggy Open Source Group. All rights reserved.
+	Copyright (c) 2006-2009 Floggy Open Source Group. All rights reserved.
 	
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
@@ -38,22 +38,33 @@
 			<url>scp://shell.sourceforge.net:/home/groups/f/fl/floggy/htdocs/</url>
 		</site>
 	</distributionManagement>
-	  <reporting>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-changes-plugin</artifactId>
-        <configuration>
-        	<issueLinkTemplate>%URL%/index.php?func=detail&amp;group_id=139426&amp;atid=743541&amp;aid=%ISSUE%</issueLinkTemplate>
-        </configuration>
-        <reportSets>
-          <reportSet>
-            <reports>
-              <report>changes-report</report>
-            </reports>
-          </reportSet>
-        </reportSets>
-      </plugin>
-    </plugins>
-  </reporting>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>com.google.code.maven-license-plugin</groupId>
+				<artifactId>maven-license-plugin</artifactId>
+				<configuration>
+					<header>${project.parent.basedir}/src/main/resources/license-header-template.txt</header>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-changes-plugin</artifactId>
+				<configuration>
+					<issueLinkTemplate>%URL%/index.php?func=detail&amp;group_id=139426&amp;atid=743541&amp;aid=%ISSUE%</issueLinkTemplate>
+				</configuration>
+				<reportSets>
+					<reportSet>
+						<reports>
+							<report>changes-report</report>
+						</reports>
+					</reportSet>
+				</reportSets>
+			</plugin>
+		</plugins>
+	</reporting>
 </project>
