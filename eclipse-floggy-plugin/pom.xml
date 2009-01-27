@@ -175,10 +175,23 @@
 			</plugin>
 			<plugin>
 				<artifactId>maven-jar-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
 				<configuration>
 					<archive>  
 						<manifestFile>${pom.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
 					</archive> 
+					<keystore>${project.parent.basedir}/src/main/resources/keystore</keystore>
+					<alias>floggy</alias>
+					<storepass>${floggy.storepass}</storepass>
+					<jarPath>${project.build.directory}/${project.build.finalName}.jar</jarPath>
+					<signedjar>${project.build.directory}/signed/${project.build.finalName}.jar</signedjar>
+					<verify>true</verify>
 				</configuration>
 			</plugin>  
 			<plugin>
