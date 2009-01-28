@@ -21,19 +21,19 @@
 	<parent>
 		<groupId>net.sourceforge.floggy</groupId>
 		<artifactId>floggy</artifactId>
-		<version>1.2.0</version>
+		<version>1.2-SNAPSHOT</version>
 	</parent>
 	<artifactId>floggy-persistence-weaver</artifactId>
-	<version>1.2.0</version>
+	<version>1.1.2-SNAPSHOT</version>
 	<name>Floggy Persistence Weaver</name>
 	<description>
 		A microedition development tool to weave bytecode responsable
 		for persistence.
 	</description>
 	<scm>
-		<connection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/tags/floggy-1.2.0/floggy-persistence-weaver</connection>
-		<developerConnection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/tags/floggy-1.2.0/floggy-persistence-weaver</developerConnection>
-		<url>http://floggy.svn.sourceforge.net/viewvc/floggy/tags/floggy-1.2.0/floggy-persistence-weaver</url>
+		<connection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/trunk/floggy-persistence-weaver</connection>
+		<developerConnection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/trunk/floggy-persistence-weaver</developerConnection>
+		<url>http://floggy.svn.sourceforge.net/viewvc/floggy/trunk/floggy-persistence-weaver</url>
 	</scm>
 	<dependencies>
 		<dependency>
@@ -81,7 +81,7 @@
 		<dependency>
 			<groupId>net.sourceforge.floggy</groupId>
 			<artifactId>floggy-persistence-framework</artifactId>
-			<version>1.2.0</version>
+			<version>1.1.2-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>
