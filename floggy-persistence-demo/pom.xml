@@ -89,7 +89,7 @@
 			<plugin>
 				<groupId>net.sourceforge.floggy</groupId>
 				<artifactId>maven-floggy-plugin</artifactId>
-				<version>1.1.1</version>
+				<version>1.1.2-SNAPSHOT</version>
 				<executions>
 					<execution>
 						<id>persistence-weaver</id>
