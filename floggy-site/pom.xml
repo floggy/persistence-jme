@@ -24,7 +24,7 @@
 		<version>1.2-SNAPSHOT</version>
 	</parent>
 	<artifactId>floggy-site</artifactId>
-	<version>1.1.1</version>
+	<version>1.1.2-SNAPSHOT</version>
 	<name>Floggy's Web Site</name>
 	<description>
 		The web site of the project.
