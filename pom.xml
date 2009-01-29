@@ -250,6 +250,7 @@
 		<module>floggy-persistence-demo</module>
 		<module>eclipse-floggy-plugin</module>
 		<module>eclipse-floggy-feature</module>
+		<module>floggy-site-skin</module>
 		<module>floggy-site</module>
 	</modules>
 </project>
