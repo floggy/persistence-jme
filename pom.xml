@@ -226,7 +226,7 @@
 				<version>1.0</version>
 				<inherited>true</inherited>
 				<configuration>
-					<trackerUrlPattern>http://sourceforge.net/tracker/index.php?func=detail&amp;group_id=139426&amp;atid=743541&amp;aid={0}</trackerUrlPattern>
+					<trackerUrlPattern>http://sourceforge.net/support/tracker.php?aid={0}</trackerUrlPattern>
 					<trackerType>sourceforge</trackerType>
 					<grammar>MANU</grammar>
 					<tagBase>https://floggy.svn.sourceforge.net/svnroot/floggy/tags</tagBase>
