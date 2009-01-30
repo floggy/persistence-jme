@@ -3,18 +3,18 @@
 	<parent>
 		<groupId>net.sourceforge.floggy</groupId>
 		<artifactId>floggy</artifactId>
-		<version>1.2.0</version>
+		<version>1.3.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>floggy-site-skin</artifactId>
-	<version>1.2.0</version>
+	<version>1.3.0-SNAPSHOT</version>
 	<name>Floggy's Skin Web Site</name>
 	<description>
 		The skin of the Floggy's web site.
 	</description>
 	<scm>
-		<connection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/tags/floggy-1.2.0/floggy-site-skin</connection>
-		<developerConnection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/tags/floggy-1.2.0/floggy-site-skin</developerConnection>
-		<url>http://floggy.svn.sourceforge.net/viewvc/floggy/tags/floggy-1.2.0/floggy-site-skin</url>
+		<connection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/trunk/floggy-site-skin</connection>
+		<developerConnection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/trunk/floggy-site-skin</developerConnection>
+		<url>http://floggy.svn.sourceforge.net/viewvc/floggy/trunk/floggy-site-skin</url>
 	</scm>
 	<build>
 		<plugins>
