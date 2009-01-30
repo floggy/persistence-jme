@@ -20,7 +20,7 @@
 	<skin>
 		<groupId>net.sourceforge.floggy</groupId>
 		<artifactId>floggy-site-skin</artifactId>
-		<version>1.0.2-SNAPSHOT</version>
+		<version>1.2.0</version>
 	</skin>
 	<publishDate position="left" format="dd MMM yyyy" />
 	<version value="1.0" />
