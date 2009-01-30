@@ -23,7 +23,11 @@
  
 News
 
-	<<15-Jan-09:>> Floggy will be presented at {{{https://developerdays.dev.java.net/nonav/overview.html}Java Mobile, Media & Embedded Developer Days Conference}}, our first international event.
+	<<29-Jan-09: Floggy 1.2.0 was released. You can get further information about the changes {{{./changes-report.html}here}}. Enjoy!>>
+
+	<<29-Jan-09: If you couldn't went to the {{{https://developerdays.dev.java.net/nonav/overview.html}M3DD}} Conference see Floggy live, now you can! Watch {{{http://channelsun.sun.com/video/open-source/java/1631259654/ts-12:+floggy+-+javame+persistence+made+easy+/8899391001}this}}.>>
+
+	<<15-Jan-09:>> Floggy will be presented at {{{https://developerdays.dev.java.net/nonav/overview.html}Java Mobile, Media & Embedded Developer Days Conference}}, our first international event. {{{http://www.slideshare.net/tmoreira2020/floggym3dd20090121-presentation}Presentation}} {{{http://channelsun.sun.com/video/open-source/java/1631259654/ts-12:+floggy+-+javame+persistence+made+easy+/8899391001}Video}}.
 
 	<<25-Nov-08:>> Floggy reached more than 5,000 downloads today. This is a historical mark for us and we are very glad with it.
 

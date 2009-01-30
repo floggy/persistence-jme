@@ -23,25 +23,17 @@
  
 Road map
 
-* Version 1.2.0
-
-	<<Estimated release date:>> second week of December, 2008.
-
-	* Support for a new type: java.util.Hashtable;
-
-	* Ability to provide the name of the record store where a Persistable entity will be stored;
-
-	* Lazy load;
-
-	* Polymorphic find;
 
 * Future Releases
 
+	* {{{http://sourceforge.net/tracker2/?func=detail&aid=2422928&group_id=139426&atid=743544}Update manager.}}
 	
-	* Support for multi-dimensional arrays;
+	* {{{http://sourceforge.net/tracker2/?func=detail&aid=2243110&group_id=139426&atid=743544}Polymorphic find.}}
 	
-	* Support for N-N relationships;
+	* Support for multi-dimensional arrays.
 	
-	* Ability to persist non-static final fields;
+	* Support for N-N relationships.
+	
+	* Ability to persist non-static final fields.
 
-	* Stream-based serialization framework: this powerful feature will allow an application to read and write objects from any kind of stream (http, socket, gzip, rms, etc);
+	* Stream-based serialization framework: this powerful feature will allow an application to read and write objects from any kind of stream (http, socket, gzip, rms, etc).
