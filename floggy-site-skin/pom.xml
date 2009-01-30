@@ -3,19 +3,28 @@
 	<parent>
 		<groupId>net.sourceforge.floggy</groupId>
 		<artifactId>floggy</artifactId>
-		<version>1.1</version>
+		<version>1.2.0</version>
 	</parent>
 	<artifactId>floggy-site-skin</artifactId>
-	<version>1.0.2-SNAPSHOT</version>
-	<repositories>
-		<repository>
-			<id>floggy</id>
-			<url>http://floggy.sourceforge.net/repository</url>
-		</repository>
-	</repositories>
+	<version>1.2.0</version>
+	<name>Floggy's Skin Web Site</name>
+	<description>
+		The skin of the Floggy's web site.
+	</description>
 	<scm>
-		<connection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/trunk/floggy-site-skin</connection>
-		<developerConnection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/trunk/floggy-site-skin</developerConnection>
-		<url>http://floggy.svn.sourceforge.net/viewvc/floggy/trunk/floggy-site-skin</url>
+		<connection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/tags/floggy-1.2.0/floggy-site-skin</connection>
+		<developerConnection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/tags/floggy-1.2.0/floggy-site-skin</developerConnection>
+		<url>http://floggy.svn.sourceforge.net/viewvc/floggy/tags/floggy-1.2.0/floggy-site-skin</url>
 	</scm>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>com.google.code.maven-license-plugin</groupId>
+				<artifactId>maven-license-plugin</artifactId>
+				<configuration>
+					<header>${project.parent.basedir}/src/main/resources/license-header-template.txt</header>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>
