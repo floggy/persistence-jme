@@ -14,7 +14,7 @@
 	<scm>
 		<connection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/branches/floggy-1.2.x/floggy-site</connection>
 		<developerConnection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/branches/floggy-1.2.x/floggy-site</developerConnection>
-		<url>https://floggy.svn.sourceforge.net/svnroot/floggy/tags/floggy-1.2.x/floggy-site</url>
+		<url>https://floggy.svn.sourceforge.net/svnroot/floggy/branches/floggy-1.2.x/floggy-site</url>
 	</scm>
 	<distributionManagement>
 		<site>

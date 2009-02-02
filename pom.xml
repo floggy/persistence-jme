@@ -40,7 +40,7 @@
 	<scm>
 		<connection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/branches/floggy-1.2.x</connection>
 		<developerConnection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/branches/floggy-1.2.x</developerConnection>
-		<url>https://floggy.svn.sourceforge.net/svnroot/floggy/tags/floggy-1.2.x</url>
+		<url>https://floggy.svn.sourceforge.net/svnroot/floggy/branches/floggy-1.2.x</url>
 	</scm>
 	<repositories>
 		<repository>

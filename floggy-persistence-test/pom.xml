@@ -30,7 +30,7 @@
 	<scm>
 		<connection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/branches/floggy-1.2.x/floggy-persistence-test</connection>
 		<developerConnection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/branches/floggy-1.2.x/floggy-persistence-test</developerConnection>
-		<url>https://floggy.svn.sourceforge.net/svnroot/floggy/tags/floggy-1.2.x/floggy-persistence-test</url>
+		<url>https://floggy.svn.sourceforge.net/svnroot/floggy/branches/floggy-1.2.x/floggy-persistence-test</url>
 	</scm>
 	<dependencies>
 		<dependency>

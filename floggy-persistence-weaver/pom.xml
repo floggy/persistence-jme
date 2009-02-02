@@ -33,7 +33,7 @@
 	<scm>
 		<connection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/branches/floggy-1.2.x/floggy-persistence-weaver</connection>
 		<developerConnection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/branches/floggy-1.2.x/floggy-persistence-weaver</developerConnection>
-		<url>https://floggy.svn.sourceforge.net/svnroot/floggy/tags/floggy-1.2.x/floggy-persistence-weaver</url>
+		<url>https://floggy.svn.sourceforge.net/svnroot/floggy/branches/floggy-1.2.x/floggy-persistence-weaver</url>
 	</scm>
 	<dependencies>
 		<dependency>
