@@ -21,22 +21,22 @@
 	<parent>
 		<groupId>net.sourceforge.floggy</groupId>
 		<artifactId>floggy</artifactId>
-		<version>1.2.0</version>
+		<version>1.2.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>floggy-persistence-demo</artifactId>
-	<version>1.2.0</version>
+	<version>1.2.1-SNAPSHOT</version>
 	<name>Hospital-ME</name>
 	<description>A demo application using Floggy persistence framework.</description>
 	<scm>
-		<connection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/tags/floggy-1.2.0/floggy-persistence-demo</connection>
-		<developerConnection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/tags/floggy-1.2.0/floggy-persistence-demo</developerConnection>
-		<url>http://floggy.svn.sourceforge.net/viewvc/floggy/tags/floggy-1.2.0/floggy-persistence-demo</url>
+		<connection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/branches/floggy-1.2.x/floggy-persistence-demo</connection>
+		<developerConnection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/branches/floggy-1.2.x/floggy-persistence-demo</developerConnection>
+		<url>https://floggy.svn.sourceforge.net/svnroot/floggy/tags/floggy-1.2.x/floggy-persistence-demo</url>
 	</scm>
 	<dependencies>
 		<dependency>
 			<groupId>net.sourceforge.floggy</groupId>
 			<artifactId>floggy-persistence-framework</artifactId>
-			<version>1.2.0</version>
+			<version>1.2.1-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
@@ -89,7 +89,7 @@
 			<plugin>
 				<groupId>net.sourceforge.floggy</groupId>
 				<artifactId>maven-floggy-plugin</artifactId>
-				<version>1.2.0</version>
+				<version>1.2.1-SNAPSHOT</version>
 				<executions>
 					<execution>
 						<id>persistence-weaver</id>
