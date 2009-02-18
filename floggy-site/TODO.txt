@@ -1,3 +1,13 @@
+- usar o replace de arquivos para editar corretamente a versão nos links no arquivo site.xml
+- how to get the source code FAQ.
+- create a page to put the old news...
+- lincar com java tools
+- colocar um icone no site com o RSS do projeto (https://sourceforge.net/export/rss2_keepsake.php?group_id=139426)
+- botar as versões do eclipse que o plugin foi testado
+
+- Yeah! We have 7 classes (5 interfaces, 1 class and 1 exception) and 1111 tests to coverage all possible context into Floggy can be developed. This is how we guarantee that Floggy is bug free.
+ Also we have the cobertua tool that help us to know how much of our code is being tested. We are trying to find a free Hudson server service to host the project and guarantee its continuos integration. Someone knows something?
+
 Floggy
   - FEITO migrar para o Maven 2
   - FEITO criar pulgin (maven-floggy-plugin)
@@ -50,7 +60,7 @@ Floggy
 - FEITO adicionar um plugin para executar diretamente o DEMO (microemulator)
 - criar um arquivo do tipo sitemap.xml
 - criar uma FAQ sobre o FloggyUML
-- adicionar a ferramenta para manipular a licensa em todos os projetos
+- FEITO adicionar a ferramenta para manipular a licensa em todos os projetos
 - testar com ASM objectweb
 - botar no site as versões do eclipse que o plugin roda
 - Another question, suppose we have DomesticCat extends Cat, is it possible in Floggy a query like pm.find(Cat.class) returns instances not only Cat, but also subclasses like DomesticCat?
@@ -71,6 +81,9 @@ Floggy
 	- java magazine
 FEITO 	- mundo java
 	- web mobile
+
+- articles
+	- http://www.devmedia.com.br/articles/viewcomp.asp?comp=5961
 			
 
 
@@ -107,7 +120,7 @@ DONE - lazy load, carregar todo o objeto ou carregar somente o primeiro objeto o
 - FEITO verificar porque a classe VectorGenerator está com problemas na hora de realizar a tag/release
 - na task ant setar o commons-logging para uma instancia do logger ant
 - transformar em opcional o atributo output da task ant
-- assinar digitalmente o plugin do Eclipse
+- FEITO assinar digitalmente o plugin do Eclipse
 - FEITO resolver o BUG de usar o MIDP-1.0 (retirar os métodos read/writeFloat, read/writeBouble)
 - FEITO resolver o BUG de salvar uma subclasse de um objeto.
 - mudar FloggyException para estender RecordStoreException?????? acho que não adianta de nada, pensar melhor
