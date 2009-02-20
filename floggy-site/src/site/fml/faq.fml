@@ -88,15 +88,59 @@
 				<p>This occurs probably because you are using a JDK older than 1.5, Floggy 1.0.1 was built on JDK 1.5. After the 1.1.1 version Floggy is compatible to the JDK 1.4+ too. So you have two options to solve the problem or you update your JDK to 1.5+ or you update the Floggy to 1.1.+. If your problem wasn't solved please ask for help in our <a href="https://lists.sourceforge.net/lists/listinfo/floggy-user">user's mailing list</a>.</p>
 			</answer>
 		</faq>
-		</part>
-		<part id="Developers">
-			<title>Developers</title>
-			<faq id="invalid-pom">
+	</part>
+	<part id="Developers">
+		<title>Developers</title>
+		<faq id="invalid-pom">
 			<question>
 				I'm getting the follow warning when building the project floggy-persistence-weaver: [WARNING] POM for 'net.sourceforge.floggy:floggy-persistence-framework:pom:1.1-SNAPSHOT:compile' is invalid. It will be ignored for artifact resolution. What's happend?
 			</question>
 			<answer>
 				<p>This could occur because the variable wtk.home was not defined neither passed as parameter to Maven 2. Use this command 'mvn wtk.home=c:\WTK2.5 package' to build successfully.</p>
+			</answer>
+		</faq>
+		<faq id="how-can-i-get-the-source-code">
+			<question>
+				How can I get the source code?
+			</question>
+			<answer>
+				<p>Our project is hosted on SourceForge.net, so all the source code is available on their Subversion system. You can access it <a href="http://sourceforge.net/svn/?group_id=139426">here</a>.</p>
+
+				Simplifying: svn co https://floggy.svn.sourceforge.net/svnroot/floggy/trunk
+			</answer>
+		</faq>
+		<faq id="what-is-the-format-of-the-commit-message">
+			<question>
+				What is the format of the commit message?
+			</question>
+			<answer>
+				<p>@operation:issue;comments. For further information check <a href="http://mojo.codehaus.org/scmchangelog-maven-plugin/examples/grammars.html">this</a>.</p>
+			</answer>
+		</faq>
+		<faq id="how-can-i-create-a-branch">
+			<question>
+				How can I create a branch?
+			</question>
+			<answer>
+				<p>To create a branch you have to use the <a href="http://maven.apache.org/plugins/maven-release-plugin/branch-mojo.html">release:branch</a> goal of Maven. You must execute it from the the base directory of the tag being branched.</p>
+				
+				Simplifying: mvn -DupdateWorkingCopyVersions=false -DupdateBranchVersions=true release:branch -DbranchName=floggy-1.2.x
+			</answer>
+		</faq>
+		<faq id="how-can-I-build-floggy-from-the-source-code">
+			<question>
+				How can I build Floggy from the source code?
+			</question>
+			<answer>
+				<p>You can build Floggy as any other Maven 2 based project. You need only to add two more steps (3 and 4) to the process. The whole steps are described below</p>
+				<ol>
+					<li>Install Maven 2</li>
+					<li>Checkout the the source code</li>
+					<li>Set the property <b>wtk.home</b> to point to the WTK (Wireless Tool Kit) home. You can do this in several ways check the Maven's documentation for further information. The best way for us is through settings.xml file</li>
+					<li>Execute <b>mvn <a href="http://maven.apache.org/plugins/maven-eclipse-plugin/make-artifacts-mojo.html">eclipse:make-artifcats</a> -DeclipseDir=ECLIPSE_HOME</b> to install the Eclipse's artifacts on the local Maven repository. The property eclipseDir should point to a 3.3.+ version of Eclipse. We developed the plugin based on 3.3.2-linux-gtk version of Eclipse</li>
+					<li>Execute <b>mvn clean package</b> on the directory of the project</li>
+					<li>If everything was okay now you can start to improve Floggy.<img src="images/blink.png" alt="blink"/></li>
+				</ol>
 			</answer>
 		</faq>
 	</part>
