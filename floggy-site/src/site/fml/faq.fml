@@ -24,7 +24,7 @@
 				Why Floggy?
 			</question>
 			<answer>
-				<p>The project name has been choosed by <a href="./team.html#Priscila">Priscila</a>. She says that it is pretty quilt.</p>
+				<p>The project name was chose by <a href="./team.html#Priscila">Priscila</a>. She said that it is pretty quilt.</p>
 			</answer>
 		</faq>
 		<faq id="floggy-license">
@@ -76,10 +76,22 @@
 		Alternatively you can set the weaver to generate the source code.</p>
 			</answer>
 		</faq>
+		<faq id="where-is-the-floggyuml-plugin-for-netbeans">
+			<question>Where is the FloggyUML plugin for NetBeans?</question>
+			<answer>
+				<p>The FloggyUML plugin is not directly part of Floggy. It was built to a NetBeans contest in Brazil on 2006 and since that it is out of date. We don't support it. You can get futher information and the source code <a href="https://desafionetbeans.dev.java.net/ot-floggy.html">here</a>.</p>
+			</answer>
+		</faq>
 		<faq id="no-class-def-found-error">
 			<question>I'm getting a "cannot access java.lang.NoClassDefFoundError class file for java.lang.NoClassDefFoundError not foundjava.lang.NoClassDefFoundError" error when executing Floggy. What is happening?</question>
 			<answer>
 				<p>This is not a Floggy problem! This problem is correlated to a transformation that compilers do when reach a Java's language construction like this <b>Class personClass= Person.class</b>. What happens is that the compiler transform this construction into a try/catch block which catches a java.lang.NoClassDefFoundError so when the compiler tries to check the class java.lang.NoClassDefFoundError against the CLDC-1.0 classpath it detects that this class doesn't exist, throwing the error that you are getting. There are two ways to avoid this. The first one is instead of using the construction <b>Class personClass= Person.class</b> you must use <b>Class personClass= Class.forName("Person");</b>. The other one is switch to the CLDC-1.1 configuration.</p>
+			</answer>
+		</faq>
+		<faq id="illegal-argument-exception">
+			<question>I'm getting a "java.lang.IllegalArgumentException: floggy.Person is not a valid persistable class. Check the weaver execution!" error when executing my application. What is happening?</question>
+			<answer>
+				<p>This happens when the application is packaged without the Wevaer execution. Check your packaging process. Make sure that Weaver is being called</p>
 			</answer>
 		</faq>
 		<faq id="the-chosen-operation-is-not-currently-available">

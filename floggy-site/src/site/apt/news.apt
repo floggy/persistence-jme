@@ -16,6 +16,8 @@
  
 News
 
+	<<22-Feb-09: The documentation turned into a little out of date since the last release but it is not any more! Check it on {{{./getting-started.html}Getting Started}}, {{{./faq.html}FAQ}}, {{{./configuration/eclipse.html}Eclipse}} and {{{./datatypes.html}Weaver}} sections.>>
+
 	<<29-Jan-09: Floggy 1.2.0 was released. You can get further information about the changes {{{./changes-report.html}here}}. Enjoy!>>
 
 	<<29-Jan-09: If you couldn't went to the {{{https://developerdays.dev.java.net/nonav/overview.html}M3DD}} Conference see Floggy live, now you can! Watch {{{http://channelsun.sun.com/video/open-source/java/1631259654/ts-12:+floggy+-+javame+persistence+made+easy+/8899391001}this}}.>>

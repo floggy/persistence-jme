@@ -60,8 +60,8 @@
 			<item name="Eclipse" href="configuration/eclipse.html" />
 			<item name="Netbeans" href="configuration/netbeans.html" />
 			<item name="Ant" href="configuration/ant.html" />
-			<item name="Command line" href="configuration/commandline.html" />
 			<item name="Maven" href="configuration/maven.html" />
+			<item name="Command line" href="configuration/commandline.html" />
 		</menu>
 		<menu name="Modules">
 			<item name="Framework" href="modules/floggy-persistence-framework/apidocs/index.html" collapse="true">

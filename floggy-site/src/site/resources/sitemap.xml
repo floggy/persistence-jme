@@ -24,7 +24,7 @@
 		<loc>http://floggy.sourceforge.net/</loc>
 		<priority>0.9</priority>
 		<lastmod>2008-06-12T01:26:32+00:00</lastmod>
-		<changefreq>monthly</changefreq>
+		<changefreq>weekly</changefreq>
 	</url>
 	<url>
 		<loc>http://floggy.sourceforge.net/getting-started.html</loc>
@@ -108,6 +108,6 @@
 		<loc>http://floggy.sourceforge.net/index.html</loc>
 		<priority>0.9</priority>
 		<lastmod>2008-06-12T01:26:32+00:00</lastmod>
-		<changefreq>monthly</changefreq>
+		<changefreq>weekly</changefreq>
 	</url>
 </urlset>

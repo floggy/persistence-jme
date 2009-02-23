@@ -16,9 +16,10 @@
  ------
  Datatypes
  ------
+ Thiago Moreira
  Thiago Rossato
  ------
- 18 September 2007
+ 21 February 2009
  ------
 
 Datatypes and theirs size
@@ -53,8 +54,6 @@ Datatypes and theirs size
 *----------*--------------*------------------------*
 | java.lang.Character | null     | 1 byte if the value is null or 3 bytes otherwise|
 *----------*--------------*------------------------*
-| java.util.Date | null     | 1 byte if the value is null or 9 bytes otherwise. The java.util.Date objects are transformed into a long type and saved as a java.lang.Long object|
-*----------*--------------*------------------------*
 | java.lang.Double | null     | 1 byte if the value is null or 9 bytes otherwise|
 *----------*--------------*------------------------*
 | java.lang.Float | null     | 1 byte if the value is null or 5 bytes otherwise|
@@ -65,11 +64,19 @@ Datatypes and theirs size
 *----------*--------------*------------------------*
 | java.lang.Short | null     | 1 byte if the value is null or 3 bytes otherwise|
 *----------*--------------*------------------------*
-| java.lang.String | null     | 1 byte if the value is null, otherwise the size is calculated based on the {{{http://java.sun.com/javase/6/docs/api/java/io/DataInput.html#modified-utf-8}Modified UTF-8}} specification|
+| java.lang.String | null     | 1 byte if the value is null or otherwise the size is calculated based on the {{{http://java.sun.com/javase/6/docs/api/java/io/DataInput.html#modified-utf-8}Modified UTF-8}} specification|
 *----------*--------------*------------------------*
-| java.lang.StringBuffer | null     | 1 byte if the value is null, otherwise the size is calculated based on the {{{http://java.sun.com/javase/6/docs/api/java/io/DataInput.html#modified-utf-8}Modified UTF-8}} specification|
+| java.lang.StringBuffer | null     | 1 byte if the value is null or the amount of one String|
 *----------*--------------*------------------------*
-| java.util.Calendar | null     | 1 byte if the value is null, otherwise 9 bytes plus |
+| java.util.Calendar | null     | 1 byte if the value is null or 9 bytes plus the amount of one String|
+*----------*--------------*------------------------*
+| java.util.Date | null     | 1 byte if the value is null or 9 bytes otherwise. The java.util.Date objects are transformed into a long type and saved as a java.lang.Long object|
+*----------*--------------*------------------------*
+| java.util.Hashtable | null     | 1 byte if the value is null|
+*----------*--------------*------------------------*
+| java.util.Stack | null     | 1 byte if the value is null|
+*----------*--------------*------------------------*
+| java.util.TimeZone | null     | 1 byte if the value is null or the amount of one String|
 *----------*--------------*------------------------*
 | java.util.Vector | null     | 1 byte if the value is null|
 *----------*--------------*------------------------*

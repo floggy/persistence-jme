@@ -13,11 +13,19 @@
 ~~ See the License for the specific language governing permissions and
 ~~ limitations under the License.
 ~~
-Weaved methods
+ ------
+ Weaved methods
+ ------
+ Thiago Moreira
+ ------
+ 21 February 2009
+ ------
+
+Weaved methods (only valid to version 1.0.1)
 
 	When you execute the Floggy they weave 2 fields and 5 methods into the entity class. 
-	These class members are used to store and retrived the entities from the RMS system.
-	Below are the entity and his members weaved by Floggy.
+	These class members are used to store and retrieved the entities from the RMS system.
+	Below is the entity and its members weaved by Floggy.
 	
 	The sample entity:
  
