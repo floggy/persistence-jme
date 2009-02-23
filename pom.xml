@@ -93,9 +93,9 @@
 	</distributionManagement>
 	<developers>
 		<developer>
-			<name>Thiago Leao Moreira</name>
+			<name>Thiago Moreira</name>
 			<id>thiagolm</id>
-			<email>tmoreira2020@gmail.com</email>
+			<email>thiago.moreira@floggy.org</email>
 			<organization>Floggy Open Source Group</organization>
 			<roles>
 				<role>Java Developer</role>
@@ -106,7 +106,7 @@
 		<developer>
 			<name>Thiago Rossato</name>
 			<id>thiagorossato</id>
-			<email>rossato@gmail.com</email>
+			<email>thiago.rossato@@floggy.org</email>
 			<organization>Floggy Open Source Group</organization>
 			<roles>
 				<role>Java Developer</role>
@@ -117,7 +117,7 @@
 		<developer>
 			<name>Priscila Tavares Lugon</name>
 			<id>priscilalugon</id>
-			<email>priscilalugon@gmail.com</email>
+			<email>priscila.lugon@@floggy.org</email>
 			<organization>Floggy Open Source Group</organization>
 			<roles>
 				<role>Java Developer</role>
