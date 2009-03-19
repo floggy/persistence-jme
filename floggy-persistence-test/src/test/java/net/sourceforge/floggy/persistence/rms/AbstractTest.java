@@ -234,6 +234,7 @@ public abstract class AbstractTest extends TestCase {
 		manager.save(object);
 		isPersisted= manager.isPersisted(object);
 		assertTrue(isPersisted);
+		manager.delete(object);
 	}
 
 	public void testLoadWithNullObject() {
@@ -285,6 +286,7 @@ public abstract class AbstractTest extends TestCase {
 		setX(object, getNewValueForSetMethod());
 		int tempId= manager.save(object);
 		assertEquals(id, tempId);
+		manager.delete(object);
 	}
 	
 	public void testSaveWithRecordIdThatDontExist() {
