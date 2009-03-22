@@ -29,7 +29,7 @@ public class PersistableTest extends AbstractTest {
 	protected Class getParameterType() {
 		return FloggyPersistable.class;
 	}
-	
+
 	public Object getNewValueForSetMethod() {
 		return new FloggyPersistable();
 	}
@@ -42,110 +42,117 @@ public class PersistableTest extends AbstractTest {
 		return new FloggyPersistable();
 	}
 	
-	public void testFieldDeleted() throws Exception {
-		FloggyPersistable container= new FloggyPersistable();
-		FloggyPersistable field= new FloggyPersistable();
-
-		int containerId;
+	public void testFind() throws Exception {
+		Persistable object = newInstance();
+		setX(object, getValueForSetMethod());
+		manager.save(object);
 		try {
-			container.setX(field);
-			
-			containerId= manager.save(container);
-			
+			ObjectSet set = manager.find(object.getClass(), null, null);
+			//should be equals a 2 because we have a aggregate entity. 
+			assertEquals(2, set.size());
+		} finally {
+			manager.delete(object);
+		}
+	}
+
+
+	public void testFieldDeleted() throws Exception {
+		FloggyPersistable container = new FloggyPersistable();
+		FloggyPersistable field = new FloggyPersistable();
+
+		container.setX(field);
+
+		int containerId = manager.save(container);
+		try {
+
 			manager.delete(field);
-			
+
 			manager.load(container, containerId);
 			fail();
-			
+
 		} catch (Exception ex) {
-			assertEquals(InvalidRecordIDException.class.getName(), ex.getMessage());
+			assertEquals(InvalidRecordIDException.class.getName(), ex
+					.getMessage());
 		} finally {
-		    manager.deleteAll(FloggyPersistable.class);
+			manager.delete(container);
 		}
 	}
-	
+
 	public void testLoadLazyTrue() throws Exception {
-		FloggyPersistable container= new FloggyPersistable();
-		FloggyPersistable field= new FloggyPersistable();
+		FloggyPersistable container = new FloggyPersistable();
+		FloggyPersistable field = new FloggyPersistable();
 
-		int containerId;
-		
 		container.setX(field);
-		
+
+		int containerId = manager.save(container);
 		try {
-		    containerId= manager.save(container);
-		    
-		    manager.load(container, containerId, true);
-		    
-		    assertNull(container.getX());
+
+			manager.load(container, containerId, true);
+
+			assertNull(container.getX());
 		} finally {
-		    manager.deleteAll(FloggyPersistable.class);
+			manager.delete(container);
 		}
-		
 	}
-	
+
 	public void testLoadLazyFalse() throws Exception {
-		FloggyPersistable container= new FloggyPersistable();
-		FloggyPersistable field= new FloggyPersistable();
+		FloggyPersistable container = new FloggyPersistable();
+		FloggyPersistable field = new FloggyPersistable();
 
-		int containerId;
-		
 		container.setX(field);
-		
+
+		int containerId = manager.save(container);
 		try {
-		    containerId= manager.save(container);
-		    
-		    manager.load(container, containerId, false);
-		    
-		    assertNotNull(container.getX());
+
+			manager.load(container, containerId, false);
+
+			assertNotNull(container.getX());
 		} finally {
-		    manager.deleteAll(FloggyPersistable.class);
+			manager.delete(container);
 		}
-		
 	}
-	
+
 	public void testFindLazyTrue() throws Exception {
-		FloggyPersistable container= new FloggyPersistable();
-		FloggyPersistable field= new FloggyPersistable();
+		FloggyPersistable container = new FloggyPersistable();
+		FloggyPersistable field = new FloggyPersistable();
 
 		container.setX(field);
 
+		manager.save(container);
 		try {
-        		manager.save(container);
-        		
-        		ObjectSet os= manager.find(FloggyPersistable.class, null, null, true);
-        		
-        		for (int i = 0; i < os.size(); i++) {
-        		    container = (FloggyPersistable) os.get(i);
-        		    assertNull(container.getX());
-        		}
+			ObjectSet os = manager.find(FloggyPersistable.class, null, null,
+					true);
+
+			for (int i = 0; i < os.size(); i++) {
+				container = (FloggyPersistable) os.get(i);
+				assertNull(container.getX());
+			}
 		} finally {
-		    manager.deleteAll(FloggyPersistable.class);
+			manager.delete(container);
 		}
-		
 	}
-	
+
 	public void testFindLazyFalse() throws Exception {
-		FloggyPersistable container= new FloggyPersistable();
-		FloggyPersistable field= new FloggyPersistable();
+		FloggyPersistable container = new FloggyPersistable();
+		FloggyPersistable field = new FloggyPersistable();
 
 		container.setX(field);
-		
+
+		manager.save(container);
 		try {
-    		manager.save(container);
-    		
-    		ObjectSet os= manager.find(FloggyPersistable.class, null, null, false);
-    		
-    		for (int i = 0; i < os.size(); i++) {
-    		    container = (FloggyPersistable) os.get(i);
-    		    //TODO right now it's not possible garantee that all Persistables will have a composite relationship not null    
-    		    //assertNotNull(container.getX());
-    		}
+
+			ObjectSet os = manager.find(FloggyPersistable.class, null, null,
+					false);
+
+			for (int i = 0; i < os.size(); i++) {
+				container = (FloggyPersistable) os.get(i);
+				// TODO right now it's not possible garantee that all
+				// Persistables will have a composite relationship not null
+				// assertNotNull(container.getX());
+			}
 		} finally {
-		    manager.deleteAll(FloggyPersistable.class);
+			manager.delete(container);
 		}
-		
 	}
-	
 
 }

@@ -42,13 +42,12 @@ public class InheranceDeleteTest extends AbstractTest {
 	public void testInheranceDelete() throws Exception {
 		Falcon falcon = new Falcon();
 		int id = manager.save(falcon);
-
-		//
-		falcon = new Falcon();
-		manager.load(falcon, id);
-		
-		manager.delete(falcon);
-
+		try {
+			falcon = new Falcon();
+			manager.load(falcon, id);
+		} finally {
+			manager.delete(falcon);
+		}
 	}
 
 }

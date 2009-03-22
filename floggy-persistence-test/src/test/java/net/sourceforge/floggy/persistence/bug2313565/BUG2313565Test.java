@@ -16,7 +16,6 @@
 package net.sourceforge.floggy.persistence.bug2313565;
 
 import net.sourceforge.floggy.persistence.Persistable;
-import net.sourceforge.floggy.persistence.beans.FloggyPersistable;
 import net.sourceforge.floggy.persistence.beans.animals.Bird;
 import net.sourceforge.floggy.persistence.beans.animals.EastUSFalcon;
 import net.sourceforge.floggy.persistence.beans.animals.Falcon;
@@ -52,8 +51,9 @@ public class BUG2313565Test extends AbstractTest {
 
 		container.setX(field);
 
+		containerId = manager.save(container);
+
 		try {
-			containerId = manager.save(container);
 
 			BUG2313565 container2 = new BUG2313565();
 			manager.load(container2, containerId, true);
@@ -62,7 +62,7 @@ public class BUG2313565Test extends AbstractTest {
 			assertEquals(container.w, container2.w);
 			assertEquals(container.y, container2.y);
 		} finally {
-			manager.deleteAll(FloggyPersistable.class);
+			manager.delete(container);
 		}
 
 	}
@@ -77,8 +77,9 @@ public class BUG2313565Test extends AbstractTest {
 
 		container.setX(field);
 
+		containerId = manager.save(container);
+		
 		try {
-			containerId = manager.save(container);
 
 			BUG2313565 container2 = new BUG2313565();
 			manager.load(container2, containerId, false);
@@ -87,7 +88,7 @@ public class BUG2313565Test extends AbstractTest {
 			assertEquals(container.getX(), container2.getX());
 			assertEquals(container.y, container2.y);
 		} finally {
-			manager.deleteAll(FloggyPersistable.class);
+			manager.delete(container);
 		}
 
 	}

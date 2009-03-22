@@ -18,10 +18,13 @@ package net.sourceforge.floggy.persistence.beans;
 import java.util.Calendar;
 import java.util.Date;
 
+import net.sourceforge.floggy.persistence.Deletable;
+import net.sourceforge.floggy.persistence.FloggyException;
 import net.sourceforge.floggy.persistence.Persistable;
+import net.sourceforge.floggy.persistence.PersistableManager;
 import net.sourceforge.floggy.persistence.beans.animals.Bird;
 
-public class Person implements Persistable {
+public class Person implements Persistable, Deletable {
 
     String cpf;
 
@@ -129,6 +132,12 @@ public class Person implements Persistable {
 		} else if (!x.equals(other.x))
 			return false;
 		return true;
+	}
+	
+	public void delete() throws FloggyException {
+		if (x != null) {
+			PersistableManager.getInstance().delete(x);
+		}
 	}
 
 }

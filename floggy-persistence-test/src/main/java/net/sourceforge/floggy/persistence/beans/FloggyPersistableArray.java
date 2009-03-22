@@ -15,12 +15,15 @@
  */
 package net.sourceforge.floggy.persistence.beans;
 
+import net.sourceforge.floggy.persistence.Deletable;
+import net.sourceforge.floggy.persistence.FloggyException;
 import net.sourceforge.floggy.persistence.Persistable;
+import net.sourceforge.floggy.persistence.PersistableManager;
 
 /**
- * @author Thiago Le�o Moreira <thiagolm@users.sourceforge.net>
+ * @author Thiago Leão Moreira <thiagolm@users.sourceforge.net>
  */
-public class FloggyPersistableArray implements Persistable {
+public class FloggyPersistableArray implements Persistable, Deletable {
 	protected FloggyPersistable[] x;
 
 	public FloggyPersistable[] getX() {
@@ -30,4 +33,15 @@ public class FloggyPersistableArray implements Persistable {
 	public void setX(FloggyPersistable[] x) {
 		this.x = x;
 	}
+
+	public void delete() throws FloggyException {
+		if (x != null) {
+			for (int i = 0; i < x.length; i++) {
+				if (x[i] != null) {
+					PersistableManager.getInstance().delete(x[i]);
+				}
+			}
+		}
+	}
+
 }

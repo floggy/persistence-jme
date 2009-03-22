@@ -31,7 +31,7 @@ public class StackTest extends AbstractTest {
 		stack.push(new Long(9));
 		stack.push(new Date());
 		stack.push(Boolean.TRUE);
-		stack.push(new FloggyStack());
+		//stack.push(new FloggyStack());
 	}
 
 	protected Class getParameterType() {

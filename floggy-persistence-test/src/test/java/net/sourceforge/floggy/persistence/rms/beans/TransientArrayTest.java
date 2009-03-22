@@ -25,6 +25,7 @@ public class TransientArrayTest extends AbstractTest {
 	protected Class getParameterType() {
 		return Object[].class;
 	}
+
 	public Object getNewValueForSetMethod() {
 		return new Object[0];
 	}
@@ -41,9 +42,12 @@ public class TransientArrayTest extends AbstractTest {
 		Persistable object = newInstance();
 		setX(object, getValueForSetMethod());
 		manager.save(object);
-		ObjectSet set = manager.find(object.getClass(), getFilter(), null);
-		assertEquals(0, set.size());
-		manager.delete(object);
+		try {
+			ObjectSet set = manager.find(object.getClass(), getFilter(), null);
+			assertEquals(0, set.size());
+		} finally {
+			manager.delete(object);
+		}
 	}
 
 	public void testNotNullAttribute() throws Exception {

@@ -15,9 +15,12 @@
  */
 package net.sourceforge.floggy.persistence.beans;
 
+import net.sourceforge.floggy.persistence.Deletable;
+import net.sourceforge.floggy.persistence.FloggyException;
 import net.sourceforge.floggy.persistence.Persistable;
+import net.sourceforge.floggy.persistence.PersistableManager;
 
-public class FloggyPersistable implements Persistable {
+public class FloggyPersistable implements Persistable, Deletable {
 	protected FloggyPersistable x;
 
 	/**
@@ -48,5 +51,11 @@ public class FloggyPersistable implements Persistable {
 
 	public void setX(FloggyPersistable x) {
 		this.x = x;
+	}
+	
+	public void delete() throws FloggyException {
+		if (x != null) {
+			PersistableManager.getInstance().delete(x);
+		}
 	}
 }

@@ -34,7 +34,7 @@ import org.microemu.MIDletBridge;
 public abstract class AbstractTest extends TestCase {
 
 	protected PersistableManager manager;
-	
+
 	public AbstractTest() {
 		MIDletBridge.setMicroEmulator(RMSMemoryMicroEmulator.getInstance());
 		manager = PersistableManager.getInstance();
@@ -92,7 +92,8 @@ public abstract class AbstractTest extends TestCase {
 					if (temp.getClass().isArray()) {
 						Class clazz = temp.getClass().getComponentType();
 						if (clazz == short.class) {
-							return Arrays.equals((short[]) temp, (short[]) array);
+							return Arrays.equals((short[]) temp,
+									(short[]) array);
 						} else if (clazz == boolean.class) {
 							return Arrays.equals((boolean[]) temp,
 									(boolean[]) array);
@@ -101,22 +102,25 @@ public abstract class AbstractTest extends TestCase {
 						} else if (clazz == char.class) {
 							return Arrays.equals((char[]) temp, (char[]) array);
 						} else if (clazz == double.class) {
-							return Arrays.equals((double[]) temp, (double[]) array);
+							return Arrays.equals((double[]) temp,
+									(double[]) array);
 						} else if (clazz == int.class) {
 							return Arrays.equals((int[]) temp, (int[]) array);
 						} else if (clazz == float.class) {
-							return Arrays.equals((float[]) temp, (float[]) array);
+							return Arrays.equals((float[]) temp,
+									(float[]) array);
 						} else if (clazz == long.class) {
 							return Arrays.equals((long[]) temp, (long[]) array);
 						} else {
-							return Arrays.equals((Object[]) temp, (Object[]) array);
+							return Arrays.equals((Object[]) temp,
+									(Object[]) array);
 						}
 					} else {
 						return temp.equals(array);
 					}
-				} else 
+				} else
 					return temp == array;
-				}
+			}
 		};
 	}
 
@@ -127,17 +131,19 @@ public abstract class AbstractTest extends TestCase {
 	}
 
 	protected Object getX(Object object) throws Exception {
-		Method method = object.getClass().getMethod(getNameForGetMethod(), new Class[0]);
+		Method method = object.getClass().getMethod(getNameForGetMethod(),
+				new Class[0]);
 		return method.invoke(object, new Object[0]);
 	}
 
 	public abstract Persistable newInstance();
 
 	protected void setX(Object object, Object param) throws Exception {
-		Method method = object.getClass().getMethod(getNameForSetMethod(), new Class[]{getParameterType()});
+		Method method = object.getClass().getMethod(getNameForSetMethod(),
+				new Class[] { getParameterType() });
 		method.invoke(object, new Object[] { param });
 	}
-	
+
 	public void testDelete() throws Exception {
 		Persistable object = newInstance();
 		int id = manager.save(object);
@@ -160,10 +166,10 @@ public abstract class AbstractTest extends TestCase {
 			manager.save(object);
 			// garantido que vai estar aberto
 			assertEquals(1, manager.find(object.getClass(), null, null).size());
-			
+
 			manager.deleteAll(object.getClass());
 			assertEquals(0, manager.find(object.getClass(), null, null).size());
-			
+
 		} catch (Exception e) {
 			fail(e.getMessage());
 		}
@@ -192,20 +198,30 @@ public abstract class AbstractTest extends TestCase {
 		Persistable object = newInstance();
 		setX(object, getValueForSetMethod());
 		manager.save(object);
-		ObjectSet set = manager.find(object.getClass(), null, null);
-		assertTrue(1 <= set.size());
-		manager.delete(object);
+		try {
+			ObjectSet set = manager.find(object.getClass(), null, null);
+			if (set.size() == 2) {
+				System.out.println(set.get(0));
+				System.out.println(set.get(1));
+			}
+			assertEquals(1, set.size());
+		} finally {
+			manager.delete(object);
+		}
 	}
 
 	public void testFindWithFilter() throws Exception {
 		Persistable object = newInstance();
 		setX(object, getValueForSetMethod());
 		int id = manager.save(object);
-		ObjectSet set = manager.find(object.getClass(), getFilter(), null);
-		assertEquals(1, set.size());
-		assertEquals(set.getId(0), id);
-		equals(getValueForSetMethod(), getX(set.get(0)));
-		manager.delete(object);
+		try {
+			ObjectSet set = manager.find(object.getClass(), getFilter(), null);
+			assertEquals(1, set.size());
+			assertEquals(set.getId(0), id);
+			equals(getValueForSetMethod(), getX(set.get(0)));
+		} finally {
+			manager.delete(object);
+		}
 	}
 
 	public void testFindPersistableClassIsNotAValidPersistableClass()
@@ -226,15 +242,18 @@ public abstract class AbstractTest extends TestCase {
 			assertEquals(e.getClass(), IllegalArgumentException.class);
 		}
 	}
-	
+
 	public void testIsPersisted() throws Exception {
 		Persistable object = newInstance();
-		boolean isPersisted= manager.isPersisted(object);
+		boolean isPersisted = manager.isPersisted(object);
 		assertFalse(isPersisted);
 		manager.save(object);
-		isPersisted= manager.isPersisted(object);
-		assertTrue(isPersisted);
-		manager.delete(object);
+		try {
+			isPersisted = manager.isPersisted(object);
+			assertTrue(isPersisted);
+		} finally {
+			manager.delete(object);
+		}
 	}
 
 	public void testLoadWithNullObject() {
@@ -250,22 +269,28 @@ public abstract class AbstractTest extends TestCase {
 		Persistable object = newInstance();
 		setX(object, getValueForSetMethod());
 		int id = manager.save(object);
-		assertTrue("Deveria ser diferente de -1!", id != -1);
-		object = newInstance();
-		manager.load(object, id);
-		assertNotNull("N�o deveria ser null!", getX(object));
-		equals(getValueForSetMethod(), getX(object));
-		manager.delete(object);
+		try {
+			assertTrue("Deveria ser diferente de -1!", id != -1);
+			object = newInstance();
+			manager.load(object, id);
+			assertNotNull("Não deveria ser null!", getX(object));
+			equals(getValueForSetMethod(), getX(object));
+		} finally {
+			manager.delete(object);
+		}
 	}
 
 	public void testNullAttribute() throws Exception {
 		Persistable object = newInstance();
 		int id = manager.save(object);
-		assertTrue("Deveria ser diferente de -1!", id != -1);
-		object = newInstance();
-		manager.load(object, id);
-		assertNull("Deveria ser null!", getX(object));
-		manager.delete(object);
+		try {
+			assertTrue("Deveria ser diferente de -1!", id != -1);
+			object = newInstance();
+			manager.load(object, id);
+			assertNull("Deveria ser null!", getX(object));
+		} finally {
+			manager.delete(object);
+		}
 	}
 
 	public void testSaveWithNullObject() {
@@ -276,35 +301,38 @@ public abstract class AbstractTest extends TestCase {
 			assertEquals(e.getClass(), IllegalArgumentException.class);
 		}
 	}
-	
+
 	public void testSaveAndEdit() throws Exception {
 		Persistable object = newInstance();
 		int id = manager.save(object);
-		assertTrue("Deveria ser diferente de -1!", id != -1);
-		object = newInstance();
-		manager.load(object, id);
-		setX(object, getNewValueForSetMethod());
-		int tempId= manager.save(object);
-		assertEquals(id, tempId);
-		manager.delete(object);
+		try {
+			assertTrue("Deveria ser diferente de -1!", id != -1);
+			object = newInstance();
+			manager.load(object, id);
+			setX(object, getNewValueForSetMethod());
+			int tempId = manager.save(object);
+			assertEquals(id, tempId);
+		} finally {
+			manager.delete(object);
+		}
 	}
-	
+
 	public void testSaveWithRecordIdThatDontExist() {
 		try {
 			manager.load(new Person(), 123234);
 			fail("A RecordStore exception must be throwed!");
 		} catch (Exception ex) {
-			assertEquals(InvalidRecordIDException.class.getName(), ex.getMessage());
+			assertEquals(InvalidRecordIDException.class.getName(), ex
+					.getMessage());
 		}
 	}
 
 	public String getNameForGetMethod() {
-	    return "getX";
+		return "getX";
 	}
 
 	public String getNameForSetMethod() {
-	    return "setX";
+		return "setX";
 	}
 
-	
 }

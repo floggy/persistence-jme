@@ -15,10 +15,13 @@
  */
 package net.sourceforge.floggy.persistence.bug2313565;
 
+import net.sourceforge.floggy.persistence.Deletable;
+import net.sourceforge.floggy.persistence.FloggyException;
 import net.sourceforge.floggy.persistence.Persistable;
+import net.sourceforge.floggy.persistence.PersistableManager;
 import net.sourceforge.floggy.persistence.beans.animals.Bird;
 
-public class BUG2313565 implements Persistable {
+public class BUG2313565 implements Persistable, Deletable {
 	public boolean w;
 
 	protected Bird x;
@@ -61,4 +64,11 @@ public class BUG2313565 implements Persistable {
 			return false;
 		return true;
 	}
+	
+	public void delete() throws FloggyException {
+		if (x != null) {
+			PersistableManager.getInstance().delete(x);
+		}
+	}
+
 }

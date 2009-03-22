@@ -34,7 +34,7 @@ public class PersistableArrayTest extends AbstractTest {
 	protected Class getParameterType() {
 		return FloggyPersistable[].class;
 	}
-	
+
 	public Object getNewValueForSetMethod() {
 		return new FloggyPersistable[0];
 	}

@@ -25,7 +25,7 @@ public class NoneFieldTest extends AbstractTest {
 	protected Class getParameterType() {
 		return null;
 	}
-	
+
 	public Object getNewValueForSetMethod() {
 		return null;
 	}
@@ -37,13 +37,16 @@ public class NoneFieldTest extends AbstractTest {
 	public Persistable newInstance() {
 		return new FloggyNoneFields();
 	}
-	
+
 	public void testFind() throws Exception {
 		Persistable object = newInstance();
 		manager.save(object);
-		ObjectSet set = manager.find(object.getClass(), null, null);
-		assertTrue(1 <= set.size());
-		manager.delete(object);
+		try {
+			ObjectSet set = manager.find(object.getClass(), null, null);
+			assertTrue(1 <= set.size());
+		} finally {
+			manager.delete(object);
+		}
 	}
 
 	public void testFindWithFilter() throws Exception {
@@ -52,31 +55,41 @@ public class NoneFieldTest extends AbstractTest {
 	public void testNotNullAttribute() throws Exception {
 		Persistable object1 = newInstance();
 		int id = manager.save(object1);
-		assertTrue("Deveria ser diferente de -1!", id != -1);
-		Persistable object2 = newInstance();
-		manager.load(object2, id);
-		assertEquals(object1, object2);
-		manager.delete(object1);
+		try {
+			assertTrue("Deveria ser diferente de -1!", id != -1);
+			Persistable object2 = newInstance();
+			manager.load(object2, id);
+			assertEquals(object1, object2);
+		} finally {
+			manager.delete(object1);
+		}
 	}
 
 	public void testNullAttribute() throws Exception {
 		Persistable object = newInstance();
 		int id = manager.save(object);
-		assertTrue("Deveria ser diferente de -1!", id != -1);
-		object = newInstance();
-		manager.load(object, id);
-		manager.delete(object);
+		try {
+			assertTrue("Deveria ser diferente de -1!", id != -1);
+			object = newInstance();
+			manager.load(object, id);
+		} finally {
+			manager.delete(object);
+		}
 	}
-	
+
 	public void testSaveAndEdit() throws Exception {
 		Persistable object = newInstance();
 		int id = manager.save(object);
-		assertTrue("Deveria ser diferente de -1!", id != -1);
-		object = newInstance();
-		manager.load(object, id);
-		//there is nothing to edit
-		int tempId= manager.save(object);
-		assertEquals(id, tempId);
+		try {
+			assertTrue("Deveria ser diferente de -1!", id != -1);
+			object = newInstance();
+			manager.load(object, id);
+			// there is nothing to edit
+			int tempId = manager.save(object);
+			assertEquals(id, tempId);
+		} finally {
+			manager.delete(object);
+		}
 	}
 
 }

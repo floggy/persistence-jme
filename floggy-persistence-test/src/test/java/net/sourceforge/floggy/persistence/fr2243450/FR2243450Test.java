@@ -36,9 +36,9 @@ public class FR2243450Test extends AbstractTest {
 
 	public void testSimple() throws Exception {
 		NamedClass persistable = new NamedClass();
+		manager.save(persistable);
 		try {
 
-			manager.save(persistable);
 
 			String[] rsNames = RecordStore.listRecordStores();
 			boolean found = false;
@@ -51,8 +51,6 @@ public class FR2243450Test extends AbstractTest {
 			assertTrue("The RecordStore: " + persistable.getRecordStoreName()
 					+ " should have been created.", found);
 
-		} catch (Exception e) {
-			throw e;
 		} finally {
 			manager.delete(persistable);
 		}
@@ -60,9 +58,9 @@ public class FR2243450Test extends AbstractTest {
 	
 	public void testInheritence() throws Exception {
 		SuperNamedClass persistable = new ExtendedNamedClass();
+		manager.save(persistable);
 		try {
 
-			manager.save(persistable);
 
 			String[] rsNames = RecordStore.listRecordStores();
 			int foundBoth = 0;
@@ -75,8 +73,6 @@ public class FR2243450Test extends AbstractTest {
 			assertEquals("The RecordStore: " + persistable.getRecordStoreName()
 					+ " should have been created.", 2, foundBoth);
 
-		} catch (Exception e) {
-			throw e;
 		} finally {
 			manager.delete(persistable);
 		}

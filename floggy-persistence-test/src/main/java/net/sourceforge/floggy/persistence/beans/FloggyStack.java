@@ -15,16 +15,20 @@
  */
 package net.sourceforge.floggy.persistence.beans;
 
+import java.util.Enumeration;
 import java.util.Stack;
 
+import net.sourceforge.floggy.persistence.Deletable;
+import net.sourceforge.floggy.persistence.FloggyException;
 import net.sourceforge.floggy.persistence.Persistable;
+import net.sourceforge.floggy.persistence.PersistableManager;
 
 /**
- * @author Thiago Le�o Moreira <thiagolm@users.sourceforge.net>
+ * @author Thiago Leão Moreira <thiagolm@users.sourceforge.net>
  */
-public class FloggyStack implements Persistable {
+public class FloggyStack implements Persistable, Deletable {
 	protected Stack x;
-
+	
 	public Stack getX() {
 		return x;
 	}
@@ -47,5 +51,17 @@ public class FloggyStack implements Persistable {
 		} else if (!x.equals(other.x))
 			return false;
 		return true;
+	}
+	
+	public void delete() throws FloggyException {
+		if (x!= null) {
+			Enumeration enumeration = x.elements();
+			while (enumeration.hasMoreElements()) {
+				Object object = (Object) enumeration.nextElement();
+				if (object instanceof Persistable) {
+					PersistableManager.getInstance().delete((Persistable)object);
+				}
+			}
+		}
 	}
 }

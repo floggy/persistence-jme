@@ -15,11 +15,15 @@
  */
 package net.sourceforge.floggy.persistence.beans;
 
+import java.util.Enumeration;
 import java.util.Vector;
 
+import net.sourceforge.floggy.persistence.Deletable;
+import net.sourceforge.floggy.persistence.FloggyException;
 import net.sourceforge.floggy.persistence.Persistable;
+import net.sourceforge.floggy.persistence.PersistableManager;
 
-public class FloggyVector implements Persistable {
+public class FloggyVector implements Persistable, Deletable {
 
 	private Vector x;
 
@@ -30,5 +34,16 @@ public class FloggyVector implements Persistable {
 	public void setX(Vector x) {
 		this.x = x;
 	}
-
+	
+	public void delete() throws FloggyException {
+		if (x!= null) {
+			Enumeration enumeration = x.elements();
+			while (enumeration.hasMoreElements()) {
+				Object object = (Object) enumeration.nextElement();
+				if (object instanceof Persistable) {
+					PersistableManager.getInstance().delete((Persistable)object);
+				}
+			}
+		}
+	}
 }
