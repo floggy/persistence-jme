@@ -292,7 +292,6 @@ public class CodeGenerator {
 
 		buffer.append("public void __delete() throws java.lang.Exception {\n");
 
-
 		// Save the superclass if it is persistable.
 		CtClass superClass = this.ctClass.getSuperclass();
 		ClassVerifier verifier = new ClassVerifier(superClass);
@@ -306,6 +305,13 @@ public class CodeGenerator {
 			buffer.append("net.sourceforge.floggy.persistence.impl.PersistableManagerImpl.closeRecordStore(superRS);\n");
 			buffer.append("}\n");
 		}
+
+		try {
+			ctClass.getDeclaredMethod("delete");
+			buffer.append("this.delete();\n");
+		} catch (NotFoundException nfex) {
+		}
+
 		buffer.append("}");
 
 		// adicionando a classe
