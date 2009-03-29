@@ -73,10 +73,10 @@ public class FR2227200Test extends TestCase {
 
 		int containerId = manager.save(container);
 		try {
-
-			manager.load(container, containerId, false);
-
-			assertNotNull(container.getX());
+			Person persistable = new Person();
+			manager.load(persistable, containerId, false);
+			 
+			assertNotNull(persistable.getX());
 		} finally {
 			manager.delete(container);
 		}
@@ -90,10 +90,10 @@ public class FR2227200Test extends TestCase {
 
 		int containerId = manager.save(container);
 		try {
+			Person persistable = new Person();
+			manager.load(persistable, containerId, true);
 
-			manager.load(container, containerId, true);
-
-			assertNull(container.getX());
+			assertNull(persistable.getX());
 		} finally {
 			manager.delete(container);
 		}

@@ -42,10 +42,12 @@ public class PersistableManagerImpl extends PersistableManager {
 
 	//this code is a workaround to the problem of missing java.lang.NoClassDefFoundError.class in the CLDC 1.0
 	private static Class __persistableClass;
+	private static Class deletableClass;
 
 	static {
 		try {
 			__persistableClass= Class.forName("net.sourceforge.floggy.persistence.impl.__Persistable");
+			deletableClass = Class.forName("net.sourceforge.floggy.persistence.Deletable");
 		} catch (Exception e) {
 			//this would be never happen
 			throw new RuntimeException(e.getMessage());
@@ -276,11 +278,20 @@ public class PersistableManagerImpl extends PersistableManager {
 	public void deleteAll(Class persistableClass) throws FloggyException {
 		__Persistable persistable = createInstance(persistableClass);
 		closeRecordStore(getRecordStore(persistable.getRecordStoreName()));
-		try {
-			RecordStore.deleteRecordStore(persistable.getRecordStoreName());
-		} catch (Exception ex) {
-			throw handleException(ex);
-		}
+		PersistableMetadata metadata = persistable.__getPersistableMetadata();
+		if (deletableClass.isAssignableFrom(persistableClass) || metadata.getSuperClassName() != null) {
+			ObjectSet os = find(persistableClass, null, null);
+			for (int i = 0; i < os.size(); i++) {
+				os.get(i, persistable);
+				delete(persistable);
+			}
+		} else {
+			try {
+				RecordStore.deleteRecordStore(persistable.getRecordStoreName());
+			} catch (Exception ex) {
+				throw handleException(ex);
+			}
+ 		}
 	}
 	
 	public boolean isPersisted(Persistable persistable) {

@@ -158,9 +158,14 @@ public class CodeGenerator {
 	 * 
 	 * @throws CannotCompileException
 	 */
-	private void generatePersistableMetadataField() throws CannotCompileException {
+	private void generatePersistableMetadataField() throws CannotCompileException, NotFoundException {
 		PersistableConfiguration pConfig= configuration.getPersistableConfig(ctClass.getName());
-		String buffer = "private final static net.sourceforge.floggy.persistence.impl.PersistableMetadata __persistableMetadata = new net.sourceforge.floggy.persistence.impl.PersistableMetadata(\""+pConfig.getRecordStoreName()+"\");";
+		CtClass superClass = ctClass.getSuperclass();
+		ClassVerifier verifier = new ClassVerifier(superClass);
+		String buffer = "private final static "
+						+ "net.sourceforge.floggy.persistence.impl.PersistableMetadata __persistableMetadata = "
+						+ " new net.sourceforge.floggy.persistence.impl.PersistableMetadata(\""
+					+ pConfig.getRecordStoreName() + "\", " + ((verifier.isPersistable()) ? "\"" + superClass.getName() + "\"" : "null") + ");";
 		addField(buffer);
 	}
 	

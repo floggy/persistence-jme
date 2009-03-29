@@ -19,21 +19,22 @@ package net.sourceforge.floggy.persistence.impl;
  * <b>IMPORTANT:</b> This class is for internal use only.
  */
 public class PersistableMetadata {
-	
+
 	private String recordStoreName;
-	
-	
-	public PersistableMetadata(String recordStoreName) {
+	private String superClassName;
+
+	public PersistableMetadata(String recordStoreName, String superClassName) {
 		super();
 		this.recordStoreName = recordStoreName;
+		this.superClassName = superClassName;
 	}
 
 	public String getRecordStoreName() {
 		return recordStoreName;
 	}
 
-	public void setRecordStoreName(String recordStoreName) {
-		this.recordStoreName = recordStoreName;
+	public String getSuperClassName() {
+		return superClassName;
 	}
 
 }
