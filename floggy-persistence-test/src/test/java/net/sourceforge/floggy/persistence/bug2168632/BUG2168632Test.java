@@ -20,21 +20,43 @@ import net.sourceforge.floggy.persistence.PersistableManager;
 
 public class BUG2168632Test extends TestCase {
 
-    public void testIt() throws Exception {
-	ConcreteElement persistable = new ConcreteElement();
-	persistable.setName("floggy");
-	
-	try {
-	    int id = PersistableManager.getInstance().save(persistable);
-	    
-	    persistable = new ConcreteElement();
-	    
-	    PersistableManager.getInstance().load(persistable, id);
-	    assertTrue(true);
-	} catch (Exception e) {
-	    fail(e.getMessage());
-	} finally {
-	    PersistableManager.getInstance().deleteAll(ConcreteElement.class);
+	public void testIt() throws Exception {
+		ConcreteElement persistable = new ConcreteElement();
+		persistable.setName("floggy");
+
+		try {
+			int id = PersistableManager.getInstance().save(persistable);
+
+			ConcreteElement persistable2 = new ConcreteElement();
+
+			PersistableManager.getInstance().load(persistable2, id);
+			assertTrue(true);
+		} catch (Exception e) {
+			fail(e.getMessage());
+		} finally {
+			PersistableManager.getInstance().delete(persistable);
+		}
 	}
-    }
+
+	public void testNorton() throws Exception {
+		String name = "XYZ";
+		int age = 23;
+		ExtendedConcreteElement persistable =new ExtendedConcreteElement();
+		persistable.setName(name);
+		persistable.setAge(age);
+
+		try {
+			int id = PersistableManager.getInstance().save(persistable);
+
+			ExtendedConcreteElement persistable2 = new ExtendedConcreteElement();
+
+			PersistableManager.getInstance().load(persistable2, id);
+			assertEquals(name, persistable2.getName());
+			assertEquals(age, persistable2.getAge());
+		} catch (Exception e) {
+			fail(e.getMessage());
+		} finally {
+			PersistableManager.getInstance().delete(persistable);
+		}
+	}
 }
