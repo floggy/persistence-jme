@@ -16,6 +16,7 @@
 package net.sourceforge.floggy.persistence.codegen;
 
 import javassist.CannotCompileException;
+import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtConstructor;
 import javassist.CtField;
@@ -48,6 +49,7 @@ public class CodeGenerator {
 	 */
 	private CtClass ctClass;
 
+	private ClassPool classPool;
 	private Configuration configuration;
 	
 	private StringBuffer source;
@@ -60,8 +62,9 @@ public class CodeGenerator {
 	 * @param configuration
 	 *            the configuration object
 	 */
-	public CodeGenerator(CtClass ctClass, Configuration configuration) {
+	public CodeGenerator(CtClass ctClass, ClassPool classPool, Configuration configuration) {
 		this.ctClass = ctClass;
+		this.classPool = classPool;
 		this.configuration= configuration;
 	}
 
@@ -161,7 +164,7 @@ public class CodeGenerator {
 	private void generatePersistableMetadataField() throws CannotCompileException, NotFoundException {
 		PersistableConfiguration pConfig= configuration.getPersistableConfig(ctClass.getName());
 		CtClass superClass = ctClass.getSuperclass();
-		ClassVerifier verifier = new ClassVerifier(superClass);
+		ClassVerifier verifier = new ClassVerifier(superClass, classPool);
 		String buffer = "private final static "
 						+ "net.sourceforge.floggy.persistence.impl.PersistableMetadata __persistableMetadata = "
 						+ " new net.sourceforge.floggy.persistence.impl.PersistableMetadata(\""
@@ -246,7 +249,7 @@ public class CodeGenerator {
 
 		// Save the superclass if it is persistable.
 		CtClass superClass = this.ctClass.getSuperclass();
-		ClassVerifier verifier = new ClassVerifier(superClass);
+		ClassVerifier verifier = new ClassVerifier(superClass, classPool);
 		if (verifier.isPersistable()) {
 			buffer.append(SuperClassGenerator.generateLoadSource(superClass));
 		}
@@ -299,7 +302,7 @@ public class CodeGenerator {
 
 		// Save the superclass if it is persistable.
 		CtClass superClass = this.ctClass.getSuperclass();
-		ClassVerifier verifier = new ClassVerifier(superClass);
+		ClassVerifier verifier = new ClassVerifier(superClass, classPool);
 		if (verifier.isPersistable()) {
 			buffer.append("super.__delete();\n");
 			buffer.append("javax.microedition.rms.RecordStore superRS = net.sourceforge.floggy.persistence.impl.PersistableManagerImpl.getRecordStore(super.getRecordStoreName());\n");
@@ -339,7 +342,7 @@ public class CodeGenerator {
 
 		// Save the superclass if it is persistable.
 		CtClass superClass = this.ctClass.getSuperclass();
-		ClassVerifier verifier = new ClassVerifier(superClass);
+		ClassVerifier verifier = new ClassVerifier(superClass, classPool);
 		if (verifier.isPersistable()) {
 			buffer.append(SuperClassGenerator.generateSaveSource(superClass));
 		}

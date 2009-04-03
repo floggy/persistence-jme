@@ -43,13 +43,16 @@ public class CodeGeneratorTest extends TestCase {
 
 	private CodeGenerator createCodeGenerator(CtClass ctClass,
 			boolean addDefaultConstructor) {
+		ClassPool pool = ClassPool.getDefault();
+		pool.insertClassPath(new LoaderClassPath(getClass().getClassLoader()));
+
 		Configuration configuration = new Configuration();
 		PersistableConfiguration pConfig = new PersistableConfiguration();
 		pConfig.setClassName(ctClass.getName());
 		pConfig.setRecordStoreName(ctClass.getSimpleName());
 		configuration.addPersistable(pConfig);
 		configuration.setAddDefaultConstructor(addDefaultConstructor);
-		return new CodeGenerator(ctClass, configuration);
+		return new CodeGenerator(ctClass, pool, configuration);
 	}
 
 	public void testAddDefaultConstructorFalseWithFriendlyConstructor()
