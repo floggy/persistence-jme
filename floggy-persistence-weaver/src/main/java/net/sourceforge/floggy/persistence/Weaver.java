@@ -178,7 +178,7 @@ public class Weaver {
 
 				LOG.info("Processing bytecode " + className + "!");
 
-				CodeGenerator codeGenerator = new CodeGenerator(ctClass,
+				CodeGenerator codeGenerator = new CodeGenerator(ctClass, classpathPool,
 						configuration);
 				codeGenerator.generateCode();
 				if (configuration.isGenerateSource()) {
