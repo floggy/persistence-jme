@@ -1,36 +1,33 @@
 - usar o replace de arquivos para editar corretamente a versão nos links no arquivo site.xml
-- lincar com java tools
-- botar as versões do eclipse que o plugin foi testado
-- mudar o email dos participantes
+- melhorar a perfomance do metodo find no PMImpl passando a RE para o construtor ObjectSetImpl instead of int[] ids
+- move the package impl to a new project like floggy-persistence-framework-impl
+- criar uma FAQ sobre o TCC e botar um link para ele
+- melhorar as exceptions! adicionar um Exception field à Floggy|WeaverException e setar a nested Exception
+- adicionar a o plugin PMD aous projetos.
+- adicionar o checkstyle before compile, adicionar ao eclipse
+- adicionar o plugin tasks (TODOs)
 
-- Yeah! We have 7 classes (5 interfaces, 1 class and 1 exception) and 1111 tests to coverage all possible context into Floggy can be developed. This is how we guarantee that Floggy is bug free.
+Committed revision 482.
+- The Floggy 7 classes (5 interfaces, 1 class and 1 exception) and 1111 tests to coverage all possible context into Floggy can be developed. Doing this we try to  a free bug software.
  Also we have the cobertua tool that help us to know how much of our code is being tested. We are trying to find a free Hudson server service to host the project and guarantee its continuos integration. Someone knows something?
 
 Floggy
   - documentação do plugin
   - o que é mais caro criar um DataInputStream ou executar um metodo synchronized
-  - svn cp . https://floggy.svn.sourceforge.net/svnroot/floggy/tags/eclipse-floggy-plugin-1.1.1
-  - mvn -DupdateWorkingCopyVersions=false -DupdateBranchVersions=true release:branch -DbranchName=floggy-1.2.x
-  - @operation:issue;comments
   
 - diagramas da arquitetura
 - diagrama de classes e de sequência
 - criar uma aplicação de exemplo
 - documentar em código também
-- cuidado com o nome floggy pois é superset de flog (fotolog), regras de firewalls colocar no FAQ.
 - deixar mais claro para os usuários que o Floggy não usa reflection at runtime!
-- deixar claro nos datatypes que arrays de uma dimensão também são válidos
 - colocar as limitações do projeto (busca indexada, 
 - verificar antes da adição dos métodos e campos se eles já não existem e dai gerar uma exception
 - formatar o código
 - medir a performance
-- trabalhar com o commons-vfs para ler e escrever as classes.
 - Dar um jeito de identificar mudanças nas classes e só enxertar as que contêm modificações
 - criar a aplicação de exemplo e deixa-la pronta para ser usado pelos usuários ChurrasCalculator|Hospital-ME(liberada numa url, utilizar o tinyurl.com)
 - translate this document
 - adicionar link para doações
-- adicionar ao FAQ o erro  java.lang.IllegalArgumentException: hello.Usuario is not a valid persistable class. Check the weaver execution! e sua solução mal configuração do weaver
-- adiconar checagem das classes que implementam Persistable se estas contêm um construtor publico e sem parametros, se não tiver adicionar caso esteja configurado
 - possibilitar abrir rMS de outros midlets suites
 - responder a pergunta e criar uma FAQ por versão??: http://www.javalobby.org/forums/thread.jspa?threadID=100688
 - fazer testcase para variáveis final
@@ -38,9 +35,6 @@ Floggy
 - criar uma exception mais especializada para identificar campos que nao possam salvar e mostrar no plugin do eclipse
 - criar uma seção no site para chamar contribuições da comunidade. (how to help)
 - criar um arquivo do tipo sitemap.xml
-- criar uma FAQ sobre o FloggyUML
-- testar com ASM objectweb
-- botar no site as versões do eclipse que o plugin roda
 - Another question, suppose we have DomesticCat extends Cat, is it possible in Floggy a query like pm.find(Cat.class) returns instances not only Cat, but also subclasses like DomesticCat?
 - add a UpdateManager to helps the developers to update his application, the PM.getInstance() will check if all RMS and persistable classes has the same structure if not it will throw a exception??
 - postar notícias:
@@ -71,22 +65,9 @@ MODULO DE PERSISTÊNCIA
 - fazer busca indexada (consultar netomarin@gmail.com)
 - transação
 - criar uma maneira de migrar de versões dos RMSs, talvez criar uma aplicação para isso. Ou colocar no primeiro registro o layout dos dados armazenados no RMS
-- listar data types que podem ser persistiveis
-        * tipos primitivos
-        * classes wrappers
-        * java.util.Date
-        * java.lang.String
-        * java.util.Vector (os objetos do vector devem pertencer a esta lista também)
-        * net.sourceforge.floggy.Persistable
-        * arrays desses tipos
-	* Hashtable
-	* arrays multidimencionais
-
-- IMPOSSIVEL transformar os métodos __save() e __load() em métodos estáticos?!?!?!?!?! 
 - deixar ou não os RMS abertos??? ter um método para fechar os RMS destroyApp(boolean)
 - pode-se solicitar ao PersistenceManager para que trabalhe com os RMS abertos ou fechados. (setWorkWithOpenRecordsStores(boolean)
 - gerar uma classe que será responsável por saber os metadados da aplicação (criar um RMS com a descrição das classes)
-- modificar task do Ant
 - deve funcionar sem o modulo de sincronização
 - attributes embebbeds (EJB 3.0)
 - adicionar teste unitários aos projetos framework e weaver
@@ -97,9 +78,7 @@ MODULO DE PERSISTÊNCIA
 - adicionar métodos para retornar a quantidade de itens salvos por entidade
 - adicionar ao site informações sobre possiveís problemas com obfuscação (por causa que os persistables num vector são salvos com o nome da classe)
 - adicionar ao site instruções de como contribuir com o projeto (criar um patch do trunk e enviar para os desenvolvedores).
-- criar no PM um mapeamento das classes persistiveis com o nome de seus respectivos RMS.
 - refatorar a class AbstractClass para se utilizada por todas os testes que requerem um PersistableManager
-- colocar uma estrelinha na novas noticias quando postadas
 
 
 MODULO DE SINCRONIZAÇÃO
