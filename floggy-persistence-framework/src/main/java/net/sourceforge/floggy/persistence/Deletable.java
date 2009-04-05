@@ -40,10 +40,11 @@ package net.sourceforge.floggy.persistence;
  */
 public interface Deletable {
     /**
-     * It is used to retrieve the name of the RecordStore where the
-     * class will be stored.
+     * It is used to clean up references that the implementation class
+     * may  have to another entities.
      *
-     * @return the name of the RecordStore.
+     * @throws FloggyException Exception thrown if an error occurs while
+     *         deleting the object.
      */
     void delete() throws FloggyException;
 }
