@@ -36,7 +36,7 @@ public class SuperClassGenerator {
 		source += "javax.microedition.rms.RecordStore superRS = net.sourceforge.floggy.persistence.impl.PersistableManagerImpl.getRecordStore(super.getRecordStoreName());\n";
 		source += "byte[] superBuffer= super.__serialize();\n";
 		source += "int superId= super.__getId();\n";
-		source += "if(superId == -1) {\n";
+		source += "if(superId <= 0) {\n";
 		source += "superId = superRS.addRecord(superBuffer, 0, superBuffer.length);\n";
 		source += "super.__setId(superId);\n";
 		source += "}\n";

@@ -27,6 +27,7 @@ import javassist.NotFoundException;
 import javassist.bytecode.AccessFlag;
 import net.sourceforge.floggy.persistence.ClassVerifier;
 import net.sourceforge.floggy.persistence.Configuration;
+import net.sourceforge.floggy.persistence.IDable;
 import net.sourceforge.floggy.persistence.PersistableConfiguration;
 import net.sourceforge.floggy.persistence.Weaver;
 import net.sourceforge.floggy.persistence.formatter.CodeFormatter;
@@ -208,10 +209,13 @@ public class CodeGenerator {
 	 *
 	 * @throws CannotCompileException
 	 */
-	private void generateSetIdMethod() throws CannotCompileException {
+	private void generateSetIdMethod() throws CannotCompileException, NotFoundException {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("public void __setId(int id) {\n");
 		buffer.append("this.__id= id;\n");
+		if (isIDable(ctClass)) {
+			buffer.append("this.setId(id);\n");
+		}
 		buffer.append("}\n");
 
 	    //adicionando a classe
@@ -308,7 +312,7 @@ public class CodeGenerator {
 			buffer.append("javax.microedition.rms.RecordStore superRS = net.sourceforge.floggy.persistence.impl.PersistableManagerImpl.getRecordStore(super.getRecordStoreName());\n");
 			buffer.append("try {\n");
 			buffer.append("superRS.deleteRecord(super.__getId());\n");
-			buffer.append("super.__setId(-1);\n");
+			buffer.append("super.__setId(0);\n");
 			buffer.append("} finally {\n");
 			buffer.append("net.sourceforge.floggy.persistence.impl.PersistableManagerImpl.closeRecordStore(superRS);\n");
 			buffer.append("}\n");
@@ -400,5 +404,11 @@ public class CodeGenerator {
 	public String getSource() {
 		return source.toString();
 	}
+	
+	public boolean isIDable(CtClass ctClass) throws NotFoundException {
+		CtClass idableClass = classPool.get(IDable.class.getName());
+		return ctClass.subtypeOf(idableClass);		
+	}
+
 
 }

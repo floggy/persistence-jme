@@ -188,7 +188,7 @@ public class PersistableManagerImpl extends PersistableManager {
 		try {
 			byte[] buffer= __persistable.__serialize();
 			int id= __persistable.__getId();
-	        if(id == -1) {
+	        if(id <= 0) {
 	            id = rs.addRecord(buffer, 0, buffer.length);
 	            __persistable.__setId(id);
 	        }
@@ -220,13 +220,13 @@ public class PersistableManagerImpl extends PersistableManager {
 	public void delete(Persistable persistable) throws FloggyException {
 		__Persistable __persistable = checkArgumentAndCast(persistable);
 		int id = __persistable.__getId();
-		if (id != -1) {
+		if (id > 0) {
 			RecordStore rs = PersistableManagerImpl
 					.getRecordStore(__persistable.getRecordStoreName());
 			try {
 				__persistable.__delete();
 				rs.deleteRecord(id);
-				__persistable.__setId(-1);
+				__persistable.__setId(0);
 			} catch (RecordStoreException ex) {
 				throw handleException(ex);
 			} finally {
@@ -296,7 +296,7 @@ public class PersistableManagerImpl extends PersistableManager {
 	
 	public boolean isPersisted(Persistable persistable) {
 		__Persistable __persistable = checkArgumentAndCast(persistable);
-		return __persistable.__getId() != -1;
+		return __persistable.__getId() > 0;
 	}
 
 
