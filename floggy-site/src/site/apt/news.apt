@@ -16,11 +16,13 @@
  
 News
 
-	<<22-Feb-09: The documentation turned into a little out of date since the last release but it is not any more! Check it on {{{./getting-started.html}Getting Started}}, {{{./faq.html}FAQ}}, {{{./configuration/eclipse.html}Eclipse}} and {{{./datatypes.html}Weaver}} sections.>>
+	<<05-Apr-09:>> A snapshot release (alpha) of 1.3.0 was made available, please test it and give us a feedback. Further information about the changes {{{./changes-report.html#a1.3.0-SNAPSHOT}here}}.
 
-	<<29-Jan-09: Floggy 1.2.0 was released. You can get further information about the changes {{{./changes-report.html}here}}. Enjoy!>>
+	<<22-Feb-09:>> The documentation turned into a little out of date since the last release but it is not any more! Check it on {{{./getting-started.html}Getting Started}}, {{{./faq.html}FAQ}}, {{{./configuration/eclipse.html}Eclipse}} and {{{./datatypes.html}Weaver}} sections.
 
-	<<29-Jan-09: If you couldn't went to the {{{https://developerdays.dev.java.net/nonav/overview.html}M3DD}} Conference see Floggy live, now you can! Watch {{{http://channelsun.sun.com/video/open-source/java/1631259654/ts-12:+floggy+-+javame+persistence+made+easy+/8899391001}this}}.>>
+	<<29-Jan-09:>> Floggy 1.2.0 was released. You can get further information about the changes {{{./changes-report.html#a1.2.0}here}}. Enjoy!
+
+	<<29-Jan-09:>> If you couldn't went to the {{{https://developerdays.dev.java.net/nonav/overview.html}M3DD}} Conference see Floggy live, now you can! Watch {{{http://channelsun.sun.com/video/open-source/java/1631259654/ts-12:+floggy+-+javame+persistence+made+easy+/8899391001}this}}.
 
 	<<15-Jan-09:>> Floggy will be presented at {{{https://developerdays.dev.java.net/nonav/overview.html}Java Mobile, Media & Embedded Developer Days Conference}}, our first international event. {{{http://www.slideshare.net/tmoreira2020/floggym3dd20090121-presentation}Presentation}} {{{http://channelsun.sun.com/video/open-source/java/1631259654/ts-12:+floggy+-+javame+persistence+made+easy+/8899391001}Video}}.
 

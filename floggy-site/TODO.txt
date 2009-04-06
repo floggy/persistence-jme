@@ -3,11 +3,14 @@
 - move the package impl to a new project like floggy-persistence-framework-impl
 - criar uma FAQ sobre o TCC e botar um link para ele
 - melhorar as exceptions! adicionar um Exception field à Floggy|WeaverException e setar a nested Exception
-- adicionar a o plugin PMD aous projetos.
+- adicionar a o plugin PMD aos projetos.
+- adicionar a o plugin FINDBUGS aos projetos.
 - adicionar o checkstyle before compile, adicionar ao eclipse
 - adicionar o plugin tasks (TODOs)
+- adicionar o repositótio do Floggy ao central do Maven
+- events? (beforeSave, afterSave, beforeLoad, afterLoad)
+- adicionar o javadoc ao eclipse plugin
 
-Committed revision 482.
 - The Floggy 7 classes (5 interfaces, 1 class and 1 exception) and 1111 tests to coverage all possible context into Floggy can be developed. Doing this we try to  a free bug software.
  Also we have the cobertua tool that help us to know how much of our code is being tested. We are trying to find a free Hudson server service to host the project and guarantee its continuos integration. Someone knows something?
 

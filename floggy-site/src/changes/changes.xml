@@ -17,12 +17,24 @@
 -->
 <document>
   <body>
+    <release version="1.3.0-SNAPSHOT" date="04-05-2009" description="Snapshot release, it is just a preview of what is coming.">
+      <action dev="thiagolm" type="add" issue="2722768">
+		Added an optional interface, called IDable, that exports the RMS id of each Persistable class that implements it.
+      </action>
+      <action dev="thiagolm" type="add" issue="2702250">
+		Added an optional interface, called Deletable, that enables the developer to clean up resources (sort of cascade delete).
+      </action>
+      <action dev="thiagolm" type="fix" issue="2168632">
+		Fixed a bug when the Persistable interface is not implemented directly by the class. 
+      </action>
+    </release>
+
     <release version="1.2.0" date="01-29-2009" description="Third public release">
       <action dev="thiagolm" type="add" issue="2227200">
-	Added the lazy load mechanism.
+		Added the lazy load mechanism.
       </action>
       <action dev="thiagolm" type="add" issue="2243450">
-	Added a new optional interface that enables the developer set the name of the RecordStore.
+		Added an optional interface, called Nameable, that enables the developer set the name of the RecordStore.
       </action>
       <action dev="thiagolm" type="add">
         Added support for java.util.Hashtable class.
@@ -31,13 +43,13 @@
         Added 197 new tests to test new and old features.  
       </action>
       <action dev="thiagolm" type="fix" issue="2105288">
-	Fixed a bug when deleting composed objects that uses the inheritance. 
+		Fixed a bug when deleting composed objects that uses the inheritance. 
       </action>
       <action dev="thiagolm" type="update" issue="2528979">
-	Refactored the eclipse-floggy-plugin to be build by the Maven.
+		Refactored the eclipse-floggy-plugin to be build by the Maven.
       </action>
       <action dev="thiagolm" type="add" issue="2536956">
-	Signed the Eclipse feature and plugin artifacts.
+		Signed the Eclipse feature and plugin artifacts.
       </action>
     </release>
     
