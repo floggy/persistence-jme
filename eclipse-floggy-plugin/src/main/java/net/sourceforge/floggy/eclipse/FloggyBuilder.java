@@ -110,11 +110,19 @@ public class FloggyBuilder extends IncrementalProjectBuilder {
 				// creating the classpath
 				List classpathList = new ArrayList();
 				ClassPool classPool = new ClassPool();
+				IClasspathEntry classpathEntry;
+				String pathName;
 				for (int i = 0; i < entries.length; i++) {
-					IClasspathEntry classpathEntry = entries[i];
-					String path = classpathEntry.getPath().toOSString();
-					classpathList.add(path);
-					classPool.appendClassPath(path);
+					classpathEntry = JavaCore.getResolvedClasspathEntry(entries[i]);
+					pathName = classpathEntry.getPath().toFile().toString();
+					if (classpathEntry.getEntryKind() == IClasspathEntry.CPE_LIBRARY){
+						if (!classpathEntry.getPath().toFile().exists()) {
+							IFile pathIFile = project.getWorkspace().getRoot().getFile(classpathEntry.getPath()); 
+							pathName = pathIFile.getLocationURI().getPath();
+						}
+					}
+					classpathList.add(pathName);
+					classPool.appendClassPath(pathName);
 				}
 
 				final StringBuffer messages = new StringBuffer();
