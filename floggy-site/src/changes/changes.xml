@@ -17,7 +17,7 @@
 -->
 <document>
   <body>
-    <release version="1.3.0-SNAPSHOT" date="04-05-2009" description="Snapshot release, it is just a preview of what is coming.">
+    <release version="1.3.0-SNAPSHOT" date="06-14-2009" description="Snapshot release, it is just a preview of what is coming.">
       <action dev="thiagolm" type="add" issue="2722768">
 		Added an optional interface, called IDable, that exports the RMS id of each Persistable class that implements it.
       </action>
@@ -26,6 +26,12 @@
       </action>
       <action dev="thiagolm" type="fix" issue="2168632">
 		Fixed a bug when the Persistable interface is not implemented directly by the class. 
+      </action>
+      <action dev="thiagolm" type="fix" issue="2517536">
+		Fixed the infinitive loop building. Affects only the Eclipse's plugin.
+      </action>
+      <action dev="thiagolm" type="fix" issue="2806349">
+		Fixed the NotFoundException when adding a 3th party jars contained in the project folder. Affects only the Eclipse's plugin. 
       </action>
     </release>
 
