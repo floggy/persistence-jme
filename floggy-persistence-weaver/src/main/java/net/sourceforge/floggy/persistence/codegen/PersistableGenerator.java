@@ -16,6 +16,7 @@
 package net.sourceforge.floggy.persistence.codegen;
 
 import javassist.CtClass;
+import javassist.Modifier;
 import javassist.NotFoundException;
 
 public class PersistableGenerator extends SourceCodeGenerator {
@@ -26,12 +27,20 @@ public class PersistableGenerator extends SourceCodeGenerator {
 	}
 
 	public void initLoadCode() throws NotFoundException {
-		addLoadCode("this."
-				+ fieldName
-				+ "= ("
-				+ fieldType.getName()
-				+ ")net.sourceforge.floggy.persistence.impl.SerializationHelper.readPersistable(dis, new "
-				+ fieldType.getName() + "(), lazy);");
+		if (Modifier.isAbstract(fieldType.getModifiers())) {
+			addLoadCode("this."
+					+ fieldName
+					+ "= ("
+					+ fieldType.getName()
+					+ ")net.sourceforge.floggy.persistence.impl.SerializationHelper.readPersistable(dis, null, lazy);");
+		} else {
+			addLoadCode("this."
+					+ fieldName
+					+ "= ("
+					+ fieldType.getName()
+					+ ")net.sourceforge.floggy.persistence.impl.SerializationHelper.readPersistable(dis, new "
+					+ fieldType.getName() + "(), lazy);");
+		}
 	}
 
 	public void initSaveCode() throws NotFoundException {
