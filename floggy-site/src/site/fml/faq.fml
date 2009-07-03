@@ -149,7 +149,7 @@
 					<li>Install Maven 2</li>
 					<li>Checkout the the source code</li>
 					<li>Set the property <b>wtk.home</b> to point to the WTK (Wireless Tool Kit) home. You can do this in several ways check the Maven's documentation for further information. The best way for us is through settings.xml file</li>
-					<li>Execute <b>mvn <a href="http://maven.apache.org/plugins/maven-eclipse-plugin/make-artifacts-mojo.html">eclipse:make-artifcats</a> -DeclipseDir=ECLIPSE_HOME</b> to install the Eclipse's artifacts on the local Maven repository. The property eclipseDir should point to a 3.3.+ version of Eclipse. We developed the plugin based on 3.3.2-linux-gtk version of Eclipse</li>
+					<li>Execute <b>mvn <a href="http://maven.apache.org/plugins/maven-eclipse-plugin/make-artifacts-mojo.html">eclipse:make-artifacts</a> -DeclipseDir=ECLIPSE_HOME</b> to install the Eclipse's artifacts on the local Maven repository. The property eclipseDir should point to a 3.3.+ version of Eclipse. We developed the plugin based on 3.3.2-linux-gtk version of Eclipse</li>
 					<li>Execute <b>mvn clean package</b> on the directory of the project</li>
 					<li>If everything was okay now you can start to improve Floggy.<img src="images/blink.png" alt="blink"/></li>
 				</ol>
