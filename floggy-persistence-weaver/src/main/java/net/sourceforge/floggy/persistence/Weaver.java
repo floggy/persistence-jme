@@ -110,9 +110,11 @@ public class Weaver {
 
 	private void embeddedClass(String fileName) throws IOException {
 		URL fileURL = getClass().getResource(fileName);
-		fileName = fileName.replace('/', File.separatorChar);
-		outputPool.addFile(fileURL, fileName);
-		classpathPool.makeClass(fileURL.openStream());
+		if (fileURL != null) {
+			fileName = fileName.replace('/', File.separatorChar);
+			outputPool.addFile(fileURL, fileName);
+			classpathPool.makeClass(fileURL.openStream());
+		}
 	}
 
 	private void embeddedUnderlineCoreClasses() throws IOException {
@@ -123,6 +125,7 @@ public class Weaver {
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/ObjectSetImpl.class");
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/__Persistable.class");
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/PersistableManagerImpl.class");
+		embeddedClass("/net/sourceforge/floggy/persistence/impl/PersistableManagerImpl$1.class");
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/PersistableManagerImpl$RecordStoreReference.class");
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/PersistableMetadata.class");
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/SerializationHelper.class");
