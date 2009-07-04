@@ -61,7 +61,6 @@
 				<includes>
 					<include>floggy.png</include>
 				</includes>
-				<targetPath>/</targetPath>
 			</resource>
 		</resources>
 		<plugins>
