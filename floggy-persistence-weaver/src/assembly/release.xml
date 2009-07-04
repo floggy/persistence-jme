@@ -28,7 +28,6 @@
 	<dependencySets>
 		<dependencySet>
 			<excludes>
-				<exclude>junit:junit</exclude>
 				<exclude>ant:ant</exclude>
 				<exclude>org.microemu:microemulator</exclude>
 			</excludes>

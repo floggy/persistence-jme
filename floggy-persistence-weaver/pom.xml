@@ -117,6 +117,7 @@
 				<configuration>
 					<finalName>floggy-persistence-${pom.version}</finalName>
 					<appendAssemblyId>false</appendAssemblyId>
+					<attach>false</attach>
 					<descriptors>
 						<descriptor>src/assembly/release.xml</descriptor>
 					</descriptors>
