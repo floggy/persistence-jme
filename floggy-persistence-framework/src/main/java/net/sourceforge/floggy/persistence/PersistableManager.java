@@ -188,6 +188,16 @@ public abstract class PersistableManager {
         throws FloggyException;
 
     /**
+     * Gets the id under the persistable is stored. <br>
+     *
+     * @param persistable Object to be retrieved the id.
+     *
+     * @return the id under the persistable is stored
+     *         
+     */
+    public abstract int getId(Persistable persistable);
+
+    /**
      * Check if the object is already persisted. <br>
      * <b>WARNING</b> The method only checks if the underline system has an
      * entry for the  given persistable object. The method doesn't checks if

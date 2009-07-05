@@ -326,6 +326,22 @@ public abstract class AbstractTest extends TestCase {
 					.getMessage());
 		}
 	}
+	
+	public void testFR2816948() throws Exception {
+		Persistable object = newInstance();
+		try {
+			int id = manager.getId(object);
+			assertEquals(-1, id);
+
+			id = manager.save(object);
+			assertTrue("Deveria ser diferente de -1!", id != -1);
+
+			int temp = manager.getId(object);
+			assertEquals(id, temp);
+		} finally {
+			manager.delete(object);
+		}
+	}
 
 	public String getNameForGetMethod() {
 		return "getX";

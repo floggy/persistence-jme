@@ -294,11 +294,15 @@ public class PersistableManagerImpl extends PersistableManager {
  		}
 	}
 	
+	public int getId(Persistable persistable) {
+		__Persistable __persistable = checkArgumentAndCast(persistable);
+		return __persistable.__getId();
+	}
+
 	public boolean isPersisted(Persistable persistable) {
 		__Persistable __persistable = checkArgumentAndCast(persistable);
 		return __persistable.__getId() > 0;
 	}
-
 
 	/**
 	 * Searches objects of an especific persistable class from the repository.
