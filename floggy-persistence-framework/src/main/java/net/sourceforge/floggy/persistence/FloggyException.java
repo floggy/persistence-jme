@@ -61,4 +61,11 @@ public class FloggyException extends Exception {
     public Throwable getRootCause() {
         return rootCause;
     }
+    
+    public void printStackTrace() {
+    	super.printStackTrace();
+    	if (rootCause != null) {
+    		rootCause.printStackTrace();
+    	}
+    }
 }
