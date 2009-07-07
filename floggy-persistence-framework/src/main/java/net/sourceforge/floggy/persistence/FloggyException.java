@@ -26,12 +26,10 @@ public class FloggyException extends Exception {
      */
     private static final long serialVersionUID = 7139165976718330303L;
 
-/**
-     * Construct a new FloggyException with no detail message.
+    /**
+     * The root cause
      */
-    public FloggyException() {
-        super();
-    }
+    protected Throwable rootCause;
 
 /**
      * Construct a new FloggyException with a specified detail message.
@@ -41,5 +39,26 @@ public class FloggyException extends Exception {
      */
     public FloggyException(final String message) {
         super(message);
+    }
+
+/**
+     * Construct a new FloggyException with a specified detail message 
+     * and root cause.
+     * 
+     * @param message
+     *            The detail message.
+     */
+    public FloggyException(final String message, final Throwable rootCause) {
+        super(message);
+        this.rootCause = rootCause;
+    }
+
+    /**
+     * Gets the root cause if any of the current throwable
+     *
+     * @return the root cause or null.
+     */
+    public Throwable getRootCause() {
+        return rootCause;
     }
 }

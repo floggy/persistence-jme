@@ -406,11 +406,14 @@ public class PersistableManagerImpl extends PersistableManager {
 	}
 	
 	private static FloggyException handleException(Exception ex) {
-		String message= ex.getMessage();
+		if (ex instanceof FloggyException) {
+			return (FloggyException)ex;
+		}
+		String message = ex.getMessage();
 		if (message == null) {
 			message= ex.getClass().getName();
 		}
-		return new FloggyException(message);
+		return new FloggyException(message, ex);
 	}
 	
 	static __Persistable createInstance(Class persistableClass)
