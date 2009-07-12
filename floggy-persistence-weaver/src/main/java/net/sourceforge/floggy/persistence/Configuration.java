@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import net.sourceforge.floggy.persistence.impl.PersistableMetadata;
+
 public class Configuration {
 	
 	private boolean addDefaultConstructor = true;
@@ -27,7 +29,7 @@ public class Configuration {
 	
 	private List persistables= new ArrayList();
 
-	public List getPersistables() {
+	public List getPersistableMetadatas() {
 		return persistables;
 	}
 
@@ -51,22 +53,22 @@ public class Configuration {
 		this.persistables = persistables;
 	}
 	
-	public PersistableConfiguration getPersistableConfig(String className) {
+	public PersistableMetadata getPersistableMetadata(String className) {
 		for (Iterator iter = persistables.iterator(); iter.hasNext();) {
-			PersistableConfiguration config = (PersistableConfiguration) iter.next();
-			if (className.equals(config.getClassName())) {
-				return config;
+			PersistableMetadata metadata = (PersistableMetadata) iter.next();
+			if (className.equals(metadata.getClassName())) {
+				return metadata;
 			}
 		}
 		return null;
 	}
 	
 	public boolean containsPersistable(String className) {
-		return getPersistableConfig(className) != null;
+		return getPersistableMetadata(className) != null;
 	}
 	
-	public void addPersistable(PersistableConfiguration config) {
-		persistables.add(config);
+	public void addPersistableMetadata(PersistableMetadata metadata) {
+		persistables.add(metadata);
 	}
 
 }

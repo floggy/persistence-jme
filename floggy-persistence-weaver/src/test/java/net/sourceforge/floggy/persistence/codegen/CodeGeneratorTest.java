@@ -23,8 +23,8 @@ import javassist.LoaderClassPath;
 import javassist.NotFoundException;
 import junit.framework.TestCase;
 import net.sourceforge.floggy.persistence.Configuration;
-import net.sourceforge.floggy.persistence.PersistableConfiguration;
 import net.sourceforge.floggy.persistence.Weaver;
+import net.sourceforge.floggy.persistence.impl.PersistableMetadata;
 
 public class CodeGeneratorTest extends TestCase {
 
@@ -47,10 +47,8 @@ public class CodeGeneratorTest extends TestCase {
 		pool.insertClassPath(new LoaderClassPath(getClass().getClassLoader()));
 
 		Configuration configuration = new Configuration();
-		PersistableConfiguration pConfig = new PersistableConfiguration();
-		pConfig.setClassName(ctClass.getName());
-		pConfig.setRecordStoreName(ctClass.getSimpleName());
-		configuration.addPersistable(pConfig);
+		PersistableMetadata metadata = new PersistableMetadata(ctClass.getName(), null, null, null, ctClass.getSimpleName());
+		configuration.addPersistableMetadata(metadata);
 		configuration.setAddDefaultConstructor(addDefaultConstructor);
 		return new CodeGenerator(ctClass, pool, configuration);
 	}

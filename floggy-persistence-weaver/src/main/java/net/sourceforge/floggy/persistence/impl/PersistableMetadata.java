@@ -20,19 +20,69 @@ package net.sourceforge.floggy.persistence.impl;
  */
 public class PersistableMetadata {
 
-	private String recordStoreName;
-	private String superClassName;
+	public static final int BOOLEAN = 1;
+	public static final int BYTE = 2;
+	public static final int CALENDAR = 4;
+	public static final int CHARACTER = 8;
+	public static final int DATE = 16;
+	public static final int DOUBLE = 32;
+	public static final int FLOAT = 64;
+	public static final int HASHTABLE = 128;
+	public static final int INT = 256;
+	public static final int LONG = 512;
+	public static final int PERSISTABLE = 1024;
+	public static final int SHORT = 2048;
+	public static final int STACK = 4096;
+	public static final int STRING = 8192;
+	public static final int STRINGBUFFER = 16384;
+	public static final int TIMEZONE = 32768;
+	public static final int VECTOR = 65536;
 
-	public PersistableMetadata(String recordStoreName, String superClassName) {
-		super();
-		this.recordStoreName = recordStoreName;
-		this.superClassName = superClassName;
+	public static final int ARRAY = 131072;
+	public static final int PRIMITIVE = 262144; 
+	
+	private String className;
+	private String superClassName;
+	private String[] fieldNames;
+	private int[] fieldTypes;
+	private String recordStoreName;
+	private int recordId;
+	
+	
+	public PersistableMetadata(String className, String superClassName, String[] fieldNames, int[] fieldTypes, String recordStoreName) {
+		this(className, superClassName, fieldNames, fieldTypes, recordStoreName, -1);
 	}
 
+	public PersistableMetadata(String className, String superClassName, String[] fieldNames, int[] fieldTypes, String recordStoreName, int recordId) {
+		super();
+		this.className = className;
+		this.superClassName = superClassName;
+		this.fieldNames = fieldNames;
+		this.fieldTypes = fieldTypes;
+		this.recordStoreName = recordStoreName;
+		this.recordId = recordId;
+	}
+	
+	public String getClassName() {
+		return className;
+	}
+
+	public String[] getFieldNames() {
+		return fieldNames;
+	}
+	
+	public int[] getFieldTypes() {
+		return fieldTypes;
+	}
+	
+	public int getRecordId() {
+		return recordId;
+	}
+	
 	public String getRecordStoreName() {
 		return recordStoreName;
 	}
-
+	
 	public String getSuperClassName() {
 		return superClassName;
 	}

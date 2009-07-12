@@ -58,6 +58,7 @@ public class PersistableManagerImpl extends PersistableManager {
 	 * Creates a new instance of PersistableManager.
 	 */
 	public PersistableManagerImpl() throws Exception {
+		MetadataManagerUtil.init();
 		rmsVersion= FloggyProperties.getInstance().getVersion();
 	}
 	
@@ -278,7 +279,7 @@ public class PersistableManagerImpl extends PersistableManager {
 	public void deleteAll(Class persistableClass) throws FloggyException {
 		__Persistable persistable = createInstance(persistableClass);
 		closeRecordStore(getRecordStore(persistable.getRecordStoreName()));
-		PersistableMetadata metadata = persistable.__getPersistableMetadata();
+		PersistableMetadata metadata = MetadataManagerUtil.getMetadata(persistableClass.getName());
 		if (deletableClass.isAssignableFrom(persistableClass) || metadata.getSuperClassName() != null) {
 			ObjectSet os = find(persistableClass, null, null);
 			for (int i = 0; i < os.size(); i++) {

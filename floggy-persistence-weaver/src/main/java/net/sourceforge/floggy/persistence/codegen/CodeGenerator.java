@@ -28,7 +28,6 @@ import javassist.bytecode.AccessFlag;
 import net.sourceforge.floggy.persistence.ClassVerifier;
 import net.sourceforge.floggy.persistence.Configuration;
 import net.sourceforge.floggy.persistence.IDable;
-import net.sourceforge.floggy.persistence.PersistableConfiguration;
 import net.sourceforge.floggy.persistence.Weaver;
 import net.sourceforge.floggy.persistence.formatter.CodeFormatter;
 
@@ -52,7 +51,7 @@ public class CodeGenerator {
 
 	private ClassPool classPool;
 	private Configuration configuration;
-	
+
 	private StringBuffer source;
 
 	/**
@@ -63,10 +62,11 @@ public class CodeGenerator {
 	 * @param configuration
 	 *            the configuration object
 	 */
-	public CodeGenerator(CtClass ctClass, ClassPool classPool, Configuration configuration) {
+	public CodeGenerator(CtClass ctClass, ClassPool classPool,
+			Configuration configuration) {
 		this.ctClass = ctClass;
 		this.classPool = classPool;
-		this.configuration= configuration;
+		this.configuration = configuration;
 	}
 
 	private void generateDefaultConstructor() throws NotFoundException,
@@ -115,7 +115,6 @@ public class CodeGenerator {
 		if (configuration.isGenerateSource()) {
 			source = new StringBuffer();
 		}
-		
 
 		// Constructor
 		this.generateDefaultConstructor();
@@ -125,17 +124,15 @@ public class CodeGenerator {
 
 		// Attributes
 		this.generateIdField();
-		this.generatePersistableMetadataField();
 
 		// Methods
 		this.generateGetIdMethod();
 		this.generateSetIdMethod();
-		this.generateGetPersistableMetadata();
 		this.generateGetRecordStoreNameMethod();
 		this.generateDeserializeMethod();
 		this.generateSerializeMethod();
 		this.generateDeleteMethod();
-		
+
 		// Implements interface
 		this.generatePersistableInterface();
 	}
@@ -157,22 +154,7 @@ public class CodeGenerator {
 
 		addField(buffer);
 	}
-	
-	/**
-	 * 
-	 * @throws CannotCompileException
-	 */
-	private void generatePersistableMetadataField() throws CannotCompileException, NotFoundException {
-		PersistableConfiguration pConfig= configuration.getPersistableConfig(ctClass.getName());
-		CtClass superClass = ctClass.getSuperclass();
-		ClassVerifier verifier = new ClassVerifier(superClass, classPool);
-		String buffer = "private final static "
-						+ "net.sourceforge.floggy.persistence.impl.PersistableMetadata __persistableMetadata = "
-						+ " new net.sourceforge.floggy.persistence.impl.PersistableMetadata(\""
-					+ pConfig.getRecordStoreName() + "\", " + ((verifier.isPersistable()) ? "\"" + superClass.getName() + "\"" : "null") + ");";
-		addField(buffer);
-	}
-	
+
 	/**
 	 * 
 	 * @throws CannotCompileException
@@ -183,54 +165,43 @@ public class CodeGenerator {
 		buffer.append("return __id;\n");
 		buffer.append("}\n");
 
-	    //adicionando a classe
-	    addMethod(buffer);
+		// adicionando a classe
+		addMethod(buffer);
 	}
 
 	/**
 	 * 
 	 * @throws CannotCompileException
 	 */
-	private void generateGetRecordStoreNameMethod() throws CannotCompileException {
+	private void generateGetRecordStoreNameMethod()
+			throws CannotCompileException {
 		try {
 			ctClass.getDeclaredMethod("getRecordStoreName");
 		} catch (NotFoundException nfex) {
 			StringBuffer buffer = new StringBuffer();
 			buffer.append("public String getRecordStoreName() {\n");
-			buffer.append("return __persistableMetadata.getRecordStoreName();\n");
+			buffer.append("return \""
+					+ configuration.getPersistableMetadata(ctClass.getName())
+							.getRecordStoreName() + "\";\n");
 			buffer.append("}\n");
 
-		    //adicionando a classe
-		    addMethod(buffer);
+			// adicionando a classe
+			addMethod(buffer);
 		}
 	}
 
 	/**
-	 *
+	 * 
 	 * @throws CannotCompileException
 	 */
-	private void generateSetIdMethod() throws CannotCompileException, NotFoundException {
+	private void generateSetIdMethod() throws CannotCompileException,
+			NotFoundException {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("public void __setId(int id) {\n");
 		buffer.append("this.__id= id;\n");
 		if (isIDable(ctClass)) {
 			buffer.append("this.setId(id);\n");
 		}
-		buffer.append("}\n");
-
-	    //adicionando a classe
-	    addMethod(buffer);
-	}
-
-	/**
-	 *
-	 * @throws CannotCompileException
-	 */
-	private void generateGetPersistableMetadata() throws CannotCompileException {
-		StringBuffer buffer = new StringBuffer();
-		buffer.append("public net.sourceforge.floggy.persistence.impl.PersistableMetadata __getPersistableMetadata() {\n");
-		// TODO podemos adicionar a quantidade de registros nesse persistable
-		buffer.append("return __persistableMetadata;\n");
 		buffer.append("}\n");
 
 		// adicionando a classe
@@ -299,7 +270,8 @@ public class CodeGenerator {
 	 * 
 	 * @throws CannotCompileException
 	 */
-	private void generateDeleteMethod() throws CannotCompileException, NotFoundException {
+	private void generateDeleteMethod() throws CannotCompileException,
+			NotFoundException {
 		StringBuffer buffer = new StringBuffer();
 
 		buffer.append("public void __delete() throws java.lang.Exception {\n");
@@ -314,7 +286,8 @@ public class CodeGenerator {
 			buffer.append("superRS.deleteRecord(super.__getId());\n");
 			buffer.append("super.__setId(0);\n");
 			buffer.append("} finally {\n");
-			buffer.append("net.sourceforge.floggy.persistence.impl.PersistableManagerImpl.closeRecordStore(superRS);\n");
+			buffer
+					.append("net.sourceforge.floggy.persistence.impl.PersistableManagerImpl.closeRecordStore(superRS);\n");
 			buffer.append("}\n");
 		}
 
@@ -389,7 +362,7 @@ public class CodeGenerator {
 	private void addMethod(StringBuffer buffer) throws CannotCompileException {
 		if (configuration.isGenerateSource()) {
 			source.append(CodeFormatter.format(buffer.toString()));
-			//System.out.println(source);
+			// System.out.println(source);
 		}
 		ctClass.addMethod(CtNewMethod.make(buffer.toString(), ctClass));
 	}
@@ -404,11 +377,10 @@ public class CodeGenerator {
 	public String getSource() {
 		return source.toString();
 	}
-	
+
 	public boolean isIDable(CtClass ctClass) throws NotFoundException {
 		CtClass idableClass = classPool.get(IDable.class.getName());
-		return ctClass.subtypeOf(idableClass);		
+		return ctClass.subtypeOf(idableClass);
 	}
-
 
 }

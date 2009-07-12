@@ -40,6 +40,4 @@ public interface __Persistable extends Persistable, Nameable {
 
 	public byte[] __serialize() throws Exception;
 
-	public PersistableMetadata __getPersistableMetadata();
-
 }
