@@ -15,13 +15,15 @@
  */
 package net.sourceforge.floggy.persistence.codegen;
 
+import java.util.Random;
+
 import javassist.CtClass;
 import javassist.NotFoundException;
 import net.sourceforge.floggy.persistence.Persistable;
 
 public class SourceCodeGeneratorFactory {
 
-	private static char indexForIteration = 'a';
+	private static Random random = new Random();
 
 	public static SourceCodeGenerator getSourceCodeGenerator(
 			CtClass persistableType, String fieldName, CtClass fieldType)
@@ -81,14 +83,8 @@ public class SourceCodeGeneratorFactory {
 		return generator;
 	}
 
-	private static char getNextIndexForIteration() {
-		// melhorar isso pode haver uma cadeia de intera��es com mais de 26
-		// iteradores!!!
-		indexForIteration++;
-		if (indexForIteration == 'z') {
-			indexForIteration = 'a';
-		}
-		return indexForIteration;
+	private static String getNextIndexForIteration() {
+		return "_" + Math.abs(random.nextInt(256));
 	}
 
 	private static boolean isWrapper(CtClass classType) {

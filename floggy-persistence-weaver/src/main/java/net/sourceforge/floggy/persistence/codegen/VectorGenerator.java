@@ -36,7 +36,7 @@ public class VectorGenerator extends SourceCodeGenerator implements
 				+ fieldName + ");");
 	}
 
-	public void setUpInterableVariable(char indexForIteration) {
+	public void setUpInterableVariable(String indexForIteration) {
 	}
 
 }

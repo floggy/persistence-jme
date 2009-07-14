@@ -21,7 +21,7 @@ import javassist.NotFoundException;
 public class ArrayGenerator extends SourceCodeGenerator implements
 	AttributeIterableGenerator {
 
-    private char indexForIteration;
+    private String indexForIteration;
     private CtClass persistableType;
 
     public ArrayGenerator(CtClass persistableType, String fieldName, CtClass classType) {
@@ -69,7 +69,7 @@ public class ArrayGenerator extends SourceCodeGenerator implements
 	addSaveCode("}");
     }
 
-    public void setUpInterableVariable(char indexForIteration) {
+    public void setUpInterableVariable(String indexForIteration) {
 	this.indexForIteration = indexForIteration;
     }
 
