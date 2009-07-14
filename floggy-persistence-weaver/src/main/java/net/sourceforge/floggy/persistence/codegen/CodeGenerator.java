@@ -152,7 +152,7 @@ public class CodeGenerator {
 	private void generateIdField() throws CannotCompileException {
 		String buffer = "public int __id = -1;";
 
-		addField(buffer);
+		addField(new StringBuffer(buffer));
 	}
 
 	/**
@@ -360,18 +360,31 @@ public class CodeGenerator {
 	}
 
 	private void addMethod(StringBuffer buffer) throws CannotCompileException {
+		String temp = buffer.toString();
 		if (configuration.isGenerateSource()) {
-			source.append(CodeFormatter.format(buffer.toString()));
-			// System.out.println(source);
+			source.append(CodeFormatter.format(temp));
 		}
-		ctClass.addMethod(CtNewMethod.make(buffer.toString(), ctClass));
+
+		try {
+			ctClass.addMethod(CtNewMethod.make(temp, ctClass));
+		} catch (CannotCompileException ccex) {
+			LOG.error("Adding method: \n" + CodeFormatter.format(temp));
+			throw ccex;
+		}
 	}
 
-	private void addField(String buffer) throws CannotCompileException {
+	private void addField(StringBuffer buffer) throws CannotCompileException {
+		String temp = buffer.toString();
 		if (configuration.isGenerateSource()) {
-			source.append(CodeFormatter.format(buffer));
+			source.append(CodeFormatter.format(temp));
 		}
-		ctClass.addField(CtField.make(buffer, ctClass));
+		
+		try {
+			ctClass.addField(CtField.make(temp, ctClass));
+		} catch (CannotCompileException ccex) {
+			LOG.error("Adding field: \n" + CodeFormatter.format(temp));
+			throw ccex;
+		}
 	}
 
 	public String getSource() {
