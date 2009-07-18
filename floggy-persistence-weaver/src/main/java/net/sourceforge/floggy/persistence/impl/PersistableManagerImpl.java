@@ -37,9 +37,6 @@ import net.sourceforge.floggy.persistence.PersistableManager;
  */
 public class PersistableManagerImpl extends PersistableManager {
 	
-	private String rmsVersion;
-	private final String apiVersion= FloggyProperties.CURRENT_VERSION;
-
 	//this code is a workaround to the problem of missing java.lang.NoClassDefFoundError.class in the CLDC 1.0
 	private static Class __persistableClass;
 	private static Class deletableClass;
@@ -59,7 +56,6 @@ public class PersistableManagerImpl extends PersistableManager {
 	 */
 	public PersistableManagerImpl() throws Exception {
 		MetadataManagerUtil.init();
-		rmsVersion= FloggyProperties.getInstance().getVersion();
 	}
 	
 	static Hashtable references= new Hashtable();
@@ -396,14 +392,6 @@ public class PersistableManagerImpl extends PersistableManager {
 		}
 
 		return new ObjectSetImpl(ids, persistableClass, this, lazy);
-	}
-	
-	public String getAPIVersion() {
-		return apiVersion;
-	}
-	
-	public String getRMSVersion() {
-		return rmsVersion;
 	}
 	
 	private static FloggyException handleException(Exception ex) {

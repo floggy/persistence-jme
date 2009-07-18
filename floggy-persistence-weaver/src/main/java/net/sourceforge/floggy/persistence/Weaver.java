@@ -34,7 +34,7 @@ import javassist.CtNewMethod;
 import javassist.Modifier;
 import javassist.NotFoundException;
 import net.sourceforge.floggy.persistence.codegen.CodeGenerator;
-import net.sourceforge.floggy.persistence.impl.FloggyProperties;
+import net.sourceforge.floggy.persistence.impl.MetadataManagerUtil;
 import net.sourceforge.floggy.persistence.impl.PersistableMetadata;
 import net.sourceforge.floggy.persistence.pool.InputPool;
 import net.sourceforge.floggy.persistence.pool.OutputPool;
@@ -272,7 +272,6 @@ public class Weaver {
 
 	private void embeddedUnderlineCoreClasses() throws IOException {
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/FloggyOutputStream.class");
-		embeddedClass("/net/sourceforge/floggy/persistence/impl/FloggyProperties.class");
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/MetadataManagerUtil.class");
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/ObjectComparator.class");
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/ObjectFilter.class");
@@ -319,7 +318,7 @@ public class Weaver {
 
 	public void execute() throws WeaverException {
 		long time = System.currentTimeMillis();
-		LOG.info("Floggy Persistence Weaver - "+FloggyProperties.CURRENT_VERSION);
+		LOG.info("Floggy Persistence Weaver - " + MetadataManagerUtil.getBytecodeVersion());
 		LOG.info("CLDC version: " + ((isCLDC10()) ? "1.0" : "1.1"));
 		try {
 //			readConfiguration();
@@ -367,7 +366,7 @@ public class Weaver {
 		List metadatas = configuration.getPersistableMetadatas();
 		StringBuffer buffer = new StringBuffer();
 		
-		buffer.append("public static void init() {\n");
+		buffer.append("public static void init() throws Exception {\n");
 		buffer.append("metadatas = new java.util.Hashtable();\n");
 		
 		for (Iterator iterator = metadatas.iterator(); iterator.hasNext();) {
@@ -414,6 +413,7 @@ public class Weaver {
 				+ "));\n");
 		}
 
+		buffer.append("load();\n");
 		buffer.append("}\n");
 
 		CtClass ctClass= this.classpathPool.get("net.sourceforge.floggy.persistence.impl.MetadataManagerUtil");
