@@ -219,14 +219,17 @@ public class CodeGenerator {
 		// Header
 		buffer.append("public void __deserialize(byte[] buffer, boolean lazy) throws java.lang.Exception {\n");
 
+		StringBuffer tempBuffer = new StringBuffer();
 		// Streams
-		buffer.append("java.io.DataInputStream dis = new java.io.DataInputStream(new java.io.ByteArrayInputStream(buffer));\n");
+		tempBuffer.append("java.io.DataInputStream dis = new java.io.DataInputStream(new java.io.ByteArrayInputStream(buffer));\n");
+		
+		int tempBufferSize = tempBuffer.length();
 
 		// Save the superclass if it is persistable.
 		CtClass superClass = this.ctClass.getSuperclass();
 		ClassVerifier verifier = new ClassVerifier(superClass, classPool);
 		if (verifier.isPersistable()) {
-			buffer.append(SuperClassGenerator.generateLoadSource(superClass));
+			tempBuffer.append(SuperClassGenerator.generateLoadSource(superClass));
 		}
 
 		CtField[] fields = ctClass.getDeclaredFields();
@@ -252,14 +255,19 @@ public class CodeGenerator {
 				generator = SourceCodeGeneratorFactory.getSourceCodeGenerator(
 						ctClass, field.getName(), field.getType());
 				if (generator != null) {
-					buffer.append(generator.getLoadCode());
+					tempBuffer.append(generator.getLoadCode());
 				}
 			}
 		}
+	
 
-		// Close the streams
-		buffer.append("dis.close();\n");
+		if (tempBuffer.length() != tempBufferSize) {
+			// Close the streams
+			tempBuffer.append("dis.close();\n");
 
+			buffer.append(tempBuffer);
+		}
+		
 		buffer.append("}\n");
 
 		// adicionando a classe
@@ -314,14 +322,17 @@ public class CodeGenerator {
 		// Header
 		buffer.append("public byte[] __serialize() throws java.lang.Exception {\n");
 
+		StringBuffer tempBuffer = new StringBuffer();
 		// Streams
-		buffer.append("net.sourceforge.floggy.persistence.impl.FloggyOutputStream fos= new net.sourceforge.floggy.persistence.impl.FloggyOutputStream();\n");
+		tempBuffer.append("net.sourceforge.floggy.persistence.impl.FloggyOutputStream fos= new net.sourceforge.floggy.persistence.impl.FloggyOutputStream();\n");
+
+		int tempBufferSize = tempBuffer.length();
 
 		// Save the superclass if it is persistable.
 		CtClass superClass = this.ctClass.getSuperclass();
 		ClassVerifier verifier = new ClassVerifier(superClass, classPool);
 		if (verifier.isPersistable()) {
-			buffer.append(SuperClassGenerator.generateSaveSource(superClass));
+			tempBuffer.append(SuperClassGenerator.generateSaveSource(superClass));
 		}
 
 		CtField[] fields = ctClass.getDeclaredFields();
@@ -346,13 +357,21 @@ public class CodeGenerator {
 				generator = SourceCodeGeneratorFactory.getSourceCodeGenerator(
 						ctClass, field.getName(), field.getType());
 				if (generator != null) {
-					buffer.append(generator.getSaveCode());
+					tempBuffer.append(generator.getSaveCode());
 				}
 			}
 		}
+		
+		if (tempBuffer.length() != tempBufferSize) {
+			// Close the streams
+			tempBuffer.append("fos.flush();\n");
+			tempBuffer.append("return fos.toByteArray();\n");
 
-		buffer.append("fos.flush();\n");
-		buffer.append("return fos.toByteArray();\n");
+			buffer.append(tempBuffer);
+		} else {
+			buffer.append("return new byte[0];\n");
+		}
+
 		buffer.append("}");
 
 		// adicionando a classe

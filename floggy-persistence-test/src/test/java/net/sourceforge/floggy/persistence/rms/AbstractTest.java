@@ -159,20 +159,16 @@ public abstract class AbstractTest extends TestCase {
 
 	public void testDeleteAll() throws Exception {
 		Persistable object = newInstance();
-		try {
-			manager.deleteAll(object.getClass());
-			assertEquals(0, manager.find(object.getClass(), null, null).size());
 
-			manager.save(object);
-			// garantido que vai estar aberto
-			assertEquals(1, manager.find(object.getClass(), null, null).size());
+		manager.deleteAll(object.getClass());
+		assertEquals(0, manager.find(object.getClass(), null, null).size());
 
-			manager.deleteAll(object.getClass());
-			assertEquals(0, manager.find(object.getClass(), null, null).size());
+		manager.save(object);
+		// garantido que vai estar aberto
+		assertEquals(1, manager.find(object.getClass(), null, null).size());
 
-		} catch (Exception e) {
-			fail(e.getMessage());
-		}
+		manager.deleteAll(object.getClass());
+		assertEquals(0, manager.find(object.getClass(), null, null).size());
 	}
 
 	public void testDeleteWithNullObject() {
