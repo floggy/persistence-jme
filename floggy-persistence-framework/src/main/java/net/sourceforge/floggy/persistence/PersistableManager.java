@@ -41,10 +41,14 @@ public abstract class PersistableManager {
                 Class pmClass =
                     Class.forName("net.sourceforge.floggy.persistence.impl.PersistableManagerImpl");
                 instance = (PersistableManager) pmClass.newInstance();
-            } catch (Exception e) {
-                // this would be never happen because the weaver will 
-                // always  embebebed this class
-                throw new RuntimeException(e.getMessage());
+            } catch (ClassNotFoundException cnfex) {
+            	throw new RuntimeException("No PersistableManager implementation was found. Please check the weaver execution.");
+            } catch (Exception ex) {
+            	String message = ex.getMessage();
+            	if (message == null) {
+            		message = ex.getClass().getName();
+            	}
+            	throw new RuntimeException(message);
             }
         }
 
