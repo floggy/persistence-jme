@@ -40,18 +40,10 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>javax.microedition</groupId>
-			<artifactId>midpapi</artifactId>
-			<version>2.0</version>
-			<scope>system</scope>
-			<systemPath>${wtk.home}/lib/midpapi20.jar</systemPath>
-		</dependency>
-		<dependency>
-			<groupId>javax.microedition</groupId>
-			<artifactId>cldcapi</artifactId>
-			<version>1.1</version>
-			<scope>system</scope>
-			<systemPath>${wtk.home}/lib/cldcapi11.jar</systemPath>
+			<groupId>org.microemu</groupId>
+			<artifactId>midpapi20</artifactId>
+			<version>${me2Version}</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 	<build>
@@ -113,8 +105,10 @@
 					</execution>
 				</executions>
 				<configuration>
-					<wtkHome>${wtk.home}</wtkHome>
-					<obfuscate>true</obfuscate>
+					<proguard>true</proguard>
+					<obfuscate>false</obfuscate>
+					<useWtkLibs>false</useWtkLibs>
+					<proguardPreverify>true</proguardPreverify>
 					<midlets>
 						<MIDlet>
 							<name>${project.name}</name>
@@ -147,7 +141,6 @@
 		</plugins>
 	</build>
 	<properties>
-		<j2me.midlet.profile>MIDP-2.0</j2me.midlet.profile>
-		<j2me.midlet.configuration>CLDC-1.1</j2me.midlet.configuration>
+		<me2Version>2.0.3</me2Version>
 	</properties>
 </project>

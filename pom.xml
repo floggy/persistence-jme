@@ -44,6 +44,16 @@
 	</scm>
 	<repositories>
 		<repository>
+			<id>pyx4me-web-release</id>
+			<url>http://www.pyx4me.com/maven2-release</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</repository>
+		<repository>
 			<id>floggy</id>
 			<url>http://floggy.sourceforge.net/repository</url>
 		</repository>
