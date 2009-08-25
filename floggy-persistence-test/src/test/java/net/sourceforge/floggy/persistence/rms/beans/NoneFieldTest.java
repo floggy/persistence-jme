@@ -15,18 +15,22 @@
  */
 package net.sourceforge.floggy.persistence.rms.beans;
 
+import java.util.Hashtable;
+
 import net.sourceforge.floggy.persistence.ObjectSet;
 import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.beans.FloggyNoneFields;
+import net.sourceforge.floggy.persistence.migration.Enumeration;
+import net.sourceforge.floggy.persistence.migration.MigrationManager;
 import net.sourceforge.floggy.persistence.rms.AbstractTest;
 
 public class NoneFieldTest extends AbstractTest {
 
-	protected Class getParameterType() {
+	public Object getNewValueForSetMethod() {
 		return null;
 	}
 
-	public Object getNewValueForSetMethod() {
+	protected Class getParameterType() {
 		return null;
 	}
 
@@ -51,6 +55,45 @@ public class NoneFieldTest extends AbstractTest {
 
 	public void testFindWithFilter() throws Exception {
 	}
+
+	public void testFR2422928Read() throws Exception {
+		Persistable object = newInstance();
+		manager.save(object);
+
+		MigrationManager um = MigrationManager.getInstance();
+		Enumeration enumeration = um.start(object.getClass(), null);
+		
+		try {
+			while (enumeration.hasMoreElements()) {
+				Hashtable data = (Hashtable) enumeration.nextElement();
+				assertTrue(data.isEmpty());
+			}
+		} finally {
+			manager.delete(object);
+			um.finish(object.getClass());
+		}
+	}
+	
+	public void testFR2422928Update() throws Exception {
+		Persistable oldObject = newInstance();
+		manager.save(oldObject);
+
+		MigrationManager um = MigrationManager.getInstance();
+		Enumeration enumeration = um.start(oldObject.getClass(), null);
+		try {
+			while (enumeration.hasMoreElements()) {
+				Persistable newObject = newInstance();
+				enumeration.nextElement();
+				int oldId = manager.getId(oldObject);
+				int newId = enumeration.update(newObject);
+				assertEquals(oldId, newId);
+			}
+		} finally {
+			manager.delete(oldObject);
+			um.finish(oldObject.getClass());
+		}
+	}
+
 
 	public void testNotNullAttribute() throws Exception {
 		Persistable object1 = newInstance();

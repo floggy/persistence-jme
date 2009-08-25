@@ -15,8 +15,12 @@
  */
 package net.sourceforge.floggy.persistence.rms.beans;
 
+import java.util.Hashtable;
+
 import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.beans.FloggyStaticAttribute;
+import net.sourceforge.floggy.persistence.migration.Enumeration;
+import net.sourceforge.floggy.persistence.migration.MigrationManager;
 import net.sourceforge.floggy.persistence.rms.AbstractTest;
 
 public class StaticAttributeTest extends AbstractTest {
@@ -26,7 +30,7 @@ public class StaticAttributeTest extends AbstractTest {
 	protected Class getParameterType() {
 		return Object.class;
 	}
-	
+
 	public Object getNewValueForSetMethod() {
 		return new Object();
 	}
@@ -43,8 +47,25 @@ public class StaticAttributeTest extends AbstractTest {
 		FloggyStaticAttribute.x = null;
 	}
 
+	public void testFR2422928Read() throws Exception {
+		Persistable object = newInstance();
+		setX(object, getValueForSetMethod());
+		manager.save(object);
+		MigrationManager um = MigrationManager.getInstance();
+		Enumeration enumeration = um.start(object.getClass(), null);
+		try {
+			while (enumeration.hasMoreElements()) {
+				Hashtable data = (Hashtable) enumeration.nextElement();
+				assertTrue(data.isEmpty());
+			}
+		} finally {
+			manager.delete(object);
+			um.finish(object.getClass());
+		}
+	}
+
 	public void testNotNullAttribute() throws Exception {
-		// como o atributo n�o vai ser salvo ele tem q retornar null!!!
+		// como o atributo não vai ser salvo ele tem q retornar null!!!
 		testNullAttribute();
 	}
 

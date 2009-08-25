@@ -50,12 +50,11 @@ package net.sourceforge.floggy.persistence;
  * 
  */
 public interface IDable {
-
-	/**
-	 * Setter method to the id field. It is used by the framework to export
-	 * the RMS id value.
-	 * @param the RMS id.
-	 */
-	void setId(int id);
-
+    /**
+     * Setter method to the id field. It is used by the framework to
+     * export the RMS id value.
+     *
+     * @param id RMS id.
+     */
+    void setId(int id);
 }

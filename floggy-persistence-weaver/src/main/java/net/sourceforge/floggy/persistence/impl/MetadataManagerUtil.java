@@ -18,8 +18,11 @@ package net.sourceforge.floggy.persistence.impl;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Vector;
 
+import javax.microedition.rms.RecordEnumeration;
 import javax.microedition.rms.RecordStore;
 import javax.microedition.rms.RecordStoreException;
 
@@ -32,8 +35,19 @@ public class MetadataManagerUtil {
 	public static final String VERSION_1_3_0 = "1.3.0-SNAPSHOT";
 	public static final String CURRENT_VERSION = VERSION_1_3_0;
 
-	private static Hashtable metadatas;
 	private static String rmsVersion;
+	private static Hashtable classBasedMetadatas;
+	private static Hashtable rmsBasedMetadatas;
+	private static Vector notMigratedClassNames; 
+	
+	public static void addRMSMetadata(PersistableMetadata metadata) {
+		rmsBasedMetadatas.put(metadata.getClassName(), metadata);
+		notMigratedClassNames.removeElement(metadata.getClassName());
+	}
+
+	public static boolean containsRMSMetadata(PersistableMetadata metadata) {
+		return rmsBasedMetadatas.containsKey(metadata.getClassName());
+	}
 
 	private static void deserialize(byte[] data) throws IOException {
 		DataInputStream dis = new DataInputStream(
@@ -50,24 +64,72 @@ public class MetadataManagerUtil {
 		return CURRENT_VERSION;
 	}
 
-	public static PersistableMetadata getMetadata(String className) {
-		return (PersistableMetadata) metadatas.get(className);
+	public static PersistableMetadata getClassBasedMetadata(String className) {
+		return (PersistableMetadata) classBasedMetadatas.get(className);
+	}
+
+	public static Vector getNotMigratedClasses() {
+		return notMigratedClassNames; 
+	}
+
+	public static PersistableMetadata getRMSBasedMetadata(String className) {
+		return (PersistableMetadata) rmsBasedMetadatas.get(className);
 	}
 
 	public static String getRMSVersion() {
 		return rmsVersion;
 	}
 
-	public static void init() throws IOException, RecordStoreException {
+	public static void init() throws Exception {
 	}
 
-	public static void load() throws IOException, RecordStoreException {
+	public static void load() throws Exception {
+		notMigratedClassNames = new Vector();
+
 		RecordStore rs = RecordStore.openRecordStore("FloggyProperties", true);
 		if (rs.getNumRecords() != 0) {
 			deserialize(rs.getRecord(1));
+			loadRMSStructure();
 		} else {
 			rmsVersion = CURRENT_VERSION;
 			save(rs);
+		}
+		
+		if (classBasedMetadatas != null) {
+			Enumeration classNames = classBasedMetadatas.keys();
+			while (classNames.hasMoreElements()) {
+				String className = (String) classNames.nextElement();
+		
+				PersistableMetadata classBasedMetadata = (PersistableMetadata) classBasedMetadatas.get(className);
+				PersistableMetadata rmsBasedMetadata = (PersistableMetadata) rmsBasedMetadatas.get(className);
+				
+				if (!classBasedMetadata.equals(rmsBasedMetadata)) {
+					notMigratedClassNames.addElement(className);
+				}
+			}
+		}
+	}
+
+	private static void loadRMSStructure() throws Exception {
+		RecordStore rs = RecordStore.openRecordStore("FloggyProperties", true);
+		RecordEnumeration enumeration = rs.enumerateRecords(null, null, false);
+		while (enumeration.hasNextElement()) {
+			int recordId = enumeration.nextRecordId();
+			DataInputStream dis = new DataInputStream(new ByteArrayInputStream(rs.getRecord(recordId)));
+			String className = dis.readUTF();
+			if (!className.equals("version")) {
+				boolean isAbstract = dis.readBoolean();
+				String superClassName = SerializationHelper.readString(dis);
+				String fieldNames[] = new String[dis.readInt()]; 
+				int fieldTypes[] = new int[fieldNames.length];
+				for (int i = 0; i < fieldNames.length; i++) {
+					fieldNames[i] = dis.readUTF();
+					fieldTypes[i] = dis.readInt();
+				}
+				Hashtable persistableImplementations = SerializationHelper.readHashtable(dis);
+				String recordStoreName = dis.readUTF();
+				addRMSMetadata(new PersistableMetadata(isAbstract, className, superClassName, fieldNames, fieldTypes, persistableImplementations, recordStoreName, recordId));
+			}
 		}
 	}
 
@@ -80,6 +142,35 @@ public class MetadataManagerUtil {
 			rs.addRecord(data, 0, data.length);
 		}
 	}
+	
+	public static void saveRMSStructure(PersistableMetadata metadata) throws Exception {
+		String[] fieldNames = metadata.getFieldNames(); 
+		int[] fieldTypes = metadata.getFieldTypes();
+		FloggyOutputStream out = new FloggyOutputStream();
+
+		out.writeUTF(metadata.getClassName());
+		out.writeBoolean(metadata.isAbstract());
+		SerializationHelper.writeString(out, metadata.getSuperClassName());
+		out.writeInt(fieldTypes.length);
+		for (int i = 0; i < fieldTypes.length; i++) {
+			out.writeUTF(fieldNames[i]);
+			out.writeInt(fieldTypes[i]);
+		}
+		SerializationHelper.writeHashtable(out, metadata.getPersistableImplementations());
+		out.writeUTF(metadata.getRecordStoreName());
+
+		byte[] data = out.toByteArray();
+		RecordStore rs = RecordStore.openRecordStore("FloggyProperties", true);
+
+		int recordId = metadata.getRecordId();
+		if (recordId != -1) {
+			rs.setRecord(recordId, data, 0, data.length);
+		}
+		else {
+			metadata.setRecordId(rs.addRecord(data, 0, data.length));
+		}
+		addRMSMetadata(metadata);
+	}
 
 	private static byte[] serialize() throws IOException {
 		FloggyOutputStream fos = new FloggyOutputStream();
@@ -87,5 +178,6 @@ public class MetadataManagerUtil {
 		fos.writeUTF(rmsVersion);
 		return fos.toByteArray();
 	}
+
 
 }

@@ -47,7 +47,7 @@ public class CodeGeneratorTest extends TestCase {
 		pool.insertClassPath(new LoaderClassPath(getClass().getClassLoader()));
 
 		Configuration configuration = new Configuration();
-		PersistableMetadata metadata = new PersistableMetadata(ctClass.getName(), null, null, null, ctClass.getSimpleName());
+		PersistableMetadata metadata = new PersistableMetadata(false, ctClass.getName(), null, null, null, null, ctClass.getSimpleName());
 		configuration.addPersistableMetadata(metadata);
 		configuration.setAddDefaultConstructor(addDefaultConstructor);
 		return new CodeGenerator(ctClass, pool, configuration);

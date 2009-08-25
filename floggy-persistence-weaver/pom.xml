@@ -35,6 +35,18 @@
 		<developerConnection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/trunk/floggy-persistence-weaver</developerConnection>
 		<url>http://floggy.svn.sourceforge.net/viewvc/floggy/trunk/floggy-persistence-weaver</url>
 	</scm>
+	<repositories>
+        <repository>
+            <id>pyx4me-web-snapshot</id>
+            <url>http://www.pyx4me.com/maven2-snapshot</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
+	</repositories>
 	<dependencies>
 		<dependency>
 			<groupId>jboss</groupId>
@@ -75,7 +87,7 @@
 		<dependency>
 			<groupId>org.microemu</groupId>
 			<artifactId>microemulator</artifactId>
-			<version>2.0.1</version>
+			<version>3.0.0-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>

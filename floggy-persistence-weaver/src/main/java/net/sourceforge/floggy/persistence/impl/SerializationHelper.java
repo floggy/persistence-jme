@@ -32,12 +32,15 @@ import net.sourceforge.floggy.persistence.PersistableManager;
 
 public class SerializationHelper {
 
-	private static final int NOT_NULL = 0;
+	public static final int NOT_NULL = 0;
 
-	private static final int NULL = 1;
+	public static final int NULL = 1;
 
-	private static PersistableManager manager = PersistableManager
-			.getInstance();
+	private static PersistableManager pm = null;
+	
+	public static void setPersistableManager(PersistableManager pm) {
+		SerializationHelper.pm = pm;
+	}
 
 	public final static Boolean readBoolean(DataInput in) throws IOException {
 		Boolean b = null;
@@ -162,7 +165,7 @@ public class SerializationHelper {
 			o = TimeZone.getTimeZone(in.readUTF());
 		} else {
 			o = PersistableManagerImpl.createInstance(Class.forName(className));
-			manager.load((Persistable) o, in.readInt());
+			pm.load((Persistable) o, in.readInt());
 		}
 		return o;
 	}
@@ -197,7 +200,7 @@ public class SerializationHelper {
 			o = TimeZone.getTimeZone(in.readUTF());
 		} else {
 			o = PersistableManagerImpl.createInstance(Class.forName(className));
-			manager.load((Persistable) o, in.readInt());
+			pm.load((Persistable) o, in.readInt());
 		}
 		return o;
 	}
@@ -219,7 +222,7 @@ public class SerializationHelper {
 				String className = in.readUTF();
 				persistable = (Persistable) Class.forName(className).newInstance();
 			case NOT_NULL:
-				manager.load(persistable, in.readInt());
+				pm.load(persistable, in.readInt());
 				break;
 			case NULL:
 				persistable = null;
@@ -437,7 +440,7 @@ public class SerializationHelper {
 			TimeZone t = (TimeZone) o;
 			out.writeUTF(t.getID());
 		} else if (o instanceof __Persistable) {
-			int id = manager.save((Persistable) o);
+			int id = pm.save((Persistable) o);
 			out.writeInt(id);
 		} else {
 			throw new FloggyException("The class " + className
@@ -481,7 +484,7 @@ public class SerializationHelper {
 			TimeZone t = (TimeZone) o;
 			out.writeUTF(t.getID());
 		} else if (o instanceof __Persistable) {
-			int id = manager.save((Persistable) o);
+			int id = pm.save((Persistable) o);
 			out.writeInt(id);
 		} else {
 			throw new FloggyException("The class " + className
@@ -501,7 +504,7 @@ public class SerializationHelper {
 			} else {
 				out.writeByte(NOT_NULL);
 			}
-			out.writeInt(manager.save(persistable));
+			out.writeInt(pm.save(persistable));
 		}
 	}
 

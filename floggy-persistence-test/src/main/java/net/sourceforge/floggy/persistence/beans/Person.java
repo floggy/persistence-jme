@@ -26,19 +26,21 @@ import net.sourceforge.floggy.persistence.beans.animals.Bird;
 
 public class Person implements Persistable, Deletable {
 
-    String cpf;
+	protected String cpf;
 
-    String nome;
+    protected String nome;
 
-    Date dataNascimento;
+    protected Date dataNascimento;
 
-    transient int idade;
+    protected transient int idade;
     
     private Bird x;
 
     public Person() {
         //
     }
+    
+    public char sex;
 
     public Person(String cpf, String nome, Date dataNascimento) {
         setCpf(cpf);

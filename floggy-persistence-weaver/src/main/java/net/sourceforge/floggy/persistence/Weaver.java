@@ -21,6 +21,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Enumeration;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -237,13 +239,21 @@ public class Weaver {
 		CtField[] fields = ctClass.getDeclaredFields();
 		List fieldNames = new ArrayList(fields.length);
 		List fieldTypes = new ArrayList(fields.length);
+		Hashtable persistableImplementations = null;
 		for (int i = 0; i < fields.length; i++) {
 			CtField field = (CtField) fields[i];
 			if (ignoreField(field)) {
 				continue;
 			}
 			fieldNames.add(field.getName());
-			fieldTypes.add(buildFloggyFieldType(field.getType()));
+			Integer type = buildFloggyFieldType(field.getType());
+			fieldTypes.add(type);
+			if ((type.intValue() & PersistableMetadata.PERSISTABLE) == PersistableMetadata.PERSISTABLE) {
+				if (persistableImplementations == null) {
+					persistableImplementations = new Hashtable();
+				}
+				persistableImplementations.put(field.getName(), field.getType().getName());
+			}
 		}
 		
 		int[] temp = new int[fieldTypes.size()];
@@ -256,8 +266,8 @@ public class Weaver {
 			LOG.warn("The recordStore name " + recordStoreName + " is bigger than 32 characters. It will be truncated to " + recordStoreName.substring(0, 32));
 			recordStoreName = recordStoreName.substring(0, 32);
 		}
-		PersistableMetadata metadata = new PersistableMetadata(className, superClassName, 
-			(String[])fieldNames.toArray(new String[0]), temp, recordStoreName);
+		PersistableMetadata metadata = new PersistableMetadata(Modifier.isAbstract(ctClass.getModifiers()), className, superClassName, 
+			(String[])fieldNames.toArray(new String[0]), temp, persistableImplementations, recordStoreName);
 		return metadata;
 	}
 
@@ -272,6 +282,7 @@ public class Weaver {
 
 	private void embeddedUnderlineCoreClasses() throws IOException {
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/FloggyOutputStream.class");
+		embeddedClass("/net/sourceforge/floggy/persistence/impl/FloggyProperties$1.class");
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/MetadataManagerUtil.class");
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/ObjectComparator.class");
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/ObjectFilter.class");
@@ -282,6 +293,9 @@ public class Weaver {
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/PersistableManagerImpl$RecordStoreReference.class");
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/PersistableMetadata.class");
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/SerializationHelper.class");
+		embeddedClass("/net/sourceforge/floggy/persistence/impl/migration/MigrationManagerImpl.class");
+		embeddedClass("/net/sourceforge/floggy/persistence/impl/migration/EnumerationImpl.class");
+		embeddedClass("/net/sourceforge/floggy/persistence/impl/migration/HashtableValueNullable.class");
 	}
 	
 	protected void adaptFrameworkToTargetCLDC() throws IOException, CannotCompileException, NotFoundException {
@@ -367,14 +381,18 @@ public class Weaver {
 		StringBuffer buffer = new StringBuffer();
 		
 		buffer.append("public static void init() throws Exception {\n");
-		buffer.append("metadatas = new java.util.Hashtable();\n");
+		buffer.append("rmsBasedMetadatas = new java.util.Hashtable();\n");
+		buffer.append("classBasedMetadatas = new java.util.Hashtable();\n");
+		buffer.append("java.util.Hashtable temp = null;\n");
 		
 		for (Iterator iterator = metadatas.iterator(); iterator.hasNext();) {
 			PersistableMetadata metadata = (PersistableMetadata) iterator.next();
+			boolean isAbstract = metadata.isAbstract();
 			String className = metadata.getClassName();
 			String superClassName = metadata.getSuperClassName();
 			String[] fieldNames = metadata.getFieldNames();
 			int[] fieldTypes = metadata.getFieldTypes();
+			Hashtable persistableImplementations = metadata.getPersistableImplementations();
 			String recordStoreName = metadata.getRecordStoreName();
 
 			StringBuffer fieldNamesBuffer = new StringBuffer("new String[");
@@ -402,15 +420,41 @@ public class Weaver {
 				fieldTypesBuffer.deleteCharAt(fieldTypesBuffer.length() - 1);
 				fieldTypesBuffer.append("}");
 			}
+			
+			if (persistableImplementations != null && !persistableImplementations.isEmpty()) {
 
-			buffer.append("metadatas.put(\"" + className 
-				+ "\", new net.sourceforge.floggy.persistence.impl.PersistableMetadata(\"" 
-				+ className + "\", " 
-				+ ((superClassName != null) ? ("\"" + superClassName + "\", ") : ("null, "))
-				+ fieldNamesBuffer.toString() + ", " 
-				+ fieldTypesBuffer.toString() + ", "
-				+ "\"" + recordStoreName + "\""
-				+ "));\n");
+				buffer.append("temp = new java.util.Hashtable();\n");
+				Enumeration enumeration = persistableImplementations.keys();
+				while (enumeration.hasMoreElements()) {
+					String fieldName = (String) enumeration.nextElement();
+					String classNameOfField = (String) persistableImplementations.get(fieldName);
+					buffer.append("temp.put(\"");
+					buffer.append(fieldName);
+					buffer.append("\", \"");
+					buffer.append(classNameOfField);
+					buffer.append("\");\n");
+				}
+
+				buffer.append("classBasedMetadatas.put(\"" + className 
+					+ "\", new net.sourceforge.floggy.persistence.impl.PersistableMetadata(" + isAbstract + ", \"" 
+					+ className + "\", " 
+					+ ((superClassName != null) ? ("\"" + superClassName + "\", ") : ("null, "))
+					+ fieldNamesBuffer.toString() + ", " 
+					+ fieldTypesBuffer.toString() + ", temp, "
+					+ "\"" + recordStoreName + "\""
+					+ "));\n");
+
+			} else {
+				buffer.append("classBasedMetadatas.put(\"" + className 
+					+ "\", new net.sourceforge.floggy.persistence.impl.PersistableMetadata(" + isAbstract + ", \"" 
+					+ className + "\", " 
+					+ ((superClassName != null) ? ("\"" + superClassName + "\", ") : ("null, "))
+					+ fieldNamesBuffer.toString() + ", " 
+					+ fieldTypesBuffer.toString() + ", null, "
+					+ "\"" + recordStoreName + "\""
+					+ "));\n");
+			}
+
 		}
 
 		buffer.append("load();\n");
@@ -423,7 +467,7 @@ public class Weaver {
 				ctClass.removeMethod(methods[i]);
 			}
 		}
-		
+
 		ctClass.addMethod(CtNewMethod.make(buffer.toString(), ctClass));
 		outputPool.addClass(ctClass);
 	}

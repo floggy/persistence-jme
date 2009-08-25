@@ -15,23 +15,29 @@
  */
 package net.sourceforge.floggy.persistence.rms.beans;
 
+import java.util.Date;
+import java.util.Hashtable;
+
 import javax.microedition.rms.InvalidRecordIDException;
 
-import net.sourceforge.floggy.persistence.ObjectSet;
 import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.beans.FloggyPersistable;
+import net.sourceforge.floggy.persistence.beans.Person;
+import net.sourceforge.floggy.persistence.migration.Enumeration;
+import net.sourceforge.floggy.persistence.migration.FieldPersistableInfo;
+import net.sourceforge.floggy.persistence.migration.MigrationManager;
 import net.sourceforge.floggy.persistence.rms.AbstractTest;
 
 public class PersistableTest extends AbstractTest {
 
-	public final static FloggyPersistable persistable = new FloggyPersistable();
+	public final static Person persistable = new Person();
 
 	protected Class getParameterType() {
-		return FloggyPersistable.class;
+		return Person.class;
 	}
 
 	public Object getNewValueForSetMethod() {
-		return new FloggyPersistable();
+		return new Person();
 	}
 
 	public Object getValueForSetMethod() {
@@ -42,22 +48,9 @@ public class PersistableTest extends AbstractTest {
 		return new FloggyPersistable();
 	}
 
-	public void testFind() throws Exception {
-		Persistable object = newInstance();
-		setX(object, getValueForSetMethod());
-		manager.save(object);
-		try {
-			ObjectSet set = manager.find(object.getClass(), null, null);
-			// should be equals a 2 because we have a aggregate entity.
-			assertEquals(2, set.size());
-		} finally {
-			manager.delete(object);
-		}
-	}
-
 	public void testFieldDeleted() throws Exception {
 		FloggyPersistable container = new FloggyPersistable();
-		FloggyPersistable field = new FloggyPersistable();
+		Person field = new Person("000.345.999-00", "Floggy Open", new Date());
 
 		container.setX(field);
 
@@ -77,4 +70,57 @@ public class PersistableTest extends AbstractTest {
 		}
 	}
 
+	public void testFR2422928Read() throws Exception {
+		FloggyPersistable container = new FloggyPersistable();
+		Person field = new Person("000.345.999-00", "Floggy Open", new Date());
+
+		int fieldId = manager.save(field);
+		container.setX(field);
+		manager.save(container);
+		
+		MigrationManager um = MigrationManager.getInstance();
+		Enumeration enumeration = um.start(container.getClass(), null);
+		
+		try {
+
+			// will have two instances because the aggregation relationship
+			while (enumeration.hasMoreElements()) {
+				Hashtable data = (Hashtable) enumeration.nextElement();
+				FieldPersistableInfo fieldInfo = (FieldPersistableInfo) data.get("x");
+				if (fieldInfo != null) {
+					assertEquals(fieldId, fieldInfo.getId());
+				}
+			}
+		} finally {
+			manager.delete(container);
+			um.finish(container.getClass());
+		}
+	}
+
+	public void testFR2422928Update() throws Exception {
+		FloggyPersistable container = new FloggyPersistable();
+		Person field = new Person("000.345.999-00", "Floggy Open", new Date());
+
+		int fieldId = manager.save(field);
+		container.setX(field);
+		manager.save(container);
+		
+		MigrationManager um = MigrationManager.getInstance();
+		Enumeration enumeration = um.start(container.getClass(), null);
+		
+		try {
+
+			// will have two instances because the aggregation relationship
+			while (enumeration.hasMoreElements()) {
+				Hashtable data = (Hashtable) enumeration.nextElement();
+				FieldPersistableInfo fieldInfo = (FieldPersistableInfo) data.get("x");
+				if (fieldInfo != null) {
+					assertEquals(fieldId, fieldInfo.getId());
+				}
+			}
+		} finally {
+			manager.delete(container);
+			um.finish(container.getClass());
+		}
+	}
 }

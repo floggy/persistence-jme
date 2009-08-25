@@ -43,14 +43,9 @@ import org.apache.commons.logging.LogFactory;
 public class CodeGenerator {
 
 	private static final Log LOG = LogFactory.getLog(CodeGenerator.class);
-
-	/**
-	 * Class to be modified;
-	 */
-	private CtClass ctClass;
-
-	private ClassPool classPool;
 	private Configuration configuration;
+	private CtClass ctClass;
+	private ClassPool classPool;
 
 	private StringBuffer source;
 
@@ -67,6 +62,38 @@ public class CodeGenerator {
 		this.ctClass = ctClass;
 		this.classPool = classPool;
 		this.configuration = configuration;
+	}
+
+	/**
+	 * Generate all the necessary source code for this class.
+	 * 
+	 * @throws NotFoundException
+	 * @throws CannotCompileException
+	 */
+	public void generateCode() throws NotFoundException, CannotCompileException {
+		if (configuration.isGenerateSource()) {
+			source = new StringBuffer();
+		}
+
+		// Constructor
+		generateDefaultConstructor();
+
+		// Remove final
+		generateNonFinalFields();
+
+		// Attributes
+		generateIdField();
+
+		// Methods
+		generateGetIdMethod();
+		generateSetIdMethod();
+		generateGetRecordStoreNameMethod();
+		generateDeserializeMethod();
+		generateSerializeMethod();
+		generateDeleteMethod();
+
+		// Implements interface
+		generatePersistableInterface();
 	}
 
 	private void generateDefaultConstructor() throws NotFoundException,
@@ -89,70 +116,6 @@ public class CodeGenerator {
 								+ ctClass.getName());
 			}
 		}
-	}
-
-	private void generateNonFinalFields() {
-		CtField[] fields = null;
-
-		fields = ctClass.getDeclaredFields();
-		if (fields != null) {
-			for (int i = 0; i < fields.length; i++) {
-				CtField field = fields[i];
-				if (Modifier.isFinal(field.getModifiers())) {
-					field.setModifiers(field.getModifiers() & ~Modifier.FINAL);
-				}
-			}
-		}
-	}
-
-	/**
-	 * Generate all the necessary source code for this class.
-	 * 
-	 * @throws NotFoundException
-	 * @throws CannotCompileException
-	 */
-	public void generateCode() throws NotFoundException, CannotCompileException {
-		if (configuration.isGenerateSource()) {
-			source = new StringBuffer();
-		}
-
-		// Constructor
-		this.generateDefaultConstructor();
-
-		// Remove final
-		this.generateNonFinalFields();
-
-		// Attributes
-		this.generateIdField();
-
-		// Methods
-		this.generateGetIdMethod();
-		this.generateSetIdMethod();
-		this.generateGetRecordStoreNameMethod();
-		this.generateDeserializeMethod();
-		this.generateSerializeMethod();
-		this.generateDeleteMethod();
-
-		// Implements interface
-		this.generatePersistableInterface();
-	}
-
-	/**
-	 * @throws NotFoundException
-	 */
-	private void generatePersistableInterface() throws NotFoundException {
-		this.ctClass.addInterface(this.ctClass.getClassPool().get(
-				Weaver.__PERSISTABLE_CLASSNAME));
-	}
-
-	/**
-	 * 
-	 * @throws CannotCompileException
-	 */
-	private void generateIdField() throws CannotCompileException {
-		String buffer = "public int __id = -1;";
-
-		addField(new StringBuffer(buffer));
 	}
 
 	/**
@@ -184,7 +147,6 @@ public class CodeGenerator {
 					+ configuration.getPersistableMetadata(ctClass.getName())
 							.getRecordStoreName() + "\";\n");
 			buffer.append("}\n");
-
 			// adicionando a classe
 			addMethod(buffer);
 		}
@@ -226,7 +188,7 @@ public class CodeGenerator {
 		int tempBufferSize = tempBuffer.length();
 
 		// Save the superclass if it is persistable.
-		CtClass superClass = this.ctClass.getSuperclass();
+		CtClass superClass = ctClass.getSuperclass();
 		ClassVerifier verifier = new ClassVerifier(superClass, classPool);
 		if (verifier.isPersistable()) {
 			tempBuffer.append(SuperClassGenerator.generateLoadSource(superClass));
@@ -239,16 +201,7 @@ public class CodeGenerator {
 			for (int i = 0; i < fields.length; i++) {
 				field = fields[i];
 
-				// Ignores compiler fields.
-				if (field.getName().equals("__id")
-						|| field.getName().equals("__persistableMetadata")) {
-					continue;
-				}
-				// Ignores transient and static fields.
-				int modifier = field.getModifiers();
-				if (Modifier.isTransient(modifier)
-						|| Modifier.isStatic(modifier)) {
-					LOG.info("Ignoring field:" + field.getName());
+				if (ignoreField(field)) {
 					continue;
 				}
 
@@ -270,7 +223,7 @@ public class CodeGenerator {
 		
 		buffer.append("}\n");
 
-		// adicionando a classe
+		// adding the method
 		addMethod(buffer);
 	}
 
@@ -289,7 +242,7 @@ public class CodeGenerator {
 		ClassVerifier verifier = new ClassVerifier(superClass, classPool);
 		if (verifier.isPersistable()) {
 			buffer.append("super.__delete();\n");
-			buffer.append("javax.microedition.rms.RecordStore superRS = net.sourceforge.floggy.persistence.impl.PersistableManagerImpl.getRecordStore(super.getRecordStoreName());\n");
+			buffer.append("javax.microedition.rms.RecordStore superRS = net.sourceforge.floggy.persistence.impl.PersistableManagerImpl.getRecordStore(super.getRecordStoreName(), net.sourceforge.floggy.persistence.impl.MetadataManagerUtil.getClassBasedMetadata(super.getClass().getName()));\n");
 			buffer.append("try {\n");
 			buffer.append("superRS.deleteRecord(super.__getId());\n");
 			buffer.append("super.__setId(0);\n");
@@ -314,6 +267,38 @@ public class CodeGenerator {
 	/**
 	 * 
 	 * @throws CannotCompileException
+	 */
+	private void generateIdField() throws CannotCompileException {
+		String buffer = "public int __id = -1;";
+
+		addField(new StringBuffer(buffer));
+	}
+
+	private void generateNonFinalFields() {
+		CtField[] fields = null;
+
+		fields = ctClass.getDeclaredFields();
+		if (fields != null) {
+			for (int i = 0; i < fields.length; i++) {
+				CtField field = fields[i];
+				if (Modifier.isFinal(field.getModifiers())) {
+					field.setModifiers(field.getModifiers() & ~Modifier.FINAL);
+				}
+			}
+		}
+	}
+
+	/**
+	 * @throws NotFoundException
+	 */
+	private void generatePersistableInterface() throws NotFoundException {
+		ctClass.addInterface(ctClass.getClassPool().get(
+				Weaver.__PERSISTABLE_CLASSNAME));
+	}
+
+	/**
+	 * 
+	 * @throws CannotCompileException
 	 * @throws NotFoundException
 	 */
 	private void generateSerializeMethod() throws CannotCompileException,
@@ -329,7 +314,7 @@ public class CodeGenerator {
 		int tempBufferSize = tempBuffer.length();
 
 		// Save the superclass if it is persistable.
-		CtClass superClass = this.ctClass.getSuperclass();
+		CtClass superClass = ctClass.getSuperclass();
 		ClassVerifier verifier = new ClassVerifier(superClass, classPool);
 		if (verifier.isPersistable()) {
 			tempBuffer.append(SuperClassGenerator.generateSaveSource(superClass));
@@ -342,15 +327,7 @@ public class CodeGenerator {
 			for (int i = 0; i < fields.length; i++) {
 				field = fields[i];
 
-				// Ignores compiler fields.
-				if (field.getName().equals("__id")
-						|| field.getName().equals("__persistableMetadata")) {
-					continue;
-				}
-				// Ignores transient and static fields.
-				int modifier = field.getModifiers();
-				if (Modifier.isTransient(modifier)
-						|| Modifier.isStatic(modifier)) {
+				if (ignoreField(field)) {
 					continue;
 				}
 
@@ -374,7 +351,7 @@ public class CodeGenerator {
 
 		buffer.append("}");
 
-		// adicionando a classe
+		// adding the method
 		addMethod(buffer);
 	}
 
@@ -408,6 +385,15 @@ public class CodeGenerator {
 
 	public String getSource() {
 		return source.toString();
+	}
+
+	protected boolean ignoreField(CtField field) {
+		int modifier = field.getModifiers();
+
+		return field.getName().equals("__id")
+				|| field.getName().equals("__persistableMetadata")
+				|| Modifier.isTransient(modifier)
+				|| Modifier.isStatic(modifier);
 	}
 
 	public boolean isIDable(CtClass ctClass) throws NotFoundException {

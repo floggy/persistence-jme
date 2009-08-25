@@ -42,7 +42,7 @@ public class SerializationHelperTest extends TestCase {
 	protected Mockery context = new Mockery();
 
 	public SerializationHelperTest() {
-		MIDletBridge.setMicroEmulator(RMSMemoryMicroEmulator.getInstance());
+		MIDletBridge.setMicroEmulator(new RMSMemoryMicroEmulator("target/rms"));
 	}
 
 	protected DataInput getDataInput(FloggyOutputStream fos) {

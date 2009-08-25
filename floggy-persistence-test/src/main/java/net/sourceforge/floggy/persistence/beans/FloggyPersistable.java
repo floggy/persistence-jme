@@ -21,41 +21,42 @@ import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.PersistableManager;
 
 public class FloggyPersistable implements Persistable, Deletable {
-	protected FloggyPersistable x;
+	protected Person x;
 
-	/**
-	 * Returns <code>true</code> if this <code>FloggyPersistable</code> is
-	 * the same as the o argument.
-	 * 
-	 * @return <code>true</code> if this <code>FloggyPersistable</code> is
-	 *         the same as the o argument.
-	 */
-	public boolean equals(Object o) {
-		if (this == o) {
-			return true;
-		}
-		if (o == null) {
-			return false;
-		}
-		if (o.getClass() != getClass()) {
-			return false;
-		}
-		FloggyPersistable castedObj = (FloggyPersistable) o;
-		return ((this.x == null ? castedObj.x == null : this.x
-				.equals(castedObj.x)));
-	}
-
-	public FloggyPersistable getX() {
-		return x;
-	}
-
-	public void setX(FloggyPersistable x) {
-		this.x = x;
-	}
-	
 	public void delete() throws FloggyException {
 		if (x != null) {
 			PersistableManager.getInstance().delete(x);
 		}
+	}
+
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		final FloggyPersistable other = (FloggyPersistable) obj;
+		if (x == null) {
+			if (other.x != null)
+				return false;
+		} else if (!x.equals(other.x))
+			return false;
+		return true;
+	}
+
+	public Person getX() {
+		return x;
+	}
+
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((x == null) ? 0 : x.hashCode());
+		return result;
+	}
+	
+	public void setX(Person x) {
+		this.x = x;
 	}
 }

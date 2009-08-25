@@ -17,6 +17,7 @@ package net.sourceforge.floggy.persistence.rms;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.Hashtable;
 
 import javax.microedition.rms.InvalidRecordIDException;
 
@@ -27,7 +28,8 @@ import net.sourceforge.floggy.persistence.ObjectSet;
 import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.PersistableManager;
 import net.sourceforge.floggy.persistence.RMSMemoryMicroEmulator;
-import net.sourceforge.floggy.persistence.beans.Person;
+import net.sourceforge.floggy.persistence.migration.Enumeration;
+import net.sourceforge.floggy.persistence.migration.MigrationManager;
 
 import org.microemu.MIDletBridge;
 
@@ -36,7 +38,7 @@ public abstract class AbstractTest extends TestCase {
 	protected PersistableManager manager;
 
 	public AbstractTest() {
-		MIDletBridge.setMicroEmulator(RMSMemoryMicroEmulator.getInstance());
+		MIDletBridge.setMicroEmulator(new RMSMemoryMicroEmulator("target/rms"));
 		manager = PersistableManager.getInstance();
 	}
 
@@ -196,10 +198,6 @@ public abstract class AbstractTest extends TestCase {
 		manager.save(object);
 		try {
 			ObjectSet set = manager.find(object.getClass(), null, null);
-			if (set.size() == 2) {
-				System.out.println(set.get(0));
-				System.out.println(set.get(1));
-			}
 			assertEquals(1, set.size());
 		} finally {
 			manager.delete(object);
@@ -236,6 +234,77 @@ public abstract class AbstractTest extends TestCase {
 			fail("A IllegalArgumentException must be throw!");
 		} catch (Exception e) {
 			assertEquals(e.getClass(), IllegalArgumentException.class);
+		}
+	}
+
+	public void testFR2422928Read() throws Exception {
+		Persistable object = newInstance();
+		setX(object, getValueForSetMethod());
+		manager.save(object);
+
+		MigrationManager um = MigrationManager.getInstance();
+		Enumeration enumeration = um.start(object.getClass(), null);
+		try {
+			while (enumeration.hasMoreElements()) {
+				Hashtable data = (Hashtable) enumeration.nextElement();
+				assertFalse("Should not be empty!", data.isEmpty());
+				equals(data.get("x"), getValueForSetMethod());
+			}
+		} finally {
+			manager.delete(object);
+			um.finish(object.getClass());
+		}
+	}
+
+	public void testFR2422928Update() throws Exception {
+		Persistable oldObject = newInstance();
+		setX(oldObject, getValueForSetMethod());
+		manager.save(oldObject);
+
+		Persistable newObject = newInstance();
+		MigrationManager um = MigrationManager.getInstance();
+		Enumeration enumeration = um.start(oldObject.getClass(), null);
+		try {
+			assertEquals(1, enumeration.getSize());
+			while (enumeration.hasMoreElements()) {
+				Hashtable data = (Hashtable) enumeration.nextElement();
+				setX(newObject, data.get("x"));
+				int oldId = manager.getId(oldObject);
+				int newId = enumeration.update(newObject);
+				assertEquals(oldId, newId);
+				
+				manager.load(newObject, newId);
+				
+				equals(getX(oldObject), getX(newObject));
+				
+			}
+		} finally {
+			um.finish(oldObject.getClass());
+			manager.delete(newObject);
+		}
+	}
+
+	public void testFR2422928Delete() throws Exception {
+		Persistable object = newInstance();
+		int recordId = manager.save(object);
+
+		MigrationManager um = MigrationManager.getInstance();
+		Enumeration enumeration = um.start(object.getClass(), null);
+		try {
+			while (enumeration.hasMoreElements()) {
+				enumeration.nextElement();
+				int newRecordId = enumeration.delete();
+				assertEquals(recordId, newRecordId);
+			}
+			try {
+				manager.load(newInstance(), recordId);
+				fail("It should throw a InvalidRecordIDException");
+			} catch (Exception ex) {
+				assertEquals(InvalidRecordIDException.class.getName(), ex
+						.getMessage());
+			}
+		} finally {
+ 			um.finish(object.getClass());
 		}
 	}
 
@@ -315,7 +384,7 @@ public abstract class AbstractTest extends TestCase {
 
 	public void testSaveWithRecordIdThatDontExist() {
 		try {
-			manager.load(new Person(), 123234);
+			manager.load(newInstance(), 123234);
 			fail("A RecordStore exception must be throwed!");
 		} catch (Exception ex) {
 			assertEquals(InvalidRecordIDException.class.getName(), ex

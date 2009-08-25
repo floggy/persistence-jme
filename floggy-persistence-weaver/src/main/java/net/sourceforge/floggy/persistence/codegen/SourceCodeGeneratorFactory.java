@@ -22,7 +22,7 @@ import javassist.NotFoundException;
 import net.sourceforge.floggy.persistence.Persistable;
 
 public class SourceCodeGeneratorFactory {
-
+	
 	private static Random random = new Random();
 
 	public static SourceCodeGenerator getSourceCodeGenerator(

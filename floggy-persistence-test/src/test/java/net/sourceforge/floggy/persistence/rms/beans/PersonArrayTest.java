@@ -15,9 +15,14 @@
  */
 package net.sourceforge.floggy.persistence.rms.beans;
 
+import java.util.Hashtable;
+
 import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.beans.PersonArray;
 import net.sourceforge.floggy.persistence.beans.animals.Bird;
+import net.sourceforge.floggy.persistence.migration.Enumeration;
+import net.sourceforge.floggy.persistence.migration.FieldPersistableInfo;
+import net.sourceforge.floggy.persistence.migration.MigrationManager;
 import net.sourceforge.floggy.persistence.rms.AbstractTest;
 
 public class PersonArrayTest extends AbstractTest {
@@ -45,5 +50,52 @@ public class PersonArrayTest extends AbstractTest {
 	public Persistable newInstance() {
 		return new PersonArray();
 	}
+	
+	public void testFR2422928Read() throws Exception {
+		Persistable container = newInstance();
+		int[] fieldId = new int[birds.length];
+		for (int i = 0; i < birds.length; i++) {
+			fieldId[i] = manager.save(birds[i]);
+		}
+		setX(container, birds);
+		manager.save(container);
 
+		MigrationManager um = MigrationManager.getInstance();
+		Enumeration enumeration = um.start(container.getClass(), null);
+		try {
+			while (enumeration.hasMoreElements()) {
+				Hashtable data = (Hashtable) enumeration.nextElement();
+				assertFalse("Should not be empty!", data.isEmpty());
+				FieldPersistableInfo[] pi = (FieldPersistableInfo[]) data.get("x");
+				for (int i = 0; i < pi.length; i++) {
+					assertEquals(pi[i].getId(), fieldId[i]);
+				}
+			}
+		} finally {
+			manager.delete(container);
+			um.finish(container.getClass());
+		}
+	}
+
+	public void testFR2422928Update() throws Exception {
+		Persistable oldObject = newInstance();
+		setX(oldObject, getValueForSetMethod());
+		manager.save(oldObject);
+		MigrationManager um = MigrationManager.getInstance();
+		Enumeration enumeration = um.start(oldObject.getClass(), null);
+		try {
+			while (enumeration.hasMoreElements()) {
+				Persistable newObject = newInstance();
+				Hashtable data = (Hashtable) enumeration.nextElement();
+				assertFalse("Should not be empty!", data.isEmpty());
+
+				int oldId = manager.getId(oldObject);
+				int newId = enumeration.update(newObject);
+				assertEquals(oldId, newId);
+			}
+		} finally {
+			manager.delete(oldObject);
+			um.finish(oldObject.getClass());
+		}
+	}
 }

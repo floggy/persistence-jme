@@ -15,23 +15,19 @@
  */
 package net.sourceforge.floggy.persistence;
 
+import java.io.InputStream;
+
 import org.microemu.MIDletContext;
 import org.microemu.MicroEmulator;
 import org.microemu.RecordStoreManager;
-import org.microemu.util.MemoryRecordStoreManager;
+import org.microemu.app.launcher.Launcher;
 
 public class RMSMemoryMicroEmulator implements MicroEmulator {
 
-	private static RMSMemoryMicroEmulator instance = new RMSMemoryMicroEmulator();
+	private RecordStoreManager rsManager ;//= new MemoryRecordStoreManager();
 
-	public static RMSMemoryMicroEmulator getInstance() {
-		return instance;
-	}
-
-	private RecordStoreManager rsManager = new MemoryRecordStoreManager();
-
-	private RMSMemoryMicroEmulator() {
-
+	public  RMSMemoryMicroEmulator(String rmsPath) {
+		rsManager = new FileRecordStoreManager(rmsPath);
 	}
 
 	public void destroyMIDletContext(MIDletContext midletContext) {
@@ -51,6 +47,18 @@ public class RMSMemoryMicroEmulator implements MicroEmulator {
 
 	public boolean platformRequest(String URL) {
 		return false;
+	}
+
+	public int checkPermission(String permission) {
+		return 0;
+	}
+
+	public Launcher getLauncher() {
+		return null;
+	}
+
+	public InputStream getResourceAsStream(String name) {
+		return null;
 	}
 
 }

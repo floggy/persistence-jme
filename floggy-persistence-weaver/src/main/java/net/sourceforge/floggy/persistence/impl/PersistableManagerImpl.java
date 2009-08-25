@@ -32,65 +32,58 @@ import net.sourceforge.floggy.persistence.PersistableManager;
  * This is the main class of the framework. All persistence operations methods
  * (such as loading, saving, deleting and searching for objects) are declared in
  * this class.
- *
+ * 
  * @since 1.0
  */
 public class PersistableManagerImpl extends PersistableManager {
-	
-	//this code is a workaround to the problem of missing java.lang.NoClassDefFoundError.class in the CLDC 1.0
+
+	private static class RecordStoreReference {
+		PersistableMetadata metadata;
+		RecordStore recordStore;
+		int references = 0;
+	}
+
 	private static Class __persistableClass;
 	private static Class deletableClass;
 
+	private static Hashtable references = new Hashtable();
+
+	// this code is a workaround to the problem of missing
+	// java.lang.NoClassDefFoundError.class in the CLDC 1.0
 	static {
 		try {
-			__persistableClass= Class.forName("net.sourceforge.floggy.persistence.impl.__Persistable");
+			__persistableClass = Class
+					.forName("net.sourceforge.floggy.persistence.impl.__Persistable");
 			deletableClass = Class.forName("net.sourceforge.floggy.persistence.Deletable");
 		} catch (Exception e) {
-			//this would be never happen
 			throw new RuntimeException(e.getMessage());
 		}
 	}
 
-	/**
-	 * Creates a new instance of PersistableManager.
-	 */
-	public PersistableManagerImpl() throws Exception {
-		MetadataManagerUtil.init();
-	}
-	
-	static Hashtable references= new Hashtable();
-	
-	private static class RecordStoreReference {
-		RecordStore recordStore;
-		int references= 0;
-	}
-
-	public static RecordStore getRecordStore(String recordStoreName)
-			throws FloggyException {
-		try {
-			RecordStoreReference rsr= (RecordStoreReference) references.get(recordStoreName);
-			if (rsr == null) {
-				rsr= new RecordStoreReference();
-				rsr.recordStore= RecordStore.openRecordStore(recordStoreName, true);
-				references.put(recordStoreName, rsr);
-			}
-			rsr.references++;
-			return rsr.recordStore;
-		} catch (RecordStoreException ex) {
-			throw handleException(ex);
+	public static __Persistable checkArgumentAndCast(Persistable persistable) {
+		if (persistable == null) {
+			throw new IllegalArgumentException(
+					"The persistable object cannot be null!");
+		}
+		if (persistable instanceof __Persistable) {
+			return (__Persistable) persistable;
+		} else {
+			throw new IllegalArgumentException(
+					persistable.getClass().getName()
+							+ " is not a valid persistable class. Check the weaver execution!");
 		}
 	}
-	
-	public static void closeRecordStore(RecordStore rs) 
-		throws FloggyException {
+
+	public static void closeRecordStore(RecordStore rs) throws FloggyException {
 		try {
 			if (rs != null) {
-				RecordStoreReference rsr= (RecordStoreReference) references.get(rs.getName());
+				RecordStoreReference rsr = (RecordStoreReference) references
+						.get(rs.getName());
 				if (rsr != null) {
 					rsr.references--;
 					if (rsr.references == 0) {
-						references.remove(rs.getName());
 						rs.closeRecordStore();
+						rsr.recordStore = null;
 					}
 				}
 			}
@@ -99,117 +92,100 @@ public class PersistableManagerImpl extends PersistableManager {
 		}
 	}
 
-	/**
-	 * Load an previously stored object from the repository using the object ID.<br>
-	 * The object ID is the result of a save operation or you can obtain it
-	 * executing a search.
-	 *
-	 * @param persistable
-	 *            An instance where the object data will be loaded into. Cannot
-	 *            be <code>null</code>.
-	 * @param id
-	 *            The ID of the object to be loaded from the repository.
-	 * @throws IllegalArgumentException
-	 *             Exception thrown if <code>object</code> is
-	 *             <code>null</code> or not an instance of
-	 *             <code>Persistable</code>.
-	 * @throws FloggyException
-	 *             Exception thrown if an error occurs while loading the object.
-	 *
-	 * @see #save(Persistable)
-	 */
-	public void load(Persistable persistable, int id) throws FloggyException {
-	    load(persistable, id, false);
-	}
-
-	/**
-	 * Load an previously stored object from the repository using the object ID.<br>
-	 * The object ID is the result of a save operation or you can obtain it
-	 * executing a search.
-	 *
-	 * @param persistable
-	 *            An instance where the object data will be loaded into. Cannot
-	 *            be <code>null</code>.
-	 * @param id
-	 *            The ID of the object to be loaded from the repository.
-	 * @throws IllegalArgumentException
-	 *             Exception thrown if <code>object</code> is
-	 *             <code>null</code> or not an instance of
-	 *             <code>Persistable</code>.
-	 * @throws FloggyException
-	 *             Exception thrown if an error occurs while loading the object.
-	 *
-	 * @see #save(Persistable)
-	 */
-	public void load(Persistable persistable, int id, boolean lazy) throws FloggyException {
-		__Persistable __persistable = checkArgumentAndCast(persistable);
-		// posso fazer cache do metadata
-		RecordStore rs = PersistableManagerImpl.getRecordStore(__persistable
-				.getRecordStoreName());
+	public static __Persistable createInstance(Class persistableClass)
+			throws FloggyException {
+		validatePersistableClassArgument(persistableClass);
+		// Try to create a new instance of the persistable class.
 		try {
-			byte[] buffer = rs.getRecord(id);
-			if (buffer != null) {
-				__persistable.__deserialize(buffer, lazy);
-			}
-			__persistable.__setId(id);
+			return (__Persistable) persistableClass.newInstance();
 		} catch (Exception ex) {
 			throw handleException(ex);
-		} finally {
-			PersistableManagerImpl.closeRecordStore(rs);
 		}
 	}
 
-	/**
-	 * Store an object in the repository. If the object is already in the
-	 * repository, the object data will be overwritten.<br>
-	 * The object ID obtained from this operation can be used in the load
-	 * operations.
-	 *
-	 * @param persistable
-	 *            Object to be stored.
-	 * @return The ID of the object.
-	 * @throws IllegalArgumentException
-	 *             Exception thrown if <code>object</code> is
-	 *             <code>null</code> or not an instance of
-	 *             <code>Persistable</code>.
-	 * @throws FloggyException
-	 *             Exception thrown if an error occurs while storing the object.
-	 *
-	 * @see #load(Persistable, int)
-	 */
-	public int save(Persistable persistable) throws FloggyException {
-		__Persistable __persistable = checkArgumentAndCast(persistable);
-		// posso fazer cache do metadata e um contador com as referencias!!!!!!!!!
-		RecordStore rs = PersistableManagerImpl.getRecordStore(__persistable
-				.getRecordStoreName());
-		try {
-			byte[] buffer= __persistable.__serialize();
-			int id= __persistable.__getId();
-	        if(id <= 0) {
-	            id = rs.addRecord(buffer, 0, buffer.length);
-	            __persistable.__setId(id);
-	        }
-	        else {
-	            rs.setRecord(id, buffer, 0, buffer.length);
-	        }
-	        return id;
-		} catch (Exception ex) {
-			throw handleException(ex);
-		} finally {
-			PersistableManagerImpl.closeRecordStore(rs);
-		}
+	private static RecordStore getRecordStore(__Persistable persistable)
+			throws FloggyException {
+
+		PersistableMetadata metadata = MetadataManagerUtil.getClassBasedMetadata(persistable.getClass().getName());
+		return getRecordStore(persistable.getRecordStoreName(), metadata, false);
+	}
+
+	public static RecordStore getRecordStore(String recordStoreName,
+			PersistableMetadata metadata) throws FloggyException {
+		return getRecordStore(recordStoreName, metadata, false);
 	}
 	
+	public static void reset() {
+		references.clear();
+	}
+
+	public static RecordStore getRecordStore(String recordStoreName,
+			PersistableMetadata metadata, boolean isUpdateProcess) throws FloggyException {
+		try {
+			RecordStoreReference rsr = (RecordStoreReference) references
+					.get(recordStoreName);
+			if (rsr == null) {
+				rsr = new RecordStoreReference();
+				rsr.recordStore = RecordStore.openRecordStore(recordStoreName,
+						true);
+				PersistableMetadata rmsMetadata = MetadataManagerUtil.getRMSBasedMetadata(metadata.getClassName());
+				if (rmsMetadata == null) {
+					if (!MetadataManagerUtil.getBytecodeVersion().equals(MetadataManagerUtil.getRMSVersion())  && !isUpdateProcess) {
+						throw new FloggyException("You are trying to access a Persistable (" + metadata.getClassName() + ") entity that was not migrate. Please execute a migration first.");
+					}
+					MetadataManagerUtil.saveRMSStructure(metadata);
+				} else {
+					if (!metadata.equals(rmsMetadata) && !isUpdateProcess) {
+						throw new FloggyException("Class and RMS description doesn't match for class " + metadata.getClassName() + ". Please execute a migration first.");
+					}
+				}
+				rsr.metadata = metadata;
+				references.put(recordStoreName, rsr);
+			} else {
+				if (rsr.references == 0) {
+					rsr.recordStore = RecordStore.openRecordStore(recordStoreName,
+                                                true);
+				}
+			}
+			rsr.references++;
+			return rsr.recordStore;
+		} catch (Exception ex) {
+			throw handleException(ex);
+		}
+	}
+
+	public static void validatePersistableClassArgument(Class persistableClass)
+			throws IllegalArgumentException {
+		// testing if persistableClass is null
+		if (persistableClass == null) {
+			throw new IllegalArgumentException(
+					"The persistable class cannot be null!");
+		}
+		// Checks if the persistableClass is a valid persistable class.
+		if (!__persistableClass.isAssignableFrom(persistableClass)) {
+			throw new IllegalArgumentException(
+					persistableClass.getName()
+							+ " is not a valid persistable class. Check the weaver execution!");
+		}
+	}
+
+	/**
+	 * Creates a new instance of PersistableManager.
+	 */
+	public PersistableManagerImpl() throws Exception {
+		SerializationHelper.setPersistableManager(this);
+		MetadataManagerUtil.init();
+	}
+
 	/**
 	 * Removes an object from the repository. If the object is not stored in the
 	 * repository then a <code>FloggyException</code> will be thrown.
-	 *
+	 * 
 	 * @param persistable
 	 *            Object to be removed.
 	 * @throws IllegalArgumentException
-	 *             Exception thrown if <code>object</code> is
-	 *             <code>null</code> or not an instance of
-	 *             <code>Persistable</code>.
+	 *             Exception thrown if <code>object</code> is <code>null</code>
+	 *             or not an instance of <code>Persistable</code>.
 	 * @throws FloggyException
 	 *             Exception thrown if an error occurs while removing the
 	 *             object.
@@ -219,7 +195,7 @@ public class PersistableManagerImpl extends PersistableManager {
 		int id = __persistable.__getId();
 		if (id > 0) {
 			RecordStore rs = PersistableManagerImpl
-					.getRecordStore(__persistable.getRecordStoreName());
+					.getRecordStore(__persistable);
 			try {
 				__persistable.__delete();
 				rs.deleteRecord(id);
@@ -234,48 +210,46 @@ public class PersistableManagerImpl extends PersistableManager {
 
 	/**
 	 * Removes all objects from the repository.
-	 *
+	 * 
 	 * @param persistableClass
 	 *            The persistable class to search the objects.
 	 * @throws IllegalArgumentException
-	 *             Exception thrown if <code>object</code> is
-	 *             <code>null</code> or not an instance of
-	 *             <code>Persistable</code>.
+	 *             Exception thrown if <code>object</code> is <code>null</code>
+	 *             or not an instance of <code>Persistable</code>.
 	 * @throws FloggyException
 	 *             Exception thrown if an error occurs while removing the
 	 *             object.
 	 */
 	public void deleteAll() throws FloggyException {
 		try {
-			String[] recordStoreNames= RecordStore.listRecordStores();
-		    for (int i = 0; i < recordStoreNames.length; i++) {
-		    	if (recordStoreNames[i].equals("FloggyProperties")) {
-		    		continue;
-		    	}
-		    	RecordStore.deleteRecordStore(recordStoreNames[i]);
+			String[] recordStoreNames = RecordStore.listRecordStores();
+			for (int i = 0; i < recordStoreNames.length; i++) {
+				if (recordStoreNames[i].equals("FloggyProperties")) {
+					continue;
+				}
+				RecordStore.deleteRecordStore(recordStoreNames[i]);
 			}
 		} catch (Exception ex) {
 			throw handleException(ex);
 		}
 	}
-	
+
 	/**
 	 * Removes all objects from the repository.
-	 *
+	 * 
 	 * @param persistableClass
 	 *            The persistable class to search the objects.
 	 * @throws IllegalArgumentException
-	 *             Exception thrown if <code>object</code> is
-	 *             <code>null</code> or not an instance of
-	 *             <code>Persistable</code>.
+	 *             Exception thrown if <code>object</code> is <code>null</code>
+	 *             or not an instance of <code>Persistable</code>.
 	 * @throws FloggyException
 	 *             Exception thrown if an error occurs while removing the
 	 *             object.
 	 */
 	public void deleteAll(Class persistableClass) throws FloggyException {
 		__Persistable persistable = createInstance(persistableClass);
-		closeRecordStore(getRecordStore(persistable.getRecordStoreName()));
-		PersistableMetadata metadata = MetadataManagerUtil.getMetadata(persistableClass.getName());
+		closeRecordStore(getRecordStore(persistable));
+		PersistableMetadata metadata = MetadataManagerUtil.getClassBasedMetadata(persistableClass.getName());
 		if (deletableClass.isAssignableFrom(persistableClass) || metadata.getSuperClassName() != null) {
 			ObjectSet os = find(persistableClass, null, null);
 			for (int i = 0; i < os.size(); i++) {
@@ -288,7 +262,7 @@ public class PersistableManagerImpl extends PersistableManager {
 			} catch (Exception ex) {
 				throw handleException(ex);
 			}
- 		}
+		}
 	}
 	
 	public int getId(Persistable persistable) {
@@ -296,21 +270,15 @@ public class PersistableManagerImpl extends PersistableManager {
 		return __persistable.__getId();
 	}
 
-	public boolean isPersisted(Persistable persistable) {
-		__Persistable __persistable = checkArgumentAndCast(persistable);
-		return __persistable.__getId() > 0;
-	}
-
 	/**
-	 * Searches objects of an especific persistable class from the repository.
-	 * <br>
+	 * Searches objects of an especific persistable class from the repository. <br>
 	 * <br>
 	 * An optional application-defined search criteria can be defined using a
 	 * <code>Filter</code>.<br>
 	 * <br>
 	 * An optional application-defined sort order can be defined using a
 	 * <code>Comparator</code>.
-	 *
+	 * 
 	 * @param persistableClass
 	 *            The persistable class to search the objects.
 	 * @param filter
@@ -322,19 +290,18 @@ public class PersistableManagerImpl extends PersistableManager {
 	 */
 	public ObjectSet find(Class persistableClass, Filter filter,
 			Comparator comparator) throws FloggyException {
-	    return find(persistableClass, filter, comparator, false);
+		return find(persistableClass, filter, comparator, false);
 	}
-	
+
 	/**
-	 * Searches objects of an especific persistable class from the repository.
-	 * <br>
+	 * Searches objects of an especific persistable class from the repository. <br>
 	 * <br>
 	 * An optional application-defined search criteria can be defined using a
 	 * <code>Filter</code>.<br>
 	 * <br>
 	 * An optional application-defined sort order can be defined using a
 	 * <code>Comparator</code>.
-	 *
+	 * 
 	 * @param persistableClass
 	 *            The persistable class to search the objects.
 	 * @param filter
@@ -372,7 +339,7 @@ public class PersistableManagerImpl extends PersistableManager {
 		// Searchs the repository and create an object set as result.
 		int[] ids = null;
 
-		RecordStore rs = getRecordStore(persistable.getRecordStoreName());
+		RecordStore rs = PersistableManagerImpl.getRecordStore(persistable);
 
 		try {
 			RecordEnumeration en = rs.enumerateRecords(objectFilter,
@@ -393,8 +360,13 @@ public class PersistableManagerImpl extends PersistableManager {
 
 		return new ObjectSetImpl(ids, persistableClass, this, lazy);
 	}
+
+	public boolean isPersisted(Persistable persistable) {
+		__Persistable __persistable = checkArgumentAndCast(persistable);
+		return __persistable.__getId() > 0;
+	}
 	
-	private static FloggyException handleException(Exception ex) {
+	public static FloggyException handleException(Exception ex) {
 		if (ex instanceof FloggyException) {
 			return (FloggyException)ex;
 		}
@@ -404,43 +376,101 @@ public class PersistableManagerImpl extends PersistableManager {
 		}
 		return new FloggyException(message, ex);
 	}
-	
-	static __Persistable createInstance(Class persistableClass)
+
+	/**
+	 * Load an previously stored object from the repository using the object ID.<br>
+	 * The object ID is the result of a save operation or you can obtain it
+	 * executing a search.
+	 * 
+	 * @param persistable
+	 *            An instance where the object data will be loaded into. Cannot
+	 *            be <code>null</code>.
+	 * @param id
+	 *            The ID of the object to be loaded from the repository.
+	 * @throws IllegalArgumentException
+	 *             Exception thrown if <code>object</code> is <code>null</code>
+	 *             or not an instance of <code>Persistable</code>.
+	 * @throws FloggyException
+	 *             Exception thrown if an error occurs while loading the object.
+	 * 
+	 * @see #save(Persistable)
+	 */
+	public void load(Persistable persistable, int id) throws FloggyException {
+		load(persistable, id, false);
+	}
+
+	/**
+	 * Load an previously stored object from the repository using the object ID.<br>
+	 * The object ID is the result of a save operation or you can obtain it
+	 * executing a search.
+	 * 
+	 * @param persistable
+	 *            An instance where the object data will be loaded into. Cannot
+	 *            be <code>null</code>.
+	 * @param id
+	 *            The ID of the object to be loaded from the repository.
+	 * @throws IllegalArgumentException
+	 *             Exception thrown if <code>object</code> is <code>null</code>
+	 *             or not an instance of <code>Persistable</code>.
+	 * @throws FloggyException
+	 *             Exception thrown if an error occurs while loading the object.
+	 * 
+	 * @see #save(Persistable)
+	 */
+	public void load(Persistable persistable, int id, boolean lazy)
 			throws FloggyException {
-		validatePersistableClassArgument(persistableClass);
-		// Try to create a new instance of the persistable class.
+		__Persistable __persistable = checkArgumentAndCast(persistable);
+		// posso fazer cache do metadata
+		RecordStore rs = PersistableManagerImpl.getRecordStore(__persistable);
 		try {
-			return (__Persistable) persistableClass.newInstance();
-		} catch (Exception e) {
-			throw new FloggyException(
-					"Error creating a new instance of the persistable class: "
-							+ e.getMessage());
+			byte[] buffer = rs.getRecord(id);
+			if (buffer != null) {
+				__persistable.__deserialize(buffer, lazy);
+			}
+			__persistable.__setId(id);
+		} catch (Exception ex) {
+			throw handleException(ex);
+		} finally {
+			PersistableManagerImpl.closeRecordStore(rs);
 		}
 	}
 
-	private static __Persistable checkArgumentAndCast(Persistable persistable) {
-		if (persistable == null) {
-			throw new IllegalArgumentException(
-					"The persistable object cannot be null!");
-		}
-		if (persistable instanceof __Persistable) {
-			return (__Persistable) persistable;
-		} else {
-			throw new IllegalArgumentException(persistable.getClass().getName()
-					+ " is not a valid persistable class. Check the weaver execution!");
-		}
-	}
-
-	static void validatePersistableClassArgument(Class persistableClass) throws FloggyException {
-		// testing if persistableClass is null
-		if (persistableClass == null) {
-			throw new IllegalArgumentException(
-					"The persistable class cannot be null!");
-		}
-		// Checks if the persistableClass is a valid persistable class.
-		if (!__persistableClass.isAssignableFrom(persistableClass)) {
-			throw new IllegalArgumentException(persistableClass.getName()
-					+ " is not a valid persistable class. Check the weaver execution!");
+	/**
+	 * Store an object in the repository. If the object is already in the
+	 * repository, the object data will be overwritten.<br>
+	 * The object ID obtained from this operation can be used in the load
+	 * operations.
+	 * 
+	 * @param persistable
+	 *            Object to be stored.
+	 * @return The ID of the object.
+	 * @throws IllegalArgumentException
+	 *             Exception thrown if <code>object</code> is <code>null</code>
+	 *             or not an instance of <code>Persistable</code>.
+	 * @throws FloggyException
+	 *             Exception thrown if an error occurs while storing the object.
+	 * 
+	 * @see #load(Persistable, int)
+	 */
+	public int save(Persistable persistable) throws FloggyException {
+		__Persistable __persistable = checkArgumentAndCast(persistable);
+		// posso fazer cache do metadata e um contador com as
+		// referencias!!!!!!!!!
+		RecordStore rs = PersistableManagerImpl.getRecordStore(__persistable);
+		try {
+			byte[] buffer = __persistable.__serialize();
+			int id = __persistable.__getId();
+	        if(id <= 0) {
+				id = rs.addRecord(buffer, 0, buffer.length);
+				__persistable.__setId(id);
+			} else {
+				rs.setRecord(id, buffer, 0, buffer.length);
+			}
+			return id;
+		} catch (Exception ex) {
+			throw handleException(ex);
+		} finally {
+			PersistableManagerImpl.closeRecordStore(rs);
 		}
 	}
 

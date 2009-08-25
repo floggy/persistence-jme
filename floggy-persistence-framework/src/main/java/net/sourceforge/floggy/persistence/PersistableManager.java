@@ -197,7 +197,6 @@ public abstract class PersistableManager {
      * @param persistable Object to be retrieved the id.
      *
      * @return the id under the persistable is stored
-     *         
      */
     public abstract int getId(Persistable persistable);
 
