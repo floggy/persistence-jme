@@ -118,7 +118,9 @@
 			<answer>
 				<p>Our project is hosted on SourceForge.net, so all the source code is available on their Subversion system. You can access it <a href="http://sourceforge.net/svn/?group_id=139426">here</a>.</p>
 
-				Simplifying: svn co https://floggy.svn.sourceforge.net/svnroot/floggy/trunk
+				<p>Simplifying: svn co https://floggy.svn.sourceforge.net/svnroot/floggy/trunk</p>
+				
+				Or you can grab the GNU tarball directly from Sourceforge <a href="http://floggy.svn.sourceforge.net/viewvc/floggy/trunk.tar.gz?view=tar">here</a>
 			</answer>
 		</faq>
 		<faq id="what-is-the-format-of-the-commit-message">

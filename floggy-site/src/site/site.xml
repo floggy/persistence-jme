@@ -87,5 +87,6 @@
 		<logo name="Sourceforge.net" href="http://sourceforge.net/" img="http://sflogo.sourceforge.net/sflogo.php?group_id&#61;139426&amp;type&#61;1"/>
 		<logo name="Maven" href="http://maven.apache.org/" img="http://maven.apache.org/images/logos/maven-button-3.png"/>
 		<logo name="Ohloh" href="http://www.ohloh.net/projects/floggy?ref=WidgetProjectThinBadge" img="http://www.ohloh.net/projects/floggy/widgets/project_thin_badge.gif"/>
+		<logo name="Fisheye" href="http://fisheye3.atlassian.com/browse/floggy" img="images/fisheye_logo.gif"/>
 	</poweredBy>
 </project>

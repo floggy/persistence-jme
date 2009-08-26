@@ -15,6 +15,10 @@
 ~~
  
 News
+
+	<<25-Aug-09:>> A new snapshot release was made available. Six features was added. More {{{./changes-report.html#a1.3.0-SNAPSHOT}here}}.
+	
+	<<25-Aug-09:>> Floggy now has a Fisheye tool linked to its source code. Check it out: {{{http://fisheye3.atlassian.com/browse/floggy}http://fisheye3.atlassian.com/browse/floggy}}.
 	
 	<<14-Jun-09:>> A new snapshot release was made available. This one changed only the Eclipse's plugin. Two bugs was fixed. More {{{./changes-report.html#a1.3.0-SNAPSHOT}here}}.
 	
