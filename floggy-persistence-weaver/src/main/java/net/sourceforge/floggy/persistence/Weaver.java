@@ -22,10 +22,12 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import javassist.CannotCompileException;
 import javassist.ClassPool;
@@ -62,6 +64,8 @@ public class Weaver {
 	private ClassPool classpathPool;
 	
 	private Configuration configuration = new Configuration();
+	
+	private Set alreadyProcessedMetadatas = new HashSet();
 
 	private InputPool inputPool;
 
@@ -377,7 +381,8 @@ public class Weaver {
 
 	private void addMetadataManagerUtilClass() throws  CannotCompileException, IOException, NotFoundException {
 
-		List metadatas = configuration.getPersistableMetadatas();
+		alreadyProcessedMetadatas.addAll(configuration.getPersistableMetadatas());
+		Set metadatas = alreadyProcessedMetadatas;
 		StringBuffer buffer = new StringBuffer();
 		
 		buffer.append("public static void init() throws Exception {\n");
@@ -522,6 +527,15 @@ public class Weaver {
 				}
 			} else {
 				LOG.debug("Bytecode NOT modified.");
+				if (ctClass.subtypeOf(__persistable) && !ctClass.equals(__persistable)) {
+					List temp = buildClassTree(ctClass);
+					Iterator iterator = temp.iterator(); 
+					while (iterator.hasNext()) {
+						className = (String) iterator.next();
+						PersistableMetadata metadata = createPersistableMetadata(ctClass);
+						alreadyProcessedMetadatas.add(metadata);
+					}
+				}
 				// Adds non-persistable class to output pool
 				this.outputPool.addFile(inputPool.getFileURL(i), fileName);
 			}
