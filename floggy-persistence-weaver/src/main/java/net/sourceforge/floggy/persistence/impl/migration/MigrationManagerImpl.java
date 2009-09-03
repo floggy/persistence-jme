@@ -22,6 +22,7 @@ import javax.microedition.rms.RecordEnumeration;
 import javax.microedition.rms.RecordStore;
 
 import net.sourceforge.floggy.persistence.FloggyException;
+import net.sourceforge.floggy.persistence.PersistableManager;
 import net.sourceforge.floggy.persistence.impl.MetadataManagerUtil;
 import net.sourceforge.floggy.persistence.impl.PersistableManagerImpl;
 import net.sourceforge.floggy.persistence.impl.PersistableMetadata;
@@ -32,6 +33,10 @@ import net.sourceforge.floggy.persistence.migration.MigrationManager;
 public class MigrationManagerImpl extends MigrationManager {
 	
 	protected Hashtable enumerations = new Hashtable();
+	
+	public MigrationManagerImpl() throws Exception {
+		PersistableManager.getInstance();
+	}
 
 	public void finish(Class persistableClass) throws FloggyException {
 
