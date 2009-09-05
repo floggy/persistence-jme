@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+
+    Copyright (c) 2006-2009 Floggy Open Source Group. All rights reserved.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>net.sourceforge.floggy</groupId>
+		<artifactId>floggy</artifactId>
+		<version>1.3.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>barbecue-calculator</artifactId>
+	<version>1.3.0-SNAPSHOT</version>
+	<name>Barbecue Calculator</name>
+	<description>A demo application using Floggy persistence framework.</description>
+	<scm>
+		<connection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/trunk/barbecue-calculator</connection>
+		<developerConnection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/trunk/barbecue-calculator</developerConnection>
+		<url>http://floggy.svn.sourceforge.net/viewvc/floggy/trunk/barbecue-calculator</url>
+	</scm>
+	<dependencies>
+		<dependency>
+			<groupId>net.sourceforge.floggy</groupId>
+			<artifactId>floggy-persistence-framework</artifactId>
+			<version>1.3.0-SNAPSHOT</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.microemu</groupId>
+			<artifactId>midpapi20</artifactId>
+			<version>${me2Version}</version>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>*.png</include>
+				</includes>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.3</source>
+					<target>1.1</target>
+				</configuration>
+			</plugin>
+		     <plugin>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifestEntries>
+							<MIDlet-1>BarbecueCalculator, barbecue-icon.png, net.sourceforge.floggy.barbecuecalculator.BarbecueCalculatorMIDlet</MIDlet-1>
+							<MIDlet-Name>${project.name}</MIDlet-Name>
+							<MIDlet-Vendor>${project.organization.name}</MIDlet-Vendor>
+							<MicroEdition-Configuration>${j2me.midlet.configuration}</MicroEdition-Configuration>
+							<MicroEdition-Profile>${j2me.midlet.profile}</MicroEdition-Profile>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>net.sourceforge.floggy</groupId>
+				<artifactId>maven-floggy-plugin</artifactId>
+				<version>1.3.0-SNAPSHOT</version>
+				<executions>
+					<execution>
+						<id>persistence-weaver</id>
+						<goals>
+							<goal>persistence-weaver</goal>
+						</goals>
+						<phase>process-classes</phase>
+						<configuration>
+							<generateSource>false</generateSource>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>com.pyx4me</groupId>
+				<artifactId>j2me-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>package</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<proguard>true</proguard>
+					<obfuscate>false</obfuscate>
+					<useWtkLibs>false</useWtkLibs>
+					<proguardPreverify>true</proguardPreverify>
+					<midlets>
+						<MIDlet>
+							<name>${project.name}</name>
+							<icon>/barbecue-icon.png</icon>
+							<class>net.sourceforge.floggy.barbecuecalculator.BarbecueCalculatorMIDlet</class>
+						</MIDlet>
+					</midlets>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.pyx4me</groupId>
+				<artifactId>obex-maven-plugin</artifactId>
+				<configuration>
+					<jarfile>${project.artifactId}-${project.version}-me.jar</jarfile>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.google.code.maven-license-plugin</groupId>
+				<artifactId>maven-license-plugin</artifactId>
+				<configuration>
+					<header>${project.parent.basedir}/src/main/resources/license-header-template.txt</header>
+				</configuration>
+			</plugin>
+		     <plugin>
+		     	<artifactId>maven-assembly-plugin</artifactId>
+		     	<configuration>
+		     		<descriptor>src/assembly/src.xml</descriptor>
+		     	</configuration>
+		     </plugin>
+		</plugins>
+	</build>
+	<properties>
+		<me2Version>2.0.3</me2Version>
+	</properties>
+</project>

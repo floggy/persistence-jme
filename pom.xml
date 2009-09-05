@@ -258,6 +258,7 @@
 		<module>maven-floggy-plugin</module>
 		<module>floggy-persistence-test</module>
 		<module>floggy-persistence-demo</module>
+		<module>barbecue-calculator</module>
 		<module>eclipse-floggy-plugin</module>
 		<module>eclipse-floggy-feature</module>
 		<module>floggy-site-skin</module>
