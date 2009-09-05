@@ -73,6 +73,7 @@
 							<MIDlet-Vendor>${project.organization.name}</MIDlet-Vendor>
 							<MicroEdition-Configuration>${j2me.midlet.configuration}</MicroEdition-Configuration>
 							<MicroEdition-Profile>${j2me.midlet.profile}</MicroEdition-Profile>
+							<MIDlet-Jar-URL>${project.artifactId}-${project.version}-me.jar</MIDlet-Jar-URL>
 						</manifestEntries>
 					</archive>
 				</configuration>

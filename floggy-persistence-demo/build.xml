@@ -81,6 +81,7 @@
 			<attribute name="MIDlet-Version" value="1.0"/>
 			<attribute name="MicroEdition-Configuration" value="CLDC-${wtk.cldc.version}"/>
 			<attribute name="MicroEdition-Profile" value="MIDP-${wtk.midp.version}"/>
+			<attribute name="MIDlet-Jar-URL" value="${build.final.name}.jar"/>
 		</wtkjad>
 		<wtkpackage basedir="${build.output}" jadfile="${build.directory}/${build.final.name}.jad" jarfile="${build.directory}/${build.final.name}.jar" bootclasspathref="boot.classpath" preverify="true"/>
 	</target>
