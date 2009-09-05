@@ -23,6 +23,34 @@
 			<url>scp://shell.sourceforge.net:/home/groups/f/fl/floggy/htdocs/</url>
 		</site>
 	</distributionManagement>
+	<dependencies>
+		<dependency>
+			<groupId>net.sourceforge.floggy</groupId>
+			<artifactId>barbecue-calculator</artifactId>
+			<version>${pom.version}</version>
+			<classifier>me</classifier>
+		</dependency>
+		<dependency>
+			<groupId>net.sourceforge.floggy</groupId>
+			<artifactId>barbecue-calculator</artifactId>
+			<version>${pom.version}</version>
+			<classifier>me</classifier>
+			<type>jad</type>
+		</dependency>
+		<dependency>
+			<groupId>net.sourceforge.floggy</groupId>
+			<artifactId>floggy-persistence-demo</artifactId>
+			<version>${pom.version}</version>
+			<classifier>me</classifier>
+		</dependency>
+		<dependency>
+			<groupId>net.sourceforge.floggy</groupId>
+			<artifactId>floggy-persistence-demo</artifactId>
+			<version>${pom.version}</version>
+			<classifier>me</classifier>
+			<type>jad</type>
+		</dependency>
+	</dependencies>
 	<build>
 		<plugins>
 			<plugin>
@@ -31,6 +59,25 @@
 				<configuration>
 					<header>${project.parent.basedir}/src/main/resources/license-header-template.txt</header>
 				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>process-sources</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/target/site/demo</outputDirectory>
+							<overWriteReleases>false</overWriteReleases>
+							<overWriteSnapshots>true</overWriteSnapshots>
+							<overWriteIfNewer>true</overWriteIfNewer>
+							<excludeTransitive>true</excludeTransitive>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

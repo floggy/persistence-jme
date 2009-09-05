@@ -16,6 +16,8 @@
  
 News
 
+	<<05-Sep-09:>> A new {{{./demo.html}Demo}} section was created. There you can test applications that uses Floggy.
+	
 	<<25-Aug-09:>> A new snapshot release was made available. Six features was added. More {{{./changes-report.html#a1.3.0-SNAPSHOT}here}}.
 	
 	<<25-Aug-09:>> Floggy now has a Fisheye tool linked to its source code. Check it out: {{{http://fisheye3.atlassian.com/browse/floggy}http://fisheye3.atlassian.com/browse/floggy}}.
