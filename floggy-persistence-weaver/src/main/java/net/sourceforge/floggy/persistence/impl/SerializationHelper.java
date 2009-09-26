@@ -144,6 +144,8 @@ public class SerializationHelper {
 			o = new Double(in.readDouble());
 		} else if (className.equals("java.lang.Float")) {
 			o = new Float(in.readFloat());
+		} else if (className.equals("java.util.Hashtable")) {
+			o = readHashtable(in);
 		} else if (className.equals("java.lang.Integer")) {
 			o = new Integer(in.readInt());
 		} else if (className.equals("java.lang.Long")) {
@@ -163,6 +165,8 @@ public class SerializationHelper {
 			o = new Date(in.readLong());
 		} else if (className.equals("java.util.TimeZone")) {
 			o = TimeZone.getTimeZone(in.readUTF());
+		} else if (className.equals("java.util.Vector")) {
+			o = readVector(in);
 		} else {
 			o = PersistableManagerImpl.createInstance(Class.forName(className));
 			pm.load((Persistable) o, in.readInt());
@@ -179,6 +183,8 @@ public class SerializationHelper {
 			o = new Byte(in.readByte());
 		} else if (className.equals("java.lang.Character")) {
 			o = new Character(in.readChar());
+		} else if (className.equals("java.util.Hashtable")) {
+			o = readHashtable(in);
 		} else if (className.equals("java.lang.Integer")) {
 			o = new Integer(in.readInt());
 		} else if (className.equals("java.lang.Long")) {
@@ -198,6 +204,8 @@ public class SerializationHelper {
 			o = new Date(in.readLong());
 		} else if (className.equals("java.util.TimeZone")) {
 			o = TimeZone.getTimeZone(in.readUTF());
+		} else if (className.equals("java.util.Vector")) {
+			o = readVector(in);
 		} else {
 			o = PersistableManagerImpl.createInstance(Class.forName(className));
 			pm.load((Persistable) o, in.readInt());
@@ -420,6 +428,9 @@ public class SerializationHelper {
 			out.writeDouble(((Double) o).doubleValue());
 		} else if (o instanceof Float) {
 			out.writeFloat(((Float) o).floatValue());
+		} else if (o instanceof Hashtable) {
+			Hashtable h = (Hashtable) o;
+			writeHashtable(out, h);
 		} else if (o instanceof Integer) {
 			out.writeInt(((Integer) o).intValue());
 		} else if (o instanceof Long) {
@@ -439,6 +450,9 @@ public class SerializationHelper {
 		} else if (o instanceof TimeZone) {
 			TimeZone t = (TimeZone) o;
 			out.writeUTF(t.getID());
+		} else if (o instanceof Vector) {
+			Vector v = (Vector) o;
+			writeVector(out, v);
 		} else if (o instanceof __Persistable) {
 			int id = pm.save((Persistable) o);
 			out.writeInt(id);
@@ -464,6 +478,9 @@ public class SerializationHelper {
 			out.writeByte(((Byte) o).byteValue());
 		} else if (o instanceof Character) {
 			out.writeChar(((Character) o).charValue());
+		} else if (o instanceof Hashtable) {
+			Hashtable h = (Hashtable) o;
+			writeHashtable(out, h);
 		} else if (o instanceof Integer) {
 			out.writeInt(((Integer) o).intValue());
 		} else if (o instanceof Long) {
@@ -486,6 +503,9 @@ public class SerializationHelper {
 		} else if (o instanceof __Persistable) {
 			int id = pm.save((Persistable) o);
 			out.writeInt(id);
+		} else if (o instanceof Vector) {
+			Vector v = (Vector) o;
+			writeVector(out, v);
 		} else {
 			throw new FloggyException("The class " + className
 					+ " doesn't is a persistable class!");
