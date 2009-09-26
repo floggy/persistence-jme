@@ -105,11 +105,26 @@
 						</goals>
 					</execution>
 				</executions>
-				<configuration>
-					<proguard>true</proguard>
-					<obfuscate>false</obfuscate>
-					<useWtkLibs>false</useWtkLibs>
-					<proguardPreverify>true</proguardPreverify>
+ 				<configuration>
+ 					<proguard>true</proguard>
+					<obfuscate>true</obfuscate>
+					<proguardVersion>4.4</proguardVersion>
+ 					<useWtkLibs>false</useWtkLibs>
+ 					<proguardPreverify>true</proguardPreverify>
+					<proguardOptions>
+						<options>
+							<option>-optimizations *</option>
+							<option>-optimizationpasses 5</option>
+							<!-- option>-allowaccessmodification</option-->
+							<option>-overloadaggressively</option>
+							<option>-dontusemixedcaseclassnames</option>
+							<option>-flattenpackagehierarchy ''</option>
+							<option>-repackageclasses ''</option>
+							<option>-microedition</option>
+							<option>-verbose</option>
+							<option>-keep class * implements net.sourceforge.floggy.persistence.Persistable</option>
+						</options>
+					</proguardOptions>
 					<midlets>
 						<MIDlet>
 							<name>${project.name}</name>
@@ -117,7 +132,15 @@
 							<class>net.sourceforge.floggy.persistence.HospitalMIDlet</class>
 						</MIDlet>
 					</midlets>
-				</configuration>
+ 				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>net.sf.proguard</groupId>
+						<artifactId>proguard</artifactId>
+						<version>4.4</version>
+						<scope>runtime</scope>
+					</dependency>
+				</dependencies>
 			</plugin>
 			<plugin>
 				<groupId>com.pyx4me</groupId>
