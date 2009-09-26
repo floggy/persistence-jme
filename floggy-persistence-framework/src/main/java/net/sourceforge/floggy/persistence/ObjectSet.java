@@ -44,17 +44,15 @@ package net.sourceforge.floggy.persistence;
  */
 public interface ObjectSet {
     /**
-     * Load the object of a given index into the object instance
-     * supplied.
+     * Returns the object at the specified index.
      *
-     * @param index Index of the object to be loaded.
+     * @param index Index of the object to return.
      *
-     * @return The id number at RMS system at the specified position in the
-     *         set.
+     * @return The object at the specified position in the set.
      *
-     * @throws FloggyException Exception thrown if a persistance error occurs.
+     * @throws FloggyException Exception thrown if a persistence error occurs.
      */
-    int getId(int index) throws FloggyException;
+    Persistable get(int index) throws FloggyException;
 
     /**
      * Load the object of a given index into the object instance.
@@ -68,16 +66,31 @@ public interface ObjectSet {
     void get(int index, Persistable object) throws FloggyException;
 
     /**
-     * Returns the object at the specified index.
+     * Load the object of a given index into the object instance
+     * supplied.
      *
-     * @param index Index of the object to return.
+     * @param index Index of the object to be loaded.
      *
-     * @return The object at the specified position in the set.
+     * @return The id number at RMS system at the specified position in the
+     *         set.
      *
-     * @throws FloggyException Exception thrown if a persistence error occurs.
+     * @throws FloggyException Exception thrown if a persistance error occurs.
      */
-    Persistable get(int index) throws FloggyException;
+    int getId(int index) throws FloggyException;
 
+    /**
+     * Gets the lazy property.
+     * 
+     * @return The flag indicating the the type of fetch made by 
+     * the PersistableManager.load method. 
+     */
+    boolean isLazy();
+    
+    /**
+     * Sets the lazy property.
+     */
+    void setLazy(boolean lazy);
+    
     /**
      * Returns the number of objects in this set.
      *

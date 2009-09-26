@@ -73,36 +73,6 @@ class ObjectSetImpl implements ObjectSet {
 	
 	
 	/**
-	 * 
-	 * 
-	 * @see net.sourceforge.floggy.persistence.ObjectSet#getId(int)
-	 */
-	public int getId(int index) {
-		// Checks if the index is valid.
-		if (index < 0 || index >= size) {
-			throw new IndexOutOfBoundsException();
-		}
-		
-		return ids[index];
-	}
-
-	/**
-	 * 
-	 * 
-	 * @see net.sourceforge.floggy.persistence.ObjectSet#get(int, Persistable)
-	 */
-	public void get(int index, Persistable persistable) throws FloggyException {
-		if (persistable == null) {
-			throw new IllegalArgumentException("The persistable object cannot be null!");
-		}
-
-		// Load the data from the repository.
-		manager.load(persistable, getId(index), lazy);
-	}
-
-	/**
-	 * 
-	 * 
 	 * @see net.sourceforge.floggy.persistence.ObjectSet#get(int)
 	 */
 	public Persistable get(int index) throws FloggyException {
@@ -115,8 +85,44 @@ class ObjectSetImpl implements ObjectSet {
 	}
 
 	/**
-	 * 
-	 * 
+	 * @see net.sourceforge.floggy.persistence.ObjectSet#get(int, Persistable)
+	 */
+	public void get(int index, Persistable persistable) throws FloggyException {
+		if (persistable == null) {
+			throw new IllegalArgumentException("The persistable object cannot be null!");
+		}
+
+		// Load the data from the repository.
+		manager.load(persistable, getId(index), lazy);
+	}
+
+	/**
+	 * @see net.sourceforge.floggy.persistence.ObjectSet#getId(int)
+	 */
+	public int getId(int index) {
+		// Checks if the index is valid.
+		if (index < 0 || index >= size) {
+			throw new IndexOutOfBoundsException();
+		}
+		
+		return ids[index];
+	}
+	
+	/**
+	 * @see net.sourceforge.floggy.persistence.ObjectSet#isLazy()
+	 */
+	public boolean isLazy() {
+		return lazy;
+	}
+	
+	/**
+	 * @see net.sourceforge.floggy.persistence.ObjectSet#setLazy(boolean)
+	 */
+	public void setLazy(boolean lazy) {
+		this.lazy = lazy;
+	}
+
+	/**
 	 * @see net.sourceforge.floggy.persistence.ObjectSet#size()
 	 */
 	public int size() {
