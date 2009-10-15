@@ -115,7 +115,7 @@
 						<options>
 							<option>-optimizations *</option>
 							<option>-optimizationpasses 5</option>
-							<!-- option>-allowaccessmodification</option-->
+							<option>-allowaccessmodification</option>
 							<option>-overloadaggressively</option>
 							<option>-dontusemixedcaseclassnames</option>
 							<option>-flattenpackagehierarchy ''</option>

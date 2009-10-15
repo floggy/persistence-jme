@@ -254,6 +254,7 @@
 	</reporting>
 	<modules>
 		<module>floggy-persistence-framework</module>
+		<module>floggy-persistence-framework-impl</module>
 		<module>floggy-persistence-weaver</module>
 		<module>maven-floggy-plugin</module>
 		<module>floggy-persistence-test</module>
