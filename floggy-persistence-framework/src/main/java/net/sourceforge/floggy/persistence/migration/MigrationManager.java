@@ -20,17 +20,57 @@ import java.util.Hashtable;
 import net.sourceforge.floggy.persistence.FloggyException;
 
 /**
- * DOCUMENT ME!
+ * A class that helps the developer migrate from a previous version of its
+ * application to a new version. <br>
+ * The general use of it follows:<br>
+ * <br>
+ * 
+ * <code>
+ * MigrationManager manager = MigrationManager.getInstance();<br>
+ * String[] notMigratedClasses = manager.getNotMigratedClasses();<br>
+ * <br>
+ * for (int i = 0; i < notMigratedClasses.length; i++) {<br><br>
+ * &nbsp;if (notMigratedClasses[i].equals("net.sourceforge.floggy.Person")) {<br>
+ * &nbsp;&nbsp;//does a quickMigration because the classes didn't changed between versions<br>
+ * &nbsp;&nbsp;manager.quickMigration(Class.forName(notMigratedClasses[i]));<br>
+ * &nbsp;}<br><br>
+ * &nbsp;if (notMigratedClasses[i].equals("net.sourceforge.floggy.Phone")) {<br>
+ * &nbsp;&nbsp;Enumeration enumeration = manager.start(Class.forName(notMigratedClasses[i]), null);<br>
+ * &nbsp;&nbsp;while (enumeration.hasMoreElements()) {<br>
+ * &nbsp;&nbsp;&nbsp;Hashtable fields = enumeration.nextElement();<br>
+ * &nbsp;&nbsp;&nbsp;Integer countryCode = fields.get("countryCode");<br>
+ * &nbsp;&nbsp;&nbsp;if (countryCode == null) {<br>
+ * &nbsp;&nbsp;&nbsp;&nbsp;enumeration.delete();<br>
+ * &nbsp;&nbsp;&nbsp;} else {<br>
+ * &nbsp;&nbsp;&nbsp;&nbsp;Phone phone = new Phone();<br>
+ * &nbsp;&nbsp;&nbsp;&nbsp;phone.setNumber(fields.get("number"));<br>
+ * &nbsp;&nbsp;&nbsp;&nbsp;phone.setType(Phone.GENERAL);<br>
+ * &nbsp;&nbsp;&nbsp;&nbsp;enumeration.update(phone);<br>
+ * &nbsp;&nbsp;&nbsp;}<br>
+ * &nbsp;&nbsp;}<br>
+ * &nbsp;}<br>
+ * }
+ * </code>
  * 
  * @author Thiago Moreira
  * 
  * @since 1.3.0
  */
 public abstract class MigrationManager {
-	
-	public static final String LAZY_LOAD = "LAZY_LOAD";
-	public static final String MIGRATE_FROM_PREVIOUS_1_3_0_VERSION = "MIGRATE_FROM_PREVIOUS_1_3_0_VERSION";
+
+	/**
+	 * It enables the developer to iterate over all registers without update or
+	 * delete it.
+	 */
 	public static final String ITERATION_MODE = "ITERATION_MODE";
+	/**
+	 * It drives the migration avoiding or not the loading of Persistable fields
+	 */
+	public static final String LAZY_LOAD = "LAZY_LOAD";
+	/**
+	 * It enables the developer to migrate from a version earlier than 1.3.0
+	 */
+	public static final String MIGRATE_FROM_PREVIOUS_1_3_0_VERSION = "MIGRATE_FROM_PREVIOUS_1_3_0_VERSION";
 
 	/**
 	 * The single instance of PersistableManager.
@@ -72,7 +112,7 @@ public abstract class MigrationManager {
 	 * fields of the Persistable class being migrated.
 	 * 
 	 * @param persistableClass
-	 *            DOCUMENT ME!
+	 *            The Persistable being migrated.
 	 * 
 	 * @throws FloggyException
 	 *             If the enumeration wasn't whole processed.
@@ -80,20 +120,22 @@ public abstract class MigrationManager {
 	public abstract void finish(Class persistableClass) throws FloggyException;
 
 	/**
-	 * DOCUMENT ME!
+	 * Retrieves a list with all classes that needs to be migrated.
 	 * 
-	 * @return DOCUMENT ME!
+	 * @return a String array that contains a list of classes that must be
+	 *         migrated.
 	 */
 	public abstract String[] getNotMigratedClasses();
 
 	/**
-	 * DOCUMENT ME!
+	 * Execute a quick migration in classes that didn't changed between
+	 * versions.
 	 * 
 	 * @param persistableClass
-	 *            DOCUMENT ME!
+	 *            The Persistable being migrated.
 	 * 
 	 * @throws FloggyException
-	 *             DOCUMENT ME!
+	 *             A exception that holds the underling problem.
 	 */
 	public abstract void quickMigration(Class persistableClass)
 			throws FloggyException;
@@ -109,7 +151,7 @@ public abstract class MigrationManager {
 	 * @return A enumeration
 	 * 
 	 * @throws FloggyException
-	 *             DOCUMENT ME!
+	 *             A exception that holds the underling problem.
 	 */
 	public abstract Enumeration start(Class persistableClass,
 			Hashtable properties) throws FloggyException;

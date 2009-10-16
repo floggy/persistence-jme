@@ -108,9 +108,8 @@ public class FieldPersistableInfo {
 	}
 
 	/**
-	 * DOCUMENT ME!
 	 * 
-	 * @return DOCUMENT ME!
+	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
 		StringBuffer result = new StringBuffer();
