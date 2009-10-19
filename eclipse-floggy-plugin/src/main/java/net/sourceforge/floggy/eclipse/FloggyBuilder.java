@@ -58,23 +58,29 @@ public class FloggyBuilder extends IncrementalProjectBuilder {
 	public static final String PERSISTABLE_CLASS_NAME = "net.sourceforge.floggy.persistence.Persistable";
 
 	public static final String RECORDSTORE_CLASS_NAME = "javax.microedition.rms.RecordStore";
+	
+	private Log log;
+
+	private Log getLog() {
+		if (log == null) {
+			LogFactory.getFactory().setAttribute("org.apache.commons.logging.Log", EclipseLog.class.getName());
+			log = LogFactory.getLog(FloggyBuilder.class);
+		}
+		return log;
+	}
 
 	protected IProject[] build(int kind, Map args, IProgressMonitor monitor) throws CoreException {
 		try {
-			LogFactory.getFactory().setAttribute(
-					"org.apache.commons.logging.Log",
-					EclipseLog.class.getName());
 			IProject project = getProject();
-			
-			Log log = LogFactory.getLog(FloggyBuilder.class);
-
 			boolean buildNeeded = false;
-			IResourceDelta delta  = getDelta(project);
+			IResourceDelta delta = getDelta(project);
 			ArrayList sourceFolders = new ArrayList(1);
 
-			// Only do a build if the change is to a java source folder. It's highly unlikely that the delta will ever be null,
-			// if it is then assume that a build is required even though we don't know what changed.
-			if (delta != null && project.hasNature(JavaCore.NATURE_ID) && project.hasNature(FloggyNature.NATURE_ID)){
+			// Only do a build if the change is to a java source folder. It's
+			// highly unlikely that the delta will ever be null,
+			// if it is then assume that a build is required even though we
+			// don't know what changed.
+			if (delta != null && project.hasNature(JavaCore.NATURE_ID) && project.hasNature(FloggyNature.NATURE_ID)) {
 				IClasspathEntry[] entries = JavaCore.create(project).getResolvedClasspath(true);
 				for (int i = 0; i < entries.length; i++) {
 					IClasspathEntry entry = entries[i];
@@ -82,30 +88,28 @@ public class FloggyBuilder extends IncrementalProjectBuilder {
 						sourceFolders.add(entry.getPath());
 					}
 				}
-				IResourceDelta[] changes = delta.getAffectedChildren(); 
+				IResourceDelta[] changes = delta.getAffectedChildren();
 				for (int i = 0; i < changes.length; i++) {
 					IResourceDelta change = changes[i];
 					if (sourceFolders.contains(change.getFullPath())) {
 						buildNeeded = true;
-						log.info("Floggy build needed due to changed source folder: "+ change.getFullPath());
+						getLog().info("Floggy build needed due to changed source folder: " + change.getFullPath());
 						break;
 					}
 				}
 			} else if (delta == null) {
 				buildNeeded = true;
 			}
-			
+
 			if (buildNeeded) {
 				IJavaProject javaProject = JavaCore.create(project);
-				
-				IClasspathEntry[] entries = javaProject
-						.getResolvedClasspath(true);
 
-				boolean generateSource = Boolean.valueOf(project
-								.getPersistentProperty(SetGenerateSourceAction.PROPERTY_NAME)).booleanValue();
-				boolean addDefaultConstructor = Boolean
-						.valueOf(project
-								.getPersistentProperty(SetAddDefaultConstructorAction.PROPERTY_NAME)).booleanValue();
+				IClasspathEntry[] entries = javaProject.getResolvedClasspath(true);
+
+				boolean generateSource = Boolean.valueOf(project.getPersistentProperty(SetGenerateSourceAction.PROPERTY_NAME))
+						.booleanValue();
+				boolean addDefaultConstructor = Boolean.valueOf(
+						project.getPersistentProperty(SetAddDefaultConstructorAction.PROPERTY_NAME)).booleanValue();
 
 				// creating the classpath
 				List classpathList = new ArrayList();
@@ -115,9 +119,10 @@ public class FloggyBuilder extends IncrementalProjectBuilder {
 				for (int i = 0; i < entries.length; i++) {
 					classpathEntry = JavaCore.getResolvedClasspathEntry(entries[i]);
 					pathName = classpathEntry.getPath().toFile().toString();
-					if (classpathEntry.getEntryKind() == IClasspathEntry.CPE_LIBRARY){
-						if (!classpathEntry.getPath().toFile().exists()) {
-							IFile pathIFile = project.getWorkspace().getRoot().getFile(classpathEntry.getPath()); 
+					if (classpathEntry.getEntryKind() == IClasspathEntry.CPE_LIBRARY) {
+						IPath cpePath = classpathEntry.getPath(); 
+						if (!cpePath.toFile().exists()) {
+							IFile pathIFile = project.getWorkspace().getRoot().getFile(cpePath);
 							pathName = pathIFile.getLocationURI().getPath();
 						}
 					}
@@ -129,8 +134,7 @@ public class FloggyBuilder extends IncrementalProjectBuilder {
 				try {
 					classPool.get(PERSISTABLE_CLASS_NAME);
 				} catch (NotFoundException e) {
-					messages
-							.append("You must to add the Floggy framework library to the build path.");
+					messages.append("You must to add the Floggy framework library to the build path.");
 				}
 				try {
 					classPool.get(RECORDSTORE_CLASS_NAME);
@@ -138,58 +142,55 @@ public class FloggyBuilder extends IncrementalProjectBuilder {
 					if (messages.length() != 0) {
 						messages.append('\n');
 					}
-					messages
-							.append("You must to add the MIDP library to the build path.");
+					messages.append("You must to add the MIDP library to the build path.");
 				}
 				if (messages.length() != 0) {
 					Display.getDefault().asyncExec(new Runnable() {
 						public void run() {
 							Shell shell = Display.getDefault().getActiveShell();
-							MessageDialog.openError(shell, "Floggy", messages
-									.toString());
+							MessageDialog.openError(shell, "Floggy", messages.toString());
 						}
 					});
 
 				} else {
 					Weaver weaver = new Weaver(classPool);
 					IPath root = project.getLocation();
-					File input = root.removeLastSegments(1).append(
-							javaProject.getOutputLocation()).toFile();
+					File input = root.removeLastSegments(1).append(javaProject.getOutputLocation()).toFile();
 
 					IFolder floggyTemp = project.getFolder(".floggy.tmp");
-					if (!floggyTemp.exists()){
+					if (!floggyTemp.exists()) {
 						floggyTemp.create(IResource.DERIVED, true, monitor);
 					}
 					weaver.setOutputFile(floggyTemp.getLocation().toFile());
 					weaver.setInputFile(input);
 					weaver.setClasspath((String[]) classpathList.toArray(new String[0]));
-					Configuration configuration= new Configuration();
+					Configuration configuration = new Configuration();
 					configuration.setAddDefaultConstructor(addDefaultConstructor);
 					configuration.setGenerateSource(generateSource);
 					weaver.setConfiguration(configuration);
 					weaver.execute();
-					
-					IPath path= javaProject.getOutputLocation();
-					
+
+					IPath path = javaProject.getOutputLocation();
+
 					if (path.segmentCount() > 1) {
-						path= path.removeFirstSegments(1);
+						path = path.removeFirstSegments(1);
 					}
-					
-					IFolder outputLocation= project.getFolder(path);
+
+					IFolder outputLocation = project.getFolder(path);
 					floggyTemp.refreshLocal(IResource.DEPTH_INFINITE, monitor);
 					copyFiles(floggyTemp, outputLocation, monitor);
-					outputLocation.refreshLocal(IResource.DEPTH_INFINITE, monitor);
-					cleanFolder(floggyTemp,monitor);
+					exportWeaverClasses(floggyTemp, javaProject, monitor);
+					project.refreshLocal(IResource.DEPTH_INFINITE, monitor);
+					cleanFolder(floggyTemp, monitor);
 				}
 			}
 		} catch (Exception e) {
-			IStatus status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1,
-					e.getMessage(), e);
+			IStatus status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1, e.getMessage(), e);
 			throw new CoreException(status);
 		}
 		return null;
 	}
-	
+
 	private void cleanFolder(IFolder folder, IProgressMonitor monitor) throws CoreException {
 		IResource[] members = folder.members();
 		for (int i = 0; i < members.length; i++) {
@@ -226,6 +227,14 @@ public class FloggyBuilder extends IncrementalProjectBuilder {
 					targetFile.create(sourceFile.getContents(), IResource.DERIVED, monitor);
 				}
 			}
-		}	
+		}
+	}
+	
+	private void exportWeaverClasses(IFolder floggyTemp, IJavaProject javaProject, IProgressMonitor monitor) throws CoreException {
+		RuntimeCollector collector = CollectorFactory.createCollector();
+		collector.setEclipseProperties(javaProject, (EclipseLog) log, floggyTemp);
+		collector.setSource(floggyTemp);
+		collector.run(monitor);
+		return;
 	}
 }
