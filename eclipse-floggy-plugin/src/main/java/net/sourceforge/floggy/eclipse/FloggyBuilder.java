@@ -41,6 +41,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.internal.core.ClasspathEntry;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -71,41 +72,44 @@ public class FloggyBuilder extends IncrementalProjectBuilder {
 
 	protected IProject[] build(int kind, Map args, IProgressMonitor monitor) throws CoreException {
 		try {
+			//System.out.println("Builder thread " + Thread.currentThread().getId());
 			IProject project = getProject();
 			boolean buildNeeded = false;
 			IResourceDelta delta = getDelta(project);
 			ArrayList sourceFolders = new ArrayList(1);
-
-			// Only do a build if the change is to a java source folder. It's
-			// highly unlikely that the delta will ever be null,
-			// if it is then assume that a build is required even though we
-			// don't know what changed.
-			if (delta != null && project.hasNature(JavaCore.NATURE_ID) && project.hasNature(FloggyNature.NATURE_ID)) {
-				IClasspathEntry[] entries = JavaCore.create(project).getResolvedClasspath(true);
-				for (int i = 0; i < entries.length; i++) {
-					IClasspathEntry entry = entries[i];
-					if (entry.getEntryKind() == IClasspathEntry.CPE_SOURCE) {
-						sourceFolders.add(entry.getPath());
+			IClasspathEntry[] entries = null;
+			IJavaProject javaProject = null;
+			
+			// Only do a build if the change is to a java source folder, this is because builders invoked after the floggy can cause changes to the 
+			// classes (eg. Preverfication builder in the MTJ/Pulsar project. So we will only build if a source code change is detected.
+			// If the delta is null, it could be that this is the first time, that the floogy nature has been added to an existing project, so build
+			
+			if (project.hasNature(JavaCore.NATURE_ID) && project.hasNature(FloggyNature.NATURE_ID)) {
+				javaProject = JavaCore.create(project);
+				entries = javaProject.getResolvedClasspath(true);
+				if (delta == null){
+					buildNeeded = true;
+				} else {
+					for (int i = 0; i < entries.length; i++) {
+						IClasspathEntry entry = entries[i];
+						if (entry.getEntryKind() == IClasspathEntry.CPE_SOURCE) {
+							sourceFolders.add(entry.getPath());
+						}
+					}
+					IResourceDelta[] changes = delta.getAffectedChildren();
+					for (int i = 0; i < changes.length; i++) {
+						IResourceDelta change = changes[i];
+						if (sourceFolders.contains(change.getFullPath())) {
+							buildNeeded = true;
+							getLog().info("Floggy build needed due to changed source folder: " + change.getFullPath());
+							break;
+						}
 					}
 				}
-				IResourceDelta[] changes = delta.getAffectedChildren();
-				for (int i = 0; i < changes.length; i++) {
-					IResourceDelta change = changes[i];
-					if (sourceFolders.contains(change.getFullPath())) {
-						buildNeeded = true;
-						getLog().info("Floggy build needed due to changed source folder: " + change.getFullPath());
-						break;
-					}
-				}
-			} else if (delta == null) {
-				buildNeeded = true;
 			}
 
 			if (buildNeeded) {
-				IJavaProject javaProject = JavaCore.create(project);
-
-				IClasspathEntry[] entries = javaProject.getResolvedClasspath(true);
-
+			
 				boolean generateSource = Boolean.valueOf(project.getPersistentProperty(SetGenerateSourceAction.PROPERTY_NAME))
 						.booleanValue();
 				boolean addDefaultConstructor = Boolean.valueOf(
@@ -179,7 +183,7 @@ public class FloggyBuilder extends IncrementalProjectBuilder {
 					IFolder outputLocation = project.getFolder(path);
 					floggyTemp.refreshLocal(IResource.DEPTH_INFINITE, monitor);
 					copyFiles(floggyTemp, outputLocation, monitor);
-					exportWeaverClasses(floggyTemp, javaProject, monitor);
+					exportWeaverClasses(outputLocation, javaProject, monitor);
 					project.refreshLocal(IResource.DEPTH_INFINITE, monitor);
 					cleanFolder(floggyTemp, monitor);
 				}
@@ -232,7 +236,7 @@ public class FloggyBuilder extends IncrementalProjectBuilder {
 	
 	private void exportWeaverClasses(IFolder floggyTemp, IJavaProject javaProject, IProgressMonitor monitor) throws CoreException {
 		RuntimeCollector collector = CollectorFactory.createCollector();
-		collector.setEclipseProperties(javaProject, (EclipseLog) log, floggyTemp);
+		collector.setEclipseProperties(javaProject, getLog(), floggyTemp);
 		collector.setSource(floggyTemp);
 		collector.run(monitor);
 		return;

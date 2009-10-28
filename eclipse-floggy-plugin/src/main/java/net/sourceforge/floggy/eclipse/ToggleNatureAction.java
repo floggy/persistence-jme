@@ -36,7 +36,6 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.ui.console.ConsolePlugin;
-import org.osgi.framework.Bundle;
 
 public class ToggleNatureAction extends AbstractFloggyAction {
 
@@ -51,6 +50,7 @@ public class ToggleNatureAction extends AbstractFloggyAction {
 	}
 
 	private void reorderCommands(IProject project) throws CoreException {
+		//System.out.println("ToggleNatureThread " + Thread.currentThread().getId());
 		IProjectDescription description = project.getDescription();
 		ICommand[] commands = description.getBuildSpec();
 		ICommand[] newOrder = new ICommand[commands.length];
@@ -153,8 +153,7 @@ public class ToggleNatureAction extends AbstractFloggyAction {
 			}
 		}
 		if (!contains) {
-			Bundle bundle = Activator.getDefault().getBundle();
-			Enumeration e = bundle.findEntries("/", "*.jar", true);
+			Enumeration e = Activator.findEntries("/", "*.jar", true);
 			while (e.hasMoreElements()) {
 				URL url = (URL) e.nextElement();
 				String path = FileLocator.toFileURL(url).getPath();

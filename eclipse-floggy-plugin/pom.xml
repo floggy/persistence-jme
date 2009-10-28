@@ -209,10 +209,11 @@
 						<Bundle-Activator>${pom.groupId}.eclipse.Activator</Bundle-Activator>
 						<Embed-Dependency>*;scope=compile</Embed-Dependency>
 						<Embed-Directory>lib</Embed-Directory>
-						<Require-Bundle>org.eclipse.osgi,org.eclipse.ui,org.eclipse.core.runtime,org.eclipse.core.resources,org.eclipse.jdt.core,org.eclipse.ui.console</Require-Bundle>
 						<Bundle-RequiredExecutionEnvironment>J2SE-1.4</Bundle-RequiredExecutionEnvironment>
-						<Import-Package>!javax.microedition.rms*,!org.apache.tools.ant*,!org.apache.log*,!org.apache.avalon*,!com.sun.jdi*,*</Import-Package>
+						<Import-Package>!com.sun.jdi.*,!javax.microedition.rms.*,!org.apache.avalon.*,!org.apache.log,!org.apache.tools.*,!org.apache.log4j,net.sourceforge.floggy.*,org.eclipse.core.resources,org.eclipse.core.runtime;registry=split,org.eclipse.jdt.core,org.eclipse.jface.action,org.eclipse.jface.dialogs,org.eclipse.jface.viewers,org.eclipse.swt.widgets,org.eclipse.ui,org.eclipse.ui.console,org.eclipse.ui.plugin,org.osgi.framework;version="1.4"</Import-Package>
 						<Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
+						<Bundle-ClassPath>.</Bundle-ClassPath>
+						<Require-Bundle>org.eclipse.osgi,org.eclipse.ui,org.eclipse.core.runtime,org.eclipse.core.resources,org.eclipse.jdt.core,org.eclipse.ui.console</Require-Bundle>
 					</instructions>
 				</configuration>
 				<executions>

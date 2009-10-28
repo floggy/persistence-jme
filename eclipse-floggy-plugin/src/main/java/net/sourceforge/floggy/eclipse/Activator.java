@@ -15,6 +15,8 @@
  */
 package net.sourceforge.floggy.eclipse;
 
+import java.util.Enumeration;
+
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -25,6 +27,7 @@ public class Activator extends AbstractUIPlugin {
 
 	// The shared instance
 	private static Activator plugin;
+	private static BundleContext context;
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "net.sourceforge.floggy";
@@ -52,6 +55,7 @@ public class Activator extends AbstractUIPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
+		Activator.context = context;
 	}
 
 	/*
@@ -61,7 +65,16 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
+		Activator.context = null;
 		super.stop(context);
+	}
+	
+	public static Enumeration findEntries(String path, String filePattern, boolean recurse){
+		Enumeration result = null;
+		if (context != null){
+			result = context.getBundle().findEntries(path, filePattern, recurse);
+		}
+		return result;
 	}
 
 }

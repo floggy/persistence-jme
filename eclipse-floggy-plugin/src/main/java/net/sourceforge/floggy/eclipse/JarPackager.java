@@ -5,7 +5,6 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
 import java.util.AbstractList;
 import java.util.Iterator;
@@ -15,6 +14,7 @@ import java.util.jar.JarOutputStream;
 import java.util.zip.CRC32;
 import java.util.zip.ZipEntry;
 
+import org.apache.commons.logging.Log;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
@@ -39,7 +39,7 @@ public class JarPackager implements RuntimeCollector {
 	private Vector entries;
 	private Vector byteData;
 	private String packageFilter = "net/sourceforge/floggy/persistence/impl";
-	private EclipseLog log;
+	private Log log;
 
 	/* (non-Javadoc)
 	 * @see net.sourceforge.floggy.eclipse.RuntimeCollector#setSource(org.eclipse.core.resources.IFolder)
@@ -88,11 +88,12 @@ public class JarPackager implements RuntimeCollector {
 				}
 			}
 			jarOut.close();
+			exportJar(monitor);
 		} catch (Exception e) {
 			if (e instanceof CoreException) {
 				throw (CoreException) e;
 			} else {
-				IStatus status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage());
+				IStatus status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e);
 				throw new CoreException(status);
 			}
 		}
@@ -148,7 +149,6 @@ public class JarPackager implements RuntimeCollector {
 			byteData.add(bytes);
 		}
 		data.add(byteData);
-		//System.out.println(jarEntry.getName() + " CRC 0x" + Long.toHexString(crc.getValue()) + " " + crc.getValue());
 		jarEntry.setCrc(crc.getValue());
 		in.close();
 		entries.add(jarEntry);
@@ -198,7 +198,7 @@ public class JarPackager implements RuntimeCollector {
 		return jarFile;
 	}
 
-	public void setEclipseProperties(IJavaProject javaProject, EclipseLog log, IFolder floggyTemp) {
+	public void setEclipseProperties(IJavaProject javaProject, Log log, IFolder floggyTemp) {
 		this.javaProject = javaProject;
 		this.log = log;
 		this.floggyTemp = floggyTemp;

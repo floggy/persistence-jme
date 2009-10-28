@@ -1,5 +1,6 @@
 package net.sourceforge.floggy.eclipse;
 
+import org.apache.commons.logging.Log;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -12,7 +13,7 @@ public class NoOpCollector implements RuntimeCollector {
 
 	}
 
-	public void setEclipseProperties(IJavaProject javaProject, EclipseLog log, IFolder floggyTemp) {
+	public void setEclipseProperties(IJavaProject javaProject, Log log, IFolder floggyTemp) {
 		// TODO Auto-generated method stub
 
 	}
