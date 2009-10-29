@@ -19,9 +19,7 @@ import java.util.Date;
 
 import net.sourceforge.floggy.persistence.Persistable;
 
-/**
- * @author Thiago Le�o Moreira <thiagolm@users.sourceforge.net>
- */
+
 public class FloggyDate implements Persistable {
 	protected Date x;
 

@@ -47,12 +47,6 @@ import net.sourceforge.floggy.persistence.pool.PoolFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-/**
- * Main compiler class!
- * 
- * @author Thiago Rossato <thiagorossato@users.sourceforge.net>
- * @author Thiago Moreira <thiagolm@users.sourceforge.net>
- */
 public class Weaver {
 
 	public static final String __PERSISTABLE_CLASSNAME = "net.sourceforge.floggy.persistence.impl.__Persistable";

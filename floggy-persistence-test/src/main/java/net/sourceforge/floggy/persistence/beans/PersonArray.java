@@ -21,9 +21,7 @@ import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.PersistableManager;
 import net.sourceforge.floggy.persistence.beans.animals.Bird;
 
-/**
- * @author Thiago Leão Moreira <thiagolm@users.sourceforge.net>
- */
+
 public class PersonArray implements Persistable, Deletable {
 	protected int[] age;
 

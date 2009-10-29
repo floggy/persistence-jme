@@ -17,9 +17,7 @@ package net.sourceforge.floggy.persistence.beans.primitive;
 
 import net.sourceforge.floggy.persistence.Persistable;
 
-/**
- * @author Thiago Le�o Moreira <thiagolm@users.sourceforge.net>
- */
+
 public class TestLong implements Persistable {
 	protected long x;
 

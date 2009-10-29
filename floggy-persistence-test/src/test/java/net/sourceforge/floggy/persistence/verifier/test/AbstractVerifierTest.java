@@ -17,9 +17,7 @@ package net.sourceforge.floggy.persistence.verifier.test;
 
 import junit.framework.TestCase;
 
-/**
- * @author Thiago Le�o Moreira <thiagolm@users.sourceforge.net>
- */
+
 public abstract class AbstractVerifierTest extends TestCase {
 	protected abstract void evaluate(String className, boolean createInstance);
 

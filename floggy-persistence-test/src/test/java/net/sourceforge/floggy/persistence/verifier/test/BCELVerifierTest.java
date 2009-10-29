@@ -23,9 +23,7 @@ import org.apache.bcel.verifier.VerificationResult;
 import org.apache.bcel.verifier.Verifier;
 import org.apache.bcel.verifier.VerifierFactory;
 
-/**
- * @author Thiago Le�o Moreira <thiagolm@users.sourceforge.net>
- */
+
 public class BCELVerifierTest extends AbstractVerifierTest {
 
 	protected void evaluate(String className, boolean createInstance) {

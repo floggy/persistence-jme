@@ -48,7 +48,7 @@ import org.eclipse.swt.widgets.Shell;
 /**
  * 
  * @author Thiago Moreira
- * @contributor Dan Murphy
+ * @author Dan Murphy
  *
  */
 public class FloggyBuilder extends IncrementalProjectBuilder {

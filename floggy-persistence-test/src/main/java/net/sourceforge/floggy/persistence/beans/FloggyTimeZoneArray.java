@@ -19,9 +19,7 @@ import java.util.TimeZone;
 
 import net.sourceforge.floggy.persistence.Persistable;
 
-/**
- * @author Thiago Le�o Moreira <thiagolm@users.sourceforge.net>
- */
+
 public class FloggyTimeZoneArray implements Persistable {
 	protected TimeZone x[];
 

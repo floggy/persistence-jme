@@ -17,9 +17,7 @@ package net.sourceforge.floggy.persistence.beans.wrapper;
 
 import net.sourceforge.floggy.persistence.Persistable;
 
-/**
- * @author Thiago Le�o Moreira <thiagolm@users.sourceforge.net>
- */
+
 public class TestInteger implements Persistable {
 	private Integer x;
 

@@ -15,8 +15,6 @@
  */
 package net.sourceforge.floggy.persistence.beans;
 
-/**
- * @author Thiago Le�o Moreira <thiagolm@users.sourceforge.net>
- */
+
 public class FloggySubNoneFields extends FloggyNoneFields {
 }

@@ -34,12 +34,6 @@ import net.sourceforge.floggy.persistence.formatter.CodeFormatter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-/**
- * Class CodeGenerator
- * 
- * @author Thiago Rossato <thiagorossato@sourceforge.net>
- * @author Thiago Leão Moreira <thiagolm@sourceforge.net>
- */
 public class CodeGenerator {
 
 	private static final Log LOG = LogFactory.getLog(CodeGenerator.class);

@@ -20,9 +20,7 @@ import net.sourceforge.floggy.persistence.FloggyException;
 import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.PersistableManager;
 
-/**
- * @author Thiago Leão Moreira <thiagolm@users.sourceforge.net>
- */
+
 public class FloggyPersistableArray implements Persistable, Deletable {
 	protected FloggyPersistable[] x;
 
