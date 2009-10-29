@@ -31,7 +31,6 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -119,9 +118,9 @@ public class FloggyBuilder extends IncrementalProjectBuilder {
 				List classpathList = new ArrayList();
 				ClassPool classPool = new ClassPool();
 				IClasspathEntry classpathEntry;
-				String pathName;
+				String pathName;	
 				for (int i = 0; i < entries.length; i++) {
-					classpathEntry = JavaCore.getResolvedClasspathEntry(entries[i]);
+					classpathEntry = entries[i];
 					pathName = classpathEntry.getPath().toFile().toString();
 					if (classpathEntry.getEntryKind() == IClasspathEntry.CPE_LIBRARY) {
 						IPath cpePath = classpathEntry.getPath(); 
@@ -211,7 +210,6 @@ public class FloggyBuilder extends IncrementalProjectBuilder {
 		IFolder newDestination;
 		IFile targetFile;
 		IFile sourceFile;
-		source.refreshLocal(IResource.DEPTH_ONE, monitor);
 		IResource[] resources = source.members();
 		for (int i = 0; i < resources.length; i++) {
 			IResource resource = resources[i];

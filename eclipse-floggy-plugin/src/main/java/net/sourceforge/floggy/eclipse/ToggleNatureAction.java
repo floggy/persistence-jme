@@ -50,7 +50,6 @@ public class ToggleNatureAction extends AbstractFloggyAction {
 	}
 
 	private void reorderCommands(IProject project) throws CoreException {
-		//System.out.println("ToggleNatureThread " + Thread.currentThread().getId());
 		IProjectDescription description = project.getDescription();
 		ICommand[] commands = description.getBuildSpec();
 		ICommand[] newOrder = new ICommand[commands.length];
