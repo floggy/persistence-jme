@@ -21,6 +21,7 @@ import java.io.FileOutputStream;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Hashtable;
+import java.util.TimeZone;
 import java.util.Vector;
 
 import javax.microedition.rms.RecordStore;
@@ -52,8 +53,13 @@ public class FR2422928Test extends TestCase {
 	private static final Calendar checkpoint = Calendar.getInstance();  
 	protected MicroEmulator emulator;
 	
-	protected void setUp() throws Exception {
+	static {
+		TimeZone zone = TimeZone.getTimeZone("America/Sao_Paulo");
+		checkpoint.setTimeZone(zone);
 		checkpoint.setTimeInMillis(1234567890);
+	}
+	
+	protected void setUp() throws Exception {
 		emulator = MIDletBridge.getMicroEmulator();
 		FileUtils.forceMkdir(new File("target/fr2422928/rms/1.3.0"));
 		IOUtils.copy(new FileInputStream("src/test/rms/1.3.0/FloggyProperties.rms"), new FileOutputStream("target/fr2422928/rms/1.3.0/FloggyProperties.rms"));
@@ -183,7 +189,7 @@ public class FR2422928Test extends TestCase {
 				Hashtable data = (Hashtable) enumeration.nextElement();
 				assertFalse("Should not be empty!", data.isEmpty());
 				assertEquals(name, data.get("name"));
-				assertEquals(checkpoint,  data.get("checkpoint"));
+				assertEquals(checkpoint, data.get("checkpoint"));
 
 				FR2422928 persistable = new FR2422928();
 				persistable.setName((String)data.get("name"));
