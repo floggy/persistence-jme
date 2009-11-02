@@ -44,6 +44,16 @@
 	</scm>
 	<repositories>
 		<repository>
+			<id>pyx4j-web-snapshot</id>
+			<url>http://repository.pyx4j.com/maven2-snapshot</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+		</repository>
+		<repository>
 			<id>pyx4me-web-release</id>
 			<url>http://www.pyx4me.com/maven2-release</url>
 			<snapshots>
@@ -179,7 +189,7 @@
 				<inherited>true</inherited>
 				<configuration>
 					<convention>${project.parent.basedir}/src/main/resources/jalopy-code-convetion.xml</convention>
-			    </configuration>
+				</configuration>
 			</plugin>
 			<plugin>
 				<artifactId>maven-release-plugin</artifactId>
