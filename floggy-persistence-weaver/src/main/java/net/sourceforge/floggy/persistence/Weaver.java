@@ -64,6 +64,8 @@ public class Weaver {
 	private InputPool inputPool;
 
 	private OutputPool outputPool;
+	
+	private OutputPool embeddedClassesOutputPool;
 
 	/**
 	 * Creates a new instance
@@ -273,7 +275,7 @@ public class Weaver {
 		URL fileURL = getClass().getResource(fileName);
 		if (fileURL != null) {
 			fileName = fileName.replace('/', File.separatorChar);
-			outputPool.addFile(fileURL, fileName);
+			embeddedClassesOutputPool.addFile(fileURL, fileName);
 			classpathPool.makeClass(fileURL.openStream());
 		}
 	}
@@ -281,7 +283,6 @@ public class Weaver {
 	private void embeddedUnderlineCoreClasses() throws IOException {
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/FloggyOutputStream.class");
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/FloggyProperties$1.class");
-		embeddedClass("/net/sourceforge/floggy/persistence/impl/MetadataManagerUtil.class");
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/ObjectComparator.class");
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/ObjectFilter.class");
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/ObjectSetImpl.class");
@@ -290,13 +291,15 @@ public class Weaver {
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/PersistableManagerImpl$1.class");
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/PersistableManagerImpl$RecordStoreReference.class");
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/PersistableMetadata.class");
-		embeddedClass("/net/sourceforge/floggy/persistence/impl/SerializationHelper.class");
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/migration/MigrationManagerImpl.class");
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/migration/EnumerationImpl.class");
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/migration/HashtableValueNullable.class");
 	}
 	
 	protected void adaptFrameworkToTargetCLDC() throws IOException, CannotCompileException, NotFoundException {
+		URL fileURL = getClass().getResource("/net/sourceforge/floggy/persistence/impl/SerializationHelper.class");
+		classpathPool.makeClass(fileURL.openStream());
+
 		CtClass ctClass= this.classpathPool.get("net.sourceforge.floggy.persistence.impl.SerializationHelper");
 		if (isCLDC10()) {
 			CtMethod[] methods= ctClass.getMethods();
@@ -325,7 +328,7 @@ public class Weaver {
 				}
 			}
 		}
-		outputPool.addClass(ctClass);
+		embeddedClassesOutputPool.addClass(ctClass);
 	}
 
 	public void execute() throws WeaverException {
@@ -334,6 +337,9 @@ public class Weaver {
 		LOG.info("CLDC version: " + ((isCLDC10()) ? "1.0" : "1.1"));
 		try {
 //			readConfiguration();
+			URL fileURL = getClass().getResource("/net/sourceforge/floggy/persistence/impl/MetadataManagerUtil.class");
+			classpathPool.makeClass(fileURL.openStream());
+
 			embeddedUnderlineCoreClasses();
 			adaptFrameworkToTargetCLDC();
 			List list = getClassThatImplementsPersistable();
@@ -363,6 +369,12 @@ public class Weaver {
 				LOG.debug("Bytecode modified.");
 			}
 			addMetadataManagerUtilClass();
+
+			if (embeddedClassesOutputPool != outputPool) {
+				embeddedClassesOutputPool.finish();
+			}
+			outputPool.finish();
+ 
 //			writeConfiguration();
 		} catch (Exception e) {
 			LOG.error(e.getMessage(), e);
@@ -468,7 +480,7 @@ public class Weaver {
 		}
 
 		ctClass.addMethod(CtNewMethod.make(buffer.toString(), ctClass));
-		outputPool.addClass(ctClass);
+		embeddedClassesOutputPool.addClass(ctClass);
 	}
 
 	/**
@@ -610,7 +622,14 @@ public class Weaver {
 	 * @param outputFile
 	 */
 	public void setOutputFile(File outputFile) throws WeaverException {
-		this.outputPool = PoolFactory.createOutputPool(outputFile);
+		outputPool = PoolFactory.createOutputPool(outputFile);
+		if (embeddedClassesOutputPool == null) {
+			embeddedClassesOutputPool = outputPool;
+		}
+	}
+
+	public void setEmbeddedClassesOutputPool(File embeddedClassesOutputFile) throws WeaverException {
+		embeddedClassesOutputPool = PoolFactory.createOutputPool(embeddedClassesOutputFile);
 	}
 
 //	private void writeConfiguration() throws IOException {

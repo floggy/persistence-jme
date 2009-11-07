@@ -54,30 +54,21 @@ public class PoolFactory {
     }
 
     public static OutputPool createOutputPool(File file) throws WeaverException {
-	if (file.isFile() && file.getName().endsWith(".jar")) {
-	    // try {
-	    // return new JarInputPool(new JarInputStream(new
-	    // FileInputStream(
-	    // file)));
-	    // } catch (IOException e) {
-	    // throw new CompilerException("Invalid input file type.");
-	    // }
-	    // } else if (file.isFile() && file.getName().endsWith(".zip"))
-	    // {
-	    // try {
-	    // return new ZipInputPool(new ZipInputStream(new
-	    // FileInputStream(
-	    // file)));
-	    // } catch (IOException e) {
-	    // throw new CompilerException("Invalid input file type.");
-	    // }
-	} else {
-	    return new DirectoryOutputPool(file);
-	}
-
-	throw new WeaverException(
-		file.getName()
-			+ " is a invalid file type for output file. Valid types are: .jar, .zip and directories.");
+		String fileName = file.getName();
+		try {
+			if (fileName.endsWith(".jar")) {
+				return new ZipOutputPool(file);
+			} 
+			else if (fileName.endsWith(".zip")) {
+				return new ZipOutputPool(file);
+			}
+			else {
+			    return new DirectoryOutputPool(file);
+			}
+		
+		} catch (Exception e) {
+			throw new WeaverException(e.getMessage());
+		}
     }
 
 }

@@ -34,6 +34,6 @@ public interface OutputPool {
     public abstract void addResource(InputStream resourceStream, String fileName)
 	    throws IOException;
 
-    public abstract void finish();
+    public abstract void finish() throws IOException;
 
 }
