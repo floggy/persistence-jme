@@ -32,19 +32,19 @@ public class PoolFactory {
 	    try {
 		return new JarInputPool(file);
 	    } catch (IOException e) {
-		throw new WeaverException("Invalid input file type.");
+		throw new WeaverException("Invalid input file type.", e);
 	    }
 	} else if (file.isFile() && file.getName().endsWith(".zip")) {
 	    try {
 		return new ZipInputPool(file);
 	    } catch (IOException e) {
-		throw new WeaverException("Invalid input file type.");
+		throw new WeaverException("Invalid input file type.", e);
 	    }
 	} else if (file.isDirectory()) {
 	    try {
 		return new DirectoryInputPool(file);
 	    } catch (IOException e) {
-		throw new WeaverException(e.getMessage());
+		throw new WeaverException(e);
 	    }
 	}
 
@@ -67,7 +67,7 @@ public class PoolFactory {
 			}
 		
 		} catch (Exception e) {
-			throw new WeaverException(e.getMessage());
+			throw new WeaverException(e.getMessage(), e);
 		}
     }
 

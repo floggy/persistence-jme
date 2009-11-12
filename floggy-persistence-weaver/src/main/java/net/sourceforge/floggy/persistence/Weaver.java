@@ -378,7 +378,7 @@ public class Weaver {
 //			writeConfiguration();
 		} catch (Exception e) {
 			LOG.error(e.getMessage(), e);
-			throw new WeaverException(e.getMessage());
+			throw new WeaverException(e.getMessage(), e);
 		}
 		// Status
 		time = System.currentTimeMillis() - time;

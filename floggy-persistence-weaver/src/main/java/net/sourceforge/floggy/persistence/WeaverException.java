@@ -22,5 +22,13 @@ public class WeaverException extends Exception {
 	public WeaverException(String message) {
 		super(message);
 	}
+	
+	public WeaverException(String message, Throwable throwable) {
+		super(message, throwable);
+	}
+
+	public WeaverException(Throwable throwable) {
+		super(throwable);
+	}
 
 }
