@@ -72,6 +72,10 @@
 					<groupId>org.microemu</groupId>
 					<artifactId>microemulator</artifactId>
 				</exclusion>
+				<exclusion>
+					<groupId>net.sourceforge.floggy</groupId>
+					<artifactId>floggy-persistence-framework-impl</artifactId>
+				</exclusion>
 			</exclusions> 
 		</dependency>
 		<dependency>
@@ -140,6 +144,7 @@
 			<plugin>
 				<artifactId>maven-eclipse-plugin</artifactId>
 				<configuration>
+					<useProjectReferences>false</useProjectReferences>
 					<pde>true</pde>
 				</configuration>
 			</plugin>
