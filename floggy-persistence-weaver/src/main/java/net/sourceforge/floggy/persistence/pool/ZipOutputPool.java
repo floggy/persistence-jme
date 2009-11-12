@@ -59,6 +59,10 @@ public class ZipOutputPool implements OutputPool {
 	public void addResource(InputStream resourceStream, String fileName)
 			throws IOException {
 
+		if (fileName.startsWith("/")) {
+			fileName = fileName.substring(1);
+		}
+
 		ZipEntry entry = new ZipEntry(fileName);
 		out.putNextEntry(entry);
 		IOUtils.copy(resourceStream, out);
