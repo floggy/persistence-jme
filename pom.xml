@@ -72,6 +72,22 @@
 		<pluginRepository>
 			<id>floggy</id>
 			<url>http://floggy.sourceforge.net/repository</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</pluginRepository>
+		<pluginRepository>
+			<id>mc-release</id>
+			<url>http://mc-repo.googlecode.com/svn/maven2/releases</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
 		</pluginRepository>
 	</pluginRepositories>
 	<issueManagement>
@@ -166,7 +182,7 @@
 				<inherited>true</inherited>
 			</plugin>
 			<plugin>
-				<groupId>com.google.code.maven-license-plugin</groupId>
+				<groupId>com.mycila.maven-license-plugin</groupId>
 				<artifactId>maven-license-plugin</artifactId>
 				<inherited>true</inherited>
 				<configuration>
@@ -277,5 +293,6 @@
 	</modules>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<floggy.storepass>f10ggy</floggy.storepass>
 	</properties>
 </project>

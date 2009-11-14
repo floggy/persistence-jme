@@ -256,7 +256,7 @@
 				</executions>
 			</plugin>
 			<plugin>
-				<groupId>com.google.code.maven-license-plugin</groupId>
+				<groupId>com.mycila.maven-license-plugin</groupId>
 				<artifactId>maven-license-plugin</artifactId>
 				<configuration>
 					<header>${project.parent.basedir}/src/main/resources/license-header-template.txt</header>
