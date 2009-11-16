@@ -15,6 +15,7 @@
  */
 package net.sourceforge.floggy.eclipse;
 
+import java.io.ByteArrayInputStream;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Enumeration;
@@ -22,14 +23,17 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.core.resources.ICommand;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jdt.core.IAccessRule;
 import org.eclipse.jdt.core.IClasspathAttribute;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
@@ -157,13 +161,15 @@ public class ToggleNatureAction extends AbstractFloggyAction {
 				URL url = (URL) e.nextElement();
 				String path = FileLocator.toFileURL(url).getPath();
 				if (path.indexOf("floggy-persistence-framework") != -1) {
-					String version = getVersion(path);
 					String javadocURL = "http://floggy.sourceforge.net/modules/floggy-persistence-framework/apidocs/";
+
+					String version = getVersion(path);
 					if (version != null) {
 						javadocURL = "http://floggy.sourceforge.net/modules/floggy-persistence-framework/"
 								+ version
 								+ "/floggy-persistence-framework/apidocs/";
 					}
+					
 					IClasspathAttribute attribute = JavaCore
 							.newClasspathAttribute("javadoc_location",
 									javadocURL);
@@ -174,7 +180,29 @@ public class ToggleNatureAction extends AbstractFloggyAction {
 					javaProject.setRawClasspath(
 							(IClasspathEntry[]) rawClasspath
 									.toArray(new IClasspathEntry[0]), null);
+					break;
 				}
+			}
+			
+			if (Activator.isMTJAvailble()) {
+				IFile implJar = project.getFile("floggy-persistence-framework-impl.jar");
+
+				if (!implJar.exists()) {
+					implJar.create(new ByteArrayInputStream(new byte[0]), IResource.DERIVED, null);
+				}
+				
+				IPath filePatternImpl = new Path("net/sourceforge/floggy/persistence/impl/*");
+				IPath filePatternImplMigration = new Path("net/sourceforge/floggy/persistence/impl/migration/*");
+				
+				IAccessRule[] accessRules = new IAccessRule[2]; 
+				
+				accessRules[0] = JavaCore.newAccessRule(filePatternImpl, IAccessRule.K_NON_ACCESSIBLE);
+				accessRules[1] = JavaCore.newAccessRule(filePatternImplMigration, IAccessRule.K_NON_ACCESSIBLE);
+				
+				IClasspathEntry entry = JavaCore.newLibraryEntry(implJar.getLocation(), null, null, accessRules, null, true);
+				
+				rawClasspath.add(entry);
+				javaProject.setRawClasspath((IClasspathEntry[]) rawClasspath.toArray(new IClasspathEntry[0]), null);
 			}
 		}
 	}

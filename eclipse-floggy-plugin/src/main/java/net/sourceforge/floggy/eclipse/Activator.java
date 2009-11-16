@@ -17,6 +17,9 @@ package net.sourceforge.floggy.eclipse;
 
 import java.util.Enumeration;
 
+import org.eclipse.core.runtime.IExtensionPoint;
+import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -75,6 +78,12 @@ public class Activator extends AbstractUIPlugin {
 			result = context.getBundle().findEntries(path, filePattern, recurse);
 		}
 		return result;
+	}
+	
+	public static boolean isMTJAvailble() {
+		IExtensionRegistry registry = RegistryFactory.getRegistry();
+		IExtensionPoint extension = registry.getExtensionPoint("org.eclipse.mtj.core.mtjbuildhook");
+		return extension != null;
 	}
 
 }
