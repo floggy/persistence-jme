@@ -16,6 +16,56 @@
     limitations under the License.
 
 -->
+
+<!DOCTYPE site [
+<!ELEMENT site (description?, feature*, archive*, category-def*)>
+<!ATTLIST site
+    type                CDATA #IMPLIED
+    url                 CDATA #IMPLIED
+    mirrorURL           CDATA #IMPLIED
+    availableLocales    CDATA #IMPLIED
+    digestURL           CDATA #IMPLIED
+    associateSitesURL   CDATA #IMPLIED
+    pack200             CDATA #IMPLIED
+>
+
+<!ELEMENT description (#PCDATA)>
+<!ATTLIST description
+    url           CDATA #IMPLIED
+>
+
+<!ELEMENT feature (category*)>
+<!ATTLIST feature
+    type          CDATA #IMPLIED
+    id            CDATA #IMPLIED
+    version       CDATA #IMPLIED
+    url           CDATA #REQUIRED
+    patch         (false | true) "false"
+
+    os            CDATA #IMPLIED
+    nl            CDATA #IMPLIED
+    arch          CDATA #IMPLIED
+    ws            CDATA #IMPLIED
+>
+
+<!ELEMENT archive EMPTY>
+<!ATTLIST archive
+    path          CDATA #REQUIRED
+    url           CDATA #REQUIRED
+>
+
+<!ELEMENT category EMPTY>
+<!ATTLIST category
+    name          CDATA #REQUIRED
+>
+
+<!ELEMENT category-def (description?)>
+<!ATTLIST category-def
+    name          CDATA #REQUIRED
+    label         CDATA #REQUIRED
+>
+]>
+
 <site>
 	<description url="http://floggy.sourceforge.net/eclipse">Floggy Update Site</description>
 	<feature url="http://downloads.sourceforge.net/floggy/net.sourceforge.floggy.feature_1.0.0.jar?use_mirror=ufpr"	id="net.sourceforge.floggy.feature" version="1.0.0">
