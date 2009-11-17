@@ -43,7 +43,9 @@ public abstract class PersistableManager {
                 instance = (PersistableManager) pmClass.newInstance();
             } catch (ClassNotFoundException cnfex) {
             	throw new RuntimeException("No PersistableManager implementation was found. Please check the weaver execution.");
-            } catch (Exception ex) {
+            } catch (RuntimeException rex) {
+		throw rex;
+	    } catch (Exception ex) {
             	String message = ex.getMessage();
             	if (message == null) {
             		message = ex.getClass().getName();
