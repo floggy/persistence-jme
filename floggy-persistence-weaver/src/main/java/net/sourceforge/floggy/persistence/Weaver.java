@@ -129,7 +129,7 @@ public class Weaver {
 		if (floggyFieldType == 0) {
 			throw new NotFoundException(fieldType.getName());
 		}
-		return new Integer(floggyFieldType);
+		return Integer.valueOf(floggyFieldType);
 	}
 
 	protected int buildFloggyObjectFieldType(CtClass fieldType)

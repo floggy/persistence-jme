@@ -15,25 +15,18 @@
  */
 package net.sourceforge.floggy.eclipse;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 import net.sourceforge.floggy.eclipse.builder.AbstractBuilder;
 import net.sourceforge.floggy.eclipse.builder.DefaultBuilder;
 import net.sourceforge.floggy.eclipse.builder.MTJBuilder;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jdt.core.IClasspathEntry;
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.JavaCore;
 
 /**

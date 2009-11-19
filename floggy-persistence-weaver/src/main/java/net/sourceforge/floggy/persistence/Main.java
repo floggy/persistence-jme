@@ -99,7 +99,6 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		Vector params = new Vector(Arrays.asList(args));
-		// System.out.println(params);
 
 		String[] classpath = initClasspath(params);
 		File outputFile = initOutputFile(params);
@@ -112,13 +111,18 @@ public class Main {
 			outputFile = inputFile;
 		}
 
+		Configuration configuration = new Configuration();
+		configuration.setGenerateSource(generateSource);
+		configuration.setAddDefaultConstructor(true);
+		
 		Weaver weaver = new Weaver();
 
 		try {
+			weaver.setConfiguration(configuration);
 			weaver.setClasspath(classpath);
 			weaver.setOutputFile(outputFile);
 			weaver.setInputFile(inputFile);
-			//compiler.setGenerateSource(generateSource);
+			
 			weaver.execute();
 		} catch (WeaverException e) {
 			e.printStackTrace();

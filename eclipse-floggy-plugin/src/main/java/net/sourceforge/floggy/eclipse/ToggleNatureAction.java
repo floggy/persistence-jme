@@ -97,11 +97,6 @@ public class ToggleNatureAction extends AbstractFloggyAction {
 					System.arraycopy(natures, i + 1, newNatures, i,
 							natures.length - i - 1);
 
-					// verifing the synchronization
-					if (!project.isSynchronized(IResource.DEPTH_INFINITE)) {
-						// project.refreshLocal(IResource.DEPTH_INFINITE, null);
-					}
-
 					description.setNatureIds(newNatures);
 					project.setDescription(description, null);
 					return;

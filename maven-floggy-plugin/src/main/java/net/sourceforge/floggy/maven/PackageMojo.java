@@ -152,7 +152,7 @@ public class PackageMojo extends AbstractMojo {
 	List compileDependecies = project.getCompileDependencies();
 	for (Iterator iter = compileDependecies.iterator(); iter.hasNext();) {
 	    Dependency dependency = (Dependency) iter.next();
-	    if (dependency.getScope().toUpperCase().equals("COMPILE")) {
+	    if ("COMPILE".equalsIgnoreCase(dependency.getScope())) {
 		String groupId = dependency.getGroupId().replace('.',
 			File.separatorChar);
 		String artifactId = dependency.getArtifactId();
