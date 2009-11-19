@@ -17,9 +17,12 @@ package net.sourceforge.floggy.persistence.fr2422928;
 
 import java.util.Date;
 
+import net.sourceforge.floggy.persistence.Deletable;
+import net.sourceforge.floggy.persistence.FloggyException;
 import net.sourceforge.floggy.persistence.Persistable;
+import net.sourceforge.floggy.persistence.PersistableManager;
 
-public class Freezed implements Persistable {
+public class Freezed implements Persistable, Deletable {
 
 	public static final Date DEADLINE = new Date(987654321);
 	public static final String DESCRIPTION = "This is sample class that is freezed between versions!";
@@ -159,5 +162,9 @@ public class Freezed implements Persistable {
 		this.uuid = uuid;
 	}
 
-	
+	public void delete() throws FloggyException {
+		if (nested != null) {
+			PersistableManager.getInstance().delete(nested);
+		}
+	}
 }

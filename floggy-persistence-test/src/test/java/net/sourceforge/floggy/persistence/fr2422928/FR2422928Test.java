@@ -122,6 +122,7 @@ public class FR2422928Test extends FloggyBaseTest {
 			}
 		} finally {
 			um.finish(ConcreteChildClass.class);
+			manager.delete(asc);
 		}
 	}
 	
@@ -174,6 +175,7 @@ public class FR2422928Test extends FloggyBaseTest {
 			assertEquals(1, rs.getNumRecords());
 		} finally {
 			um.finish(ConcreteChildClass.class);
+			manager.delete(asc);
 		}
 	}
 
@@ -331,6 +333,7 @@ public class FR2422928Test extends FloggyBaseTest {
 			assertEquals(1, os.size());
 		} finally {
 			um.finish(ChildClass.class);
+			manager.delete(cc);
 		}
 	}
 
@@ -351,17 +354,21 @@ public class FR2422928Test extends FloggyBaseTest {
 		Freezed freezed = new Freezed();
 
 		freezed.setNested(new Freezed());
-	
-		manager.save(freezed);
 
-		properties.put(MigrationManager.ITERATION_MODE, Boolean.TRUE);
+		try {
+			manager.save(freezed);
 
-		Enumeration enumeration = um.start(Freezed.class, properties);
-		
-		assertEquals(2, enumeration.getSize());
-		
-		while (enumeration.hasMoreElements()) {
-			assertNotNull(enumeration.nextElement());
+			properties.put(MigrationManager.ITERATION_MODE, Boolean.TRUE);
+
+			Enumeration enumeration = um.start(Freezed.class, properties);
+			
+			assertEquals(2, enumeration.getSize());
+			
+			while (enumeration.hasMoreElements()) {
+				assertNotNull(enumeration.nextElement());
+			}
+		} finally {
+			manager.delete(freezed);
 		}
 	}
 	
@@ -389,8 +396,8 @@ public class FR2422928Test extends FloggyBaseTest {
 				assertNull(data.get("x"));
 			}
 		} finally {
-			manager.delete(person);
 			um.finish(Person.class);
+			manager.delete(person);
 		}
 	}
 
@@ -451,6 +458,7 @@ public class FR2422928Test extends FloggyBaseTest {
 			}
 		} finally {
 			um.finish(PersistableFieldedClass.class);
+			manager.delete(pfc);
 		}
 	}
 
