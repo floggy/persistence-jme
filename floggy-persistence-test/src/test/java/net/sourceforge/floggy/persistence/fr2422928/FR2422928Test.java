@@ -26,10 +26,9 @@ import java.util.Vector;
 
 import javax.microedition.rms.RecordStore;
 
-import junit.framework.TestCase;
+import net.sourceforge.floggy.persistence.FloggyBaseTest;
 import net.sourceforge.floggy.persistence.FloggyException;
 import net.sourceforge.floggy.persistence.ObjectSet;
-import net.sourceforge.floggy.persistence.PersistableManager;
 import net.sourceforge.floggy.persistence.RMSMemoryMicroEmulator;
 import net.sourceforge.floggy.persistence.beans.Person;
 import net.sourceforge.floggy.persistence.beans.animals.Bird;
@@ -46,7 +45,7 @@ import org.apache.commons.io.IOUtils;
 import org.microemu.MIDletBridge;
 import org.microemu.MicroEmulator;
 
-public class FR2422928Test extends TestCase {
+public class FR2422928Test extends FloggyBaseTest {
 
 	private static final long id = 652345;
 	private static final String name = "FR2422928";  
@@ -111,7 +110,6 @@ public class FR2422928Test extends TestCase {
 		AbstractSuperClass asc = new ConcreteChildClass();
 		asc.setCreationDate(creationDate);
 		
-		PersistableManager manager = PersistableManager.getInstance();
 		manager.save(asc);
 
 		MigrationManager um = MigrationManager.getInstance();
@@ -131,7 +129,6 @@ public class FR2422928Test extends TestCase {
 		AbstractSuperClass asc = new ConcreteChildClass();
 		asc.setCreationDate(new Date());
 		
-		PersistableManager manager = PersistableManager.getInstance();
 		manager.save(asc);
 
 		MigrationManager um = MigrationManager.getInstance();
@@ -157,7 +154,6 @@ public class FR2422928Test extends TestCase {
 		AbstractSuperClass asc = new ConcreteChildClass();
 		asc.setCreationDate(new Date());
 		
-		PersistableManager manager = PersistableManager.getInstance();
 		int id = manager.save(asc);
 
 		MigrationManager um = MigrationManager.getInstance();
@@ -201,7 +197,7 @@ public class FR2422928Test extends TestCase {
 		}
 
 		try {
-			ObjectSet os = PersistableManager.getInstance().find(FR2422928.class, null, null);
+			ObjectSet os = manager.find(FR2422928.class, null, null);
 			assertEquals(1, os.size());
 			FR2422928 persistable = (FR2422928) os.get(0);
 			assertEquals(name, persistable.getName());
@@ -213,7 +209,7 @@ public class FR2422928Test extends TestCase {
 
 	public void testBeforeUpddate() throws Exception {
 		try {
-			ObjectSet os = PersistableManager.getInstance().find(FR2422928.class, null, null);
+			ObjectSet os = manager.find(FR2422928.class, null, null);
 			os.get(0);
 			fail("Should throw a exception because the rms layout is different from the class fields!");
 		} catch (Exception ex) {
@@ -228,7 +224,6 @@ public class FR2422928Test extends TestCase {
 		Bird bird2 = new Bird();
 		bird2.setColor("yellow");
 
-		PersistableManager manager = PersistableManager.getInstance();
 		manager.save(bird1);
 		manager.save(bird2);
 
@@ -267,7 +262,6 @@ public class FR2422928Test extends TestCase {
 		cc.setAge(age);
 		cc.setName(name);
 		
-		PersistableManager manager = PersistableManager.getInstance();
 		manager.save(cc);
 
 		MigrationManager um = MigrationManager.getInstance();
@@ -295,7 +289,6 @@ public class FR2422928Test extends TestCase {
 		cc.setAge(age);
 		cc.setName(name);
 		
-		PersistableManager manager = PersistableManager.getInstance();
 		manager.save(cc);
 
 		MigrationManager um = MigrationManager.getInstance();
@@ -320,7 +313,6 @@ public class FR2422928Test extends TestCase {
 		cc.setAge(age);
 		cc.setName(name);
 		
-		PersistableManager manager = PersistableManager.getInstance();
 		int id = manager.save(cc);
 
 		MigrationManager um = MigrationManager.getInstance();
@@ -354,7 +346,6 @@ public class FR2422928Test extends TestCase {
 	}
 
 	public void testIterationMode() throws Exception {
-		PersistableManager manager = PersistableManager.getInstance();
 		MigrationManager um = MigrationManager.getInstance();
 		Hashtable properties = new Hashtable();
 		Freezed freezed = new Freezed();
@@ -383,7 +374,6 @@ public class FR2422928Test extends TestCase {
 		Person person = new Person();
 		person.setX(falcon);
 		
-		PersistableManager manager = PersistableManager.getInstance();
 		manager.save(person);
 
 		MigrationManager um = MigrationManager.getInstance();
@@ -443,7 +433,6 @@ public class FR2422928Test extends TestCase {
 		pfc.setBird(bird);
 		pfc.setCreationDate(now);
 		
-		PersistableManager manager = PersistableManager.getInstance();
 		manager.save(pfc);
 
 		MigrationManager um = MigrationManager.getInstance();
@@ -476,7 +465,6 @@ public class FR2422928Test extends TestCase {
 		pfc.setBird(bird);
 		pfc.setCreationDate(now);
 		
-		PersistableManager manager = PersistableManager.getInstance();
 		manager.save(pfc);
 
 		MigrationManager um = MigrationManager.getInstance();
@@ -611,7 +599,6 @@ public class FR2422928Test extends TestCase {
 	}
 	
 	public void testThrowExceptionWhenNotMigrated() {
-		PersistableManager manager = PersistableManager.getInstance();
 		try {
 			manager.save(new FR2422928());
 			fail("It must throw a FloggyException");

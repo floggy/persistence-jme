@@ -21,26 +21,15 @@ import java.util.Hashtable;
 
 import javax.microedition.rms.InvalidRecordIDException;
 
-import junit.framework.TestCase;
 import net.sourceforge.floggy.persistence.Filter;
+import net.sourceforge.floggy.persistence.FloggyBaseTest;
 import net.sourceforge.floggy.persistence.FloggyException;
 import net.sourceforge.floggy.persistence.ObjectSet;
 import net.sourceforge.floggy.persistence.Persistable;
-import net.sourceforge.floggy.persistence.PersistableManager;
-import net.sourceforge.floggy.persistence.RMSMemoryMicroEmulator;
 import net.sourceforge.floggy.persistence.migration.Enumeration;
 import net.sourceforge.floggy.persistence.migration.MigrationManager;
 
-import org.microemu.MIDletBridge;
-
-public abstract class AbstractTest extends TestCase {
-
-	protected PersistableManager manager;
-
-	public AbstractTest() {
-		MIDletBridge.setMicroEmulator(new RMSMemoryMicroEmulator("target/rms"));
-		manager = PersistableManager.getInstance();
-	}
+public abstract class AbstractTest extends FloggyBaseTest {
 
 	protected void equals(Object o1, Object o2) {
 		if (o1 != null && o2.getClass().isArray()) {

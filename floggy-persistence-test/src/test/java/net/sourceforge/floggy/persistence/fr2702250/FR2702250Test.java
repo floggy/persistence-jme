@@ -17,27 +17,25 @@ package net.sourceforge.floggy.persistence.fr2702250;
 
 import javax.microedition.rms.InvalidRecordIDException;
 
-import junit.framework.TestCase;
-import net.sourceforge.floggy.persistence.PersistableManager;
+import net.sourceforge.floggy.persistence.FloggyBaseTest;
 import net.sourceforge.floggy.persistence.beans.Person;
 
-public class FR2702250Test extends TestCase {
+public class FR2702250Test extends FloggyBaseTest {
 	
 	public void testIt() throws Exception {
-		PersistableManager pm = PersistableManager.getInstance();
 
 		Person person = new Person();
 		person.setNome("FR2702250Test");
-		int personId = pm.save(person);
+		int personId = manager.save(person);
 		
 		FR2702250 fr2702250 = new FR2702250();
 		fr2702250.setX(person);
-		pm.save(fr2702250);
+		manager.save(fr2702250);
 		
 		try {
-			pm.delete(fr2702250);
+			manager.delete(fr2702250);
 			
-			pm.load(new Person(), personId);
+			manager.load(new Person(), personId);
 			fail("It must throw a InvalidRecordIdException");
 		} catch (Exception ex) {
 			assertEquals(InvalidRecordIDException.class.getName(), ex.getMessage());

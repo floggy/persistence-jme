@@ -15,26 +15,25 @@
  */
 package net.sourceforge.floggy.persistence.bug2168632;
 
-import junit.framework.TestCase;
-import net.sourceforge.floggy.persistence.PersistableManager;
+import net.sourceforge.floggy.persistence.FloggyBaseTest;
 
-public class BUG2168632Test extends TestCase {
+public class BUG2168632Test extends FloggyBaseTest {
 
 	public void testIt() throws Exception {
 		ConcreteElement persistable = new ConcreteElement();
 		persistable.setName("floggy");
 
 		try {
-			int id = PersistableManager.getInstance().save(persistable);
+			int id = manager.save(persistable);
 
 			ConcreteElement persistable2 = new ConcreteElement();
 
-			PersistableManager.getInstance().load(persistable2, id);
+			manager.load(persistable2, id);
 			assertTrue(true);
 		} catch (Exception e) {
 			fail(e.getMessage());
 		} finally {
-			PersistableManager.getInstance().delete(persistable);
+			manager.delete(persistable);
 		}
 	}
 
@@ -46,17 +45,17 @@ public class BUG2168632Test extends TestCase {
 		persistable.setAge(age);
 
 		try {
-			int id = PersistableManager.getInstance().save(persistable);
+			int id = manager.save(persistable);
 
 			ExtendedConcreteElement persistable2 = new ExtendedConcreteElement();
 
-			PersistableManager.getInstance().load(persistable2, id);
+			manager.load(persistable2, id);
 			assertEquals(name, persistable2.getName());
 			assertEquals(age, persistable2.getAge());
 		} catch (Exception e) {
 			fail(e.getMessage());
 		} finally {
-			PersistableManager.getInstance().delete(persistable);
+			manager.delete(persistable);
 		}
 	}
 }

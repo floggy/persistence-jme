@@ -15,10 +15,9 @@
  */
 package net.sourceforge.floggy.persistence.bug2816414;
 
-import junit.framework.TestCase;
-import net.sourceforge.floggy.persistence.PersistableManager;
+import net.sourceforge.floggy.persistence.FloggyBaseTest;
 
-public class BUG2816414Test extends TestCase {
+public class BUG2816414Test extends FloggyBaseTest {
 
 	public void testIt() throws Exception {
 		Person person = new Coleague();
@@ -28,16 +27,16 @@ public class BUG2816414Test extends TestCase {
 		book.setPerson(person);
 		
 		try {
-			int id = PersistableManager.getInstance().save(book);
+			int id = manager.save(book);
 
 			book = new AddressBook();
 
-			PersistableManager.getInstance().load(book, id);
+			manager.load(book, id);
 			assertTrue(true);
 		} catch (Exception e) {
 			fail(e.getMessage());
 		} finally {
-			PersistableManager.getInstance().delete(book);
+			manager.delete(book);
 		}
 
 		

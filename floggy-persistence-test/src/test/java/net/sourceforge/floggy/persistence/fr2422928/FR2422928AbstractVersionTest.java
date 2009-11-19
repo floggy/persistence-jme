@@ -22,9 +22,8 @@ import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.List;
 
-import junit.framework.TestCase;
+import net.sourceforge.floggy.persistence.FloggyBaseTest;
 import net.sourceforge.floggy.persistence.FloggyException;
-import net.sourceforge.floggy.persistence.PersistableManager;
 import net.sourceforge.floggy.persistence.RMSMemoryMicroEmulator;
 import net.sourceforge.floggy.persistence.impl.MetadataManagerUtil;
 import net.sourceforge.floggy.persistence.impl.PersistableManagerImpl;
@@ -37,7 +36,7 @@ import org.apache.commons.io.IOUtils;
 import org.microemu.MIDletBridge;
 import org.microemu.MicroEmulator;
 
-public abstract class FR2422928AbstractVersionTest extends TestCase {
+public abstract class FR2422928AbstractVersionTest extends FloggyBaseTest {
 
 	protected MicroEmulator emulator;
 
@@ -60,7 +59,6 @@ public abstract class FR2422928AbstractVersionTest extends TestCase {
 	}
 
 	public void testFreezedClassIteration() throws Exception {
-		PersistableManager manager = PersistableManager.getInstance();
 		Hashtable properties = new Hashtable();
 		properties.put(MigrationManager.MIGRATE_FROM_PREVIOUS_1_3_0_VERSION, Boolean.TRUE);
 		properties.put(MigrationManager.ITERATION_MODE, Boolean.TRUE);
@@ -103,7 +101,6 @@ public abstract class FR2422928AbstractVersionTest extends TestCase {
 	}
 
 	public void testNoMigrationExecution() {
-		PersistableManager manager = PersistableManager.getInstance();
 		try {
 			manager.find(Freezed.class, null, null);
 			fail("Should throw a exception because no migration was made!");

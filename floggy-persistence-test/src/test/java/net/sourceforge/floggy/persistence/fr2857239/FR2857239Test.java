@@ -15,17 +15,15 @@
  */
 package net.sourceforge.floggy.persistence.fr2857239;
 
-import junit.framework.TestCase;
+import net.sourceforge.floggy.persistence.FloggyBaseTest;
 import net.sourceforge.floggy.persistence.ObjectSet;
-import net.sourceforge.floggy.persistence.PersistableManager;
 import net.sourceforge.floggy.persistence.beans.Person;
 import net.sourceforge.floggy.persistence.beans.animals.Bird;
 import net.sourceforge.floggy.persistence.beans.animals.Falcon;
 
-public class FR2857239Test extends TestCase {
+public class FR2857239Test extends FloggyBaseTest {
 	
 	public void testIt() throws Exception {
-		PersistableManager manager = PersistableManager.getInstance();
 
 		Bird bird = new Falcon();
 		Person person = new Person();

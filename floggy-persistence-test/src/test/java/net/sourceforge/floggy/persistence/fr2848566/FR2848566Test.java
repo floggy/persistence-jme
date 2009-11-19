@@ -18,12 +18,11 @@ package net.sourceforge.floggy.persistence.fr2848566;
 import java.util.Hashtable;
 import java.util.Vector;
 
-import junit.framework.TestCase;
-import net.sourceforge.floggy.persistence.PersistableManager;
+import net.sourceforge.floggy.persistence.FloggyBaseTest;
 import net.sourceforge.floggy.persistence.beans.FloggyHashtable;
 import net.sourceforge.floggy.persistence.beans.FloggyVector;
 
-public class FR2848566Test extends TestCase {
+public class FR2848566Test extends FloggyBaseTest {
 
 	public void testVectorHoldingHashtable() throws Exception {
 		Hashtable hashtable = new Hashtable();
@@ -35,7 +34,6 @@ public class FR2848566Test extends TestCase {
 		FloggyVector persistable = new FloggyVector();
 		persistable.setX(vector);
 
-		PersistableManager manager = PersistableManager.getInstance();
 		try {
 			int id = manager.save(persistable);
 			assertTrue(id > 0);
@@ -61,7 +59,6 @@ public class FR2848566Test extends TestCase {
 		FloggyHashtable persistable = new FloggyHashtable();
 		persistable.setX(hashtable);
 
-		PersistableManager manager = PersistableManager.getInstance();
 		try {
 			int id = manager.save(persistable);
 			assertTrue(id > 0);

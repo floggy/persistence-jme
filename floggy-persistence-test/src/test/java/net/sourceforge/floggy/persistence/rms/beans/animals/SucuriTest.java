@@ -15,16 +15,14 @@
  */
 package net.sourceforge.floggy.persistence.rms.beans.animals;
 
-import junit.framework.TestCase;
+import net.sourceforge.floggy.persistence.FloggyBaseTest;
 import net.sourceforge.floggy.persistence.ObjectSet;
-import net.sourceforge.floggy.persistence.PersistableManager;
 import net.sourceforge.floggy.persistence.beans.animals.Reptile;
 import net.sourceforge.floggy.persistence.beans.animals.Sucuri;
 
-public class SucuriTest extends TestCase {
+public class SucuriTest extends FloggyBaseTest {
 	
 	public void testDeleteWithSuperClassBeenPersistable() throws Exception {
-		PersistableManager manager= PersistableManager.getInstance();
 		Sucuri sucuri= new Sucuri();
 		manager.save(sucuri);
 		assertTrue(manager.isPersisted(sucuri));

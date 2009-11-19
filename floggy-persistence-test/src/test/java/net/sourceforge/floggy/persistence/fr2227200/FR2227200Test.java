@@ -15,16 +15,13 @@
  */
 package net.sourceforge.floggy.persistence.fr2227200;
 
-import junit.framework.TestCase;
+import net.sourceforge.floggy.persistence.FloggyBaseTest;
 import net.sourceforge.floggy.persistence.ObjectSet;
-import net.sourceforge.floggy.persistence.PersistableManager;
 import net.sourceforge.floggy.persistence.beans.Person;
 import net.sourceforge.floggy.persistence.beans.animals.Bird;
 import net.sourceforge.floggy.persistence.beans.animals.USFalcon;
 
-public class FR2227200Test extends TestCase {
-
-	protected PersistableManager manager = PersistableManager.getInstance();
+public class FR2227200Test extends FloggyBaseTest {
 
 	public void testFindLazyFalse() throws Exception {
 		Person container = new Person();
