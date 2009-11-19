@@ -54,7 +54,7 @@ public class MetadataManagerUtil {
 				new ByteArrayInputStream(data));
 		while (dis.available() != 0) {
 			String field = dis.readUTF();
-			if (field.equals("version")) {
+			if ("version".equals(field)) {
 				rmsVersion = dis.readUTF();
 			}
 		}
@@ -117,7 +117,7 @@ public class MetadataManagerUtil {
 			int recordId = enumeration.nextRecordId();
 			DataInputStream dis = new DataInputStream(new ByteArrayInputStream(rs.getRecord(recordId)));
 			String className = dis.readUTF();
-			if (!className.equals("version")) {
+			if (!"version".equals(className)) {
 				boolean isAbstract = dis.readBoolean();
 				String superClassName = SerializationHelper.readString(dis);
 				String fieldNames[] = new String[dis.readInt()]; 

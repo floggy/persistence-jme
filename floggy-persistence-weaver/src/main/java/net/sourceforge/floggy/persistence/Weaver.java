@@ -101,7 +101,7 @@ public class Weaver {
 
 			superClass = superClass.getSuperclass();
 			superName = superClass.getName();
-		} while (!superName.equals("java.lang.Object")
+		} while (!"java.lang.Object".equals(superName)
 				&& superClass.subtypeOf(persistable));
 		return list;
 	}
@@ -136,56 +136,56 @@ public class Weaver {
 			throws NotFoundException {
 		int floggyFieldType = 0;
 		String typeName = fieldType.getName();
-		if (typeName.equals("java.lang.Boolean")) {
+		if ("java.lang.Boolean".equals(typeName)) {
 			floggyFieldType = PersistableMetadata.BOOLEAN;
 		}
-		if (typeName.equals("java.lang.Byte")) {
+		if ("java.lang.Byte".equals(typeName)) {
 			floggyFieldType = PersistableMetadata.BYTE;
 		}
-		if (typeName.equals("java.lang.Character")) {
+		if ("java.lang.Character".equals(typeName)) {
 			floggyFieldType = PersistableMetadata.CHARACTER;
 		}
-		if (typeName.equals("java.lang.Double")) {
+		if ("java.lang.Double".equals(typeName)) {
 			floggyFieldType = PersistableMetadata.DOUBLE;
 		}
-		if (typeName.equals("java.lang.Float")) {
+		if ("java.lang.Float".equals(typeName)) {
 			floggyFieldType = PersistableMetadata.FLOAT;
 		}
-		if (typeName.equals("java.lang.Integer")) {
+		if ("java.lang.Integer".equals(typeName)) {
 			floggyFieldType = PersistableMetadata.INT;
 		}
-		if (typeName.equals("java.lang.Long")) {
+		if ("java.lang.Long".equals(typeName)) {
 			floggyFieldType = PersistableMetadata.LONG;
 		}
-		if (typeName.equals("java.lang.Short")) {
+		if ("java.lang.Short".equals(typeName)) {
 			floggyFieldType = PersistableMetadata.SHORT;
 		}
-		if (typeName.equals("java.lang.String")) {
+		if ("java.lang.String".equals(typeName)) {
 			floggyFieldType = PersistableMetadata.STRING;
 		}
-		if (typeName.equals("java.util.Calendar")) {
+		if ("java.util.Calendar".equals(typeName)) {
 			floggyFieldType = PersistableMetadata.CALENDAR;
 		}
-		if (typeName.equals("java.util.Date")) {
+		if ("java.util.Date".equals(typeName)) {
 			floggyFieldType = PersistableMetadata.DATE;
 		}
-		if (typeName.equals("java.util.Hashtable")) {
+		if ("java.util.Hashtable".equals(typeName)) {
 			floggyFieldType = PersistableMetadata.HASHTABLE;
 		}
 		if (fieldType.subtypeOf(fieldType.getClassPool().get(
 				Weaver.PERSISTABLE_CLASSNAME))) {
 			floggyFieldType = PersistableMetadata.PERSISTABLE;
 		}
-		if (typeName.equals("java.lang.StringBuffer")) {
+		if ("java.lang.StringBuffer".equals(typeName)) {
 			floggyFieldType = PersistableMetadata.STRINGBUFFER;
 		}
-		if (typeName.equals("java.util.Stack")) {
+		if ("java.util.Stack".equals(typeName)) {
 			floggyFieldType = PersistableMetadata.STACK;
 		}
-		if (typeName.equals("java.util.TimeZone")) {
+		if ("java.util.TimeZone".equals(typeName)) {
 			floggyFieldType = PersistableMetadata.TIMEZONE;
 		}
-		if (typeName.equals("java.util.Vector")) {
+		if ("java.util.Vector".equals(typeName)) {
 			floggyFieldType = PersistableMetadata.VECTOR;
 		}
 		return floggyFieldType;
@@ -305,17 +305,17 @@ public class Weaver {
 			CtMethod[] methods= ctClass.getMethods();
 			for (int i = 0; i < methods.length; i++) {
 				String methodName= methods[i].getName(); 
-				if (methodName.indexOf("Float") != -1 || methodName.indexOf("Double") != -1 || methodName.equals("readObject") || methodName.equals("writeObject")) {
+				if (methodName.indexOf("Float") != -1 || methodName.indexOf("Double") != -1 || "readObject".equals(methodName) || "writeObject".equals(methodName)) {
 					ctClass.removeMethod(methods[i]);
 				}
 			}
 			//this is done in two steps because we can't guarantee that the read/writeVector methods will be removed before the rename step.   
 			for (int i = 0; i < methods.length; i++) {
 				String methodName= methods[i].getName(); 
-				if (methodName.equals("readObjectCLDC10")) {
+				if ("readObjectCLDC10".equals(methodName)) {
 					methods[i].setName("readObject");
 				}
-				if (methodName.equals("writeObjectCLDC10")) {
+				if ("writeObjectCLDC10".equals(methodName)) {
 					methods[i].setName("writeObject");
 				}
 			}

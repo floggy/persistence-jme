@@ -134,38 +134,38 @@ public class SerializationHelper {
 	public final static Object readObject(DataInput in) throws Exception {
 		Object o = null;
 		String className = in.readUTF();
-		if (className.equals("java.lang.Boolean")) {
+		if ("java.lang.Boolean".equals(className)) {
 			o = new Boolean(in.readBoolean());
-		} else if (className.equals("java.lang.Byte")) {
+		} else if ("java.lang.Byte".equals(className)) {
 			o = new Byte(in.readByte());
-		} else if (className.equals("java.lang.Character")) {
+		} else if ("java.lang.Character".equals(className)) {
 			o = new Character(in.readChar());
-		} else if (className.equals("java.lang.Double")) {
+		} else if ("java.lang.Double".equals(className)) {
 			o = new Double(in.readDouble());
-		} else if (className.equals("java.lang.Float")) {
+		} else if ("java.lang.Float".equals(className)) {
 			o = new Float(in.readFloat());
-		} else if (className.equals("java.util.Hashtable")) {
+		} else if ("java.util.Hashtable".equals(className)) {
 			o = readHashtable(in);
-		} else if (className.equals("java.lang.Integer")) {
+		} else if ("java.lang.Integer".equals(className)) {
 			o = new Integer(in.readInt());
-		} else if (className.equals("java.lang.Long")) {
+		} else if ("java.lang.Long".equals(className)) {
 			o = new Long(in.readLong());
-		} else if (className.equals("java.lang.Short")) {
+		} else if ("java.lang.Short".equals(className)) {
 			o = new Short(in.readShort());
-		} else if (className.equals("java.lang.String")) {
+		} else if ("java.lang.String".equals(className)) {
 			o = in.readUTF();
-		} else if (className.equals("java.lang.StringBuffer")) {
+		} else if ("java.lang.StringBuffer".equals(className)) {
 			o = new StringBuffer(in.readUTF());
-		} else if (className.equals("java.util.Calendar")) {
+		} else if ("java.util.Calendar".equals(className)) {
 			String timeZoneID = in.readUTF();
 			Calendar c = Calendar.getInstance(TimeZone.getTimeZone(timeZoneID));
 			c.setTime(new Date(in.readLong()));
 			o = c;
-		} else if (className.equals("java.util.Date")) {
+		} else if ("java.util.Date".equals(className)) {
 			o = new Date(in.readLong());
-		} else if (className.equals("java.util.TimeZone")) {
+		} else if ("java.util.TimeZone".equals(className)) {
 			o = TimeZone.getTimeZone(in.readUTF());
-		} else if (className.equals("java.util.Vector")) {
+		} else if ("java.util.Vector".equals(className)) {
 			o = readVector(in);
 		} else {
 			o = PersistableManagerImpl.createInstance(Class.forName(className));
@@ -177,34 +177,34 @@ public class SerializationHelper {
 	public final static Object readObjectCLDC10(DataInput in) throws Exception {
 		Object o = null;
 		String className = in.readUTF();
-		if (className.equals("java.lang.Boolean")) {
+		if ("java.lang.Boolean".equals(className)) {
 			o = new Boolean(in.readBoolean());
-		} else if (className.equals("java.lang.Byte")) {
+		} else if ("java.lang.Byte".equals(className)) {
 			o = new Byte(in.readByte());
-		} else if (className.equals("java.lang.Character")) {
+		} else if ("java.lang.Character".equals(className)) {
 			o = new Character(in.readChar());
-		} else if (className.equals("java.util.Hashtable")) {
+		} else if ("java.util.Hashtable".equals(className)) {
 			o = readHashtable(in);
-		} else if (className.equals("java.lang.Integer")) {
+		} else if ("java.lang.Integer".equals(className)) {
 			o = new Integer(in.readInt());
-		} else if (className.equals("java.lang.Long")) {
+		} else if ("java.lang.Long".equals(className)) {
 			o = new Long(in.readLong());
-		} else if (className.equals("java.lang.Short")) {
+		} else if ("java.lang.Short".equals(className)) {
 			o = new Short(in.readShort());
-		} else if (className.equals("java.lang.String")) {
+		} else if ("java.lang.String".equals(className)) {
 			o = in.readUTF();
-		} else if (className.equals("java.lang.StringBuffer")) {
+		} else if ("java.lang.StringBuffer".equals(className)) {
 			o = new StringBuffer(in.readUTF());
-		} else if (className.equals("java.util.Calendar")) {
+		} else if ("java.util.Calendar".equals(className)) {
 			String timeZoneID = in.readUTF();
 			Calendar c = Calendar.getInstance(TimeZone.getTimeZone(timeZoneID));
 			c.setTime(new Date(in.readLong()));
 			o = c;
-		} else if (className.equals("java.util.Date")) {
+		} else if ("java.util.Date".equals(className)) {
 			o = new Date(in.readLong());
-		} else if (className.equals("java.util.TimeZone")) {
+		} else if ("java.util.TimeZone".equals(className)) {
 			o = TimeZone.getTimeZone(in.readUTF());
-		} else if (className.equals("java.util.Vector")) {
+		} else if ("java.util.Vector".equals(className)) {
 			o = readVector(in);
 		} else {
 			o = PersistableManagerImpl.createInstance(Class.forName(className));

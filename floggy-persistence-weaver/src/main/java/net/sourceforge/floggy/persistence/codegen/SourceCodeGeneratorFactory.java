@@ -39,28 +39,28 @@ public class SourceCodeGeneratorFactory {
 		} else if (isWrapper(fieldType)) {
 			generator = new WrapperGenerator(fieldName, fieldType);
 			// Calendar
-		} else if (className.equals("java.util.Calendar")) {
+		} else if ("java.util.Calendar".equals(className)) {
 			generator = new CalendarGenerator(fieldName, fieldType);
 			// Date
-		} else if (className.equals("java.util.Date")) {
+		} else if ("java.util.Date".equals(className)) {
 			generator = new DateGenerator(fieldName, fieldType);
 			// Hashtable
-		} else if (className.equals("java.util.Hashtable")) {
+		} else if ("java.util.Hashtable".equals(className)) {
 			generator = new HashtableGenerator(fieldName, fieldType);
 			// Stack
-		} else if (className.equals("java.util.Stack")) {
+		} else if ("java.util.Stack".equals(className)) {
 			generator = new StackGenerator(fieldName, fieldType);
 			// String
-		} else if (className.equals("java.lang.String")) {
+		} else if ("java.lang.String".equals(className)) {
 			generator = new StringGenerator(fieldName, fieldType);
 			// StringBuffer
-		} else if (className.equals("java.lang.StringBuffer")) {
+		} else if ("java.lang.StringBuffer".equals(className)) {
 			generator = new StringBufferGenerator(fieldName, fieldType);
 			// TimeZone
-		} else if (className.equals("java.util.TimeZone")) {
+		} else if ("java.util.TimeZone".equals(className)) {
 			generator = new TimeZoneGenerator(fieldName, fieldType);
 			// Vector
-		} else if (className.equals("java.util.Vector")) {
+		} else if ("java.util.Vector".equals(className)) {
 			generator = new VectorGenerator(fieldName, fieldType);
 			((AttributeIterableGenerator) generator)
 					.setUpInterableVariable(getNextIndexForIteration());
