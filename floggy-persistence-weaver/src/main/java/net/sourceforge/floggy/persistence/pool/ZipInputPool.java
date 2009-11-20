@@ -44,13 +44,20 @@ public class ZipInputPool implements InputPool {
 	}
 
 	private void initFiles(File file) throws IOException {
-		ZipInputStream in = new ZipInputStream(new FileInputStream(file));
-		for (ZipEntry entry = in.getNextEntry(); entry != null; entry = in
-				.getNextEntry()) {
-			if(!entry.isDirectory()) {
-				String name = entry.getName();
-				name = name.replace('/', File.separatorChar);
-				this.files.add(name);
+		ZipInputStream in = null;
+		try {
+			in = new ZipInputStream(new FileInputStream(file));
+			for (ZipEntry entry = in.getNextEntry(); entry != null; entry = in
+					.getNextEntry()) {
+				if(!entry.isDirectory()) {
+					String name = entry.getName();
+					name = name.replace('/', File.separatorChar);
+					this.files.add(name);
+				}
+			}
+		} finally {
+			if (in != null) {
+				in.close();
 			}
 		}
 	}

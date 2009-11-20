@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -121,7 +122,9 @@ public class PackageMojo extends AbstractMojo {
 	    // creating a new JAD file
 	    if (mainJADFinalFile.exists()) {
 		Properties jad = new Properties();
-		jad.load(new FileInputStream(mainJADFinalFile));
+		InputStream in= new FileInputStream(mainJADFinalFile);
+		
+		jad.load(in);
 		jad.put("MIDlet-Jar-URL", embbededFinalFile.getName());
 		jad.put("MIDlet-Jar-Size", String.valueOf(embbededFinalFile
 			.length()));
@@ -129,6 +132,8 @@ public class PackageMojo extends AbstractMojo {
 			"Creating the embbeded JAD file: "
 				+ embbededJADFinalFile.getName());
 		saveJAD(jad, embbededJADFinalFile);
+		
+		in.close();
 	    }
 	} catch (Exception e) {
 	    throw new MojoExecutionException(e.getMessage(), e);
