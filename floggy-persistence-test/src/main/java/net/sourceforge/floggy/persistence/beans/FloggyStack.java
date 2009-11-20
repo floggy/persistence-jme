@@ -25,16 +25,21 @@ import net.sourceforge.floggy.persistence.PersistableManager;
 
 
 public class FloggyStack implements Persistable, Deletable {
+	
 	protected Stack x;
 	
-	public Stack getX() {
-		return x;
+	public void delete() throws FloggyException {
+		if (x!= null) {
+			Enumeration enumeration = x.elements();
+			while (enumeration.hasMoreElements()) {
+				Object object = (Object) enumeration.nextElement();
+				if (object instanceof Persistable) {
+					PersistableManager.getInstance().delete((Persistable)object);
+				}
+			}
+		}
 	}
 
-	public void setX(Stack x) {
-		this.x = x;
-	}
-	
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
@@ -51,15 +56,18 @@ public class FloggyStack implements Persistable, Deletable {
 		return true;
 	}
 	
-	public void delete() throws FloggyException {
-		if (x!= null) {
-			Enumeration enumeration = x.elements();
-			while (enumeration.hasMoreElements()) {
-				Object object = (Object) enumeration.nextElement();
-				if (object instanceof Persistable) {
-					PersistableManager.getInstance().delete((Persistable)object);
-				}
-			}
-		}
+	public Stack getX() {
+		return x;
+	}
+
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((x == null) ? 0 : x.hashCode());
+		return result;
+	}
+
+	public void setX(Stack x) {
+		this.x = x;
 	}
 }

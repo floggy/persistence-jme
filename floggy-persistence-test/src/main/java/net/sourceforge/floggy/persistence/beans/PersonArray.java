@@ -15,6 +15,8 @@
  */
 package net.sourceforge.floggy.persistence.beans;
 
+import java.util.Arrays;
+
 import net.sourceforge.floggy.persistence.Deletable;
 import net.sourceforge.floggy.persistence.FloggyException;
 import net.sourceforge.floggy.persistence.Persistable;
@@ -23,6 +25,30 @@ import net.sourceforge.floggy.persistence.beans.animals.Bird;
 
 
 public class PersonArray implements Persistable, Deletable {
+
+	private static int hashCode(int[] array) {
+		final int prime = 31;
+		if (array == null)
+			return 0;
+		int result = 1;
+		for (int index = 0; index < array.length; index++) {
+			result = prime * result + array[index];
+		}
+		return result;
+	}
+
+	private static int hashCode(Object[] array) {
+		final int prime = 31;
+		if (array == null)
+			return 0;
+		int result = 1;
+		for (int index = 0; index < array.length; index++) {
+			result = prime * result
+					+ (array[index] == null ? 0 : array[index].hashCode());
+		}
+		return result;
+	}
+
 	protected int[] age;
 
 	protected String[] name;
@@ -36,27 +62,31 @@ public class PersonArray implements Persistable, Deletable {
 		super();
 	}
 
-	/**
-	 * Returns <code>true</code> if this <code>PersonArray</code> is the
-	 * same as the o argument.
-	 * 
-	 * @return <code>true</code> if this <code>PersonArray</code> is the
-	 *         same as the o argument.
-	 */
-	public boolean equals(Object o) {
-		if (this == o) {
+	public void delete() throws FloggyException {
+		if (x != null) {
+			for (int i = 0; i < x.length; i++) {
+				if (x[i] != null) {
+					PersistableManager.getInstance().delete(x[i]);
+				}
+			}
+		}
+	}
+
+	public boolean equals(Object obj) {
+		if (this == obj)
 			return true;
-		}
-		if (o == null) {
+		if (obj == null)
 			return false;
-		}
-		if (o.getClass() != getClass()) {
+		if (getClass() != obj.getClass())
 			return false;
-		}
-		PersonArray castedObj = (PersonArray) o;
-		return (java.util.Arrays.equals(this.age, castedObj.age)
-				&& java.util.Arrays.equals(this.name, castedObj.name) && java.util.Arrays
-				.equals(this.x, castedObj.x));
+		final PersonArray other = (PersonArray) obj;
+		if (!Arrays.equals(age, other.age))
+			return false;
+		if (!Arrays.equals(name, other.name))
+			return false;
+		if (!Arrays.equals(x, other.x))
+			return false;
+		return true;
 	}
 
 	public int[] getAge() {
@@ -71,6 +101,15 @@ public class PersonArray implements Persistable, Deletable {
 		return x;
 	}
 
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + PersonArray.hashCode(age);
+		result = prime * result + PersonArray.hashCode(name);
+		result = prime * result + PersonArray.hashCode(x);
+		return result;
+	}
+
 	public void setAge(int[] age) {
 		this.age = age;
 	}
@@ -78,19 +117,9 @@ public class PersonArray implements Persistable, Deletable {
 	public void setName(String[] name) {
 		this.name = name;
 	}
-
+	
 	public void setX(Bird[] x) {
 		this.x = x;
-	}
-	
-	public void delete() throws FloggyException {
-		if (x != null) {
-			for (int i = 0; i < x.length; i++) {
-				if (x[i] != null) {
-					PersistableManager.getInstance().delete(x[i]);
-				}
-			}
-		}
 	}
 
 }

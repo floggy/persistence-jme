@@ -21,30 +21,31 @@ public class FloggyTransient implements Persistable {
 
 	private transient Object x;
 
-	/**
-	 * Returns <code>true</code> if this <code>FloggyTransient</code> is the
-	 * same as the o argument.
-	 * 
-	 * @return <code>true</code> if this <code>FloggyTransient</code> is the
-	 *         same as the o argument.
-	 */
-	public boolean equals(Object o) {
-		if (this == o) {
+	public boolean equals(Object obj) {
+		if (this == obj)
 			return true;
-		}
-		if (o == null) {
+		if (obj == null)
 			return false;
-		}
-		if (o.getClass() != getClass()) {
+		if (getClass() != obj.getClass())
 			return false;
-		}
-		FloggyTransient castedObj = (FloggyTransient) o;
-		return ((this.x == null ? castedObj.x == null : this.x
-				.equals(castedObj.x)));
+		final FloggyTransient other = (FloggyTransient) obj;
+		if (x == null) {
+			if (other.x != null)
+				return false;
+		} else if (!x.equals(other.x))
+			return false;
+		return true;
 	}
 
 	public Object getX() {
 		return x;
+	}
+
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((x == null) ? 0 : x.hashCode());
+		return result;
 	}
 
 	public void setX(Object x) {

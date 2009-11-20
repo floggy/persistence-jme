@@ -35,13 +35,29 @@ public class Formation implements Persistable {
     public void setFormation(String formation) {
         this.formation = formation;
     }
-    
-    public boolean equals(Object object) {
-        if (object instanceof Formation) {
-            Formation formation = (Formation) object;
-            return this.formation.equals(formation.getFormation());
-        }
-        
-        return false;
-    }
+
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((formation == null) ? 0 : formation.hashCode());
+		return result;
+	}
+
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		final Formation other = (Formation) obj;
+		if (formation == null) {
+			if (other.formation != null)
+				return false;
+		} else if (!formation.equals(other.formation))
+			return false;
+		return true;
+	}
+
 }
