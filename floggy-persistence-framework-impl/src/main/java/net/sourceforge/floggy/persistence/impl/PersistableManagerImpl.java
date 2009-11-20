@@ -38,7 +38,6 @@ import net.sourceforge.floggy.persistence.PersistableManager;
 public class PersistableManagerImpl extends PersistableManager {
 
 	private static class RecordStoreReference {
-		PersistableMetadata metadata;
 		RecordStore recordStore;
 		int references = 0;
 	}
@@ -139,7 +138,7 @@ public class PersistableManagerImpl extends PersistableManager {
 						throw new FloggyException("Class and RMS description doesn't match for class " + metadata.getClassName() + ". Please execute a migration first.");
 					}
 				}
-				rsr.metadata = metadata;
+
 				references.put(recordStoreName, rsr);
 			} else {
 				if (rsr.references == 0) {
