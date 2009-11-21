@@ -178,8 +178,8 @@ public class EnumerationImpl implements Enumeration {
 				String className = (String) keys.nextElement();
 				PersistableMetadata metadata = MetadataManagerUtil.getRMSBasedMetadata(className);
 				if (metadata != null) {
-					RecordStore recordStore = PersistableManagerImpl.getRecordStore(metadata.getRecordStoreName(), metadata);
-					recordStore.deleteRecord(((Integer)superClassesIDs.get(className)).intValue());
+					RecordStore superRecordStore = PersistableManagerImpl.getRecordStore(metadata.getRecordStoreName(), metadata);
+					superRecordStore.deleteRecord(((Integer)superClassesIDs.get(className)).intValue());
 				}
 			}
 		}

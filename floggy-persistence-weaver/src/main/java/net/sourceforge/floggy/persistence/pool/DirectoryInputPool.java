@@ -42,16 +42,16 @@ public class DirectoryInputPool implements InputPool {
 	}
 
 	private void initFiles(File directory) throws IOException {
-		File[] files = directory.listFiles();
+		File[] temp = directory.listFiles();
 
-		if (files != null) {
+		if (temp != null) {
 			String rootPath = this.rootDirectory.getCanonicalPath();
 
-			for (int i = 0; i < files.length; i++) {
-				if (files[i].isDirectory()) {
-					this.initFiles(files[i]);
-				} else if (files[i].isFile()) {
-					String filePath = files[i].getCanonicalPath();
+			for (int i = 0; i < temp.length; i++) {
+				if (temp[i].isDirectory()) {
+					this.initFiles(temp[i]);
+				} else if (temp[i].isFile()) {
+					String filePath = temp[i].getCanonicalPath();
 
 					String className = filePath.substring(rootPath.length());
 					if (className.startsWith(File.separator)) {
