@@ -53,7 +53,8 @@ public class FloggyBuilder extends IncrementalProjectBuilder {
 			IStatus status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1,	e.getMessage(), e);
 			throw new CoreException(status);
 		}
-		return null;
+
+		return new IProject[0];
 	}
 	
 	private AbstractBuilder createFloggyBuilder() {

@@ -94,7 +94,7 @@ public class MTJBuilder extends AbstractBuilder {
 			cleanFolder(floggyTemp,monitor);
 		}
 
-		return null;
+		return new IProject[0];
 	}
 	
 }
