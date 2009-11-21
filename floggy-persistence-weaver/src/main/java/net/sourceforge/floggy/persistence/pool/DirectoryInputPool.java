@@ -18,17 +18,18 @@ package net.sourceforge.floggy.persistence.pool;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DirectoryInputPool implements InputPool {
 
 	protected File rootDirectory;
 
-	protected Vector files;
+	protected List files;
 
 	public DirectoryInputPool(File directory) throws IOException {
 		this.rootDirectory = directory;
-		this.files = new Vector();
+		this.files = new ArrayList();
 		this.initFiles(directory);
 	}
 

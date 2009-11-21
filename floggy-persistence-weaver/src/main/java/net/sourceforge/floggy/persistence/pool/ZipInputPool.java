@@ -19,7 +19,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -27,11 +28,11 @@ public class ZipInputPool implements InputPool {
 
 	protected File file;
 
-	protected Vector files;
+	protected List files;
 
  	public ZipInputPool(File file) throws IOException {
 		this.file= file;
-		this.files = new Vector();
+		this.files = new ArrayList();
 		this.initFiles(file);
 	}
 

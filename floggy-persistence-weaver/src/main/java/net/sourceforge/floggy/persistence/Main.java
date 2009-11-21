@@ -17,7 +17,8 @@ package net.sourceforge.floggy.persistence;
 
 import java.io.File;
 import java.util.Arrays;
-import java.util.Vector;
+import java.util.List;
+
 
 public class Main {
 
@@ -25,7 +26,7 @@ public class Main {
 	 * Get the classpath option.
 	 * 
 	 */
-	private static String[] initClasspath(Vector params) {
+	private static String[] initClasspath(List params) {
 		String[] classpath = null;
 
 		int index = params.indexOf("-cp");
@@ -50,7 +51,7 @@ public class Main {
 	 * Get the input file option.
 	 * 
 	 */
-	private static File initInputFile(Vector params) {
+	private static File initInputFile(List params) {
 		File inputFile = null;
 
 		if (params.size() == 1) {
@@ -77,7 +78,7 @@ public class Main {
 	 * @param args
 	 * @return
 	 */
-	private static File initOutputFile(Vector params) {
+	private static File initOutputFile(List params) {
 		File outputFile = null;
 
 		int index = params.indexOf("-o");
@@ -98,7 +99,7 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Vector params = new Vector(Arrays.asList(args));
+		List params = Arrays.asList(args);
 
 		String[] classpath = initClasspath(params);
 		File outputFile = initOutputFile(params);
