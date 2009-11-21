@@ -89,7 +89,7 @@ public class PersistenceMojo extends AbstractMojo {
 			FileUtils.forceMkdir(temp);
 			weaver.setOutputFile(temp);
 			weaver.setInputFile(input);
-			weaver.setClasspath((String[]) list.toArray(new String[0]));
+			weaver.setClasspath((String[]) list.toArray(new String[list.size()]));
 			if (configFile == null) {
 				Configuration configuration= new Configuration();
 				configuration.setAddDefaultConstructor(addDefaultConstructor);

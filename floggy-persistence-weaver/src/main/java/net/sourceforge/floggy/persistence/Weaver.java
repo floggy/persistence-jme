@@ -267,7 +267,7 @@ public class Weaver {
 			recordStoreName = recordStoreName.substring(0, 32);
 		}
 		PersistableMetadata metadata = new PersistableMetadata(Modifier.isAbstract(ctClass.getModifiers()), className, superClassName, 
-			(String[])fieldNames.toArray(new String[0]), temp, persistableImplementations, recordStoreName);
+			(String[])fieldNames.toArray(new String[fieldNames.size()]), temp, persistableImplementations, recordStoreName);
 		return metadata;
 	}
 

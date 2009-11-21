@@ -174,7 +174,7 @@ public class ToggleNatureAction extends AbstractFloggyAction {
 					rawClasspath.add(varEntry);
 					javaProject.setRawClasspath(
 							(IClasspathEntry[]) rawClasspath
-									.toArray(new IClasspathEntry[0]), null);
+									.toArray(new IClasspathEntry[rawClasspath.size()]), null);
 					break;
 				}
 			}
@@ -197,7 +197,7 @@ public class ToggleNatureAction extends AbstractFloggyAction {
 				IClasspathEntry entry = JavaCore.newLibraryEntry(implJar.getLocation(), null, null, accessRules, null, true);
 				
 				rawClasspath.add(entry);
-				javaProject.setRawClasspath((IClasspathEntry[]) rawClasspath.toArray(new IClasspathEntry[0]), null);
+				javaProject.setRawClasspath((IClasspathEntry[]) rawClasspath.toArray(new IClasspathEntry[rawClasspath.size()]), null);
 			}
 		}
 	}

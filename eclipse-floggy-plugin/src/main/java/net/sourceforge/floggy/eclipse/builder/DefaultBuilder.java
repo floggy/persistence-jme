@@ -70,7 +70,7 @@ public class DefaultBuilder extends AbstractBuilder {
 
 			weaver.setOutputFile(floggyTemp.getLocation().toFile());
 			weaver.setInputFile(input);
-			weaver.setClasspath((String[]) classpathList.toArray(new String[0]));
+			weaver.setClasspath((String[]) classpathList.toArray(new String[classpathList.size()]));
 			weaver.setConfiguration(createWeaverConfiguration(project));
 			weaver.execute();
 			
