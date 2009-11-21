@@ -45,7 +45,7 @@ public class SerializationHelper {
 	public final static Boolean readBoolean(DataInput in) throws IOException {
 		Boolean b = null;
 		if (in.readByte() == NOT_NULL) {
-			b = new Boolean(in.readBoolean());
+			b = (in.readBoolean()) ? Boolean.TRUE : Boolean.FALSE;
 		}
 		return b;
 	}
@@ -135,7 +135,7 @@ public class SerializationHelper {
 		Object o = null;
 		String className = in.readUTF();
 		if ("java.lang.Boolean".equals(className)) {
-			o = new Boolean(in.readBoolean());
+			o = (in.readBoolean()) ? Boolean.TRUE : Boolean.FALSE;
 		} else if ("java.lang.Byte".equals(className)) {
 			o = new Byte(in.readByte());
 		} else if ("java.lang.Character".equals(className)) {
@@ -178,7 +178,7 @@ public class SerializationHelper {
 		Object o = null;
 		String className = in.readUTF();
 		if ("java.lang.Boolean".equals(className)) {
-			o = new Boolean(in.readBoolean());
+			o = (in.readBoolean()) ? Boolean.TRUE : Boolean.FALSE;
 		} else if ("java.lang.Byte".equals(className)) {
 			o = new Byte(in.readByte());
 		} else if ("java.lang.Character".equals(className)) {
