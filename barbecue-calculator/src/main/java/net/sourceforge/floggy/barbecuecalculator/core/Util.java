@@ -17,7 +17,7 @@ package net.sourceforge.floggy.barbecuecalculator.core;
 
 public class Util {
 
-	private Util() {
+	protected Util() {
 	}
 
 	public static int round(double valor) {

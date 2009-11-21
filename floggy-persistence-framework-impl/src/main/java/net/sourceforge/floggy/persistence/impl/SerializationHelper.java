@@ -593,7 +593,7 @@ public class SerializationHelper {
 		}
 	}
 
-	private SerializationHelper() {
+	protected SerializationHelper() {
 	}
 
 }
