@@ -67,4 +67,7 @@ public class CodeFormatter {
 	return tabIdent;
     }
 
+    protected CodeFormatter() {
+    }
+    
 }

@@ -106,5 +106,8 @@ public class SourceCodeGeneratorFactory {
 				Persistable.class.getName());
 		return classType.subtypeOf(persistableClass);
 	}
+	
+	protected SourceCodeGeneratorFactory() {
+	}
 
 }

@@ -48,4 +48,8 @@ public class SuperClassGenerator {
 		source += "\n";
 		return source;
 	}
+
+	protected SuperClassGenerator() {
+	}
+
 }

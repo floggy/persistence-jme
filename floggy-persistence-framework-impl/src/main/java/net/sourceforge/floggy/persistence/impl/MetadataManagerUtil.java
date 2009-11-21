@@ -38,7 +38,7 @@ public class MetadataManagerUtil {
 	private static String rmsVersion;
 	private static Hashtable classBasedMetadatas;
 	private static Hashtable rmsBasedMetadatas;
-	private static Vector notMigratedClassNames; 
+	private static Vector notMigratedClassNames;
 	
 	public static void addRMSMetadata(PersistableMetadata metadata) {
 		rmsBasedMetadatas.put(metadata.getClassName(), metadata);
@@ -179,5 +179,7 @@ public class MetadataManagerUtil {
 		return fos.toByteArray();
 	}
 
+	protected MetadataManagerUtil() {
+	}
 
 }

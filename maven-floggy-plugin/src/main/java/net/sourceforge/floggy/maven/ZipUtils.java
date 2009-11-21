@@ -100,4 +100,7 @@ public class ZipUtils {
 	return null;
     }
 
+    protected ZipUtils() {
+    }
+    
 }
