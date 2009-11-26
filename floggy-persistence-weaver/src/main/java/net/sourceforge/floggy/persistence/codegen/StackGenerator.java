@@ -27,7 +27,7 @@ public class StackGenerator extends SourceCodeGenerator {
 	public void initLoadCode() throws NotFoundException {
 		addLoadCode("this."
 				+ fieldName
-				+ "= net.sourceforge.floggy.persistence.impl.SerializationHelper.readStack(dis);");
+				+ "= net.sourceforge.floggy.persistence.impl.SerializationHelper.readStack(dis, lazy);");
 	}
 
 	public void initSaveCode() throws NotFoundException {

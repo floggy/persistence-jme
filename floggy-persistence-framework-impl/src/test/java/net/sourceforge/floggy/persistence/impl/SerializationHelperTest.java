@@ -356,43 +356,43 @@ public class SerializationHelperTest extends TestCase {
 		DataInput in = getDataInput(fos);
 
 		// Boolean
-		Object actual = SerializationHelper.readObject(in);
+		Object actual = SerializationHelper.readObject(in, false);
 		assertEquals(expectedBoolean, actual);
 		// Byte
-		actual = SerializationHelper.readObject(in);
+		actual = SerializationHelper.readObject(in, false);
 		assertEquals(expectedByte, actual);
 		// Character
-		actual = SerializationHelper.readObject(in);
+		actual = SerializationHelper.readObject(in, false);
 		assertEquals(expectedCharacter, actual);
 		// Double
-		actual = SerializationHelper.readObject(in);
+		actual = SerializationHelper.readObject(in, false);
 		assertEquals(expectedDouble, actual);
 		// Float
-		actual = SerializationHelper.readObject(in);
+		actual = SerializationHelper.readObject(in, false);
 		assertEquals(expectedFloat, actual);
 		// Integer
-		actual = SerializationHelper.readObject(in);
+		actual = SerializationHelper.readObject(in, false);
 		assertEquals(expectedInteger, actual);
 		// Long
-		actual = SerializationHelper.readObject(in);
+		actual = SerializationHelper.readObject(in, false);
 		assertEquals(expectedLong, actual);
 		// Short
-		actual = SerializationHelper.readObject(in);
+		actual = SerializationHelper.readObject(in, false);
 		assertEquals(expectedShort, actual);
 		// String
-		actual = SerializationHelper.readObject(in);
+		actual = SerializationHelper.readObject(in, false);
 		assertEquals(expectedString, actual);
 		// StringBuffer
-		actual = SerializationHelper.readObject(in);
+		actual = SerializationHelper.readObject(in, false);
 		assertEquals(expectedStringBuffer.toString(), actual.toString());
 		// Calendar
-		actual = SerializationHelper.readObject(in);
+		actual = SerializationHelper.readObject(in, false);
 		assertEquals(expectedCalendar, actual);
 		// Date
-		actual = SerializationHelper.readObject(in);
+		actual = SerializationHelper.readObject(in, false);
 		assertEquals(expectedDate, actual);
 		// TimeZone
-		actual = SerializationHelper.readObject(in);
+		actual = SerializationHelper.readObject(in, false);
 		assertEquals(expectedTimeZone, actual);
 	}
 
@@ -448,37 +448,37 @@ public class SerializationHelperTest extends TestCase {
 		DataInput in = getDataInput(fos);
 
 		// Boolean
-		Object actual = SerializationHelper.readObjectCLDC10(in);
+		Object actual = SerializationHelper.readObjectCLDC10(in, false);
 		assertEquals(expectedBoolean, actual);
 		// Byte
-		actual = SerializationHelper.readObjectCLDC10(in);
+		actual = SerializationHelper.readObjectCLDC10(in, false);
 		assertEquals(expectedByte, actual);
 		// Character
-		actual = SerializationHelper.readObjectCLDC10(in);
+		actual = SerializationHelper.readObjectCLDC10(in, false);
 		assertEquals(expectedCharacter, actual);
 		// Integer
-		actual = SerializationHelper.readObjectCLDC10(in);
+		actual = SerializationHelper.readObjectCLDC10(in, false);
 		assertEquals(expectedInteger, actual);
 		// Long
-		actual = SerializationHelper.readObjectCLDC10(in);
+		actual = SerializationHelper.readObjectCLDC10(in, false);
 		assertEquals(expectedLong, actual);
 		// Short
-		actual = SerializationHelper.readObjectCLDC10(in);
+		actual = SerializationHelper.readObjectCLDC10(in, false);
 		assertEquals(expectedShort, actual);
 		// String
-		actual = SerializationHelper.readObjectCLDC10(in);
+		actual = SerializationHelper.readObjectCLDC10(in, false);
 		assertEquals(expectedString, actual);
 		// StringBuffer
-		actual = SerializationHelper.readObjectCLDC10(in);
+		actual = SerializationHelper.readObjectCLDC10(in, false);
 		assertEquals(expectedStringBuffer.toString(), actual.toString());
 		// Calendar
-		actual = SerializationHelper.readObjectCLDC10(in);
+		actual = SerializationHelper.readObjectCLDC10(in, false);
 		assertEquals(expectedCalendar, actual);
 		// Date
-		actual = SerializationHelper.readObjectCLDC10(in);
+		actual = SerializationHelper.readObjectCLDC10(in, false);
 		assertEquals(expectedDate, actual);
 		// TimeZone
-		actual = SerializationHelper.readObjectCLDC10(in);
+		actual = SerializationHelper.readObjectCLDC10(in, false);
 		assertEquals(expectedTimeZone, actual);
 	}
 
@@ -527,7 +527,7 @@ public class SerializationHelperTest extends TestCase {
 
 		DataInput in = getDataInput(fos);
 
-		Object result = SerializationHelper.readStack(in);
+		Object result = SerializationHelper.readStack(in, false);
 
 		assertEquals(value, result);
 	}
@@ -548,7 +548,7 @@ public class SerializationHelperTest extends TestCase {
 
 		DataInput in = getDataInput(fos);
 
-		Object result = SerializationHelper.readStack(in);
+		Object result = SerializationHelper.readStack(in, false);
 
 		assertEquals(value, result);
 	}
@@ -556,7 +556,7 @@ public class SerializationHelperTest extends TestCase {
 	public void testReadStackNull() throws Exception {
 		DataInput in = getDataInputToNullTestMethods();
 
-		Object result = SerializationHelper.readStack(in);
+		Object result = SerializationHelper.readStack(in, false);
 
 		assertNull(result);
 	}
@@ -640,7 +640,7 @@ public class SerializationHelperTest extends TestCase {
 
 		DataInput in = getDataInput(fos);
 
-		Object result = SerializationHelper.readVector(in);
+		Object result = SerializationHelper.readVector(in, false);
 
 		assertEquals(value, result);
 	}
@@ -727,7 +727,7 @@ public class SerializationHelperTest extends TestCase {
 
 		DataInput in = getDataInput(fos);
 
-		Object result = SerializationHelper.readVector(in);
+		Object result = SerializationHelper.readVector(in, false);
 
 		assertEquals(value, result);
 	}
@@ -748,7 +748,7 @@ public class SerializationHelperTest extends TestCase {
 
 		DataInput in = getDataInput(fos);
 
-		Object result = SerializationHelper.readVector(in);
+		Object result = SerializationHelper.readVector(in, false);
 
 		assertEquals(value, result);
 	}
@@ -756,7 +756,7 @@ public class SerializationHelperTest extends TestCase {
 	public void testReadVectorNull() throws Exception {
 		DataInput in = getDataInputToNullTestMethods();
 
-		Object result = SerializationHelper.readVector(in);
+		Object result = SerializationHelper.readVector(in, false);
 
 		assertNull(result);
 	}

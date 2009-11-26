@@ -370,7 +370,7 @@ public class EnumerationImpl implements Enumeration {
 		case PersistableMetadata.SHORT:
 			return SerializationHelper.readShort(dis);
 		case PersistableMetadata.STACK:
-			return SerializationHelper.readStack(dis);
+			return SerializationHelper.readStack(dis, lazy);
 		case PersistableMetadata.STRING:
 			return SerializationHelper.readString(dis);
 		case PersistableMetadata.STRINGBUFFER:
@@ -378,7 +378,7 @@ public class EnumerationImpl implements Enumeration {
 		case PersistableMetadata.TIMEZONE:
 			return SerializationHelper.readTimeZone(dis);
 		case PersistableMetadata.VECTOR:
-			return SerializationHelper.readVector(dis);
+			return SerializationHelper.readVector(dis, lazy);
 		default:
 			throw new FloggyException("Type Unknow: " + type);
 		}

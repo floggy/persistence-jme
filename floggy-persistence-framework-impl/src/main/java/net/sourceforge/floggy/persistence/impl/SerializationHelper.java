@@ -107,8 +107,8 @@ public class SerializationHelper {
 			int size = in.readInt();
 			h = new Hashtable(size);
 			for (int i = 0; i < size; i++) {
-				Object key = readObject(in);
-				Object value = readObject(in);
+				Object key = readObject(in, false);
+				Object value = readObject(in, false);
 				h.put(key, value);
 			}
 		}
@@ -131,7 +131,7 @@ public class SerializationHelper {
 		return l;
 	}
 
-	public final static Object readObject(DataInput in) throws Exception {
+	public final static Object readObject(DataInput in, boolean lazy) throws Exception {
 		Object o = null;
 		String className = in.readUTF();
 		if ("java.lang.Boolean".equals(className)) {
@@ -166,15 +166,19 @@ public class SerializationHelper {
 		} else if ("java.util.TimeZone".equals(className)) {
 			o = TimeZone.getTimeZone(in.readUTF());
 		} else if ("java.util.Vector".equals(className)) {
-			o = readVector(in);
+			o = readVector(in, lazy);
 		} else {
-			o = PersistableManagerImpl.createInstance(Class.forName(className));
-			pm.load((Persistable) o, in.readInt());
+			if (lazy) {
+				in.readInt();
+			} else {
+				o = PersistableManagerImpl.createInstance(Class.forName(className));
+				pm.load((Persistable) o, in.readInt(), lazy);
+			}
 		}
 		return o;
 	}
 
-	public final static Object readObjectCLDC10(DataInput in) throws Exception {
+	public final static Object readObjectCLDC10(DataInput in, boolean lazy) throws Exception {
 		Object o = null;
 		String className = in.readUTF();
 		if ("java.lang.Boolean".equals(className)) {
@@ -205,10 +209,14 @@ public class SerializationHelper {
 		} else if ("java.util.TimeZone".equals(className)) {
 			o = TimeZone.getTimeZone(in.readUTF());
 		} else if ("java.util.Vector".equals(className)) {
-			o = readVector(in);
+			o = readVector(in, lazy);
 		} else {
-			o = PersistableManagerImpl.createInstance(Class.forName(className));
-			pm.load((Persistable) o, in.readInt());
+			if (lazy) {
+				in.readInt();
+			} else {
+				o = PersistableManagerImpl.createInstance(Class.forName(className));
+				pm.load((Persistable) o, in.readInt(), lazy);
+			}
 		}
 		return o;
 	}
@@ -248,9 +256,9 @@ public class SerializationHelper {
 		return s;
 	}
 
-	public final static Stack readStack(DataInput in) throws Exception {
+	public final static Stack readStack(DataInput in, boolean lazy) throws Exception {
 		Stack s = null;
-		Vector v = readVector(in);
+		Vector v = readVector(in, lazy);
 		if (v != null) {
 			s = new Stack();
 			for (int i = 0; i < v.size(); i++) {
@@ -285,7 +293,7 @@ public class SerializationHelper {
 		return t;
 	}
 
-	public final static Vector readVector(DataInput in) throws Exception {
+	public final static Vector readVector(DataInput in, boolean lazy) throws Exception {
 		Vector v = null;
 		if (in.readByte() == NOT_NULL) {
 			int size = in.readInt();
@@ -294,7 +302,7 @@ public class SerializationHelper {
 				if (in.readByte() == NULL) {
 					v.addElement(null);
 				} else {
-					v.addElement(readObject(in));
+					v.addElement(readObject(in, lazy));
 				}
 			}
 		}
