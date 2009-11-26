@@ -20,77 +20,64 @@ import java.util.Stack;
 import java.util.Vector;
 
 import net.sourceforge.floggy.persistence.FloggyBaseTest;
-import net.sourceforge.floggy.persistence.beans.FloggyStack;
-import net.sourceforge.floggy.persistence.beans.FloggyVector;
-import net.sourceforge.floggy.persistence.beans.Person;
-import net.sourceforge.floggy.persistence.beans.animals.Bird;
 
 public class BUG2903826Test extends FloggyBaseTest {
 	
 	public void testLazyInVectors() throws Exception {
-		Person person = new Person();
-		person.setNome("Thiago Moreira");
-		
-		Bird bird = new Bird();
-		bird.setColor("blue");
+		BUG2903826 bug2903826 = new BUG2903826();
+		bug2903826.setName("Thiago Moreira");
 		
 		Vector vector = new Vector();
-		vector.addElement(person);
-		vector.addElement(bird);
+		vector.addElement(bug2903826);
+		vector.addElement(null);
 		
-		FloggyVector floggy = new FloggyVector();
-		floggy.setX(vector);
+		BUG2903826VectorHolder holder = new BUG2903826VectorHolder();
+		holder.setVector(vector);
 		
 		try {
-			int id = manager.save(floggy);
+			int id = manager.save(holder);
 
-			floggy = new FloggyVector();
+			holder = new BUG2903826VectorHolder();
 			
-			manager.load(floggy, id, true);
+			manager.load(holder, id, true);
 			
-			vector = floggy.getX();
+			vector = holder.getVector();
 
 			assertEquals(2, vector.size());
 			assertNull(vector.get(0));
 			assertNull(vector.get(1));
-		} catch (Exception e){
-			e.printStackTrace();
-			fail(e.getMessage());
 		} finally {
-			manager.delete(bird);
-			manager.delete(person);
-			manager.delete(floggy);
+			manager.delete(bug2903826);
+			manager.delete(holder);
 		}
 	}
 
 	public void testLazyInStacks() throws Exception {
-		Person person = new Person();
-		person.setNome("Thiago Moreira");
-		
-		Long number = new Long(6549876);
+		BUG2903826 bug2903826 = new BUG2903826();
+		bug2903826.setName("Thiago Moreira");
 		
 		Stack stack = new Stack();
-		stack.push(person);
-		stack.push(number);
+		stack.push(bug2903826);
+		stack.push(new Integer(321));
 		
-		FloggyStack floggy = new FloggyStack();
-		floggy.setX(stack);
+		BUG2903826StackHolder holder = new BUG2903826StackHolder();
+		holder.setStack(stack);
 		
 		try {
-			int id = manager.save(floggy);
+			int id = manager.save(holder);
 
-			floggy = new FloggyStack();
+			holder = new BUG2903826StackHolder();
 			
-			manager.load(floggy, id, true);
+			manager.load(holder, id, true);
 			
-			stack = floggy.getX();
+			stack = holder.getStack();
 			
 			assertEquals(2, stack.size());
 			assertNotNull(stack.pop());
 			assertNull(stack.pop());
 		} finally {
-			manager.delete(person);
-			manager.delete(floggy);
+			manager.delete(bug2903826);
+			manager.delete(holder);
 		}
 	}
 
