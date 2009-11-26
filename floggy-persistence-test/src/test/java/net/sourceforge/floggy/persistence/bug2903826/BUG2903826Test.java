@@ -53,9 +53,12 @@ public class BUG2903826Test extends FloggyBaseTest {
 			assertEquals(2, vector.size());
 			assertNull(vector.get(0));
 			assertNull(vector.get(1));
+		} catch (Exception e){
+			e.printStackTrace();
+			fail(e.getMessage());
 		} finally {
-			manager.delete(person);
 			manager.delete(bird);
+			manager.delete(person);
 			manager.delete(floggy);
 		}
 	}
