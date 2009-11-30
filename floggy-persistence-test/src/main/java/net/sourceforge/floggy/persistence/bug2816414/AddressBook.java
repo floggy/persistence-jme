@@ -15,9 +15,12 @@
  */
 package net.sourceforge.floggy.persistence.bug2816414;
 
+import net.sourceforge.floggy.persistence.Deletable;
+import net.sourceforge.floggy.persistence.FloggyException;
 import net.sourceforge.floggy.persistence.Persistable;
-
-public class AddressBook implements Persistable {
+import net.sourceforge.floggy.persistence.PersistableManager;
+ 
+public class AddressBook implements Persistable, Deletable {
 	
 	protected Person person;
 	
@@ -27,6 +30,12 @@ public class AddressBook implements Persistable {
 	
 	public void setPerson(Person person) {
 		this.person = person;
+	}
+
+	public void delete() throws FloggyException {
+		if (person != null) {
+			PersistableManager.getInstance().delete(person);
+		}
 	}
 
 }
