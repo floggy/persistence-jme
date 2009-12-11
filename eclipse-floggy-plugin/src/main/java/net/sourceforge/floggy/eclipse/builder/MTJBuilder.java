@@ -49,7 +49,12 @@ public class MTJBuilder extends AbstractBuilder {
 			pathName = classpathEntry.getPath().toFile().toString();
 			if (classpathEntry.getEntryKind() == IClasspathEntry.CPE_LIBRARY){
 				if (!classpathEntry.getPath().toFile().exists()) {
-					IFile pathIFile = project.getWorkspace().getRoot().getFile(classpathEntry.getPath()); 
+					IFile pathIFile = project.getWorkspace().getRoot().getFile(classpathEntry.getPath());
+					if (pathIFile.getLocationURI() == null) {
+						// Special case when using the mpp-sdk, jsr184_impl.jar is in the classpath but doesn't exist !
+						continue;
+					}
+
 					pathName = pathIFile.getLocationURI().getPath();
 				}
 			}
