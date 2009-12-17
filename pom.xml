@@ -198,11 +198,6 @@
 				<inherited>true</inherited>
 			</plugin>
 			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>cobertura-maven-plugin</artifactId>
-				<inherited>true</inherited>
-			</plugin>
-			<plugin>
 				<groupId>com.mycila.maven-license-plugin</groupId>
 				<artifactId>maven-license-plugin</artifactId>
 				<inherited>true</inherited>
@@ -248,10 +243,6 @@
 				<inherited>true</inherited>
 			</plugin>
 			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>cobertura-maven-plugin</artifactId>
-			</plugin>
-			<plugin>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<inherited>true</inherited>
 				<configuration>
@@ -275,18 +266,6 @@
 				<inherited>true</inherited>
 				<configuration>
 					<configLocation>${project.parent.basedir}/src/main/resources/checkstyle-checks-configuration.xml</configLocation>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>scmchangelog-maven-plugin</artifactId>
-				<version>1.0</version>
-				<inherited>true</inherited>
-				<configuration>
-					<trackerUrlPattern>http://sourceforge.net/support/tracker.php?aid={0}</trackerUrlPattern>
-					<trackerType>sourceforge</trackerType>
-					<grammar>MANU</grammar>
-					<tagBase>https://floggy.svn.sourceforge.net/svnroot/floggy/tags</tagBase>
 				</configuration>
 			</plugin>
 			<plugin>
