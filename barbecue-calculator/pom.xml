@@ -149,13 +149,6 @@
 					<jarfile>${project.artifactId}-${project.version}-me.jar</jarfile>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>com.mycila.maven-license-plugin</groupId>
-				<artifactId>maven-license-plugin</artifactId>
-				<configuration>
-					<header>${project.parent.basedir}/src/main/resources/license-header-template.txt</header>
-				</configuration>
-			</plugin>
 		     <plugin>
 		     	<artifactId>maven-assembly-plugin</artifactId>
 		     	<configuration>

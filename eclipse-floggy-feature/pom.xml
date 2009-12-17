@@ -67,20 +67,13 @@
 					</execution>
 				</executions>
 				<configuration>
-					<keystore>${project.parent.basedir}/src/main/resources/keystore</keystore>
+					<keystore>../build-tools/src/main/resources/keystore</keystore>
 					<alias>floggy</alias>
 					<storepass>${floggy.storepass}</storepass>
 					<signedjar>${project.build.directory}/signed/${project.build.finalName}.jar</signedjar>
 					<verify>true</verify>
 				</configuration>
 			</plugin>  
-			<plugin>
-				<groupId>com.mycila.maven-license-plugin</groupId>
-				<artifactId>maven-license-plugin</artifactId>
-				<configuration>
-					<header>${project.parent.basedir}/src/main/resources/license-header-template.txt</header>
-				</configuration>
-			</plugin>
 		</plugins>
 	</build>
 </project>

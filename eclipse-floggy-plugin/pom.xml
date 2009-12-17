@@ -217,7 +217,7 @@
 					<archive>  
 						<manifestFile>${pom.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
 					</archive> 
-					<keystore>${project.parent.basedir}/src/main/resources/keystore</keystore>
+					<keystore>../build-tools/src/main/resources/keystore</keystore>
 					<alias>floggy</alias>
 					<storepass>${floggy.storepass}</storepass>
 					<jarPath>${project.build.directory}/${project.build.finalName}.jar</jarPath>
@@ -254,13 +254,6 @@
 						</goals>   
 					</execution>
 				</executions>
-			</plugin>
-			<plugin>
-				<groupId>com.mycila.maven-license-plugin</groupId>
-				<artifactId>maven-license-plugin</artifactId>
-				<configuration>
-					<header>${project.parent.basedir}/src/main/resources/license-header-template.txt</header>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>
