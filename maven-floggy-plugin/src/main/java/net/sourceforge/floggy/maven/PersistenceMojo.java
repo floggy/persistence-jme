@@ -22,6 +22,7 @@ import net.sourceforge.floggy.persistence.Configuration;
 import net.sourceforge.floggy.persistence.Weaver;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.logging.LogFactory;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
@@ -81,6 +82,13 @@ public class PersistenceMojo extends AbstractMojo {
 	private MavenProject project;
 
 	public void execute() throws MojoExecutionException {
+		
+		MavenLogWrapper.setLog(getLog());
+		
+		LogFactory.getFactory().setAttribute(
+			"org.apache.commons.logging.Log",
+			"net.sourceforge.floggy.maven.MavenLogWrapper");
+		
 		Weaver weaver = new Weaver();
 		try {
 			List list = project.getCompileClasspathElements();
