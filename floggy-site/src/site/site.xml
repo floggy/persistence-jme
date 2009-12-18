@@ -59,7 +59,7 @@
 			<item name="Introduction" href="index.html" />
 			<item name="Getting Started" href="getting-started.html" />
 			<item name="API" href="modules/floggy-persistence-framework/apidocs/index.html" />
-			<item name="Download" href="http://sourceforge.net/project/showfiles.php?group_id=139426" />
+			<item name="Download" href="download.html" />
 			<item name="Demo" href="demo.html" />
 			<item name="News" href="news.html" img="images/new.png"/>
 			<item name="Road Map" href="roadmap.html" img="images/new.png"/>
