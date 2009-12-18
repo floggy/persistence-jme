@@ -24,8 +24,9 @@
 	</properties>
 	<body>
 		<section name="News">
+			<p><img src="images/starOn.png" alt="News" /><b> 18-Dec-09: A new <a href="./qa.html">Q&amp;A</a> section was created. There you can check how we try to deliver a free of bug software.</b></p>
 			<p><img src="images/starOn.png" alt="News" /><b> 05-Sep-09: A new <a href="./demo.html">Demo</a> section was created. There you can test applications that uses Floggy.</b></p>
-			<p><img src="images/starOn.png" alt="News" /><b> 25-Aug-09: A new snapshot release was made available. Six features was added. More <a href="./changes-report.html#a1.3.0-SNAPSHOT">here</a>.</b></p>
+			<p><b>25-Aug-09:</b> A new snapshot release was made available. Six features was added. More <a href="./changes-report.html#a1.3.0-SNAPSHOT">here</a>.</p>
 			<p><b>25-Aug-09:</b> Floggy now has a Fisheye tool linked to its source code. Check it out: <a href="http://fisheye3.atlassian.com/browse/floggy">http://fisheye3.atlassian.com/browse/floggy</a>.</p>
 			<p><b>14-Jun-09:</b> A new snapshot release was made available. This one changed only the Eclipse's plugin. Two bugs was fixed. More <a href="./changes-report.html#a1.3.0-SNAPSHOT">here</a>.</p>
 			<p><b>29-Apr-09:</b> Floggy reached 10,000 downloads today it is another remarkable mark! Thank you Floggy community!</p>

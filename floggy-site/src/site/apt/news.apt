@@ -16,6 +16,8 @@
  
 News
 
+	<<18-Dec-09:>> A new {{{./qa.html}Q&A}} section was created. There you can check how we try to deliver a free of bug software.
+
 	<<05-Sep-09:>> A new {{{./demo.html}Demo}} section was created. There you can test applications that uses Floggy.
 	
 	<<25-Aug-09:>> A new snapshot release was made available. Six features was added. More {{{./changes-report.html#a1.3.0-SNAPSHOT}here}}.

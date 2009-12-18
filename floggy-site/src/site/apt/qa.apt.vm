@@ -1,0 +1,47 @@
+~~
+~~ Copyright (c) 2006-2009 Floggy Open Source Group. All rights reserved.
+~~
+~~ Licensed under the Apache License, Version 2.0 (the "License");
+~~ you may not use this file except in compliance with the License.
+~~ You may obtain a copy of the License at
+~~
+~~ http://www.apache.org/licenses/LICENSE-2.0
+~~
+~~ Unless required by applicable law or agreed to in writing, software
+~~ distributed under the License is distributed on an "AS IS" BASIS,
+~~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+~~ See the License for the specific language governing permissions and
+~~ limitations under the License.
+~~
+Quality & Assurance
+
+ Deliver a free of bug software is a hard task to accomplish, we have been trying it since the beginning and some results appeared in our favor: our average bugs per release is 4, 
+ it decrease to 2 if we take in account only the core project, the Eclipse plugin is responsible for half of the bugs (we are working to change this).
+ Different techniques and softwares are used to help us to assure quality, following are some of them:
+
+*Testcases 
+
+ For each new feature or bug found we build a testcase to validate it. Below we listed the projects that has testcases and its quantity.
+
+*----------*--------------*------------------------*
+| Project                             | Quantity | Results |
+*----------*--------------*------------------------*
+| floggy-persistence-framework        | 1        |{{{http://floggy.sourceforge.net/modules/floggy-persistence-framework/${currentVersion}/floggy-persistence-framework/surefire-report.html}Report}}|
+*----------*--------------*------------------------*
+| floggy-persistence-framework-impl   | 92       |{{{http://floggy.sourceforge.net/modules/floggy-persistence-framework-impl/${currentVersion}/floggy-persistence-framework-impl/surefire-report.html}Report}}|
+*----------*--------------*------------------------*
+| floggy-persistence-weaver           | 21       |{{{http://floggy.sourceforge.net/modules/floggy-persistence-weaver/${currentVersion}/floggy-persistence-weaver/surefire-report.html}Report}}|
+*----------*--------------*------------------------*
+| floggy-persistence-test             | 1364     |{{{http://floggy.sourceforge.net/modules/floggy-persistence-test/${currentVersion}/floggy-persistence-test/surefire-report.html}Report}}|
+*----------*--------------*------------------------*
+| <<Total>>                           | <<1478>> ||
+*----------*--------------*------------------------*
+
+*Continuous integration
+
+ We follow another good practice in software development that is the continuous integration. 
+ Our project are hosted in an instance of {{{http://parabuild.viewtier.com:8080/parabuild/index.htm?cid=9859&view=detailed&buildid=12739&displaygroupid=-1}Parabuild}} gently granted by the {{{http://www.viewtier.com/}Viewtier Systems}}.  
+ 
+*Metrics
+
+ Floggy are analyzed by {{{http://nemo.sonarsource.org/project/index/214399}Sonar}} gently granted by the {{{http://www.sonarsource.com/}SonarSource}}. From the Sonar website "Sonar enables to collect, analyze and report metrics on source code. Sonar not only offers consolidated reporting on and across projects throughout time, but it becomes the central place to manage code quality."  
