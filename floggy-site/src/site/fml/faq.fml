@@ -35,6 +35,14 @@
 				<p>Floggy is licensed under the <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0 </a>. This license allows you to use Floggy in open source and commercial applications.</p>
 			</answer>
 		</faq>
+		<faq id="graduation-theses">
+			<question>
+				Where can I get the graduation theses PDF that originated Floggy?
+			</question>
+			<answer>
+				<p>Here is the PDF link to it: <a href="http://projetos.inf.ufsc.br/arquivos_projetos/projeto_284/Monografia_Floggy_Priscila_Thiago.pdf">Monografia_Floggy_Priscila_Thiago.pdf</a>. It was written in Brazilian Portuguese.</p>
+			</answer>
+		</faq>
 	</part>
 	<part id="Technical">
 		<title>Technical</title>
@@ -100,6 +108,18 @@
 				<p>This occurs probably because you are using a JDK older than 1.5, Floggy 1.0.1 was built on JDK 1.5. After the 1.1.1 version Floggy is compatible to the JDK 1.4+ too. So you have two options to solve the problem or you update your JDK to 1.5+ or you update the Floggy to 1.1.+. If your problem wasn't solved please ask for help in our <a href="https://lists.sourceforge.net/lists/listinfo/floggy-user">user's mailing list</a>.</p>
 			</answer>
 		</faq>
+		<faq id="why-i-need-a-weaver">
+			<question>Why I need a weaver?</question>
+			<answer>
+				<p>Since there isn't reflection in JME Floggy needs to weave the proper methods to enable the object to be serialized and deserialized from a stream. This is why you need a weaver.</p>
+			</answer>
+		</faq>
+		<faq id="java-lang-reflect-invocationhandler">
+			<question>I'm getting a java.lang.reflect.InvocationHandler exception, how can I fix it?</question>
+			<answer>
+				<p>This is a configuration problem, all the Floggy's jar are available in the project's classpath this is wrong. Only the <b>floggy-persistence-framework.jar</b> library must be added to the project's classpath. Take a look in this <a href="./configuration/netbeans.html#classpath">image</a> for a correct configuration.</p>
+			</answer>
+		</faq>
 	</part>
 	<part id="Developers">
 		<title>Developers</title>
@@ -150,8 +170,6 @@
 				<ol>
 					<li>Install Maven 2</li>
 					<li>Checkout the the source code</li>
-					<li>Set the property <b>wtk.home</b> to point to the WTK (Wireless Tool Kit) home. You can do this in several ways check the Maven's documentation for further information. The best way for us is through settings.xml file</li>
-					<li>Execute <b>mvn <a href="http://maven.apache.org/plugins/maven-eclipse-plugin/make-artifacts-mojo.html">eclipse:make-artifacts</a> -DeclipseDir=ECLIPSE_HOME</b> to install the Eclipse's artifacts on the local Maven repository. The property eclipseDir should point to a 3.3.+ version of Eclipse. We developed the plugin based on 3.3.2-linux-gtk version of Eclipse</li>
 					<li>Execute <b>mvn clean package</b> on the directory of the project</li>
 					<li>If everything was okay now you can start to improve Floggy.<img src="images/blink.png" alt="blink"/></li>
 				</ol>

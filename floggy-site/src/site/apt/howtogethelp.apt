@@ -25,14 +25,14 @@ How to get help?
 
 * I'm having problems developing my application with Floggy!
 
-	* You can get help with our mailling list. We have an user's mailling list available to everyone that wants/needs some help, there you can make any question. Preferiable the emails in the list are written in English, but you can write in Portuguese and Spanish that we and the community will try to answer you. So, don't be shinny write to us. 
+	* You can get help with our mailling list. We have an user's mailling list available to everyone that needs help, there you can make any question. Preferiable the emails in the list are written in English, but you can write in Portuguese and Spanish that we and the community will try to answer you. So, don't be shinny write to us. 
 	The address of the list is {{{mailto:floggy-user@lists.sourceforge.net} floggy-user@lists.sourceforge.net}}. If you want to subscribe to it visit the following link {{{https://lists.sourceforge.net/lists/listinfo/floggy-user} here}}.
 
 	Before you post a new question please browse/search at our list's {{{http://sourceforge.net/mailarchive/forum.php?forum_name=floggy-user} archive}} or our {{{./faq.html} FAQ}} section to try to get your answer.
 
 * I found a bug! How can I fix it?
 
-	* If you are right that your problem is actually a bug, please open a entry in our {{{http://sourceforge.net/tracker/?group_id=139426} issue tracking}}, try to open a rich entry explaining the whole problem if possible use screenshots and patchs. 
+	* If you are right that your problem is actually a bug, please file a bug report in our {{{http://sourceforge.net/tracker/?group_id=139426} issue tracking}} try to describe the problem as much as possible, screenshots and patchs are very welcome. 
 	Otherwise submit your bug candidate to our list and let's discuss if your problem is really a bug.
 
 * I have a suggestion!
