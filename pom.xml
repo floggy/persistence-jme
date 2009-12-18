@@ -42,6 +42,10 @@
 		<developerConnection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/trunk</developerConnection>
 		<url>http://floggy.svn.sourceforge.net/viewvc/floggy/trunk</url>
 	</scm>
+	<ciManagement>
+		<system>parabuild</system>
+		<url>http://parabuild.viewtier.com:8080/parabuild/index.htm?cid=29a4&amp;view=detailed&amp;buildid=12739&amp;displaygroupid=-1</url>
+	</ciManagement>
 	<repositories>
 		<repository>
 			<id>pyx4j-web-snapshot</id>
