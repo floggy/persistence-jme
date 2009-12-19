@@ -16,9 +16,7 @@
 	limitations under the License.
 	
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>net.sourceforge.floggy</groupId>
@@ -30,15 +28,9 @@
 	<name>Floggy Persistence Framework Implementation</name>
 	<description>A implementation of Floggy's Framework.</description>
 	<scm>
-		<connection>
-			scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/trunk/floggy-persistence-framework-impl
-		</connection>
-		<developerConnection>
-			scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/trunk/floggy-persistence-framework-impl
-		</developerConnection>
-		<url>
-			http://floggy.svn.sourceforge.net/viewvc/floggy/trunk/floggy-persistence-framework-impl
-		</url>
+		<connection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/trunk/floggy-persistence-framework-impl</connection>
+		<developerConnection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/trunk/floggy-persistence-framework-impl</developerConnection>
+		<url>http://floggy.svn.sourceforge.net/viewvc/floggy/trunk/floggy-persistence-framework-impl</url>
 	</scm>
 	<dependencies>
 		<dependency>
@@ -69,7 +61,9 @@
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.0.2</version>
 				<executions>
 					<execution>
 						<id>default-compile</id>
@@ -102,7 +96,9 @@
 				</executions>
 			</plugin>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.3</version>
 				<executions>
 					<execution>
 						<goals>

@@ -58,8 +58,8 @@
 			</releases>
 		</repository>
 		<repository>
-			<id>pyx4me-web-release</id>
-			<url>http://www.pyx4me.com/maven2-release</url>
+			<id>pyx4j-web-release</id>
+			<url>http://repository.pyx4j.com/maven2-release</url>
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
@@ -78,16 +78,6 @@
 			<url>http://floggy.sourceforge.net/repository</url>
 			<snapshots>
 				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-		</pluginRepository>
-		<pluginRepository>
-			<id>mc-release</id>
-			<url>http://mc-repo.googlecode.com/svn/maven2/releases</url>
-			<snapshots>
-				<enabled>false</enabled>
 			</snapshots>
 			<releases>
 				<enabled>true</enabled>
@@ -118,7 +108,7 @@
 		<site>
 			<id>sourceforge</id>
 			<name>SourceForge.net</name>
-			<url>scp://shell.sourceforge.net:/home/groups/f/fl/floggy/htdocs/modules/${artifactId}/${version}</url>
+			<url>scp://shell.sourceforge.net:/home/groups/f/fl/floggy/htdocs/modules/${project.artifactId}/${project.version}</url>
 		</site>
 		<repository>
 			<id>sourceforge</id>
@@ -169,7 +159,9 @@
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-enforcer-plugin</artifactId>
+				<version>1.0-beta-1</version>
 				<executions>
 					<execution>
 						<id>enforce-versions</id>
@@ -190,7 +182,9 @@
 				</executions>
 			</plugin>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.0.2</version>
 				<inherited>true</inherited>
 				<configuration>
 					<source>1.3</source>
@@ -198,12 +192,15 @@
 				</configuration>
 			</plugin>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.4.3</version>
 				<inherited>true</inherited>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>2.4</version>
 				<inherited>true</inherited>
 				<dependencies>
 					<dependency>
@@ -219,6 +216,7 @@
 			<plugin>
 				<groupId>com.mycila.maven-license-plugin</groupId>
 				<artifactId>maven-license-plugin</artifactId>
+				<version>1.5.0</version>
 				<inherited>true</inherited>
 				<dependencies>
 					<dependency>
@@ -238,13 +236,14 @@
 					</excludes>
 					<properties>
 						<year>2009</year>
-						<organizationName>${organization.name}</organizationName>
+						<organizationName>${project.organization.name}</organizationName>
 					</properties>
 				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>jalopy-maven-plugin</artifactId>
+				<version>1.0-alpha-1</version>
 				<inherited>true</inherited>
 				<dependencies>
 					<dependency>
@@ -258,7 +257,9 @@
 				</configuration>
 			</plugin>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-release-plugin</artifactId>
+				<version>2.0-beta-9</version>
 				<inherited>true</inherited>
 				<configuration>
 					<tagBase>https://floggy.svn.sourceforge.net/svnroot/floggy/tags</tagBase>
@@ -269,15 +270,21 @@
 	<reporting>
 		<plugins>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<version>2.1.2</version>
 				<inherited>true</inherited>
 			</plugin>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-report-plugin</artifactId>
+				<version>2.4.3</version>
 				<inherited>true</inherited>
 			</plugin>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.6.1</version>
 				<inherited>true</inherited>
 				<configuration>
 					<minmemory>128m</minmemory>
@@ -287,7 +294,9 @@
 				</configuration>
 			</plugin>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jxr-plugin</artifactId>
+				<version>2.1</version>
 				<inherited>true</inherited>
 				<configuration>
 					<linkJavadoc>true</linkJavadoc>
@@ -297,16 +306,9 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>2.4</version>
 				<configuration>
 					<configLocation>checkstyle-checks-configuration.xml</configLocation>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-release-plugin</artifactId>
-				<inherited>true</inherited>
-				<configuration>
-					<preparationGoals>clean verify</preparationGoals>
 				</configuration>
 			</plugin>
 		</plugins>

@@ -26,9 +26,7 @@
 	<artifactId>floggy-site</artifactId>
 	<version>1.3.0-SNAPSHOT</version>
 	<name>Floggy's Web Site</name>
-	<description>
-		The web site of the project.
-	</description>
+	<description>The web site of the project.</description>
 	<scm>
 		<connection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/trunk/floggy-site</connection>
 		<developerConnection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/trunk/floggy-site</developerConnection>
@@ -45,26 +43,26 @@
 		<dependency>
 			<groupId>net.sourceforge.floggy</groupId>
 			<artifactId>barbecue-calculator</artifactId>
-			<version>${pom.version}</version>
+			<version>${project.version}</version>
 			<classifier>me</classifier>
 		</dependency>
 		<dependency>
 			<groupId>net.sourceforge.floggy</groupId>
 			<artifactId>barbecue-calculator</artifactId>
-			<version>${pom.version}</version>
+			<version>${project.version}</version>
 			<classifier>me</classifier>
 			<type>jad</type>
 		</dependency>
 		<dependency>
 			<groupId>net.sourceforge.floggy</groupId>
 			<artifactId>floggy-persistence-demo</artifactId>
-			<version>${pom.version}</version>
+			<version>${project.version}</version>
 			<classifier>me</classifier>
 		</dependency>
 		<dependency>
 			<groupId>net.sourceforge.floggy</groupId>
 			<artifactId>floggy-persistence-demo</artifactId>
-			<version>${pom.version}</version>
+			<version>${project.version}</version>
 			<classifier>me</classifier>
 			<type>jad</type>
 		</dependency>
@@ -72,7 +70,9 @@
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.1</version>
 				<executions>
 					<execution>
 						<id>copy-dependencies</id>
@@ -97,6 +97,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-changes-plugin</artifactId>
+				<version>2.3</version>
 				<configuration>
 					<issueLinkTemplate>http://sourceforge.net/support/tracker.php?aid=%ISSUE%</issueLinkTemplate>
 				</configuration>

@@ -32,19 +32,7 @@
 		<developerConnection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/trunk/floggy-persistence-test</developerConnection>
 		<url>http://floggy.svn.sourceforge.net/viewvc/floggy/trunk/floggy-persistence-test</url>
 	</scm>
-	<repositories>
-        <repository>
-            <id>pyx4me-web-snapshot</id>
-            <url>http://www.pyx4me.com/maven2-snapshot</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-        </repository>
-	</repositories>
-    <dependencies>
+	<dependencies>
 		<dependency>
 			<groupId>org.microemu</groupId>
 			<artifactId>microemulator</artifactId>

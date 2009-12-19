@@ -146,7 +146,7 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<finalName>${pom.groupId}_${pom.version}</finalName>
+		<finalName>${project.groupId}_${project.version}</finalName>
 		<resources>
 			<resource>
 				<directory>src/images</directory>
@@ -166,14 +166,18 @@
 		</resources>
 		<plugins>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-eclipse-plugin</artifactId>
+				<version>2.7</version>
 				<configuration>
 					<useProjectReferences>false</useProjectReferences>
 					<pde>true</pde>
 				</configuration>
 			</plugin>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.1</version>
 				<executions>
 					<execution>
 						<id>copy-dependencies</id>
@@ -182,7 +186,7 @@
 							<goal>copy-dependencies</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>${basedir}/lib</outputDirectory>
+							<outputDirectory>${project.basedir}/lib</outputDirectory>
 							<overWriteReleases>false</overWriteReleases>
 							<overWriteSnapshots>true</overWriteSnapshots>
 							<overWriteIfNewer>true</overWriteIfNewer>
@@ -192,20 +196,24 @@
 				</executions>
 			</plugin>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-clean-plugin</artifactId>
+				<version>2.3</version>
 				<configuration>
 					<filesets>
 						<fileset>
-							<directory>${basedir}/lib</directory>
+							<directory>${project.basedir}/lib</directory>
 						</fileset>
 						<fileset>
-							<directory>${basedir}/META-INF</directory>
+							<directory>${project.basedir}/META-INF</directory>
 						</fileset>
 					</filesets>
 				</configuration>
 			</plugin>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.3</version>
 				<executions>
 					<execution>
 						<goals>
@@ -214,9 +222,9 @@
 					</execution>
 				</executions>
 				<configuration>
-					<archive>  
-						<manifestFile>${pom.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
-					</archive> 
+					<archive>
+						<manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+					</archive>
 					<keystore>../build-tools/src/main/resources/keystore</keystore>
 					<alias>floggy</alias>
 					<storepass>${floggy.storepass}</storepass>
@@ -224,18 +232,19 @@
 					<signedjar>${project.build.directory}/signed/${project.build.finalName}.jar</signedjar>
 					<verify>true</verify>
 				</configuration>
-			</plugin>  
+			</plugin>
 			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
+				<version>2.0.1</version>
 				<extensions>true</extensions>
 				<configuration>
 					<manifestLocation>META-INF</manifestLocation>
 					<unpackBundle>true</unpackBundle>
 					<instructions>
 						<Export-Package>net.sourceforge.floggy.eclipse;uses:="org.eclipse.jface.action,org.eclipse.core.runtime,org.eclipse.ui,org.eclipse.core.resources,org.eclipse.ui.plugin,org.eclipse.jface.viewers,org.osgi.framework,org.apache.commons.logging.impl"</Export-Package>
-						<Bundle-SymbolicName>${pom.groupId};singleton:=true</Bundle-SymbolicName>
-						<Bundle-Activator>${pom.groupId}.eclipse.Activator</Bundle-Activator>
+						<Bundle-SymbolicName>${project.groupId};singleton:=true</Bundle-SymbolicName>
+						<Bundle-Activator>${project.groupId}.eclipse.Activator</Bundle-Activator>
 						<Embed-Dependency>*;scope=compile</Embed-Dependency>
 						<Embed-Directory>lib</Embed-Directory>
 						<Bundle-RequiredExecutionEnvironment>J2SE-1.4</Bundle-RequiredExecutionEnvironment>
@@ -249,9 +258,9 @@
 					<execution>
 						<id>bundle-manifest</id>
 						<phase>process-classes</phase>
-						<goals>    
+						<goals>
 							<goal>manifest</goal>
-						</goals>   
+						</goals>
 					</execution>
 				</executions>
 			</plugin>
