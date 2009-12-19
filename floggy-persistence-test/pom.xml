@@ -34,10 +34,23 @@
 	</scm>
 	<dependencies>
 		<dependency>
-			<groupId>org.microemu</groupId>
-			<artifactId>microemulator</artifactId>
-			<version>3.0.0-SNAPSHOT</version>
-			<scope>provided</scope>
+			<groupId>com.sun</groupId>
+			<artifactId>bootclasspath</artifactId>
+			<version>1.4</version>
+			<scope>system</scope>
+			<systemPath>${java.home}/lib/rt.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>1.2</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.2</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>net.sourceforge.floggy</groupId>
@@ -53,29 +66,16 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>3.8.2</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
 			<groupId>org.apache.bcel</groupId>
 			<artifactId>bcel</artifactId>
 			<version>5.2</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-			<version>1.2</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.sun</groupId>
-			<artifactId>bootclasspath</artifactId>
-			<version>1.4</version>
-			<scope>system</scope>
-			<systemPath>${java.home}/lib/rt.jar</systemPath>
+			<groupId>org.microemu</groupId>
+			<artifactId>microemulator</artifactId>
+			<version>3.0.0-SNAPSHOT</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 	<build>
