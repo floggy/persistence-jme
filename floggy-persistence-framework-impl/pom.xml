@@ -54,7 +54,7 @@
 		<dependency>
 			<groupId>org.microemu</groupId>
 			<artifactId>microemulator</artifactId>
-			<version>3.0.0-SNAPSHOT</version>
+			<version>3.0.0</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
