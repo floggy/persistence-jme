@@ -140,7 +140,6 @@
 			<organization>Floggy Open Source Group</organization>
 			<roles>
 				<role>Java Developer</role>
-				<role>Release Manager</role>
 			</roles>
 			<timezone>-3</timezone>
 		</developer>
@@ -151,9 +150,18 @@
 			<organization>Floggy Open Source Group</organization>
 			<roles>
 				<role>Java Developer</role>
-				<role>Release Manager</role>
 			</roles>
 			<timezone>-3</timezone>
+		</developer>
+		<developer>
+			<name>Dan Murphy</name>
+			<id>dgem</id>
+			<email>dan.murphy@@floggy.org</email>
+			<organization>Floggy Open Source Group</organization>
+			<roles>
+				<role>Eclipse Developer</role>
+			</roles>
+			<timezone>+0</timezone>
 		</developer>
 	</developers>
 	<build>
