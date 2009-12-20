@@ -21,17 +21,17 @@
 	<parent>
 		<groupId>net.sourceforge.floggy</groupId>
 		<artifactId>floggy</artifactId>
-		<version>1.3.0-SNAPSHOT</version>
+		<version>1.3.0</version>
 	</parent>
 	<artifactId>eclipse-floggy-plugin</artifactId>
-	<version>1.3.0.SNAPSHOT</version>
+	<version>1.3.0</version>
 	<packaging>bundle</packaging>
 	<name>Floggy plugin for Eclipse</name>
 	<description>A Floggy plugin for Eclipse.</description>
 	<scm>
-		<connection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/trunk/eclipse-floggy-plugin</connection>
-		<developerConnection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/trunk/eclipse-floggy-plugin</developerConnection>
-		<url>http://floggy.svn.sourceforge.net/viewvc/floggy/trunk/eclipse-floggy-plugin</url>
+		<connection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/tags/floggy-1.3.0/eclipse-floggy-plugin</connection>
+		<developerConnection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/tags/floggy-1.3.0/eclipse-floggy-plugin</developerConnection>
+		<url>http://floggy.svn.sourceforge.net/viewvc/floggy/tags/floggy-1.3.0/eclipse-floggy-plugin</url>
 	</scm>
 	<dependencies>
 		<dependency>
@@ -55,13 +55,13 @@
 		<dependency>
 			<groupId>net.sourceforge.floggy</groupId>
 			<artifactId>floggy-persistence-framework</artifactId>
-			<version>1.3.0-SNAPSHOT</version>
+			<version>1.3.0</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>net.sourceforge.floggy</groupId>
 			<artifactId>floggy-persistence-weaver</artifactId>
-			<version>1.3.0-SNAPSHOT</version>
+			<version>1.3.0</version>
 			<scope>compile</scope>
 			<exclusions>
 				<exclusion>

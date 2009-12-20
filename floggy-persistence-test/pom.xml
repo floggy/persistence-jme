@@ -21,16 +21,16 @@
 	<parent>
 		<groupId>net.sourceforge.floggy</groupId>
 		<artifactId>floggy</artifactId>
-		<version>1.3.0-SNAPSHOT</version>
+		<version>1.3.0</version>
 	</parent>
 	<artifactId>floggy-persistence-test</artifactId>
-	<version>1.3.0-SNAPSHOT</version>
+	<version>1.3.0</version>
 	<name>Floggy Persistence Test</name>
 	<description>A test project to validate the byte code generate.</description>
 	<scm>
-		<connection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/trunk/floggy-persistence-test</connection>
-		<developerConnection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/trunk/floggy-persistence-test</developerConnection>
-		<url>http://floggy.svn.sourceforge.net/viewvc/floggy/trunk/floggy-persistence-test</url>
+		<connection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/tags/floggy-1.3.0/floggy-persistence-test</connection>
+		<developerConnection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/tags/floggy-1.3.0/floggy-persistence-test</developerConnection>
+		<url>http://floggy.svn.sourceforge.net/viewvc/floggy/tags/floggy-1.3.0/floggy-persistence-test</url>
 	</scm>
 	<dependencies>
 		<dependency>
@@ -55,13 +55,13 @@
 		<dependency>
 			<groupId>net.sourceforge.floggy</groupId>
 			<artifactId>floggy-persistence-framework</artifactId>
-			<version>1.3.0-SNAPSHOT</version>
+			<version>1.3.0</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>net.sourceforge.floggy</groupId>
 			<artifactId>floggy-persistence-framework-impl</artifactId>
-			<version>1.3.0-SNAPSHOT</version>
+			<version>1.3.0</version>
 			<type>test-jar</type>
 			<scope>test</scope>
 		</dependency>
@@ -101,7 +101,7 @@
 			<plugin>
 				<groupId>net.sourceforge.floggy</groupId>
 				<artifactId>maven-floggy-plugin</artifactId>
-				<version>1.3.0-SNAPSHOT</version>
+				<version>1.3.0</version>
 				<executions>
 					<execution>
 						<phase>process-classes</phase>
