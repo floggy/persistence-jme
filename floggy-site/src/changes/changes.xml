@@ -15,9 +15,12 @@
     limitations under the License.
 
 -->
-<document>
-  <body>
-    <release version="1.3.0-SNAPSHOT" date="08-25-2009" description="Snapshot release, it is just a preview of what is coming.">
+
+<document xmlns="http://maven.apache.org/changes/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
+<body>
+    <release version="1.3.0" date="12-20-2009" description="Fourth public release">
       <action dev="thiagolm" type="update" issue="2836969">
 		Improved the message details for a not weaved execution exception.
       </action>
@@ -26,6 +29,21 @@
       </action>
       <action dev="thiagolm" type="update" issue="2820479">
 		Unified metadata information in the MetadataManagerUtil class (This is an internal improvement).
+      </action>
+      <action dev="thiagolm" type="update" issue="2900144">
+		Refactored the hierarchy of testcases now a common parent testcase class holds an instance of PersistableManager (This is an internal improvement).
+      </action>
+      <action dev="thiagolm" type="update" issue="2879197">
+		Refactored the IMPL package in floggy-persistence-weaver to a new project to avoid compilation and preverification problems.
+      </action>
+      <action dev="thiagolm" type="add" issue="2896571">
+		Added the proper constructors to WeaverException to enable a better description of the underlying exception. 
+      </action>
+      <action dev="thiagolm" type="add" issue="2857239">
+		Added a setLazy/isLazy method to ObjectSet interface.
+      </action>
+      <action dev="thiagolm" type="add" issue="2848566">
+      	Added support for save a Hashtable inside a Vector and vice-versa.
       </action>
       <action dev="thiagolm" type="add" issue="2817746">
 		Added a root cause to the FloggyException.
@@ -41,6 +59,15 @@
       </action>
       <action dev="thiagolm" type="add" issue="2422928">
 		Added the MigrationManager API, implementation and tests.
+      </action>
+      <action dev="dgem" type="add" issue="2880916">
+		Added support for Eclipse Pulsar. Affects only the Eclipse's plugin.
+      </action>
+      <action dev="thiagolm" type="add" issue="2916668">
+		Added a log wrapper class to redirect the log messages to the Maven log system.
+      </action>
+      <action dev="thiagolm" type="fix" issue="2903826">
+		Fixed the lazy mechanism of Vector/Stack fields that holds Persistable instances. 
       </action>
       <action dev="thiagolm" type="fix" issue="2168632">
 		Fixed a bug when the Persistable interface is not implemented directly by the class. 

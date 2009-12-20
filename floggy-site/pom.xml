@@ -112,6 +112,6 @@
 		</plugins>
 	</reporting>
 	<properties>
-		<currentVersion>1.3.0-SNAPSHOT</currentVersion>
+		<currentVersion>1.3.0</currentVersion>
 	</properties>
 </project>

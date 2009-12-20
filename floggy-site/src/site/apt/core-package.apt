@@ -21,23 +21,6 @@
  ------
  20 February 2009
  ------
-
-Configuration
- 
- If you haven't downloaded the latest <<Floggy>> release, you can find it {{{http://sourceforge.net/project/showfiles.php?group_id=139426} <<here>>}}.
-
- 
- Before starting the development you must configure the <<Floggy>> in your environment. 
- 
- *{{{./configuration/eclipse.html} <<Eclipse>>}}
- 
- *{{{./configuration/netbeans.html} <<Netbeans>>}}
- 
- *{{{./configuration/ant.html} <<Ant>>}}
- 
- *{{{./configuration/maven.html} <<Maven>>}}
-
- *{{{./configuration/commandline.html} <<Command line>>}}
  
 Using the {framework}
 
@@ -85,30 +68,6 @@ public class Phone implements Persistable {
 }
 +-----------------------------+
 
-* Supported types and restrictions
- 
- <<Supported types>>
- 
- * All primitive types: boolean, byte, char, double, float, int, long and short;
- 
- * Package java.lang: Boolean, Byte, Character, Double, Float, Integer, Long, Short, String, StringBuffer;
- 
- * Package java.util: Calendar, Date, Hashtable, Stack, TimeZone, Vector;
- 
- * All objects which implements net.sourceforge.floggy.persistence.Persistable;
- 
- * One-dimensional array of any supported type like byte[], Integer[], Date[] or Persistable[].
-
- []
- 
- <<Restrictions>>
- 
- * Bidirectional relationships;
- 
- * n:n relationships.
- 
- []
- 
 * PersistableManager
  
  All operations, such as saving, loading, deleting and finding objects are made through a single class called {{{./modules/floggy-persistence-framework/apidocs/net/sourceforge/floggy/persistence/PersistableManager.html} <<net.sourceforge.floggy.persistence.PersistableManager>>}}. 
@@ -138,6 +97,8 @@ public class Phone implements Persistable {
  * {{{#Using_a_comparator_to_sort_the_results_of_a_search} Using a comparator to sort the results of a search}}
  
  * {{{#Checking_if_the_object_is_already_persisted} Checking if the object is already persisted}}
+ 
+ * {{{#Getting_the_object_id} Getting the object id}}
  
 ** {Saving a new object}
  
@@ -176,8 +137,7 @@ try {
 +-----------------------------+
 
 ** {Lazy loading a tree of objects}
-	
-	
+
 +------------------------------+
 try {
 	PersistableManager pm = PersistableManager.getInstance();
@@ -192,7 +152,6 @@ try {
 +-----------------------------+
 
 ** {Changing the name of the RecordStore where the Persistable will be stored}
-	
 	
 +------------------------------+
 public class Person implements Persistable, Nameable {
@@ -345,14 +304,35 @@ try {
 	PersistableManager pm = PersistableManager.getInstance();
 	
 	// Checks if the object is persisted. This will return false
-	boolean persisted= pm.isPersisted(person);
+	boolean persisted = pm.isPersisted(person);
 
 	// To load an object, use the object ID 
 	// generated previously by a save() operation.
 	pm.load(person, id);
 
 	//This will return true
-	persisted= pm.isPersisted(person);
+	persisted = pm.isPersisted(person);
+} catch (FloggyException e) {
+	...
+}
++-----------------------------+
+
+* {Getting the object id}.
+	
++------------------------------+
+Person person = new Person();
+
+try {
+	PersistableManager pm = PersistableManager.getInstance();
+	
+	// Gets the object id. This will return -1
+	int id = pm.getId(person);
+
+	// saving the object
+	pm.save(person);
+
+	//This will return a value greater than 0
+	id = pm.getId(person);
 } catch (FloggyException e) {
 	...
 }

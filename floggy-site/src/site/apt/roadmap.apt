@@ -24,20 +24,26 @@
 Road map
 
 
-* Future Releases
+* Next release
 
-	* {{{https://sourceforge.net/tracker/?func=detail&aid=2722768&group_id=139426&atid=743544}IDable interface.}}
+	* {{{http://sourceforge.net/tracker2/?func=detail&aid=2243110&group_id=139426&atid=743544}Add support for a polymorphic find.}}
 	
-	* {{{https://sourceforge.net/tracker/?func=detail&aid=2702250&group_id=139426&atid=743544}Deletable interface.}}
+	* {{{http://sourceforge.net/tracker2/?func=detail&aid=2243110&group_id=139426&atid=2880506}Enable the PersistableManager open RecordStore from a specific vendor and suite (RecordStore sharing).}}
 	
-	* {{{http://sourceforge.net/tracker2/?func=detail&aid=2422928&group_id=139426&atid=743544}Update manager.}}
+	* {{{http://sourceforge.net/tracker2/?func=detail&aid=2243110&group_id=139426&atid=2852335}Add support for different persistence strategies.}}
 	
-	* {{{http://sourceforge.net/tracker2/?func=detail&aid=2243110&group_id=139426&atid=743544}Polymorphic find.}}
-	
+	* {{{http://sourceforge.net/tracker2/?func=detail&aid=2243110&group_id=139426&atid=2857247}Enable the PersistableManager work with RecordStores opened (batch preocessing purpose).}}
+
 	* Support for multi-dimensional arrays.
 	
-	* Support for N-N relationships.
-	
-	* Ability to persist non-static final fields.
+	* Data encryption
 
-	* Stream-based serialization framework: this powerful feature will allow an application to read and write objects from any kind of stream (http, socket, gzip, rms, etc).
+* Future releases
+
+	* IntelliJ plugin <<(looking for volunteers)>>.
+
+	* Update the FloggyUML Netbeans plugin to the latest version of Floggy <<(looking for volunteers)>>.
+
+	* Support for Android <<(looking for volunteers)>>.
+
+	* Stream-based serialization framework: this powerful feature will allow an application to read and write objects from any kind of stream <<(looking for volunteers)>>.

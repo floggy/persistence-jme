@@ -1,8 +1,31 @@
+		
+		try {
+			PersistableManager m = PersistableManager.getInstance();
+			
+			Person p = new Person();
+			
+			m.save(p);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+- criar uma secção no site com os artigos sobre o Floggy
+
+- melhorar a seguinte mensagem de erro
+INFO: Look up for classes that implements Persistable!
+Sep 15, 2009 5:02:31 PM net.sourceforge.floggy.persistence.Weaver execute
+SEVERE: javax.microedition.m2g.ExternalResourceHandler
+javassist.NotFoundException: javax.microedition.m2g.ExternalResourceHandler
+        at javassist.ClassPool.get(ClassPool.java:417)
+        at javassist.CtClassType.subtypeOf(CtClassType.java:301)
+
+
+- criar um ObjectSet FAKE que vai fazer o find somente depois de o developer invocar get(int) ou get(int, Persistable), se ele invocar o primeiro metodo só dai ele vai invocar o find com o filter adequado para somente uma unica vez o deserialize ser invocado. Acho que não dá! Pois se o usuário invocar o método size() ele vai retornar 0
+- setProperties method in the PeristableManager para permitir a abertura de RescordStores compartilhados
 - usar o replace de arquivos para editar corretamente a versão nos links no arquivo site.xml
 - melhorar a perfomance do metodo find no PMImpl passando a RE para o construtor ObjectSetImpl instead of int[] ids
 - move the package impl to a new project like floggy-persistence-framework-impl
 - criar uma FAQ sobre o TCC e botar um link para ele
-- melhorar as exceptions! adicionar um Exception field à Floggy|WeaverException e setar a nested Exception
 - adicionar a o plugin PMD aos projetos.
 - adicionar a o plugin FINDBUGS aos projetos.
 - adicionar o checkstyle before compile, adicionar ao eclipse
@@ -20,7 +43,6 @@ Floggy
   
 - diagramas da arquitetura
 - diagrama de classes e de sequência
-- criar uma aplicação de exemplo
 - documentar em código também
 - deixar mais claro para os usuários que o Floggy não usa reflection at runtime!
 - colocar as limitações do projeto (busca indexada, 
@@ -28,7 +50,6 @@ Floggy
 - formatar o código
 - medir a performance
 - Dar um jeito de identificar mudanças nas classes e só enxertar as que contêm modificações
-- criar a aplicação de exemplo e deixa-la pronta para ser usado pelos usuários ChurrasCalculator|Hospital-ME(liberada numa url, utilizar o tinyurl.com)
 - translate this document
 - adicionar link para doações
 - possibilitar abrir rMS de outros midlets suites
@@ -39,7 +60,6 @@ Floggy
 - criar uma seção no site para chamar contribuições da comunidade. (how to help)
 - criar um arquivo do tipo sitemap.xml
 - Another question, suppose we have DomesticCat extends Cat, is it possible in Floggy a query like pm.find(Cat.class) returns instances not only Cat, but also subclasses like DomesticCat?
-- add a UpdateManager to helps the developers to update his application, the PM.getInstance() will check if all RMS and persistable classes has the same structure if not it will throw a exception??
 - postar notícias:
 	- FEITO www.javafree.org
 	- FEITO www.portaljava.com.br
@@ -58,6 +78,7 @@ Floggy
 
 - articles
 	- http://www.devmedia.com.br/articles/viewcomp.asp?comp=5961
+    - http://wiki.forum.nokia.com/index.php/Floggy_Framework:_RMS_no_more!
 			
 
 
