@@ -32,7 +32,7 @@ public class MetadataManagerUtil {
 	public static final String VERSION_1_1_0 = "1.1.0";
 	public static final String VERSION_1_1_1 = "1.1.1";
 	public static final String VERSION_1_2_0 = "1.2.0";
-	public static final String VERSION_1_3_0 = "1.3.0-SNAPSHOT";
+	public static final String VERSION_1_3_0 = "1.3.0";
 	public static final String CURRENT_VERSION = VERSION_1_3_0;
 
 	private static String rmsVersion;
