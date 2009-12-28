@@ -52,14 +52,16 @@ public class ZipOutputPool implements OutputPool {
 	}
 
 	public void addFile(URL fileURL, String fileName) throws IOException {
-
+		if (fileName.endsWith(".class")) {
+			fileName = fileName.replace(File.separatorChar, '/');
+		}
 		addResource(fileURL.openStream(), fileName);
 	}
 
 	public void addResource(InputStream resourceStream, String fileName)
 			throws IOException {
 
-		if (fileName.startsWith("/")) {
+		if (fileName.startsWith("/") || fileName.startsWith("\\")) {
 			fileName = fileName.substring(1);
 		}
 

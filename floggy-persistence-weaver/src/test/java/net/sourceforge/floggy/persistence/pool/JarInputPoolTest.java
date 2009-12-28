@@ -34,7 +34,7 @@ public class JarInputPoolTest extends TestCase {
 		File file = new File("target/test-classes/test.jar");
 		JarInputPool pool = new JarInputPool(file);
 
-		String nameExpected = "META-INF/MANIFEST.MF";
+		String nameExpected = "META-INF"+ File.separator + "MANIFEST.MF";
 		assertEquals(nameExpected, pool.getFileName(0));
 	}
 
@@ -43,7 +43,7 @@ public class JarInputPoolTest extends TestCase {
 		JarInputPool pool = new JarInputPool(file);
 
 		URL urlExpected = new URL("jar:" + file.toURL()
-				+ "!/META-INF/MANIFEST.MF");
+				+ "!/META-INF" + File.separator + "MANIFEST.MF");
 		assertEquals(urlExpected, pool.getFileURL(0));
 	}
 
