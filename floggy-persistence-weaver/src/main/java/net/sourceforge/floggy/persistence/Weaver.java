@@ -37,6 +37,13 @@ import javassist.CtMethod;
 import javassist.CtNewMethod;
 import javassist.Modifier;
 import javassist.NotFoundException;
+import javassist.bytecode.AccessFlag;
+import javassist.bytecode.BadBytecode;
+import javassist.bytecode.ClassFile;
+import javassist.bytecode.CodeAttribute;
+import javassist.bytecode.CodeIterator;
+import javassist.bytecode.ConstPool;
+import javassist.bytecode.MethodInfo;
 import net.sourceforge.floggy.persistence.codegen.CodeGenerator;
 import net.sourceforge.floggy.persistence.impl.MetadataManagerUtil;
 import net.sourceforge.floggy.persistence.impl.PersistableMetadata;
@@ -66,6 +73,8 @@ public class Weaver {
 	private OutputPool outputPool;
 	
 	private OutputPool embeddedClassesOutputPool;
+	
+	protected boolean invocationOfShutdownMethodFound = false;
 
 	/**
 	 * Creates a new instance
@@ -374,6 +383,12 @@ public class Weaver {
 				embeddedClassesOutputPool.finish();
 			}
 			outputPool.finish();
+			
+			if (!invocationOfShutdownMethodFound) {
+				LOG.warn("-------------------------------------------------------------------------------------------------------------------");
+				LOG.warn("The PersistableManager.shutdown() method is not being called. Please call it from MIDlet.destroyApp(boolean) method"); 
+				LOG.warn("-------------------------------------------------------------------------------------------------------------------");
+			}
  
 //			writeConfiguration();
 		} catch (Exception e) {
@@ -542,11 +557,58 @@ public class Weaver {
 						alreadyProcessedMetadatas.add(metadata);
 					}
 				}
+
+				findInvocationOfShutdownMethod(ctClass);
+				
 				// Adds non-persistable class to output pool
 				this.outputPool.addFile(inputPool.getFileURL(i), fileName);
 			}
 		}
 		return list;
+	}
+	
+	protected void findInvocationOfShutdownMethod(CtClass ctClass) {
+
+		if (!ctClass.isInterface()) {
+			try {
+				ClassFile classFile = ctClass.getClassFile2();
+				ConstPool constantPool = classFile.getConstPool();
+				List methods = classFile.getMethods();
+				for (Iterator iterator = methods.iterator(); iterator.hasNext();) {
+
+					MethodInfo method = (MethodInfo) iterator.next();
+					if ((method.getAccessFlags() | AccessFlag.ABSTRACT) != AccessFlag.ABSTRACT) {
+
+						CodeAttribute codeAttribute = method.getCodeAttribute();
+						byte[] code = codeAttribute.getCode();
+						CodeIterator codeIterator = codeAttribute.iterator();
+						while (codeIterator.hasNext()) {
+
+							int index = codeIterator.next();
+							int opcode = codeIterator.byteAt(index);
+							if (opcode == CodeAttribute.INVOKEVIRTUAL) {
+								int temp = code[index+2];
+								if (temp < 0) {
+									temp = 256 + temp;
+								}
+
+								String className = constantPool.getMethodrefClassName(temp);
+								String methodName = constantPool.getMethodrefName(temp);
+
+								if (className.equals(PersistableManager.class.getName()) && 
+									methodName.equals("shutdown")) {
+									
+									invocationOfShutdownMethodFound = true;
+								}
+							}
+						}
+					}
+
+				}
+			} catch (BadBytecode ex) {
+				LOG.warn(ex.getMessage(), ex);
+			}
+		}
 	}
 
 //	private XStream getXStream() {

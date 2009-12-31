@@ -47,6 +47,11 @@ public class HospitalMIDlet extends MIDlet {
     }
 
     protected void destroyApp(boolean arg0) throws MIDletStateChangeException {
+    	try {
+			PersistableManager.getInstance().shutdown();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
     }
     
     public static void setCurrent(Displayable displayable) {

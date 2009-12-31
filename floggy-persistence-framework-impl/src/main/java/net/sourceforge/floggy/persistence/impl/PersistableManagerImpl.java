@@ -15,6 +15,7 @@
  */
 package net.sourceforge.floggy.persistence.impl;
 
+import java.util.Enumeration;
 import java.util.Hashtable;
 
 import javax.microedition.rms.RecordEnumeration;
@@ -44,6 +45,7 @@ public class PersistableManagerImpl extends PersistableManager {
 
 	private static Class __persistableClass;
 	private static Class deletableClass;
+	private static boolean batchMode = false;
 
 	private static Hashtable references = new Hashtable();
 
@@ -81,8 +83,10 @@ public class PersistableManagerImpl extends PersistableManager {
 				if (rsr != null) {
 					rsr.references--;
 					if (rsr.references == 0) {
-						rs.closeRecordStore();
-						rsr.recordStore = null;
+						if (!batchMode) {
+							rs.closeRecordStore();
+							rsr.recordStore = null;
+						}
 					}
 				}
 			}
@@ -470,6 +474,40 @@ public class PersistableManagerImpl extends PersistableManager {
 			throw handleException(ex);
 		} finally {
 			PersistableManagerImpl.closeRecordStore(rs);
+		}
+	}
+
+	public void setProperty(String name, Object value) {
+		if (name == null || name.trim().length() == 0) {
+			throw new IllegalArgumentException("The property name cannot be null or empty");
+		} else if (value == null) {
+			throw new IllegalArgumentException("The property value cannot be null");
+		} else if (name.equals(PersistableManager.BATCH_MODE)) {
+			if (value instanceof Boolean) {
+				batchMode = ((Boolean)value).booleanValue();
+			} else {
+				throw new IllegalArgumentException("The property PersistableManager.BATCH_MODE must be an instance of Boolean");
+			}
+		} else {
+			throw new IllegalArgumentException("Unreconized property: " + name);
+		}
+	}
+	
+	public void shutdown() throws FloggyException {
+		if (batchMode) {
+			Enumeration recordStoreReferences = references.elements();
+			while (recordStoreReferences.hasMoreElements()) {
+				RecordStoreReference rsr = (RecordStoreReference)recordStoreReferences.nextElement(); 
+				RecordStore rs = rsr.recordStore;
+				if (rs != null) {
+					try {
+						rs.closeRecordStore();
+						rsr.recordStore = null;
+					} catch (Exception ex) {
+						throw handleException(ex);
+					}
+				}
+			}
 		}
 	}
 

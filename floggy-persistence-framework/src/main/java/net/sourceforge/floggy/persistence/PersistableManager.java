@@ -23,6 +23,8 @@ package net.sourceforge.floggy.persistence;
  * @since 1.0
  */
 public abstract class PersistableManager {
+	
+	public static final String BATCH_MODE = "BATCH_MODE";
     /**
      * The single instance of PersistableManager.
      */
@@ -214,4 +216,17 @@ public abstract class PersistableManager {
      *         false otherwise.
      */
     public abstract boolean isPersisted(Persistable persistable);
+
+    /**
+     * Set a property
+     *  
+     * @param property the property's name
+     * @param value the property's value
+     */
+    public abstract void setProperty(String name, Object value);
+    
+    /**
+     * Shutdown the PersistableManager.
+     */
+    public abstract void shutdown() throws FloggyException;
 }
