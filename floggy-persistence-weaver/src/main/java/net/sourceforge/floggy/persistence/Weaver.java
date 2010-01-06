@@ -38,7 +38,6 @@ import javassist.CtNewMethod;
 import javassist.Modifier;
 import javassist.NotFoundException;
 import javassist.bytecode.AccessFlag;
-import javassist.bytecode.BadBytecode;
 import javassist.bytecode.ClassFile;
 import javassist.bytecode.CodeAttribute;
 import javassist.bytecode.CodeIterator;
@@ -553,7 +552,7 @@ public class Weaver {
 					Iterator iterator = temp.iterator(); 
 					while (iterator.hasNext()) {
 						className = (String) iterator.next();
-						PersistableMetadata metadata = createPersistableMetadata(ctClass);
+						PersistableMetadata metadata = configuration.getPersistableMetadata(className);
 						alreadyProcessedMetadatas.add(metadata);
 					}
 				}
@@ -577,35 +576,33 @@ public class Weaver {
 				for (Iterator iterator = methods.iterator(); iterator.hasNext();) {
 
 					MethodInfo method = (MethodInfo) iterator.next();
-					if ((method.getAccessFlags() | AccessFlag.ABSTRACT) != AccessFlag.ABSTRACT) {
+					if ((method.getAccessFlags() & AccessFlag.ABSTRACT) != AccessFlag.ABSTRACT) {
 
 						CodeAttribute codeAttribute = method.getCodeAttribute();
-						byte[] code = codeAttribute.getCode();
-						CodeIterator codeIterator = codeAttribute.iterator();
-						while (codeIterator.hasNext()) {
-
-							int index = codeIterator.next();
-							int opcode = codeIterator.byteAt(index);
-							if (opcode == CodeAttribute.INVOKEVIRTUAL) {
-								int temp = code[index+2];
-								if (temp < 0) {
-									temp = 256 + temp;
-								}
-
-								String className = constantPool.getMethodrefClassName(temp);
-								String methodName = constantPool.getMethodrefName(temp);
-
-								if (className.equals(PersistableManager.class.getName()) && 
-									methodName.equals("shutdown")) {
-									
-									invocationOfShutdownMethodFound = true;
+						if (codeAttribute != null) {
+							byte[] code = codeAttribute.getCode();
+							CodeIterator codeIterator = codeAttribute.iterator();
+							while (codeIterator.hasNext()) {
+		
+								int index = codeIterator.next();
+								int opcode = codeIterator.byteAt(index);
+								if (opcode == CodeAttribute.INVOKEVIRTUAL) {
+									int temp = (code[index+1] << 8) | code[index+2];
+									String className = constantPool.getMethodrefClassName(temp); 
+									String methodName = constantPool.getMethodrefName(temp);
+	
+									if (PersistableManager.class.getName().equals(className) && 
+										"shutdown".equals(methodName)) {
+										
+										invocationOfShutdownMethodFound = true;
+									}
 								}
 							}
 						}
 					}
 
 				}
-			} catch (BadBytecode ex) {
+			} catch (Exception ex) {
 				LOG.warn(ex.getMessage(), ex);
 			}
 		}
