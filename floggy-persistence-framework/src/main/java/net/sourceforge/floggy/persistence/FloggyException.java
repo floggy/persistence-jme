@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2006-2009 Floggy Open Source Group. All rights reserved.
+ * Copyright (c) 2006-2010 Floggy Open Source Group. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,20 +16,16 @@
 package net.sourceforge.floggy.persistence;
 
 /**
- * Exception thrown to indicate a persistence problem.
- *
- * @since 1.0
+* Exception thrown to indicate a persistence problem.
+*
+* @since 1.0
  */
 public class FloggyException extends Exception {
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 7139165976718330303L;
+	/**  */
+	private static final long serialVersionUID = 7139165976718330303L;
 
-    /**
-     * The root cause
-     */
-    protected Throwable rootCause;
+	/** The root cause */
+	protected Throwable rootCause;
 
 /**
      * Construct a new FloggyException with a specified detail message.
@@ -37,9 +33,9 @@ public class FloggyException extends Exception {
      * @param message
      *            The detail message.
      */
-    public FloggyException(final String message) {
-        super(message);
-    }
+	public FloggyException(final String message) {
+		super(message);
+	}
 
 /**
      * Construct a new FloggyException with a specified detail message 
@@ -48,28 +44,28 @@ public class FloggyException extends Exception {
      * @param message
      *            The detail message.
      */
-    public FloggyException(final String message, final Throwable rootCause) {
-        super(message);
-        this.rootCause = rootCause;
-    }
+	public FloggyException(final String message, final Throwable rootCause) {
+		super(message);
+		this.rootCause = rootCause;
+	}
 
-    /**
-     * Gets the root cause if any of the current throwable
-     *
-     * @return the root cause or null.
-     */
-    public Throwable getRootCause() {
-        return rootCause;
-    }
+	/**
+	* Gets the root cause if any of the current throwable
+	*
+	* @return the root cause or null.
+	*/
+	public Throwable getRootCause() {
+		return rootCause;
+	}
 
-    /**
-     * DOCUMENT ME!
-     */
-    public void printStackTrace() {
-        super.printStackTrace();
+	/**
+	* DOCUMENT ME!
+	*/
+	public void printStackTrace() {
+		super.printStackTrace();
 
-        if (rootCause != null) {
-            rootCause.printStackTrace();
-        }
-    }
+		if (rootCause != null) {
+			rootCause.printStackTrace();
+		}
+	}
 }

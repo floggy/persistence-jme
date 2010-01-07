@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2006-2009 Floggy Open Source Group. All rights reserved.
+ * Copyright (c) 2006-2010 Floggy Open Source Group. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,12 +17,23 @@ package net.sourceforge.floggy.persistence.pool;
 
 import java.io.File;
 import java.io.IOException;
+
 import java.net.URL;
 
 import junit.framework.TestCase;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class JarInputPoolTest extends TestCase {
-
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws IOException DOCUMENT ME!
+	*/
 	public void testGetFileCount() throws IOException {
 		File file = new File("target/test-classes/test.jar");
 		JarInputPool pool = new JarInputPool(file);
@@ -30,6 +41,11 @@ public class JarInputPoolTest extends TestCase {
 		assertEquals(2, pool.getFileCount());
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testGetFileName() throws Exception {
 		File file = new File("target/test-classes/test.jar");
 		JarInputPool pool = new JarInputPool(file);
@@ -38,13 +54,16 @@ public class JarInputPoolTest extends TestCase {
 		assertEquals(nameExpected, pool.getFileName(0));
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testGetFileURL() throws Exception {
 		File file = new File("target/test-classes/test.jar");
 		JarInputPool pool = new JarInputPool(file);
 
-		URL urlExpected = new URL("jar:" + file.toURL()
-				+ "!/META-INF/MANIFEST.MF");
+		URL urlExpected = new URL("jar:" + file.toURL() + "!/META-INF/MANIFEST.MF");
 		assertEquals(urlExpected, pool.getFileURL(0));
 	}
-
 }

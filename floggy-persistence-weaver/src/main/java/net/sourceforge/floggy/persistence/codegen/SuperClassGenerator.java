@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2006-2009 Floggy Open Source Group. All rights reserved.
+ * Copyright (c) 2006-2010 Floggy Open Source Group. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,23 +17,51 @@ package net.sourceforge.floggy.persistence.codegen;
 
 import javassist.CtClass;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class SuperClassGenerator {
+	/**
+	 * Creates a new SuperClassGenerator object.
+	 */
+	protected SuperClassGenerator() {
+	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param superClass DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public static String generateLoadSource(CtClass superClass) {
 		String source = "\n";
-		source += "javax.microedition.rms.RecordStore superRS = net.sourceforge.floggy.persistence.impl.PersistableManagerImpl.getRecordStore(super.getRecordStoreName(), net.sourceforge.floggy.persistence.impl.MetadataManagerUtil.getClassBasedMetadata(\"" + superClass.getName() + "\"));\n";
+		source += ("javax.microedition.rms.RecordStore superRS = net.sourceforge.floggy.persistence.impl.PersistableManagerImpl.getRecordStore(super.getRecordStoreName(), net.sourceforge.floggy.persistence.impl.MetadataManagerUtil.getClassBasedMetadata(\""
+		 + superClass.getName() + "\"));\n");
 		source += "int superClassId = dis.readInt();\n";
 		source += "byte[] superClassBuffer = superRS.getRecord(superClassId);\n";
 		source += "net.sourceforge.floggy.persistence.impl.PersistableManagerImpl.closeRecordStore(superRS);\n";
 		source += "super.__deserialize(superClassBuffer, lazy);\n";
 		source += "super.__setId(superClassId);\n";
 		source += "\n";
+
 		return source;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param superClass DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public static String generateSaveSource(CtClass superClass) {
 		String source = "\n";
-		source += "javax.microedition.rms.RecordStore superRS = net.sourceforge.floggy.persistence.impl.PersistableManagerImpl.getRecordStore(super.getRecordStoreName(), net.sourceforge.floggy.persistence.impl.MetadataManagerUtil.getClassBasedMetadata(\"" + superClass.getName() + "\"));\n";
+		source += ("javax.microedition.rms.RecordStore superRS = net.sourceforge.floggy.persistence.impl.PersistableManagerImpl.getRecordStore(super.getRecordStoreName(), net.sourceforge.floggy.persistence.impl.MetadataManagerUtil.getClassBasedMetadata(\""
+		 + superClass.getName() + "\"));\n");
 		source += "byte[] superBuffer= super.__serialize();\n";
 		source += "int superId= super.__getId();\n";
 		source += "if(superId <= 0) {\n";
@@ -46,10 +74,7 @@ public class SuperClassGenerator {
 		source += "net.sourceforge.floggy.persistence.impl.PersistableManagerImpl.closeRecordStore(superRS);\n";
 		source += "fos.writeInt(superId);\n";
 		source += "\n";
+
 		return source;
 	}
-
-	protected SuperClassGenerator() {
-	}
-
 }

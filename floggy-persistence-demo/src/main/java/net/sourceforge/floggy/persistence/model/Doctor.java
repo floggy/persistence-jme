@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2006-2009 Floggy Open Source Group. All rights reserved.
+ * Copyright (c) 2006-2010 Floggy Open Source Group. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,25 +19,56 @@ import java.util.Vector;
 
 import net.sourceforge.floggy.persistence.Persistable;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class Doctor extends Person implements Persistable {
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected String crm;
 
-    protected String crm;
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected Vector formations;
 
-    protected Vector formations;
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	public String getCrm() {
+		return crm;
+	}
 
-    public String getCrm() {
-        return crm;
-    }
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	public Vector getFormations() {
+		return formations;
+	}
 
-    public void setCrm(String crm) {
-        this.crm = crm;
-    }
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param crm DOCUMENT ME!
+	*/
+	public void setCrm(String crm) {
+		this.crm = crm;
+	}
 
-    public Vector getFormations() {
-        return formations;
-    }
-
-    public void setFormations(Vector formations) {
-        this.formations = formations;
-    }
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param formations DOCUMENT ME!
+	*/
+	public void setFormations(Vector formations) {
+		this.formations = formations;
+	}
 }

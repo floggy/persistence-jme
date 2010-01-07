@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2006-2009 Floggy Open Source Group. All rights reserved.
+ * Copyright (c) 2006-2010 Floggy Open Source Group. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,48 +28,47 @@ import net.sourceforge.floggy.persistence.migration.FieldPersistableInfo;
 import net.sourceforge.floggy.persistence.migration.MigrationManager;
 import net.sourceforge.floggy.persistence.rms.AbstractTest;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class PersistableTest extends AbstractTest {
+	public static final Person persistable = new Person();
 
-	public final static Person persistable = new Person();
-
-	protected Class getParameterType() {
-		return Person.class;
-	}
-
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Object getNewValueForSetMethod() {
 		return new Person();
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Object getValueForSetMethod() {
 		return persistable;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Persistable newInstance() {
 		return new FloggyPersistable();
 	}
 
-	public void testFieldDeleted() throws Exception {
-		FloggyPersistable container = new FloggyPersistable();
-		Person field = new Person("000.345.999-00", "Floggy Open", new Date());
-
-		container.setX(field);
-
-		int containerId = manager.save(container);
-		try {
-
-			manager.delete(field);
-
-			manager.load(container, containerId);
-			fail();
-
-		} catch (Exception ex) {
-			assertEquals(InvalidRecordIDException.class.getName(), ex
-					.getMessage());
-		} finally {
-			manager.delete(container);
-		}
-	}
-
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testFR2422928Read() throws Exception {
 		FloggyPersistable container = new FloggyPersistable();
 		Person field = new Person("000.345.999-00", "Floggy Open", new Date());
@@ -77,16 +76,15 @@ public class PersistableTest extends AbstractTest {
 		int fieldId = manager.save(field);
 		container.setX(field);
 		manager.save(container);
-		
+
 		MigrationManager um = MigrationManager.getInstance();
 		Enumeration enumeration = um.start(container.getClass(), null);
-		
-		try {
 
-			// will have two instances because the aggregation relationship
+		try {
 			while (enumeration.hasMoreElements()) {
 				Hashtable data = (Hashtable) enumeration.nextElement();
 				FieldPersistableInfo fieldInfo = (FieldPersistableInfo) data.get("x");
+
 				if (fieldInfo != null) {
 					assertEquals(fieldId, fieldInfo.getId());
 				}
@@ -97,6 +95,11 @@ public class PersistableTest extends AbstractTest {
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testFR2422928Update() throws Exception {
 		FloggyPersistable container = new FloggyPersistable();
 		Person field = new Person("000.345.999-00", "Floggy Open", new Date());
@@ -104,16 +107,15 @@ public class PersistableTest extends AbstractTest {
 		int fieldId = manager.save(field);
 		container.setX(field);
 		manager.save(container);
-		
+
 		MigrationManager um = MigrationManager.getInstance();
 		Enumeration enumeration = um.start(container.getClass(), null);
-		
-		try {
 
-			// will have two instances because the aggregation relationship
+		try {
 			while (enumeration.hasMoreElements()) {
 				Hashtable data = (Hashtable) enumeration.nextElement();
 				FieldPersistableInfo fieldInfo = (FieldPersistableInfo) data.get("x");
+
 				if (fieldInfo != null) {
 					assertEquals(fieldId, fieldInfo.getId());
 				}
@@ -122,5 +124,39 @@ public class PersistableTest extends AbstractTest {
 			manager.delete(container);
 			um.finish(container.getClass());
 		}
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
+	public void testFieldDeleted() throws Exception {
+		FloggyPersistable container = new FloggyPersistable();
+		Person field = new Person("000.345.999-00", "Floggy Open", new Date());
+
+		container.setX(field);
+
+		int containerId = manager.save(container);
+
+		try {
+			manager.delete(field);
+
+			manager.load(container, containerId);
+			fail();
+		} catch (Exception ex) {
+			assertEquals(InvalidRecordIDException.class.getName(), ex.getMessage());
+		} finally {
+			manager.delete(container);
+		}
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	protected Class getParameterType() {
+		return Person.class;
 	}
 }

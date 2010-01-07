@@ -1,5 +1,5 @@
 @REM
-@REM Copyright (c) 2006-2009 Floggy Open Source Group. All rights reserved.
+@REM Copyright (c) 2006-2010 Floggy Open Source Group. All rights reserved.
 @REM
 @REM Licensed under the Apache License, Version 2.0 (the "License");
 @REM you may not use this file except in compliance with the License.
@@ -13,15 +13,6 @@
 @REM See the License for the specific language governing permissions and
 @REM limitations under the License.
 @REM
-@REM ----------------------------------------------------------------------------
-@REM Floggy Start Up Batch script
-@REM
-@REM Required ENV vars:
-@REM ------------------
-@REM   JAVA_HOME - location of a JDK home dir
-@REM   FLOGGY_HOME - location of a Floggy home dir
-@REM
-@REM ----------------------------------------------------------------------------
 
 @ECHO off
 

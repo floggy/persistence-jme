@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2006-2009 Floggy Open Source Group. All rights reserved.
+ * Copyright (c) 2006-2010 Floggy Open Source Group. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,58 +43,58 @@ package net.sourceforge.floggy.persistence;
  * @since 1.0
  */
 public interface ObjectSet {
-    /**
-     * Returns the object at the specified index.
-     *
-     * @param index Index of the object to return.
-     *
-     * @return The object at the specified position in the set.
-     *
-     * @throws FloggyException Exception thrown if a persistence error occurs.
-     */
-    Persistable get(int index) throws FloggyException;
+	/**
+	* Returns the object at the specified index.
+	*
+	* @param index Index of the object to return.
+	*
+	* @return The object at the specified position in the set.
+	*
+	* @throws FloggyException Exception thrown if a persistence error occurs.
+	*/
+	Persistable get(int index) throws FloggyException;
 
-    /**
-     * Load the object of a given index into the object instance.
-     *
-     * @param index Index of the object to be loaded.
-     * @param object An instance of the object to be loaded. It cannot be
-     *        <code>null</code>.
-     *
-     * @throws FloggyException Exception thrown if a persistance error occurs.
-     */
-    void get(int index, Persistable object) throws FloggyException;
+	/**
+	* Load the object of a given index into the object instance.
+	*
+	* @param index Index of the object to be loaded.
+	* @param object An instance of the object to be loaded. It cannot be
+	* 			 <code>null</code>.
+	*
+	* @throws FloggyException Exception thrown if a persistance error occurs.
+	*/
+	void get(int index, Persistable object) throws FloggyException;
 
-    /**
-     * Load the object of a given index into the object instance
-     * supplied.
-     *
-     * @param index Index of the object to be loaded.
-     *
-     * @return The id number at RMS system at the specified position in the
-     *         set.
-     *
-     * @throws FloggyException Exception thrown if a persistance error occurs.
-     */
-    int getId(int index) throws FloggyException;
+	/**
+	* Load the object of a given index into the object instance supplied.
+	*
+	* @param index Index of the object to be loaded.
+	*
+	* @return The id number at RMS system at the specified position in the set.
+	*
+	* @throws FloggyException Exception thrown if a persistance error occurs.
+	*/
+	int getId(int index) throws FloggyException;
 
-    /**
-     * Gets the lazy property.
-     * 
-     * @return The flag indicating the the type of fetch made by 
-     * the PersistableManager.load method. 
-     */
-    boolean isLazy();
-    
-    /**
-     * Sets the lazy property.
-     */
-    void setLazy(boolean lazy);
-    
-    /**
-     * Returns the number of objects in this set.
-     *
-     * @return The number of objects in this set.
-     */
-    int size();
+	/**
+	* Gets the lazy property.
+	*
+	* @return The flag indicating the the type of fetch made by  the
+	* 				PersistableManager.load method.
+	*/
+	boolean isLazy();
+
+	/**
+	* Sets the lazy property.
+	*
+	* @param lazy DOCUMENT ME!
+	*/
+	void setLazy(boolean lazy);
+
+	/**
+	* Returns the number of objects in this set.
+	*
+	* @return The number of objects in this set.
+	*/
+	int size();
 }

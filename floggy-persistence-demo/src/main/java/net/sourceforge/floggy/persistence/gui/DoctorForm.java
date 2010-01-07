@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2006-2009 Floggy Open Source Group. All rights reserved.
+ * Copyright (c) 2006-2010 Floggy Open Source Group. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,124 +31,169 @@ import net.sourceforge.floggy.persistence.HospitalMIDlet;
 import net.sourceforge.floggy.persistence.ObjectSet;
 import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.PersistableManager;
-import net.sourceforge.floggy.persistence.model.Formation;
 import net.sourceforge.floggy.persistence.model.Doctor;
+import net.sourceforge.floggy.persistence.model.Formation;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class DoctorForm extends Form implements CommandListener {
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected ChoiceGroup cgFormation;
 
-    protected Doctor doctor;
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected Command cmdCancel;
 
-    protected ObjectSet formations;
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected Command cmdOk;
 
-    protected TextField txtName;
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected DateField dtBornDate;
 
-    protected TextField txtPassport;
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected Doctor doctor;
 
-    protected DateField dtBornDate;
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected ObjectSet formations;
 
-    protected TextField txtCRM;
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected TextField txtCRM;
 
-    protected ChoiceGroup cgFormation;
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected TextField txtName;
 
-    protected Command cmdOk;
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected TextField txtPassport;
 
-    protected Command cmdCancel;
+	/**
+	 * Creates a new DoctorForm object.
+	 *
+	 * @param doctor DOCUMENT ME!
+	 */
+	public DoctorForm(Doctor doctor) {
+		super("Doctor");
 
-    public DoctorForm(Doctor doctor) {
-        super("Doctor");
+		this.doctor = doctor;
 
-        this.doctor = doctor;
+		startComponents();
 
-        startComponents();
+		startFormations();
+	}
 
-        startFormations();
-    }
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param cmd DOCUMENT ME!
+	* @param dsp DOCUMENT ME!
+	*/
+	public void commandAction(Command cmd, Displayable dsp) {
+		if (cmd == this.cmdOk) {
+			PersistableManager pm = PersistableManager.getInstance();
 
-    private void startComponents() {
-        this.txtName = new TextField("Name", doctor.getName(), 30,
-                TextField.ANY);
-        this.append(this.txtName);
+			try {
+				this.doctor.setName(this.txtName.getString());
+				this.doctor.setPassport(this.txtPassport.getString());
+				this.doctor.setCrm(this.txtCRM.getString());
+				this.doctor.setBornDate(this.dtBornDate.getDate());
 
-        this.txtPassport = new TextField("Passport", doctor.getPassport(), 30, TextField.ANY);
-        this.append(this.txtPassport);
+				if (this.doctor.getFormations() != null) {
+					this.doctor.getFormations().removeAllElements();
+				} else {
+					this.doctor.setFormations(new Vector());
+				}
 
-        this.dtBornDate = new DateField("Born date", DateField.DATE);
-        this.dtBornDate.setDate(doctor.getBornDate());
-        this.append(this.dtBornDate);
+				for (int i = 0; i < this.cgFormation.size(); i++) {
+					if (this.cgFormation.isSelected(i)) {
+						this.doctor.getFormations().addElement(this.formations.get(i));
+					}
+				}
 
-        this.txtCRM = new TextField("CRM", doctor.getCrm(), 30, TextField.ANY);
-        this.append(this.txtCRM);
+				pm.save(this.doctor);
+			} catch (FloggyException e) {
+				HospitalMIDlet.showException(e);
+			}
+		}
 
-        this.cgFormation = new ChoiceGroup("Formation", ChoiceGroup.MULTIPLE);
-        this.append(cgFormation);
+		HospitalMIDlet.setCurrent(new DoctorList());
+	}
 
-        this.cmdOk = new Command("Ok", Command.OK, 0);
-        this.addCommand(this.cmdOk);
+	/**
+	 * DOCUMENT ME!
+	*/
+	public void startFormations() {
+		PersistableManager pm = PersistableManager.getInstance();
 
-        this.cmdCancel = new Command("Cancel", Command.CANCEL, 1);
-        this.addCommand(this.cmdCancel);
+		try {
+			formations =
+				pm.find(Formation.class, null,
+					new Comparator() {
+						public int compare(Persistable arg0, Persistable arg1) {
+							Formation f1 = (Formation) arg0;
+							Formation f2 = (Formation) arg1;
 
-        this.setCommandListener(this);
-    }
+							return f1.getFormation().compareTo(f2.getFormation());
+						}
+					});
 
-    public void commandAction(Command cmd, Displayable dsp) {
-        if (cmd == this.cmdOk) {
-            PersistableManager pm = PersistableManager.getInstance();
+			for (int i = 0; i < formations.size(); i++) {
+				Formation formation = (Formation) formations.get(i);
+				int index = this.cgFormation.append(formation.getFormation(), null);
 
-            try {
-                this.doctor.setName(this.txtName.getString());
-                this.doctor.setPassport(this.txtPassport.getString());
-                this.doctor.setCrm(this.txtCRM.getString());
-                this.doctor.setBornDate(this.dtBornDate.getDate());
+				if ((doctor.getFormations() != null)
+					 && (this.doctor.getFormations().contains(formation))) {
+					this.cgFormation.setSelectedIndex(index, true);
+				}
+			}
+		} catch (FloggyException e) {
+			HospitalMIDlet.showException(e);
+		}
+	}
 
-                if(this.doctor.getFormations() != null) {
-                    this.doctor.getFormations().removeAllElements();
-                }
-                else {
-                    this.doctor.setFormations(new Vector());
-                }
-                for (int i = 0; i < this.cgFormation.size(); i++) {
-                    if (this.cgFormation.isSelected(i) ) {
-                        this.doctor.getFormations().addElement(this.formations.get(i));                        
-                    } 
-                }
+	private void startComponents() {
+		this.txtName = new TextField("Name", doctor.getName(), 30, TextField.ANY);
+		this.append(this.txtName);
 
-                pm.save(this.doctor);
+		this.txtPassport = new TextField("Passport", doctor.getPassport(), 30,
+				TextField.ANY);
+		this.append(this.txtPassport);
 
-            } catch (FloggyException e) {
-            	HospitalMIDlet.showException(e);
-            }
-        }
-        HospitalMIDlet.setCurrent(new DoctorList());
-    }
+		this.dtBornDate = new DateField("Born date", DateField.DATE);
+		this.dtBornDate.setDate(doctor.getBornDate());
+		this.append(this.dtBornDate);
 
-    public void startFormations() {
-       
-        PersistableManager pm = PersistableManager.getInstance();
-        try {
-            formations = pm.find(Formation.class, null, new Comparator() {
+		this.txtCRM = new TextField("CRM", doctor.getCrm(), 30, TextField.ANY);
+		this.append(this.txtCRM);
 
-                public int compare(Persistable arg0, Persistable arg1) {
-                    Formation f1 = (Formation) arg0;
-                    Formation f2 = (Formation) arg1;
+		this.cgFormation = new ChoiceGroup("Formation", ChoiceGroup.MULTIPLE);
+		this.append(cgFormation);
 
-                    return f1.getFormation().compareTo(f2.getFormation());
-                }
+		this.cmdOk = new Command("Ok", Command.OK, 0);
+		this.addCommand(this.cmdOk);
 
-            });
+		this.cmdCancel = new Command("Cancel", Command.CANCEL, 1);
+		this.addCommand(this.cmdCancel);
 
-            for (int i = 0; i < formations.size(); i++) {
-                Formation formation = (Formation) formations.get(i);
-                int index = this.cgFormation.append(formation.getFormation(), null);
-                if ((doctor.getFormations() != null) && (this.doctor.getFormations().contains(formation))) {
-                    this.cgFormation.setSelectedIndex(index, true);
-                }
-
-            }
-
-        } catch (FloggyException e) {
-        	HospitalMIDlet.showException(e);
-        }
-
-    }
+		this.setCommandListener(this);
+	}
 }

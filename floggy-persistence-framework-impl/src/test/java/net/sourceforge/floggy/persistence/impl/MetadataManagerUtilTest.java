@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2006-2009 Floggy Open Source Group. All rights reserved.
+ * Copyright (c) 2006-2010 Floggy Open Source Group. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,14 +17,31 @@ package net.sourceforge.floggy.persistence.impl;
 
 import junit.framework.TestCase;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class MetadataManagerUtilTest extends TestCase {
-	
-	public void testGetRMSVersion() throws Exception {
-		MetadataManagerUtil.load();
-		assertEquals(MetadataManagerUtil.getBytecodeVersion(), MetadataManagerUtil.getRMSVersion());
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
+	public void testGetBytecodeVersion() throws Exception {
+		assertEquals(MetadataManagerUtil.CURRENT_VERSION,
+			MetadataManagerUtil.getBytecodeVersion());
 	}
 
-	public void testGetBytecodeVersion() throws Exception {
-		assertEquals(MetadataManagerUtil.CURRENT_VERSION, MetadataManagerUtil.getBytecodeVersion());
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
+	public void testGetRMSVersion() throws Exception {
+		MetadataManagerUtil.load();
+		assertEquals(MetadataManagerUtil.getBytecodeVersion(),
+			MetadataManagerUtil.getRMSVersion());
 	}
 }

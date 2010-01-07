@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2006-2009 Floggy Open Source Group. All rights reserved.
+ * Copyright (c) 2006-2010 Floggy Open Source Group. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,33 +19,49 @@ import javassist.CtClass;
 import javassist.Modifier;
 import javassist.NotFoundException;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class PersistableGenerator extends SourceCodeGenerator {
-
+	/**
+	 * Creates a new PersistableGenerator object.
+	 *
+	 * @param persistableType DOCUMENT ME!
+	 * @param fieldName DOCUMENT ME!
+	 * @param fieldType DOCUMENT ME!
+	 */
 	public PersistableGenerator(CtClass persistableType, String fieldName,
-			CtClass fieldType) {
+		CtClass fieldType) {
 		super(fieldName, fieldType);
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws NotFoundException DOCUMENT ME!
+	*/
 	public void initLoadCode() throws NotFoundException {
 		if (Modifier.isAbstract(fieldType.getModifiers())) {
-			addLoadCode("this."
-					+ fieldName
-					+ "= ("
-					+ fieldType.getName()
-					+ ")net.sourceforge.floggy.persistence.impl.SerializationHelper.readPersistable(dis, null, lazy);");
+			addLoadCode("this." + fieldName + "= (" + fieldType.getName()
+				+ ")net.sourceforge.floggy.persistence.impl.SerializationHelper.readPersistable(dis, null, lazy);");
 		} else {
-			addLoadCode("this."
-					+ fieldName
-					+ "= ("
-					+ fieldType.getName()
-					+ ")net.sourceforge.floggy.persistence.impl.SerializationHelper.readPersistable(dis, new "
-					+ fieldType.getName() + "(), lazy);");
+			addLoadCode("this." + fieldName + "= (" + fieldType.getName()
+				+ ")net.sourceforge.floggy.persistence.impl.SerializationHelper.readPersistable(dis, new "
+				+ fieldType.getName() + "(), lazy);");
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws NotFoundException DOCUMENT ME!
+	*/
 	public void initSaveCode() throws NotFoundException {
-		addSaveCode("net.sourceforge.floggy.persistence.impl.SerializationHelper.writePersistable(fos, \""
-				+fieldType.getName()+"\", "+ fieldName + ");");
+		addSaveCode(
+			"net.sourceforge.floggy.persistence.impl.SerializationHelper.writePersistable(fos, \""
+			+ fieldType.getName() + "\", " + fieldName + ");");
 	}
-
 }

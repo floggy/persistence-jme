@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2006-2009 Floggy Open Source Group. All rights reserved.
+ * Copyright (c) 2006-2010 Floggy Open Source Group. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,26 +16,77 @@
 package net.sourceforge.floggy.persistence;
 
 import java.io.File;
+
 import java.util.Arrays;
 import java.util.List;
 
-
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class Main {
+	/**
+	 * Creates a new Main object.
+	 */
+	protected Main() {
+	}
 
 	/**
-	 * Get the classpath option.
-	 * 
-	 */
+	* 
+	DOCUMENT ME!
+	*
+	* @param args
+	*/
+	public static void main(String[] args) {
+		List params = Arrays.asList(args);
+
+		String[] classpath = initClasspath(params);
+		File outputFile = initOutputFile(params);
+		File inputFile = initInputFile(params);
+		boolean generateSource = params.indexOf("-s") != -1;
+
+		if (outputFile == null) {
+			outputFile = inputFile;
+		}
+
+		Configuration configuration = new Configuration();
+		configuration.setGenerateSource(generateSource);
+		configuration.setAddDefaultConstructor(true);
+
+		Weaver weaver = new Weaver();
+
+		try {
+			weaver.setConfiguration(configuration);
+			weaver.setClasspath(classpath);
+			weaver.setOutputFile(outputFile);
+			weaver.setInputFile(inputFile);
+
+			weaver.execute();
+		} catch (WeaverException e) {
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+		}
+	}
+
+	/**
+	* Get the classpath option.
+	*
+	* @param params DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	private static String[] initClasspath(List params) {
 		String[] classpath = null;
 
 		int index = params.indexOf("-cp");
+
 		if (index != -1) {
 			try {
 				String value = params.get(index + 1).toString();
 				classpath = value.split(File.pathSeparator);
 
-				// Remove classpath options
 				params.remove("-cp");
 				params.remove(value);
 			} catch (ArrayIndexOutOfBoundsException e) {
@@ -48,9 +99,12 @@ public class Main {
 	}
 
 	/**
-	 * Get the input file option.
-	 * 
-	 */
+	* Get the input file option.
+	*
+	* @param params DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	private static File initInputFile(List params) {
 		File inputFile = null;
 
@@ -58,6 +112,7 @@ public class Main {
 			String value = params.get(0).toString();
 
 			inputFile = new File(value.trim());
+
 			if (inputFile.exists()) {
 				params.remove(0);
 			} else {
@@ -73,15 +128,17 @@ public class Main {
 	}
 
 	/**
-	 * Get the output file.
-	 * 
-	 * @param args
-	 * @return
-	 */
+	* Get the output file.
+	*
+	* @param params
+	*
+	* @return
+	*/
 	private static File initOutputFile(List params) {
 		File outputFile = null;
 
 		int index = params.indexOf("-o");
+
 		if (index != -1) {
 			String value = params.get(index + 1).toString();
 
@@ -89,70 +146,29 @@ public class Main {
 
 			params.remove(index);
 			params.remove(value);
-
 		}
 
 		return outputFile;
 	}
 
 	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		List params = Arrays.asList(args);
-
-		String[] classpath = initClasspath(params);
-		File outputFile = initOutputFile(params);
-		File inputFile = initInputFile(params);
-		boolean generateSource = params.indexOf("-s") != -1;
-
-		// If no output file is defined, sets the output file the same as the
-		// input file
-		if (outputFile == null) {
-			outputFile = inputFile;
-		}
-
-		Configuration configuration = new Configuration();
-		configuration.setGenerateSource(generateSource);
-		configuration.setAddDefaultConstructor(true);
-		
-		Weaver weaver = new Weaver();
-
-		try {
-			weaver.setConfiguration(configuration);
-			weaver.setClasspath(classpath);
-			weaver.setOutputFile(outputFile);
-			weaver.setInputFile(inputFile);
-			
-			weaver.execute();
-		} catch (WeaverException e) {
-			e.printStackTrace();
-			System.out.println(e.getMessage());
-		}
-	}
-
-	/**
-	 * Prints usage message.
-	 */
+	* Prints usage message.
+	*/
 	private static final void usage() {
 		System.out.println("Usage:");
 		System.out.println("java " + Main.class.getName()
-				+ " [-options] jarfile | zipfile | directory");
+			+ " [-options] jarfile | zipfile | directory");
 		System.out.println();
 		System.out.println("Where options are:");
-		System.out
-				.println("-cp\t<Class search path of directories and zip/jar files separeted by "
-						+ File.pathSeparatorChar + ">");
-		System.out
-				.println("-o\t<Output file or directory where files will be stored>");
+		System.out.println(
+			"-cp\t<Class search path of directories and zip/jar files separeted by "
+			+ File.pathSeparatorChar + ">");
+		System.out.println(
+			"-o\t<Output file or directory where files will be stored>");
 
-		System.out
-				.println("-s\t if provided the code generated will be saved in a file");
+		System.out.println(
+			"-s\t if provided the code generated will be saved in a file");
 
 		System.exit(1);
 	}
-	
-	protected Main() {
-	}
-
 }

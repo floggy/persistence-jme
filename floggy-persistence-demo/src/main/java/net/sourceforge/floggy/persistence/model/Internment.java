@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2006-2009 Floggy Open Source Group. All rights reserved.
+ * Copyright (c) 2006-2010 Floggy Open Source Group. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,66 +19,148 @@ import java.util.Date;
 
 import net.sourceforge.floggy.persistence.Persistable;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class Internment implements Persistable {
-
-	protected Date enterDate;
-
-	protected Date exitDate;
-
-	protected String reason;
-
-	protected Patient patient;
-
-	protected Doctor doctor;
-
+	/**
+	 * DOCUMENT ME!
+	 */
 	protected Bed bed;
 
-	public Date getEnterDate() {
-		return enterDate;
-	}
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected Date enterDate;
 
-	public void setEnterDate(Date enterDate) {
-		this.enterDate = enterDate;
-	}
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected Date exitDate;
 
-	public Date getExitDate() {
-		return exitDate;
-	}
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected Doctor doctor;
 
-	public void setExitDate(Date exitDate) {
-		this.exitDate = exitDate;
-	}
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected Patient patient;
 
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected String reason;
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Bed getBed() {
 		return bed;
 	}
 
-	public void setBed(Bed bed) {
-		this.bed = bed;
-	}
-
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Doctor getDoctor() {
 		return doctor;
 	}
 
-	public void setDoctor(Doctor doctor) {
-		this.doctor = doctor;
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	public Date getEnterDate() {
+		return enterDate;
 	}
 
-	public String getReason() {
-		return reason;
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	public Date getExitDate() {
+		return exitDate;
 	}
 
-	public void setReason(String reason) {
-		this.reason = reason;
-	}
-
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Patient getPatient() {
 		return patient;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	public String getReason() {
+		return reason;
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param bed DOCUMENT ME!
+	*/
+	public void setBed(Bed bed) {
+		this.bed = bed;
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param doctor DOCUMENT ME!
+	*/
+	public void setDoctor(Doctor doctor) {
+		this.doctor = doctor;
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param enterDate DOCUMENT ME!
+	*/
+	public void setEnterDate(Date enterDate) {
+		this.enterDate = enterDate;
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param exitDate DOCUMENT ME!
+	*/
+	public void setExitDate(Date exitDate) {
+		this.exitDate = exitDate;
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param patient DOCUMENT ME!
+	*/
 	public void setPatient(Patient patient) {
 		this.patient = patient;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param reason DOCUMENT ME!
+	*/
+	public void setReason(String reason) {
+		this.reason = reason;
+	}
 }

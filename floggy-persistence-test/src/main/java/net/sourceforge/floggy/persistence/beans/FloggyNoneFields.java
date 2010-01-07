@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2006-2009 Floggy Open Source Group. All rights reserved.
+ * Copyright (c) 2006-2010 Floggy Open Source Group. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,27 +17,35 @@ package net.sourceforge.floggy.persistence.beans;
 
 import net.sourceforge.floggy.persistence.Persistable;
 
-
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class FloggyNoneFields implements Persistable {
-
 	/**
-	 * Returns <code>true</code> if this <code>FloggyTransient</code> is the
-	 * same as the o argument.
-	 * 
-	 * @return <code>true</code> if this <code>FloggyTransient</code> is the
-	 *         same as the o argument.
-	 */
+	* Returns <code>true</code> if this <code>FloggyTransient</code> is the
+	* same as the o argument.
+	*
+	* @param o DOCUMENT ME!
+	*
+	* @return <code>true</code> if this <code>FloggyTransient</code> is the same
+	* 				as the o argument.
+	*/
 	public boolean equals(Object o) {
 		if (this == o) {
 			return true;
 		}
+
 		if (o == null) {
 			return false;
 		}
+
 		if (o.getClass() != getClass()) {
 			return false;
 		}
+
 		return true;
 	}
-
 }

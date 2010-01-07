@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2006-2009 Floggy Open Source Group. All rights reserved.
+ * Copyright (c) 2006-2010 Floggy Open Source Group. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,11 +17,19 @@ package net.sourceforge.floggy.eclipse;
 
 import org.eclipse.core.runtime.QualifiedName;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class SetAddDefaultConstructorAction extends AbstractSetPropertyAction {
+	public static final QualifiedName PROPERTY_NAME =
+		new QualifiedName(Activator.PLUGIN_ID, "addDefaultConstructor");
 
-	public static final QualifiedName PROPERTY_NAME = new QualifiedName(
-			Activator.PLUGIN_ID, "addDefaultConstructor");
-
+	/**
+	 * Creates a new SetAddDefaultConstructorAction object.
+	 */
 	public SetAddDefaultConstructorAction() {
 		propertyName = PROPERTY_NAME;
 	}

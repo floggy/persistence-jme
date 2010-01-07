@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2006-2009 Floggy Open Source Group. All rights reserved.
+ * Copyright (c) 2006-2010 Floggy Open Source Group. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package net.sourceforge.floggy.persistence.bug2903826;
 
 import java.util.Enumeration;
@@ -24,29 +23,52 @@ import net.sourceforge.floggy.persistence.FloggyException;
 import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.PersistableManager;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class BUG2903826StackHolder implements Deletable, Persistable {
-	
+	/**
+	 * DOCUMENT ME!
+	 */
 	protected Stack stack;
-	
-	public Stack getStack() {
-		return stack;
-	}
-	
-	public void setStack(Stack stack) {
-		this.stack = stack;
-	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws FloggyException DOCUMENT ME!
+	*/
 	public void delete() throws FloggyException {
 		if (stack != null) {
 			Enumeration enumeration = stack.elements();
+
 			while (enumeration.hasMoreElements()) {
 				Object object = (Object) enumeration.nextElement();
+
 				if (object instanceof Persistable) {
-					PersistableManager.getInstance().delete((Persistable)object);
+					PersistableManager.getInstance().delete((Persistable) object);
 				}
 			}
 		}
-
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	public Stack getStack() {
+		return stack;
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param stack DOCUMENT ME!
+	*/
+	public void setStack(Stack stack) {
+		this.stack = stack;
+	}
 }

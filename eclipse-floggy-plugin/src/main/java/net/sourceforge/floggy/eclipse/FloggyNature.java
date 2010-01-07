@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2006-2009 Floggy Open Source Group. All rights reserved.
+ * Copyright (c) 2006-2010 Floggy Open Source Group. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,20 +21,27 @@ import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IProjectNature;
 import org.eclipse.core.runtime.CoreException;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class FloggyNature implements IProjectNature {
-
-	/**
-	 * ID of this project nature
-	 */
+	/** ID of this project nature */
 	public static final String NATURE_ID = "net.sourceforge.floggy.floggyNature";
-
 	private IProject project;
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.core.resources.IProjectNature#configure()
 	 */
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws CoreException DOCUMENT ME!
+	*/
 	public void configure() throws CoreException {
 		IProjectDescription desc = project.getDescription();
 		ICommand[] commands = desc.getBuildSpec();
@@ -47,6 +54,7 @@ public class FloggyNature implements IProjectNature {
 
 		ICommand[] newCommands = new ICommand[commands.length + 1];
 		System.arraycopy(commands, 0, newCommands, 0, commands.length);
+
 		ICommand command = desc.newCommand();
 		command.setBuilderName(FloggyBuilder.BUILDER_ID);
 		newCommands[newCommands.length - 1] = command;
@@ -56,19 +64,26 @@ public class FloggyNature implements IProjectNature {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.core.resources.IProjectNature#deconfigure()
 	 */
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws CoreException DOCUMENT ME!
+	*/
 	public void deconfigure() throws CoreException {
 		IProjectDescription description = getProject().getDescription();
 		ICommand[] commands = description.getBuildSpec();
+
 		for (int i = 0; i < commands.length; ++i) {
 			if (commands[i].getBuilderName().equals(FloggyBuilder.BUILDER_ID)) {
 				ICommand[] newCommands = new ICommand[commands.length - 1];
 				System.arraycopy(commands, 0, newCommands, 0, i);
 				System.arraycopy(commands, i + 1, newCommands, i,
-						commands.length - i - 1);
+					commands.length - i - 1);
 				description.setBuildSpec(newCommands);
+
 				return;
 			}
 		}
@@ -76,20 +91,29 @@ public class FloggyNature implements IProjectNature {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.core.resources.IProjectNature#getProject()
 	 */
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public IProject getProject() {
 		return project;
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.core.resources.IProjectNature#setProject(org.eclipse.core.resources.IProject)
 	 */
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param project DOCUMENT ME!
+	*/
 	public void setProject(IProject project) {
 		this.project = project;
 	}
-
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2006-2009 Floggy Open Source Group. All rights reserved.
+ * Copyright (c) 2006-2010 Floggy Open Source Group. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,60 +22,93 @@ import javax.microedition.lcdui.List;
 
 import net.sourceforge.floggy.persistence.HospitalMIDlet;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class MainForm extends List implements CommandListener {
-
+	/**
+	 * DOCUMENT ME!
+	 */
 	protected Command cmdExit;
 
-    public MainForm() {
-        super("Hospital", List.IMPLICIT);
+	/**
+	 * Creates a new MainForm object.
+	 */
+	public MainForm() {
+		super("Hospital", List.IMPLICIT);
 
-        startComponents();
-    }
+		startComponents();
+	}
 
-    protected void startComponents() {
-        this.append("Formations", null);
-        this.append("Beds", null);
-        this.append("Doctors", null);
-        this.append("Patients", null);
-        this.append("-----", null);
-        this.append("Add internment", null);
-        this.append("Leave patient", null);        
-        this.append("-----", null);
-        this.append("Free beds report", null);
-        
-        this.cmdExit = new Command("Exit", Command.ITEM, 3);
-        this.addCommand(this.cmdExit);
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param cmd DOCUMENT ME!
+	* @param dsp DOCUMENT ME!
+	*/
+	public void commandAction(Command cmd, Displayable dsp) {
+		if (cmd == this.cmdExit) {
+			HospitalMIDlet.exit();
+		} else if (cmd == List.SELECT_COMMAND) {
+			switch (this.getSelectedIndex()) {
+			case 0:
+				HospitalMIDlet.setCurrent(new FormationList());
 
-        this.setCommandListener(this);
-    }
+				break;
 
-    public void commandAction(Command cmd, Displayable dsp) {
-        if (cmd == this.cmdExit) {
-            HospitalMIDlet.exit();   
-        } else if (cmd == List.SELECT_COMMAND) {
-            switch (this.getSelectedIndex()) {
-            case 0:
-                HospitalMIDlet.setCurrent(new FormationList());
-                break;
-            case 1:
-                HospitalMIDlet.setCurrent(new BedList());
-                break;
-            case 2:
-                HospitalMIDlet.setCurrent(new DoctorList());
-                break;
-            case 3:
-        		HospitalMIDlet.setCurrent(new PatientList());
-        		break;
-        	case 5:
-                HospitalMIDlet.setCurrent(new InternmentForm());
-                break;
-            case 6:
-                HospitalMIDlet.setCurrent(new InternmentList());
-                break;
-            case 8:
-                HospitalMIDlet.setCurrent(new FreeBedsReport());
-                break;                
-            }            
-        }
-    }
+			case 1:
+				HospitalMIDlet.setCurrent(new BedList());
+
+				break;
+
+			case 2:
+				HospitalMIDlet.setCurrent(new DoctorList());
+
+				break;
+
+			case 3:
+				HospitalMIDlet.setCurrent(new PatientList());
+
+				break;
+
+			case 5:
+				HospitalMIDlet.setCurrent(new InternmentForm());
+
+				break;
+
+			case 6:
+				HospitalMIDlet.setCurrent(new InternmentList());
+
+				break;
+
+			case 8:
+				HospitalMIDlet.setCurrent(new FreeBedsReport());
+
+				break;
+			}
+		}
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*/
+	protected void startComponents() {
+		this.append("Formations", null);
+		this.append("Beds", null);
+		this.append("Doctors", null);
+		this.append("Patients", null);
+		this.append("-----", null);
+		this.append("Add internment", null);
+		this.append("Leave patient", null);
+		this.append("-----", null);
+		this.append("Free beds report", null);
+
+		this.cmdExit = new Command("Exit", Command.ITEM, 3);
+		this.addCommand(this.cmdExit);
+
+		this.setCommandListener(this);
+	}
 }

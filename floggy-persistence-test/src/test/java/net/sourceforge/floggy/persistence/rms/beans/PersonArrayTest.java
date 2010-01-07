@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2006-2009 Floggy Open Source Group. All rights reserved.
+ * Copyright (c) 2006-2010 Floggy Open Source Group. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,8 +25,13 @@ import net.sourceforge.floggy.persistence.migration.FieldPersistableInfo;
 import net.sourceforge.floggy.persistence.migration.MigrationManager;
 import net.sourceforge.floggy.persistence.rms.AbstractTest;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class PersonArrayTest extends AbstractTest {
-
 	static Bird[] birds = new Bird[2];
 
 	static {
@@ -35,38 +40,59 @@ public class PersonArrayTest extends AbstractTest {
 		birds[1] = new Bird();
 	}
 
-	protected Class getParameterType() {
-		return Bird[].class;
-	}
-	
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Object getNewValueForSetMethod() {
 		return new Bird[0];
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Object getValueForSetMethod() {
 		return birds;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Persistable newInstance() {
 		return new PersonArray();
 	}
-	
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testFR2422928Read() throws Exception {
 		Persistable container = newInstance();
 		int[] fieldId = new int[birds.length];
+
 		for (int i = 0; i < birds.length; i++) {
 			fieldId[i] = manager.save(birds[i]);
 		}
+
 		setX(container, birds);
 		manager.save(container);
 
 		MigrationManager um = MigrationManager.getInstance();
 		Enumeration enumeration = um.start(container.getClass(), null);
+
 		try {
 			while (enumeration.hasMoreElements()) {
 				Hashtable data = (Hashtable) enumeration.nextElement();
 				assertFalse("Should not be empty!", data.isEmpty());
+
 				FieldPersistableInfo[] pi = (FieldPersistableInfo[]) data.get("x");
+
 				for (int i = 0; i < pi.length; i++) {
 					assertEquals(pi[i].getId(), fieldId[i]);
 				}
@@ -77,12 +103,19 @@ public class PersonArrayTest extends AbstractTest {
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testFR2422928Update() throws Exception {
 		Persistable oldObject = newInstance();
 		setX(oldObject, getValueForSetMethod());
 		manager.save(oldObject);
+
 		MigrationManager um = MigrationManager.getInstance();
 		Enumeration enumeration = um.start(oldObject.getClass(), null);
+
 		try {
 			while (enumeration.hasMoreElements()) {
 				Persistable newObject = newInstance();
@@ -97,5 +130,14 @@ public class PersonArrayTest extends AbstractTest {
 			manager.delete(oldObject);
 			um.finish(oldObject.getClass());
 		}
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	protected Class getParameterType() {
+		return Bird[].class;
 	}
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2006-2009 Floggy Open Source Group. All rights reserved.
+ * Copyright (c) 2006-2010 Floggy Open Source Group. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,54 +21,107 @@ import java.util.List;
 
 import net.sourceforge.floggy.persistence.impl.PersistableMetadata;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class Configuration {
-	
+	private List persistables = new ArrayList();
 	private boolean addDefaultConstructor = true;
-
 	private boolean generateSource = false;
-	
-	private List persistables= new ArrayList();
 
-	public List getPersistableMetadatas() {
-		return persistables;
-	}
-
-	public boolean isAddDefaultConstructor() {
-		return addDefaultConstructor;
-	}
-
-	public void setAddDefaultConstructor(boolean addDefaultConstructor) {
-		this.addDefaultConstructor = addDefaultConstructor;
-	}
-
-	public boolean isGenerateSource() {
-		return generateSource;
-	}
-
-	public void setGenerateSource(boolean generateSource) {
-		this.generateSource = generateSource;
-	}
-
-	public void setPersistables(List persistables) {
-		this.persistables = persistables;
-	}
-	
-	public PersistableMetadata getPersistableMetadata(String className) {
-		for (Iterator iter = persistables.iterator(); iter.hasNext();) {
-			PersistableMetadata metadata = (PersistableMetadata) iter.next();
-			if (className.equals(metadata.getClassName())) {
-				return metadata;
-			}
-		}
-		return null;
-	}
-	
-	public boolean containsPersistable(String className) {
-		return getPersistableMetadata(className) != null;
-	}
-	
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param metadata DOCUMENT ME!
+	*/
 	public void addPersistableMetadata(PersistableMetadata metadata) {
 		persistables.add(metadata);
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param className DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	public boolean containsPersistable(String className) {
+		return getPersistableMetadata(className) != null;
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param className DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	public PersistableMetadata getPersistableMetadata(String className) {
+		for (Iterator iter = persistables.iterator(); iter.hasNext();) {
+			PersistableMetadata metadata = (PersistableMetadata) iter.next();
+
+			if (className.equals(metadata.getClassName())) {
+				return metadata;
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	public List getPersistableMetadatas() {
+		return persistables;
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	public boolean isAddDefaultConstructor() {
+		return addDefaultConstructor;
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	public boolean isGenerateSource() {
+		return generateSource;
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param addDefaultConstructor DOCUMENT ME!
+	*/
+	public void setAddDefaultConstructor(boolean addDefaultConstructor) {
+		this.addDefaultConstructor = addDefaultConstructor;
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param generateSource DOCUMENT ME!
+	*/
+	public void setGenerateSource(boolean generateSource) {
+		this.generateSource = generateSource;
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param persistables DOCUMENT ME!
+	*/
+	public void setPersistables(List persistables) {
+		this.persistables = persistables;
+	}
 }

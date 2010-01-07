@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2006-2009 Floggy Open Source Group. All rights reserved.
+ * Copyright (c) 2006-2010 Floggy Open Source Group. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,206 +31,272 @@ import net.sourceforge.floggy.persistence.HospitalMIDlet;
 import net.sourceforge.floggy.persistence.ObjectSet;
 import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.PersistableManager;
-import net.sourceforge.floggy.persistence.model.BedComparator;
-import net.sourceforge.floggy.persistence.model.Internment;
 import net.sourceforge.floggy.persistence.model.Bed;
+import net.sourceforge.floggy.persistence.model.BedComparator;
 import net.sourceforge.floggy.persistence.model.Doctor;
+import net.sourceforge.floggy.persistence.model.Internment;
 import net.sourceforge.floggy.persistence.model.Patient;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class InternmentForm extends Form implements CommandListener {
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected ChoiceGroup cgBeds;
 
-    protected Internment internment;
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected ChoiceGroup cgDoctors;
 
-    protected ObjectSet patients;
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected ChoiceGroup cgPatients;
 
-    protected ObjectSet doctors;
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected Command cmdCancel;
 
-    protected ObjectSet beds;
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected Command cmdOk;
 
-    protected DateField dtEnter;
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected DateField dtEnter;
 
-    protected TextField txtReason;
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected Internment internment;
 
-    protected ChoiceGroup cgPatients;
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected ObjectSet beds;
 
-    protected ChoiceGroup cgDoctors;
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected ObjectSet doctors;
 
-    protected ChoiceGroup cgBeds;
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected ObjectSet patients;
 
-    protected Command cmdOk;
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected TextField txtReason;
 
-    protected Command cmdCancel;
+	/**
+	 * Creates a new InternmentForm object.
+	 */
+	public InternmentForm() {
+		super("Internment");
 
-    public InternmentForm() {
-        super("Internment");
+		this.internment = new Internment();
 
-        this.internment = new Internment();
-        
-        startComponents();
+		startComponents();
 
-        startPatients();
+		startPatients();
 
-        startDoctors();
+		startDoctors();
 
-        startBeds();
+		startBeds();
+	}
 
-    }
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param cmd DOCUMENT ME!
+	* @param dsp DOCUMENT ME!
+	*/
+	public void commandAction(Command cmd, Displayable dsp) {
+		if (cmd == this.cmdOk) {
+			PersistableManager pm = PersistableManager.getInstance();
 
-    private void startComponents() {
-        this.dtEnter = new DateField("Enter date", DateField.DATE);
-        this.dtEnter.setDate(new Date());
-        this.append(this.dtEnter);
+			try {
+				this.internment.setEnterDate(this.dtEnter.getDate());
+				this.internment.setReason(this.txtReason.getString());
+				this.internment.setPatient(getSelectedPatient());
+				this.internment.setDoctor(getSelectedDoctor());
+				this.internment.setBed(getSelectedBed());
+				pm.save(this.internment);
+			} catch (FloggyException e) {
+				HospitalMIDlet.showException(e);
+			}
+		}
 
-        this.txtReason = new TextField("Reason", internment.getReason(), 100,
-                TextField.ANY);
-        this.append(this.txtReason);
+		HospitalMIDlet.setCurrent(new MainForm());
+	}
 
-        this.cgPatients = new ChoiceGroup("Patient", ChoiceGroup.EXCLUSIVE);
-        this.append(cgPatients);
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	public Bed getSelectedBed() {
+		for (int i = 0; i < this.cgBeds.size(); i++) {
+			if (this.cgBeds.isSelected(i)) {
+				try {
+					return (Bed) this.beds.get(i);
+				} catch (Exception e) {
+				}
+			}
+		}
 
-        this.cgDoctors = new ChoiceGroup("Doctor", ChoiceGroup.EXCLUSIVE);
-        this.append(cgDoctors);
+		return null;
+	}
 
-        this.cgBeds = new ChoiceGroup("Beds", ChoiceGroup.EXCLUSIVE);
-        this.append(cgBeds);
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	public Doctor getSelectedDoctor() {
+		for (int i = 0; i < this.cgDoctors.size(); i++) {
+			if (this.cgDoctors.isSelected(i)) {
+				try {
+					return (Doctor) this.doctors.get(i);
+				} catch (Exception e) {
+				}
+			}
+		}
 
-        this.cmdOk = new Command("Ok", Command.OK, 0);
-        this.addCommand(this.cmdOk);
+		return null;
+	}
 
-        this.cmdCancel = new Command("Cancel", Command.CANCEL, 1);
-        this.addCommand(this.cmdCancel);
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	public Patient getSelectedPatient() {
+		for (int i = 0; i < this.cgPatients.size(); i++) {
+			if (this.cgPatients.isSelected(i)) {
+				try {
+					return (Patient) this.patients.get(i);
+				} catch (Exception e) {
+				}
+			}
+		}
 
-        this.setCommandListener(this);
-    }
+		return null;
+	}
 
-    public void startPatients() {
-        PersistableManager pm = PersistableManager.getInstance();
-        try {
-            patients = pm.find(Patient.class, null, new Comparator() {
+	/**
+	 * DOCUMENT ME!
+	*/
+	public void startBeds() {
+		PersistableManager pm = PersistableManager.getInstance();
 
-                public int compare(Persistable arg0, Persistable arg1) {
-                    Patient p1 = (Patient) arg0;
-                    Patient p2 = (Patient) arg1;
+		try {
+			beds = pm.find(Bed.class, null, new BedComparator());
 
-                    return p1.getName().compareTo(p2.getName());
-                }
+			Bed bed = new Bed();
 
-            });
-            Patient patient = new Patient();
-            for (int i = 0; i < patients.size(); i++) {
-            	patients.get(i, patient);
-                this.cgPatients.append(patient.getName(), null);
-            }
+			for (int i = 0; i < beds.size(); i++) {
+				beds.get(i, bed);
+				this.cgBeds.append(String.valueOf(bed.getNumber()), null);
+			}
+		} catch (FloggyException e) {
+			HospitalMIDlet.showException(e);
+		}
+	}
 
-        } catch (FloggyException e) {
-        	HospitalMIDlet.showException(e);
-        }
+	/**
+	 * DOCUMENT ME!
+	*/
+	public void startDoctors() {
+		PersistableManager pm = PersistableManager.getInstance();
 
-    }
+		try {
+			doctors =
+				pm.find(Doctor.class, null,
+					new Comparator() {
+						public int compare(Persistable arg0, Persistable arg1) {
+							Doctor p1 = (Doctor) arg0;
+							Doctor p2 = (Doctor) arg1;
 
-    public void startDoctors() {
-        PersistableManager pm = PersistableManager.getInstance();
-        try {
-            doctors = pm.find(Doctor.class, null, new Comparator() {
+							return p1.getName().compareTo(p2.getName());
+						}
+					});
 
-                public int compare(Persistable arg0, Persistable arg1) {
-                    Doctor p1 = (Doctor) arg0;
-                    Doctor p2 = (Doctor) arg1;
+			Doctor doctor = new Doctor();
 
-                    return p1.getName().compareTo(p2.getName());
-                }
+			for (int i = 0; i < doctors.size(); i++) {
+				doctors.get(i, doctor);
+				this.cgDoctors.append(doctor.getName(), null);
+			}
+		} catch (FloggyException e) {
+			HospitalMIDlet.showException(e);
+		}
+	}
 
-            });
+	/**
+	 * DOCUMENT ME!
+	*/
+	public void startPatients() {
+		PersistableManager pm = PersistableManager.getInstance();
 
-            Doctor doctor= new Doctor();
-            for (int i = 0; i < doctors.size(); i++) {
-                doctors.get(i, doctor);
-                this.cgDoctors.append(doctor.getName(), null);
-            }
+		try {
+			patients =
+				pm.find(Patient.class, null,
+					new Comparator() {
+						public int compare(Persistable arg0, Persistable arg1) {
+							Patient p1 = (Patient) arg0;
+							Patient p2 = (Patient) arg1;
 
-        } catch (FloggyException e) {
-        	HospitalMIDlet.showException(e);
-        }
+							return p1.getName().compareTo(p2.getName());
+						}
+					});
 
-    }
+			Patient patient = new Patient();
 
-    public void startBeds() {
-        PersistableManager pm = PersistableManager.getInstance();
-        try {
-            beds = pm.find(Bed.class, null, new BedComparator());
-            Bed bed= new Bed();
-            for (int i = 0; i < beds.size(); i++) {
-            	beds.get(i, bed);
-                this.cgBeds.append(String.valueOf(bed.getNumber()), null);
-            }
-        } catch (FloggyException e) {
-        	HospitalMIDlet.showException(e);
-        }
+			for (int i = 0; i < patients.size(); i++) {
+				patients.get(i, patient);
+				this.cgPatients.append(patient.getName(), null);
+			}
+		} catch (FloggyException e) {
+			HospitalMIDlet.showException(e);
+		}
+	}
 
-    }
+	private void startComponents() {
+		this.dtEnter = new DateField("Enter date", DateField.DATE);
+		this.dtEnter.setDate(new Date());
+		this.append(this.dtEnter);
 
-    public Patient getSelectedPatient() {
-        for (int i = 0; i < this.cgPatients.size(); i++) {
-            if (this.cgPatients.isSelected(i)) {
-                try {
-                    return (Patient) this.patients.get(i);
-                } catch (Exception e) {
-                    // 
-                }
+		this.txtReason = new TextField("Reason", internment.getReason(), 100,
+				TextField.ANY);
+		this.append(this.txtReason);
 
-            }
+		this.cgPatients = new ChoiceGroup("Patient", ChoiceGroup.EXCLUSIVE);
+		this.append(cgPatients);
 
-        }
-        return null;
-    }
-    
-    public Doctor getSelectedDoctor() {
-        for (int i = 0; i < this.cgDoctors.size(); i++) {
-            if (this.cgDoctors.isSelected(i)) {
-                try {
-                    return (Doctor) this.doctors.get(i);
-                } catch (Exception e) {
-                    // 
-                }
+		this.cgDoctors = new ChoiceGroup("Doctor", ChoiceGroup.EXCLUSIVE);
+		this.append(cgDoctors);
 
-            }
+		this.cgBeds = new ChoiceGroup("Beds", ChoiceGroup.EXCLUSIVE);
+		this.append(cgBeds);
 
-        }
-        return null;
-    }
+		this.cmdOk = new Command("Ok", Command.OK, 0);
+		this.addCommand(this.cmdOk);
 
+		this.cmdCancel = new Command("Cancel", Command.CANCEL, 1);
+		this.addCommand(this.cmdCancel);
 
-    public Bed getSelectedBed() {
-        for (int i = 0; i < this.cgBeds.size(); i++) {
-            if (this.cgBeds.isSelected(i)) {
-                try {
-                    return (Bed) this.beds.get(i);
-                } catch (Exception e) {
-                    // 
-                }
-
-            }
-
-        }
-        return null;
-    }
-
-    public void commandAction(Command cmd, Displayable dsp) {
-        if (cmd == this.cmdOk) {
-            PersistableManager pm = PersistableManager.getInstance();
-
-            try {
-                this.internment.setEnterDate(this.dtEnter.getDate());
-                this.internment.setReason(this.txtReason.getString());
-                this.internment.setPatient(getSelectedPatient());
-                this.internment.setDoctor(getSelectedDoctor());
-                this.internment.setBed(getSelectedBed());
-                pm.save(this.internment);
-            } catch (FloggyException e) {
-            	HospitalMIDlet.showException(e);
-            }
-        }
-        HospitalMIDlet.setCurrent(new MainForm());
-    }
-
+		this.setCommandListener(this);
+	}
 }

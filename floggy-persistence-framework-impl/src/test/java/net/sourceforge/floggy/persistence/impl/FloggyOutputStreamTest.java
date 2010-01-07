@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2006-2009 Floggy Open Source Group. All rights reserved.
+ * Copyright (c) 2006-2010 Floggy Open Source Group. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,32 +19,44 @@ import java.io.IOException;
 
 import junit.framework.TestCase;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class FloggyOutputStreamTest extends TestCase {
-	
+	/**
+	 * DOCUMENT ME!
+	*/
 	public void testToByteArrayEmpty() {
-		FloggyOutputStream fos= new FloggyOutputStream();
-		
-		byte[] data= fos.toByteArray();
-		
+		FloggyOutputStream fos = new FloggyOutputStream();
+
+		byte[] data = fos.toByteArray();
+
 		assertNotNull(data);
-		
+
 		assertEquals(0, data.length);
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws IOException DOCUMENT ME!
+	*/
 	public void testToByteArrayFilled() throws IOException {
-		FloggyOutputStream fos= new FloggyOutputStream();
-		
-		byte temp= 90;
-		
+		FloggyOutputStream fos = new FloggyOutputStream();
+
+		byte temp = 90;
+
 		fos.write(temp);
-		
-		byte[] data= fos.toByteArray();
-		
+
+		byte[] data = fos.toByteArray();
+
 		assertNotNull(data);
-		
+
 		assertEquals(1, data.length);
-		
+
 		assertEquals(temp, data[0]);
 	}
-
 }

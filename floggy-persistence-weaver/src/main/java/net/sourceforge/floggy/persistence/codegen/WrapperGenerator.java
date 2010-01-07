@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2006-2009 Floggy Open Source Group. All rights reserved.
+ * Copyright (c) 2006-2010 Floggy Open Source Group. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,22 +18,43 @@ package net.sourceforge.floggy.persistence.codegen;
 import javassist.CtClass;
 import javassist.NotFoundException;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class WrapperGenerator extends SourceCodeGenerator {
-
+	/**
+	 * Creates a new WrapperGenerator object.
+	 *
+	 * @param fieldName DOCUMENT ME!
+	 * @param fieldType DOCUMENT ME!
+	 */
 	public WrapperGenerator(String fieldName, CtClass fieldType) {
 		super(fieldName, fieldType);
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws NotFoundException DOCUMENT ME!
+	*/
 	public void initLoadCode() throws NotFoundException {
-		addLoadCode("this."
-				+ fieldName
-				+ "= net.sourceforge.floggy.persistence.impl.SerializationHelper.read"
-				+ PrimitiveTypeGenerator.getType(fieldType) + "(dis);");
+		addLoadCode("this." + fieldName
+			+ "= net.sourceforge.floggy.persistence.impl.SerializationHelper.read"
+			+ PrimitiveTypeGenerator.getType(fieldType) + "(dis);");
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws NotFoundException DOCUMENT ME!
+	*/
 	public void initSaveCode() throws NotFoundException {
-		addSaveCode("net.sourceforge.floggy.persistence.impl.SerializationHelper.write"
-				+ PrimitiveTypeGenerator.getType(fieldType) + "(fos, this." + fieldName + ");");
+		addSaveCode(
+			"net.sourceforge.floggy.persistence.impl.SerializationHelper.write"
+			+ PrimitiveTypeGenerator.getType(fieldType) + "(fos, this." + fieldName
+			+ ");");
 	}
-
 }

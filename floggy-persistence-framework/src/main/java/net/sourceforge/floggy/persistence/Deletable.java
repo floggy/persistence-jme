@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2006-2009 Floggy Open Source Group. All rights reserved.
+ * Copyright (c) 2006-2010 Floggy Open Source Group. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,12 +39,12 @@ package net.sourceforge.floggy.persistence;
  * 
  */
 public interface Deletable {
-    /**
-     * It is used to clean up references that the implementation class
-     * may  have to another entities.
-     *
-     * @throws FloggyException Exception thrown if an error occurs while
-     *         deleting the object.
-     */
-    void delete() throws FloggyException;
+	/**
+	* It is used to clean up references that the implementation class may
+	* have to another entities.
+	*
+	* @throws FloggyException Exception thrown if an error occurs while deleting
+	* 				the object.
+	*/
+	void delete() throws FloggyException;
 }

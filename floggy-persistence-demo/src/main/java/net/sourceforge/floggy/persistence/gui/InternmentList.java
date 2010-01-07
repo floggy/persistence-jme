@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2006-2009 Floggy Open Source Group. All rights reserved.
+ * Copyright (c) 2006-2010 Floggy Open Source Group. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,81 +31,102 @@ import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.PersistableManager;
 import net.sourceforge.floggy.persistence.model.Internment;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class InternmentList extends List implements CommandListener {
-	
-    protected ObjectSet internments;
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected Command cmdBack;
 
-    protected Command cmdLeave;
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected Command cmdLeave;
 
-    protected Command cmdBack;
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected ObjectSet internments;
 
-    public InternmentList() {
-        super("Internments", List.IMPLICIT);
+	/**
+	 * Creates a new InternmentList object.
+	 */
+	public InternmentList() {
+		super("Internments", List.IMPLICIT);
 
-        startData();
-        startComponents();
-    }
+		startData();
+		startComponents();
+	}
 
-    private void startData() {
-        PersistableManager pm = PersistableManager.getInstance();
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param cmd DOCUMENT ME!
+	* @param dsp DOCUMENT ME!
+	*/
+	public void commandAction(Command cmd, Displayable dsp) {
+		if (cmd == this.cmdBack) {
+			MainForm mainForm = new MainForm();
+			HospitalMIDlet.setCurrent(mainForm);
+		} else if (cmd == this.cmdLeave) {
+			if (this.getSelectedIndex() != -1) {
+				try {
+					Internment internment =
+						(Internment) internments.get(this.getSelectedIndex());
+					internment.setExitDate(new Date());
+					PersistableManager.getInstance().save(internment);
+					this.startData();
+				} catch (FloggyException e) {
+					HospitalMIDlet.showException(e);
+				}
+			}
+		}
+	}
 
-        try {
-            this.deleteAll();
+	private void startComponents() {
+		this.cmdBack = new Command("Back", Command.BACK, 0);
+		this.addCommand(this.cmdBack);
 
-            internments = pm.find(Internment.class, new Filter() {
+		this.cmdLeave = new Command("Leave", Command.ITEM, 1);
+		this.addCommand(this.cmdLeave);
 
-                public boolean matches(Persistable arg0) {
-                    return ((Internment) arg0).getExitDate() == null;
-                }
+		this.setCommandListener(this);
+	}
 
-            }, new Comparator() {
-                public int compare(Persistable arg0, Persistable arg1) {
-                    String s1 = ((Internment) arg0).getPatient().getName();
-                    String s2 = ((Internment) arg1).getPatient().getName();
+	private void startData() {
+		PersistableManager pm = PersistableManager.getInstance();
 
-                    return s1.compareTo(s2);
-                    
-                }
-            });
+		try {
+			this.deleteAll();
 
-            for (int i = 0; i < internments.size(); i++) {
-                Internment internment = (Internment) internments.get(i);
-                this.append(internment.getPatient().getName() + " - "
-                        + internment.getBed().getNumber(), null);
-            }
+			internments =
+				pm.find(Internment.class,
+					new Filter() {
+						public boolean matches(Persistable arg0) {
+							return ((Internment) arg0).getExitDate() == null;
+						}
+					},
+					new Comparator() {
+						public int compare(Persistable arg0, Persistable arg1) {
+							String s1 = ((Internment) arg0).getPatient().getName();
+							String s2 = ((Internment) arg1).getPatient().getName();
 
-        } catch (FloggyException e) {
-        	HospitalMIDlet.showException(e);
-        }
-    }
+							return s1.compareTo(s2);
+						}
+					});
 
-    private void startComponents() {
-        this.cmdBack = new Command("Back", Command.BACK, 0);
-        this.addCommand(this.cmdBack);
-
-        this.cmdLeave = new Command("Leave", Command.ITEM, 1);
-        this.addCommand(this.cmdLeave);
-
-        this.setCommandListener(this);
-    }
-
-    public void commandAction(Command cmd, Displayable dsp) {
-        if (cmd == this.cmdBack) {
-            MainForm mainForm = new MainForm();
-            HospitalMIDlet.setCurrent(mainForm);
-        } else if (cmd == this.cmdLeave) {
-            if (this.getSelectedIndex() != -1) {
-                try {
-                    Internment internment = (Internment) internments.get(this
-                            .getSelectedIndex());
-                    internment.setExitDate(new Date());
-                    PersistableManager.getInstance().save(internment);
-                    this.startData();
-                } catch (FloggyException e) {
-                	HospitalMIDlet.showException(e);
-                }
-            }
-        }
-
-    }
+			for (int i = 0; i < internments.size(); i++) {
+				Internment internment = (Internment) internments.get(i);
+				this.append(internment.getPatient().getName() + " - "
+					+ internment.getBed().getNumber(), null);
+			}
+		} catch (FloggyException e) {
+			HospitalMIDlet.showException(e);
+		}
+	}
 }

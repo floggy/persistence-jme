@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2006-2009 Floggy Open Source Group. All rights reserved.
+ * Copyright (c) 2006-2010 Floggy Open Source Group. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,11 +15,25 @@
  */
 package net.sourceforge.floggy.barbecuecalculator.core;
 
-public class DisplayManagerAlreadyStartedException extends
-		DisplayManagerException {
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
+public class DisplayManagerAlreadyStartedException
+	extends DisplayManagerException {
+	/**
+	 * Creates a new DisplayManagerAlreadyStartedException object.
+	 */
+	public DisplayManagerAlreadyStartedException() {
+	}
 
-	public DisplayManagerAlreadyStartedException() {}
-	
+	/**
+	 * Creates a new DisplayManagerAlreadyStartedException object.
+	 *
+	 * @param s DOCUMENT ME!
+	 */
 	public DisplayManagerAlreadyStartedException(String s) {
 		super(s);
 	}

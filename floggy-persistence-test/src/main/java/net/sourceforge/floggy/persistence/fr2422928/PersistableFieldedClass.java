@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2006-2009 Floggy Open Source Group. All rights reserved.
+ * Copyright (c) 2006-2010 Floggy Open Source Group. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,14 +17,32 @@ package net.sourceforge.floggy.persistence.fr2422928;
 
 import net.sourceforge.floggy.persistence.beans.animals.Bird;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class PersistableFieldedClass extends ConcreteChildClass {
-
+	/**
+	 * DOCUMENT ME!
+	 */
 	protected Bird bird;
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Bird getBird() {
 		return bird;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param bird DOCUMENT ME!
+	*/
 	public void setBird(Bird bird) {
 		this.bird = bird;
 	}

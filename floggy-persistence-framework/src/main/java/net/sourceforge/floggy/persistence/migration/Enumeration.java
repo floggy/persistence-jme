@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2006-2009 Floggy Open Source Group. All rights reserved.
+ * Copyright (c) 2006-2010 Floggy Open Source Group. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,50 +29,50 @@ import net.sourceforge.floggy.persistence.Persistable;
  * @since 1.3.0
   */
 public interface Enumeration {
-    /**
-     * Tests if this enumeration contains more elements.
-     *
-     * @return <code>true</code> if and only if this enumeration object
-     *         contains at least one more element to provide;
-     *         <code>false</code> otherwise.
-     */
-    boolean hasMoreElements();
+	/**
+	* Delete the current record.
+	*
+	* @return the recordId where the persistable object was deleted from.
+	*
+	* @throws FloggyException
+	*/
+	int delete() throws FloggyException;
 
-    /**
-     * Returns the next element of this enumeration if this enumeration
-     * object has at least one more element to provide.
-     *
-     * @return the next element of this enumeration.
-     *
-     * @exception FloggyException if no more elements exist.
-     */
-    Hashtable nextElement() throws FloggyException;
+	/**
+	* Gets the size of the enumeration.
+	*
+	* @return the size
+	*/
+	int getSize();
 
-    /**
-     * Delete the current record.
-     *
-     * @return the recordId where the persistable object was deleted from.
-     *
-     * @throws FloggyException
-     */
-    int delete() throws FloggyException;
+	/**
+	* Tests if this enumeration contains more elements.
+	*
+	* @return <code>true</code> if and only if this enumeration object contains
+	* 				at least one more element to provide; <code>false</code>
+	* 				otherwise.
+	*/
+	boolean hasMoreElements();
 
-    /**
-     * Gets the size of the enumeration.
-     *
-     * @return the size
-     */
-    int getSize();
+	/**
+	* Returns the next element of this enumeration if this enumeration
+	* object has at least one more element to provide.
+	*
+	* @return the next element of this enumeration.
+	*
+	* @exception FloggyException if no more elements exist.
+	*/
+	Hashtable nextElement() throws FloggyException;
 
-    /**
-     * Update the current record with the Persistable parameter.
-     *
-     * @param persistable The persistable object that will update the current
-     *        record.
-     *
-     * @return the recordId where the persistable object is stored
-     *
-     * @throws FloggyException
-     */
-    int update(Persistable persistable) throws FloggyException;
+	/**
+	* Update the current record with the Persistable parameter.
+	*
+	* @param persistable The persistable object that will update the current
+	* 			 record.
+	*
+	* @return the recordId where the persistable object is stored
+	*
+	* @throws FloggyException
+	*/
+	int update(Persistable persistable) throws FloggyException;
 }

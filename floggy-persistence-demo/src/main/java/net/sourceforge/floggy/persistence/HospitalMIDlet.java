@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2006-2009 Floggy Open Source Group. All rights reserved.
+ * Copyright (c) 2006-2010 Floggy Open Source Group. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,47 +24,82 @@ import javax.microedition.midlet.MIDletStateChangeException;
 
 import net.sourceforge.floggy.persistence.gui.MainForm;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class HospitalMIDlet extends MIDlet {
+	static Display display;
+	static MIDlet midlet;
+	static Exception exception;
 
-    static Display display;
-    
-    static MIDlet midlet;
-    
-    static Exception exception;
+	/**
+	 * Creates a new HospitalMIDlet object.
+	 */
+	public HospitalMIDlet() {
+		super();
+		display = Display.getDisplay(this);
+		midlet = this;
+	}
 
-    public HospitalMIDlet() {
-        super();        
-        display = Display.getDisplay(this);
-        midlet = this; 
-    }
+	/**
+	 * DOCUMENT ME!
+	*/
+	public static void exit() {
+		midlet.notifyDestroyed();
+	}
 
-    protected void startApp() throws MIDletStateChangeException {
-        MainForm mainForm = new MainForm();
-        HospitalMIDlet.setCurrent(mainForm);
-    }
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param displayable DOCUMENT ME!
+	*/
+	public static void setCurrent(Displayable displayable) {
+		if (exception != null) {
+			Alert alert =
+				new Alert("Error", exception.getMessage(), null, AlertType.ERROR);
+			alert.setTimeout(Alert.FOREVER);
+			display.setCurrent(alert, displayable);
+			exception = null;
+		} else {
+			display.setCurrent(displayable);
+		}
+	}
 
-    protected void pauseApp() {
-    }
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param exception DOCUMENT ME!
+	*/
+	public static void showException(Exception exception) {
+		HospitalMIDlet.exception = exception;
+	}
 
-    protected void destroyApp(boolean arg0) throws MIDletStateChangeException {
-    }
-    
-    public static void setCurrent(Displayable displayable) {
-    	if (exception != null) {
-        	Alert alert= new Alert("Error", exception.getMessage(), null, AlertType.ERROR);
-        	alert.setTimeout(Alert.FOREVER);
-        	display.setCurrent(alert, displayable);
-        	exception= null;
-    	} else {
-    		display.setCurrent(displayable);
-    	}
-    }
-    
-    public static void exit(){
-        midlet.notifyDestroyed();
-    }
-    
-    public static void showException(Exception exception) {
-    	HospitalMIDlet.exception= exception;
-    }
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param arg0 DOCUMENT ME!
+	*
+	* @throws MIDletStateChangeException DOCUMENT ME!
+	*/
+	protected void destroyApp(boolean arg0) throws MIDletStateChangeException {
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*/
+	protected void pauseApp() {
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws MIDletStateChangeException DOCUMENT ME!
+	*/
+	protected void startApp() throws MIDletStateChangeException {
+		MainForm mainForm = new MainForm();
+		HospitalMIDlet.setCurrent(mainForm);
+	}
 }

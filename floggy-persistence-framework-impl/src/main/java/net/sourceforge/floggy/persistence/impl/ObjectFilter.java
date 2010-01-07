@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2006-2009 Floggy Open Source Group. All rights reserved.
+ * Copyright (c) 2006-2010 Floggy Open Source Group. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,30 +20,42 @@ import javax.microedition.rms.RecordFilter;
 import net.sourceforge.floggy.persistence.Filter;
 
 /**
- * An internal implementation of <code>RecordComparator</code> for comparing two objects.
- * 
- * @since 1.0
+* An internal implementation of <code>RecordComparator</code> for comparing
+* two objects.
+*
+* @since 1.0
  */
 class ObjectFilter implements RecordFilter {
-
-	private final __Persistable p;
-
 	private final Filter f;
-
+	private final __Persistable p;
 	private final boolean lazy;
 
+	/**
+	 * Creates a new ObjectFilter object.
+	 *
+	 * @param p DOCUMENT ME!
+	 * @param f DOCUMENT ME!
+	 * @param lazy DOCUMENT ME!
+	 */
 	ObjectFilter(__Persistable p, Filter f, boolean lazy) {
 		this.p = p;
 		this.f = f;
 		this.lazy = lazy;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param b DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public boolean matches(byte[] b) {
 		try {
 			p.__deserialize(b, lazy);
 		} catch (Exception e) {
-			// Ignore
 		}
+
 		return f.matches(p);
 	}
 }

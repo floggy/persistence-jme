@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2006-2009 Floggy Open Source Group. All rights reserved.
+ * Copyright (c) 2006-2010 Floggy Open Source Group. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,13 +28,13 @@ package net.sourceforge.floggy.persistence;
  * @see Comparator
  */
 public interface Filter {
-    /**
-     * Returns true if the candidate object matches the implemented
-     * criterion.
-     *
-     * @param o The candidate object.
-     *
-     * @return True if the candidate object matches the implemented criterion.
-     */
-    boolean matches(Persistable o);
+	/**
+	* Returns true if the candidate object matches the implemented
+	* criterion.
+	*
+	* @param o The candidate object.
+	*
+	* @return True if the candidate object matches the implemented criterion.
+	*/
+	boolean matches(Persistable o);
 }

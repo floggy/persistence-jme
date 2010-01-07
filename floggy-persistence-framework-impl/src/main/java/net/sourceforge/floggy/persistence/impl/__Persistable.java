@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2006-2009 Floggy Open Source Group. All rights reserved.
+ * Copyright (c) 2006-2010 Floggy Open Source Group. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,15 +29,44 @@ import net.sourceforge.floggy.persistence.Persistable;
  * @see Persistable
  */
 public interface __Persistable extends Persistable, Nameable {
-
-	public int __getId();
-
-	public void __setId(int id);
-	
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws FloggyException DOCUMENT ME!
+	*/
 	public void __delete() throws FloggyException;
 
-	public void __deserialize(byte[] buffer, boolean lazy) throws Exception;
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param buffer DOCUMENT ME!
+	* @param lazy DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
+	public void __deserialize(byte[] buffer, boolean lazy)
+		throws Exception;
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	public int __getId();
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public byte[] __serialize() throws Exception;
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param id DOCUMENT ME!
+	*/
+	public void __setId(int id);
 }

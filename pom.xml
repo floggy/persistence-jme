@@ -188,7 +188,7 @@
 						<exclude>**/license-header-template.txt</exclude>
 					</excludes>
 					<properties>
-						<year>2009</year>
+						<year>2010</year>
 						<organizationName>${project.organization.name}</organizationName>
 					</properties>
 				</configuration>

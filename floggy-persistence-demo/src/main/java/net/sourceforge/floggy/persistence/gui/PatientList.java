@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2006-2009 Floggy Open Source Group. All rights reserved.
+ * Copyright (c) 2006-2010 Floggy Open Source Group. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,104 +28,132 @@ import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.PersistableManager;
 import net.sourceforge.floggy.persistence.model.Patient;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class PatientList extends List implements CommandListener {
-
-	protected ObjectSet patients;
-
-	protected Command cmdCreate;
-
-	protected Command cmdEdit;
-
-	protected Command cmdDelete;
-
+	/**
+	 * DOCUMENT ME!
+	 */
 	protected Command cmdBack;
 
-    public PatientList() {
-        super("Patients list", List.IMPLICIT);
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected Command cmdCreate;
 
-        startData();
-        startComponents();
-        
-    }
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected Command cmdDelete;
 
-    private void startData() {
-        PersistableManager pm = PersistableManager.getInstance();
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected Command cmdEdit;
 
-        try {
-            this.deleteAll();
-            
-            patients = pm.find(Patient.class, null, new Comparator() {
-                public int compare(Persistable arg0, Persistable arg1) {
-                    String s1 = arg0 == null ? "" : ((Patient) arg0).getName();
-                    String s2 = arg1 == null ? "" : ((Patient) arg1).getName();
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected ObjectSet patients;
 
-                    return s1.compareTo(s2);
-                }
-            });
+	/**
+	 * Creates a new PatientList object.
+	 */
+	public PatientList() {
+		super("Patients list", List.IMPLICIT);
 
-            for (int i = 0; i < patients.size(); i++) {
-                Patient patient = (Patient) patients.get(i);
-                String type;
-                if (patient.isInsuredByGoverment()) {
-                    type = "Goverment";
-                } else {
-                    type = "Private";
-                }
-                this.append(patient.getName() + " - " + type, null);
-            }
+		startData();
+		startComponents();
+	}
 
-        } catch (FloggyException e) {
-        	HospitalMIDlet.showException(e);
-        }
-    }
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param cmd DOCUMENT ME!
+	* @param dsp DOCUMENT ME!
+	*/
+	public void commandAction(Command cmd, Displayable dsp) {
+		if (cmd == this.cmdBack) {
+			MainForm mainForm = new MainForm();
+			HospitalMIDlet.setCurrent(mainForm);
+		} else if (cmd == this.cmdCreate) {
+			Patient patient = new Patient();
+			HospitalMIDlet.setCurrent(new PatientForm(patient));
+		} else if (cmd == this.cmdEdit) {
+			if (this.getSelectedIndex() != -1) {
+				Patient patient = null;
 
-    private void startComponents() {
-        this.cmdBack = new Command("Back", Command.BACK, 0);
-        this.addCommand(this.cmdBack);
+				try {
+					patient = (Patient) patients.get(this.getSelectedIndex());
+					HospitalMIDlet.setCurrent(new PatientForm(patient));
+				} catch (FloggyException e) {
+					HospitalMIDlet.showException(e);
+				}
+			}
+		} else if (cmd == this.cmdDelete) {
+			if (this.getSelectedIndex() != -1) {
+				try {
+					Patient patient = (Patient) patients.get(this.getSelectedIndex());
+					PersistableManager.getInstance().delete(patient);
+					this.startData();
+				} catch (FloggyException e) {
+					HospitalMIDlet.showException(e);
+				}
+			}
+		}
+	}
 
-        this.cmdCreate = new Command("Create", Command.ITEM, 1);
-        this.addCommand(this.cmdCreate);
+	private void startComponents() {
+		this.cmdBack = new Command("Back", Command.BACK, 0);
+		this.addCommand(this.cmdBack);
 
-        this.cmdEdit = new Command("Edit", Command.ITEM, 2);
-        this.addCommand(this.cmdEdit);
+		this.cmdCreate = new Command("Create", Command.ITEM, 1);
+		this.addCommand(this.cmdCreate);
 
-        this.cmdDelete = new Command("Delete", Command.ITEM, 3);
-        this.addCommand(this.cmdDelete);
+		this.cmdEdit = new Command("Edit", Command.ITEM, 2);
+		this.addCommand(this.cmdEdit);
 
-        this.setCommandListener(this);
-    }
+		this.cmdDelete = new Command("Delete", Command.ITEM, 3);
+		this.addCommand(this.cmdDelete);
 
-    public void commandAction(Command cmd, Displayable dsp) {
-        if (cmd == this.cmdBack) {
-            MainForm mainForm = new MainForm();
-            HospitalMIDlet.setCurrent(mainForm);
-        } else if (cmd == this.cmdCreate) {
-            Patient patient = new Patient();
-            HospitalMIDlet.setCurrent(new PatientForm(patient));
-        } else if (cmd == this.cmdEdit) {
-            if (this.getSelectedIndex() != -1) {
-                Patient patient = null;
+		this.setCommandListener(this);
+	}
 
-                try {
-                    patient = (Patient) patients
-                            .get(this.getSelectedIndex());
-                    HospitalMIDlet.setCurrent(new PatientForm(patient));
-                } catch (FloggyException e) {
-                	HospitalMIDlet.showException(e);
-                }
-            }
-        } else if (cmd == this.cmdDelete) {
-            if (this.getSelectedIndex() != -1) {
+	private void startData() {
+		PersistableManager pm = PersistableManager.getInstance();
 
-                try {
-                    Patient patient = (Patient) patients.get(this
-                            .getSelectedIndex());
-                    PersistableManager.getInstance().delete(patient);
-                    this.startData();
-                } catch (FloggyException e) {
-                	HospitalMIDlet.showException(e);
-                }
-            }
-        }
-    }
+		try {
+			this.deleteAll();
+
+			patients =
+				pm.find(Patient.class, null,
+					new Comparator() {
+						public int compare(Persistable arg0, Persistable arg1) {
+							String s1 = (arg0 == null) ? "" : ((Patient) arg0).getName();
+							String s2 = (arg1 == null) ? "" : ((Patient) arg1).getName();
+
+							return s1.compareTo(s2);
+						}
+					});
+
+			for (int i = 0; i < patients.size(); i++) {
+				Patient patient = (Patient) patients.get(i);
+				String type;
+
+				if (patient.isInsuredByGoverment()) {
+					type = "Goverment";
+				} else {
+					type = "Private";
+				}
+
+				this.append(patient.getName() + " - " + type, null);
+			}
+		} catch (FloggyException e) {
+			HospitalMIDlet.showException(e);
+		}
+	}
 }

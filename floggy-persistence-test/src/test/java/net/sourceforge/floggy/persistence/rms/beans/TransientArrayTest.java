@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2006-2009 Floggy Open Source Group. All rights reserved.
+ * Copyright (c) 2006-2010 Floggy Open Source Group. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,42 +24,53 @@ import net.sourceforge.floggy.persistence.migration.Enumeration;
 import net.sourceforge.floggy.persistence.migration.MigrationManager;
 import net.sourceforge.floggy.persistence.rms.AbstractTest;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class TransientArrayTest extends AbstractTest {
-
-	protected Class getParameterType() {
-		return Object[].class;
-	}
-
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Object getNewValueForSetMethod() {
 		return new Object[0];
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Object getValueForSetMethod() {
 		return new Object[] { "floggy-framework", TransientTest.object };
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Persistable newInstance() {
 		return new FloggyTransientArray();
 	}
 
-	public void testFindWithFilter() throws Exception {
-		Persistable object = newInstance();
-		setX(object, getValueForSetMethod());
-		manager.save(object);
-		try {
-			ObjectSet set = manager.find(object.getClass(), getFilter(), null);
-			assertEquals(0, set.size());
-		} finally {
-			manager.delete(object);
-		}
-	}
-
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testFR2422928Read() throws Exception {
 		Persistable object = newInstance();
 		setX(object, getValueForSetMethod());
 		manager.save(object);
+
 		MigrationManager um = MigrationManager.getInstance();
 		Enumeration enumeration = um.start(object.getClass(), null);
+
 		try {
 			while (enumeration.hasMoreElements()) {
 				Hashtable data = (Hashtable) enumeration.nextElement();
@@ -70,13 +81,20 @@ public class TransientArrayTest extends AbstractTest {
 			um.finish(object.getClass());
 		}
 	}
-	
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testFR2422928Update() throws Exception {
 		Persistable oldObject = newInstance();
 		setX(oldObject, getValueForSetMethod());
 		manager.save(oldObject);
+
 		MigrationManager um = MigrationManager.getInstance();
 		Enumeration enumeration = um.start(oldObject.getClass(), null);
+
 		try {
 			while (enumeration.hasMoreElements()) {
 				Persistable newObject = newInstance();
@@ -86,7 +104,7 @@ public class TransientArrayTest extends AbstractTest {
 				int oldId = manager.getId(oldObject);
 				int newId = enumeration.update(newObject);
 				assertEquals(oldId, newId);
-				
+
 				manager.load(newObject, newId);
 				assertNull(getX(newObject));
 			}
@@ -96,10 +114,39 @@ public class TransientArrayTest extends AbstractTest {
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
+	public void testFindWithFilter() throws Exception {
+		Persistable object = newInstance();
+		setX(object, getValueForSetMethod());
+		manager.save(object);
 
+		try {
+			ObjectSet set = manager.find(object.getClass(), getFilter(), null);
+			assertEquals(0, set.size());
+		} finally {
+			manager.delete(object);
+		}
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testNotNullAttribute() throws Exception {
-		// como o atributo não vai ser salvo ele tem q retornar null!!!
 		super.testNullAttribute();
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	protected Class getParameterType() {
+		return Object[].class;
+	}
 }

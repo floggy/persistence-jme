@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2006-2009 Floggy Open Source Group. All rights reserved.
+ * Copyright (c) 2006-2010 Floggy Open Source Group. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,42 +30,78 @@ import net.sourceforge.floggy.persistence.impl.__Persistable;
 import net.sourceforge.floggy.persistence.migration.Enumeration;
 import net.sourceforge.floggy.persistence.migration.MigrationManager;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class MigrationManagerImpl extends MigrationManager {
-	
+	/**
+	 * DOCUMENT ME!
+	 */
 	protected Hashtable enumerations = new Hashtable();
-	
+
+	/**
+	 * Creates a new MigrationManagerImpl object.
+	 *
+	 * @throws Exception DOCUMENT ME!
+	 */
 	public MigrationManagerImpl() throws Exception {
 		PersistableManager.getInstance();
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param persistableClass DOCUMENT ME!
+	*
+	* @throws FloggyException DOCUMENT ME!
+	*/
 	public void finish(Class persistableClass) throws FloggyException {
-
 		PersistableManagerImpl.validatePersistableClassArgument(persistableClass);
 
 		EnumerationImpl impl = (EnumerationImpl) enumerations.get(persistableClass);
+
 		if (impl != null) {
 			impl.finish();
 		}
 	}
-	
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public String[] getNotMigratedClasses() {
 		Vector notMigratedClasses = MetadataManagerUtil.getNotMigratedClasses();
 		String[] temp = new String[notMigratedClasses.size()];
 		notMigratedClasses.copyInto(temp);
+
 		return temp;
 	}
-	
-	public void quickMigration(Class persistableClass) throws FloggyException {
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param persistableClass DOCUMENT ME!
+	*
+	* @throws FloggyException DOCUMENT ME!
+	*/
+	public void quickMigration(Class persistableClass) throws FloggyException {
 		PersistableManagerImpl.validatePersistableClassArgument(persistableClass);
-		
+
 		String className = persistableClass.getName();
-		PersistableMetadata classBasedMetadata = MetadataManagerUtil.getClassBasedMetadata(className);
-		PersistableMetadata rmsBasedMetadata = MetadataManagerUtil.getRMSBasedMetadata(className);
-		
+		PersistableMetadata classBasedMetadata =
+			MetadataManagerUtil.getClassBasedMetadata(className);
+		PersistableMetadata rmsBasedMetadata =
+			MetadataManagerUtil.getRMSBasedMetadata(className);
+
 		if (rmsBasedMetadata != null) {
 			if (!classBasedMetadata.equals(rmsBasedMetadata)) {
-				throw new FloggyException("Class and RMS description doesn't match for class " + className + ". Please execute a normal migration process.");
+				throw new FloggyException(
+					"Class and RMS description doesn't match for class " + className
+					+ ". Please execute a normal migration process.");
 			}
 		} else {
 			try {
@@ -75,76 +111,107 @@ public class MigrationManagerImpl extends MigrationManager {
 			}
 		}
 	}
-	
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param persistableClass DOCUMENT ME!
+	* @param properties DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*
+	* @throws FloggyException DOCUMENT ME!
+	*/
 	public Enumeration start(Class persistableClass, Hashtable properties)
-			throws FloggyException {
-		
+		throws FloggyException {
 		PersistableManagerImpl.validatePersistableClassArgument(persistableClass);
 
-		PersistableMetadata classBasedMetadata = MetadataManagerUtil.getClassBasedMetadata(persistableClass.getName()); 
+		PersistableMetadata classBasedMetadata =
+			MetadataManagerUtil.getClassBasedMetadata(persistableClass.getName());
 
 		if (classBasedMetadata.isAbstract()) {
-			throw new FloggyException("It is not possible migrate abstract classes. Instead migrate its subclasses");
+			throw new FloggyException(
+				"It is not possible migrate abstract classes. Instead migrate its subclasses");
 		}
-		
+
 		boolean lazyLoad = false;
 		boolean migrateFromPreviousFloggyVersion = false;
 		boolean iterationMode = false;
+
 		if (properties != null) {
 			Object temp = properties.get(MigrationManager.LAZY_LOAD);
+
 			if (temp instanceof Boolean) {
-				lazyLoad = ((Boolean)temp).booleanValue();
+				lazyLoad = ((Boolean) temp).booleanValue();
 			}
 
 			temp = properties.get(MigrationManager.MIGRATE_FROM_PREVIOUS_1_3_0_VERSION);
+
 			if (temp instanceof Boolean) {
-				migrateFromPreviousFloggyVersion = ((Boolean)temp).booleanValue();
+				migrateFromPreviousFloggyVersion = ((Boolean) temp).booleanValue();
 			}
 
 			temp = properties.get(MigrationManager.ITERATION_MODE);
+
 			if (temp instanceof Boolean) {
-				iterationMode = ((Boolean)temp).booleanValue();
+				iterationMode = ((Boolean) temp).booleanValue();
 			}
 		}
-		
-		__Persistable persistable = PersistableManagerImpl
-				.createInstance(persistableClass);
+
+		__Persistable persistable =
+			PersistableManagerImpl.createInstance(persistableClass);
 
 		RecordStore rs = null;
 		EnumerationImpl impl = null;
-		PersistableMetadata rmsBasedMetadata = null; 
+		PersistableMetadata rmsBasedMetadata = null;
 
 		try {
-			rmsBasedMetadata = MetadataManagerUtil.getRMSBasedMetadata(persistableClass.getName());
+			rmsBasedMetadata = MetadataManagerUtil.getRMSBasedMetadata(persistableClass
+					 .getName());
 			rs = PersistableManagerImpl.getRecordStore(persistable.getRecordStoreName(),
 					classBasedMetadata, true);
+
 			RecordEnumeration en = rs.enumerateRecords(null, null, false);
 
 			if (rmsBasedMetadata == null) {
 				if (migrateFromPreviousFloggyVersion) {
 					rmsBasedMetadata = classBasedMetadata;
 				} else {
-					throw new FloggyException("Set the property MigrationManager.MIGRATE_FROM_PREVIOUS_1_3_0_VERSION to true to migrate from a version lower than 1.3.0.");
+					throw new FloggyException(
+						"Set the property MigrationManager.MIGRATE_FROM_PREVIOUS_1_3_0_VERSION to true to migrate from a version lower than 1.3.0.");
 				}
 			}
-			
-			Hashtable persistableImplementations = rmsBasedMetadata.getPersistableImplementations();
-			if (!lazyLoad && persistableImplementations != null) {
-				java.util.Enumeration classNames = persistableImplementations.elements();
+
+			Hashtable persistableImplementations =
+				rmsBasedMetadata.getPersistableImplementations();
+
+			if (!lazyLoad && (persistableImplementations != null)) {
+				java.util.Enumeration classNames =
+					persistableImplementations.elements();
+
 				while (classNames.hasMoreElements()) {
 					String className = (String) classNames.nextElement();
+
 					if (className.endsWith("[]")) {
 						className = className.substring(0, className.length() - 2);
 					}
-					PersistableMetadata fieldClassMetadata = MetadataManagerUtil.getClassBasedMetadata(className);
-					PersistableMetadata fieldRMSMetadata = MetadataManagerUtil.getRMSBasedMetadata(className);
-					if (fieldClassMetadata != null && fieldRMSMetadata != null && !fieldClassMetadata.equals(fieldRMSMetadata)) {
-						throw new FloggyException("You first must migrate the class " + className + " than you can migrate " + persistableClass.getName());
+
+					PersistableMetadata fieldClassMetadata =
+						MetadataManagerUtil.getClassBasedMetadata(className);
+					PersistableMetadata fieldRMSMetadata =
+						MetadataManagerUtil.getRMSBasedMetadata(className);
+
+					if ((fieldClassMetadata != null) && (fieldRMSMetadata != null)
+						 && !fieldClassMetadata.equals(fieldRMSMetadata)) {
+						throw new FloggyException("You first must migrate the class "
+							+ className + " than you can migrate "
+							+ persistableClass.getName());
 					}
 				}
 			}
 
-			impl = new EnumerationImpl(rmsBasedMetadata, classBasedMetadata, en, rs, lazyLoad, iterationMode);
+			impl = new EnumerationImpl(rmsBasedMetadata, classBasedMetadata, en, rs,
+					lazyLoad, iterationMode);
 			enumerations.put(persistableClass, impl);
 		} catch (Exception ex) {
 			throw PersistableManagerImpl.handleException(ex);
@@ -152,5 +219,4 @@ public class MigrationManagerImpl extends MigrationManager {
 
 		return impl;
 	}
-
 }

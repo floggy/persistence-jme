@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2006-2009 Floggy Open Source Group. All rights reserved.
+ * Copyright (c) 2006-2010 Floggy Open Source Group. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,15 +15,28 @@
  */
 package net.sourceforge.floggy.persistence.verifier.test;
 
-
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class NativeVerifierTest extends AbstractVerifierTest {
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param className DOCUMENT ME!
+	* @param createInstance DOCUMENT ME!
+	*/
 	protected void evaluate(String className, boolean createInstance) {
 		Class clazz = null;
+
 		try {
 			clazz = Class.forName(className);
 			assertTrue(true);
 		} catch (Exception e) {
 			fail(e.getMessage());
+
 			return;
 		}
 
@@ -33,6 +46,7 @@ public class NativeVerifierTest extends AbstractVerifierTest {
 				assertTrue(true);
 			} catch (Exception e) {
 				fail(e.getMessage());
+
 				return;
 			}
 		}

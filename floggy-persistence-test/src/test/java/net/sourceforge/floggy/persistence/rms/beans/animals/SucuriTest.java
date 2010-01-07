@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2006-2009 Floggy Open Source Group. All rights reserved.
+ * Copyright (c) 2006-2010 Floggy Open Source Group. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,19 +20,30 @@ import net.sourceforge.floggy.persistence.ObjectSet;
 import net.sourceforge.floggy.persistence.beans.animals.Reptile;
 import net.sourceforge.floggy.persistence.beans.animals.Sucuri;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class SucuriTest extends FloggyBaseTest {
-	
-	public void testDeleteWithSuperClassBeenPersistable() throws Exception {
-		Sucuri sucuri= new Sucuri();
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
+	public void testDeleteWithSuperClassBeenPersistable()
+		throws Exception {
+		Sucuri sucuri = new Sucuri();
 		manager.save(sucuri);
 		assertTrue(manager.isPersisted(sucuri));
-		ObjectSet set= manager.find(Reptile.class, null, null);
+
+		ObjectSet set = manager.find(Reptile.class, null, null);
 		assertEquals(1, set.size());
-		
+
 		manager.delete(sucuri);
 		assertFalse(manager.isPersisted(sucuri));
-		set= manager.find(Reptile.class, null, null);
+		set = manager.find(Reptile.class, null, null);
 		assertEquals(0, set.size());
 	}
-
 }

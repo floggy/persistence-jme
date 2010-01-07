@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2006-2009 Floggy Open Source Group. All rights reserved.
+ * Copyright (c) 2006-2010 Floggy Open Source Group. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,39 +15,71 @@
  */
 package net.sourceforge.floggy.persistence.beans.animals;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class Falcon extends Bird {
-
 	private Boolean x;
 
-	public Boolean getX() {
-		return x;
-	}
-
-	public void setX(Boolean prey) {
-		this.x = prey;
-	}
-
-	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + ((x == null) ? 0 : x.hashCode());
-		return result;
-	}
-
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param obj DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
+
 		if (!super.equals(obj))
 			return false;
+
 		if (getClass() != obj.getClass())
 			return false;
+
 		final Falcon other = (Falcon) obj;
+
 		if (x == null) {
 			if (other.x != null)
 				return false;
 		} else if (!x.equals(other.x))
 			return false;
-		return true;
-	}	
 
+		return true;
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	public Boolean getX() {
+		return x;
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = (prime * result) + ((x == null) ? 0 : x.hashCode());
+
+		return result;
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param prey DOCUMENT ME!
+	*/
+	public void setX(Boolean prey) {
+		this.x = prey;
+	}
 }

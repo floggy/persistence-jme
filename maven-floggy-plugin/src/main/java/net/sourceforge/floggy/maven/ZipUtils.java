@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2006-2009 Floggy Open Source Group. All rights reserved.
+ * Copyright (c) 2006-2010 Floggy Open Source Group. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -31,76 +32,103 @@ import java.util.zip.ZipOutputStream;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class ZipUtils {
-
-    public static void unzip(File file, File directory) throws IOException {
-	ZipFile zipFile = new ZipFile(file);
-	Enumeration entries = zipFile.entries();
-
-	if (!directory.exists() && !directory.mkdirs()) {
-	    throw new IOException("Unable to create the " + directory
-		    + " directory!");
+	/**
+	 * Creates a new ZipUtils object.
+	 */
+	protected ZipUtils() {
 	}
-	while (entries.hasMoreElements()) {
-	    File temp;
-	    ZipEntry entry = (ZipEntry) entries.nextElement();
-	    if (entry.isDirectory()) {
-		temp = new File(directory, entry.getName());
-		if (!temp.exists() && !temp.mkdirs()) {
-		    throw new IOException("Unable to create the " + temp
-			    + " directory!");
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param file DOCUMENT ME!
+	* @param directory DOCUMENT ME!
+	*
+	* @throws IOException DOCUMENT ME!
+	*/
+	public static void unzip(File file, File directory) throws IOException {
+		ZipFile zipFile = new ZipFile(file);
+		Enumeration entries = zipFile.entries();
+
+		if (!directory.exists() && !directory.mkdirs()) {
+			throw new IOException("Unable to create the " + directory + " directory!");
 		}
-	    } else {
-		temp = new File(directory, entry.getName());
-		IOUtils.copy(zipFile.getInputStream(entry),
-			new FileOutputStream(temp));
-	    }
 
-	}
-	zipFile.close();
-    }
+		while (entries.hasMoreElements()) {
+			File temp;
+			ZipEntry entry = (ZipEntry) entries.nextElement();
 
-    public static void zip(File[] directories, File output) throws IOException {
-	FileInputStream in = null;
-	ZipOutputStream out = null;
-	ZipEntry entry = null;
+			if (entry.isDirectory()) {
+				temp = new File(directory, entry.getName());
 
-	Collection allFiles = new LinkedList();
-	for (int i = 0; i < directories.length; i++) {
-	    allFiles.addAll(FileUtils.listFiles(directories[i], null, true));
-	}
+				if (!temp.exists() && !temp.mkdirs()) {
+					throw new IOException("Unable to create the " + temp + " directory!");
+				}
+			} else {
+				temp = new File(directory, entry.getName());
+				IOUtils.copy(zipFile.getInputStream(entry), new FileOutputStream(temp));
+			}
+		}
 
-	out = new ZipOutputStream(new BufferedOutputStream(
-		new FileOutputStream(output)));
-	for (Iterator iter = allFiles.iterator(); iter.hasNext();) {
-	    File temp = (File) iter.next();
-	    String name = getEntryName(directories, temp.getAbsolutePath());
-	    entry = new ZipEntry(name);
-	    out.putNextEntry(entry);
-	    if (!temp.isDirectory()) {
-		in = new FileInputStream(temp);
-		IOUtils.copy(in, out);
-		in.close();
-	    }
-
+		zipFile.close();
 	}
 
-	out.close();
-    }
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param directories DOCUMENT ME!
+	* @param output DOCUMENT ME!
+	*
+	* @throws IOException DOCUMENT ME!
+	*/
+	public static void zip(File[] directories, File output)
+		throws IOException {
+		FileInputStream in = null;
+		ZipOutputStream out = null;
+		ZipEntry entry = null;
 
-    private static String getEntryName(File[] directories, String file) {
-	for (int i = 0; i < directories.length; i++) {
-	    String temp = directories[i].getAbsolutePath();
-	    int index = file.indexOf(temp);
-	    if (index != -1) {
-		return file.substring(temp.length() + 1);
+		Collection allFiles = new LinkedList();
 
-	    }
+		for (int i = 0; i < directories.length; i++) {
+			allFiles.addAll(FileUtils.listFiles(directories[i], null, true));
+		}
+
+		out = new ZipOutputStream(new BufferedOutputStream(
+					new FileOutputStream(output)));
+
+		for (Iterator iter = allFiles.iterator(); iter.hasNext();) {
+			File temp = (File) iter.next();
+			String name = getEntryName(directories, temp.getAbsolutePath());
+			entry = new ZipEntry(name);
+			out.putNextEntry(entry);
+
+			if (!temp.isDirectory()) {
+				in = new FileInputStream(temp);
+				IOUtils.copy(in, out);
+				in.close();
+			}
+		}
+
+		out.close();
 	}
-	return null;
-    }
 
-    protected ZipUtils() {
-    }
-    
+	private static String getEntryName(File[] directories, String file) {
+		for (int i = 0; i < directories.length; i++) {
+			String temp = directories[i].getAbsolutePath();
+			int index = file.indexOf(temp);
+
+			if (index != -1) {
+				return file.substring(temp.length() + 1);
+			}
+		}
+
+		return null;
+	}
 }

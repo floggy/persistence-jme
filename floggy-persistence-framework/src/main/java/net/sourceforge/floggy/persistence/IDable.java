@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2006-2009 Floggy Open Source Group. All rights reserved.
+ * Copyright (c) 2006-2010 Floggy Open Source Group. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,11 +50,11 @@ package net.sourceforge.floggy.persistence;
  * 
  */
 public interface IDable {
-    /**
-     * Setter method to the id field. It is used by the framework to
-     * export the RMS id value.
-     *
-     * @param id RMS id.
-     */
-    void setId(int id);
+	/**
+	* Setter method to the id field. It is used by the framework to export
+	* the RMS id value.
+	*
+	* @param id RMS id.
+	*/
+	void setId(int id);
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2006-2009 Floggy Open Source Group. All rights reserved.
+ * Copyright (c) 2006-2010 Floggy Open Source Group. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,9 @@ package net.sourceforge.floggy.persistence;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+
 import java.net.URL;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -37,6 +39,10 @@ import javassist.CtMethod;
 import javassist.CtNewMethod;
 import javassist.Modifier;
 import javassist.NotFoundException;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import net.sourceforge.floggy.persistence.codegen.CodeGenerator;
 import net.sourceforge.floggy.persistence.impl.MetadataManagerUtil;
 import net.sourceforge.floggy.persistence.impl.PersistableMetadata;
@@ -44,307 +50,67 @@ import net.sourceforge.floggy.persistence.pool.InputPool;
 import net.sourceforge.floggy.persistence.pool.OutputPool;
 import net.sourceforge.floggy.persistence.pool.PoolFactory;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class Weaver {
-
-	public static final String __PERSISTABLE_CLASSNAME = "net.sourceforge.floggy.persistence.impl.__Persistable";
-
+	public static final String __PERSISTABLE_CLASSNAME =
+		"net.sourceforge.floggy.persistence.impl.__Persistable";
 	private static final Log LOG = LogFactory.getLog(Weaver.class);
-
-	public static final String PERSISTABLE_CLASSNAME = "net.sourceforge.floggy.persistence.Persistable";
-
+	public static final String PERSISTABLE_CLASSNAME =
+		"net.sourceforge.floggy.persistence.Persistable";
 	private ClassPool classpathPool;
-	
 	private Configuration configuration = new Configuration();
-	
+	private InputPool inputPool;
+	private OutputPool embeddedClassesOutputPool;
+	private OutputPool outputPool;
 	private Set alreadyProcessedMetadatas = new HashSet();
 
-	private InputPool inputPool;
-
-	private OutputPool outputPool;
-	
-	private OutputPool embeddedClassesOutputPool;
-
-	/**
-	 * Creates a new instance
-	 * 
-	 * @param args
-	 */
+/**
+   * Creates a new instance
+   * 
+   * @param args
+   */
 	public Weaver() {
 		this(new ClassPool());
 	}
 
-	/**
-	 * Creates a new instance
-	 * 
-	 * @param args
-	 */
+/**
+   * Creates a new instance
+   * 
+   * @param args
+   */
 	public Weaver(ClassPool classPool) {
 		this.classpathPool = classPool;
 	}
 
-	private List buildClassTree(CtClass ctClass) throws NotFoundException {
-		final CtClass persistable = classpathPool
-				.get(Weaver.PERSISTABLE_CLASSNAME);
-		List list = new ArrayList();
-		CtClass superClass = ctClass;
-		String superName = ctClass.getName();
-		do {
-			list.add(superName);
-			// adicionando
-			if (!configuration.containsPersistable(superName)) {
-				configuration
-						.addPersistableMetadata(createPersistableMetadata(superClass));
-			}
-
-			superClass = superClass.getSuperclass();
-			superName = superClass.getName();
-		} while (!"java.lang.Object".equals(superName)
-				&& superClass.subtypeOf(persistable));
-		return list;
-	}
-
-	protected Integer buildFloggyFieldType(CtClass fieldType)
-			throws NotFoundException {
-		int floggyFieldType = 0;
-		if (fieldType.isArray()) {
-			fieldType = fieldType.getComponentType();
-			if (fieldType.isPrimitive()) {
-				floggyFieldType = PersistableMetadata.PRIMITIVE
-						| buildFloggyPrimitiveFieldType(fieldType);
-			} else {
-				floggyFieldType = buildFloggyObjectFieldType(fieldType);
-			}
-			floggyFieldType = floggyFieldType | PersistableMetadata.ARRAY;
-		} else {
-			if (fieldType.isPrimitive()) {
-				floggyFieldType = PersistableMetadata.PRIMITIVE
-						| buildFloggyPrimitiveFieldType(fieldType);
-			} else {
-				floggyFieldType = buildFloggyObjectFieldType(fieldType);
-			}
-		}
-		if (floggyFieldType == 0) {
-			throw new NotFoundException(fieldType.getName());
-		}
-		return Integer.valueOf(floggyFieldType);
-	}
-
-	protected int buildFloggyObjectFieldType(CtClass fieldType)
-			throws NotFoundException {
-		int floggyFieldType = 0;
-		String typeName = fieldType.getName();
-		if ("java.lang.Boolean".equals(typeName)) {
-			floggyFieldType = PersistableMetadata.BOOLEAN;
-		}
-		if ("java.lang.Byte".equals(typeName)) {
-			floggyFieldType = PersistableMetadata.BYTE;
-		}
-		if ("java.lang.Character".equals(typeName)) {
-			floggyFieldType = PersistableMetadata.CHARACTER;
-		}
-		if ("java.lang.Double".equals(typeName)) {
-			floggyFieldType = PersistableMetadata.DOUBLE;
-		}
-		if ("java.lang.Float".equals(typeName)) {
-			floggyFieldType = PersistableMetadata.FLOAT;
-		}
-		if ("java.lang.Integer".equals(typeName)) {
-			floggyFieldType = PersistableMetadata.INT;
-		}
-		if ("java.lang.Long".equals(typeName)) {
-			floggyFieldType = PersistableMetadata.LONG;
-		}
-		if ("java.lang.Short".equals(typeName)) {
-			floggyFieldType = PersistableMetadata.SHORT;
-		}
-		if ("java.lang.String".equals(typeName)) {
-			floggyFieldType = PersistableMetadata.STRING;
-		}
-		if ("java.util.Calendar".equals(typeName)) {
-			floggyFieldType = PersistableMetadata.CALENDAR;
-		}
-		if ("java.util.Date".equals(typeName)) {
-			floggyFieldType = PersistableMetadata.DATE;
-		}
-		if ("java.util.Hashtable".equals(typeName)) {
-			floggyFieldType = PersistableMetadata.HASHTABLE;
-		}
-		if (fieldType.subtypeOf(fieldType.getClassPool().get(
-				Weaver.PERSISTABLE_CLASSNAME))) {
-			floggyFieldType = PersistableMetadata.PERSISTABLE;
-		}
-		if ("java.lang.StringBuffer".equals(typeName)) {
-			floggyFieldType = PersistableMetadata.STRINGBUFFER;
-		}
-		if ("java.util.Stack".equals(typeName)) {
-			floggyFieldType = PersistableMetadata.STACK;
-		}
-		if ("java.util.TimeZone".equals(typeName)) {
-			floggyFieldType = PersistableMetadata.TIMEZONE;
-		}
-		if ("java.util.Vector".equals(typeName)) {
-			floggyFieldType = PersistableMetadata.VECTOR;
-		}
-		return floggyFieldType;
-	}
-
-	protected int buildFloggyPrimitiveFieldType(CtClass fieldType) {
-		int floggyFieldType = 0;
-		if (CtClass.booleanType.equals(fieldType)) {
-			floggyFieldType = PersistableMetadata.BOOLEAN;
-		}
-		if (CtClass.byteType.equals(fieldType)) {
-			floggyFieldType = PersistableMetadata.BYTE;
-		}
-		if (CtClass.charType.equals(fieldType)) {
-			floggyFieldType = PersistableMetadata.CHARACTER;
-		}
-		if (CtClass.doubleType.equals(fieldType)) {
-			floggyFieldType = PersistableMetadata.DOUBLE;
-		}
-		if (CtClass.floatType.equals(fieldType)) {
-			floggyFieldType = PersistableMetadata.FLOAT;
-		}
-		if (CtClass.intType.equals(fieldType)) {
-			floggyFieldType = PersistableMetadata.INT;
-		}
-		if (CtClass.longType.equals(fieldType)) {
-			floggyFieldType = PersistableMetadata.LONG;
-		}
-		if (CtClass.shortType.equals(fieldType)) {
-			floggyFieldType = PersistableMetadata.SHORT;
-		}
-		return floggyFieldType;
-	}
-
-	protected boolean ignoreField(CtField field) {
-		int modifier = field.getModifiers();
-
-		return field.getName().equals("__id")
-				|| field.getName().equals("__persistableMetadata")
-				|| Modifier.isTransient(modifier)
-				|| Modifier.isStatic(modifier);
-	}
-
-	private PersistableMetadata createPersistableMetadata(CtClass ctClass) throws NotFoundException {
-		String className = ctClass.getName();
-		String superClassName = null;
-		ClassVerifier superClassVerifier = new ClassVerifier(ctClass.getSuperclass(), classpathPool);
-		if (superClassVerifier.isPersistable()) {
-			superClassName = ctClass.getSuperclass().getName();
-		}
-		CtField[] fields = ctClass.getDeclaredFields();
-		List fieldNames = new ArrayList(fields.length);
-		List fieldTypes = new ArrayList(fields.length);
-		Hashtable persistableImplementations = null;
-		for (int i = 0; i < fields.length; i++) {
-			CtField field = (CtField) fields[i];
-			if (ignoreField(field)) {
-				continue;
-			}
-			fieldNames.add(field.getName());
-			Integer type = buildFloggyFieldType(field.getType());
-			fieldTypes.add(type);
-			if ((type.intValue() & PersistableMetadata.PERSISTABLE) == PersistableMetadata.PERSISTABLE) {
-				if (persistableImplementations == null) {
-					persistableImplementations = new Hashtable();
-				}
-				persistableImplementations.put(field.getName(), field.getType().getName());
-			}
-		}
-		
-		int[] temp = new int[fieldTypes.size()];
-		for (int i = 0; i < fieldTypes.size(); i++) {
-			temp[i] = ((Integer)fieldTypes.get(i)).intValue();
-		}
-
-		String recordStoreName = ctClass.getSimpleName() + className.hashCode();
-		if (recordStoreName.length() > 32) {
-			LOG.warn("The recordStore name " + recordStoreName + " is bigger than 32 characters. It will be truncated to " + recordStoreName.substring(0, 32));
-			recordStoreName = recordStoreName.substring(0, 32);
-		}
-		PersistableMetadata metadata = new PersistableMetadata(Modifier.isAbstract(ctClass.getModifiers()), className, superClassName, 
-			(String[])fieldNames.toArray(new String[fieldNames.size()]), temp, persistableImplementations, recordStoreName);
-		return metadata;
-	}
-
-	private void embeddedClass(String fileName) throws IOException {
-		URL fileURL = getClass().getResource(fileName);
-		if (fileURL != null) {
-			fileName = fileName.replace('/', File.separatorChar);
-			embeddedClassesOutputPool.addFile(fileURL, fileName);
-			classpathPool.makeClass(fileURL.openStream());
-		}
-	}
-
-	private void embeddedUnderlineCoreClasses() throws IOException {
-		embeddedClass("/net/sourceforge/floggy/persistence/impl/FloggyOutputStream.class");
-		embeddedClass("/net/sourceforge/floggy/persistence/impl/FloggyProperties$1.class");
-		embeddedClass("/net/sourceforge/floggy/persistence/impl/ObjectComparator.class");
-		embeddedClass("/net/sourceforge/floggy/persistence/impl/ObjectFilter.class");
-		embeddedClass("/net/sourceforge/floggy/persistence/impl/ObjectSetImpl.class");
-		embeddedClass("/net/sourceforge/floggy/persistence/impl/__Persistable.class");
-		embeddedClass("/net/sourceforge/floggy/persistence/impl/PersistableManagerImpl.class");
-		embeddedClass("/net/sourceforge/floggy/persistence/impl/PersistableManagerImpl$1.class");
-		embeddedClass("/net/sourceforge/floggy/persistence/impl/PersistableManagerImpl$RecordStoreReference.class");
-		embeddedClass("/net/sourceforge/floggy/persistence/impl/PersistableMetadata.class");
-		embeddedClass("/net/sourceforge/floggy/persistence/impl/migration/MigrationManagerImpl.class");
-		embeddedClass("/net/sourceforge/floggy/persistence/impl/migration/EnumerationImpl.class");
-		embeddedClass("/net/sourceforge/floggy/persistence/impl/migration/HashtableValueNullable.class");
-	}
-	
-	protected void adaptFrameworkToTargetCLDC() throws IOException, CannotCompileException, NotFoundException {
-		URL fileURL = getClass().getResource("/net/sourceforge/floggy/persistence/impl/SerializationHelper.class");
-		classpathPool.makeClass(fileURL.openStream());
-
-		CtClass ctClass= this.classpathPool.get("net.sourceforge.floggy.persistence.impl.SerializationHelper");
-		if (isCLDC10()) {
-			CtMethod[] methods= ctClass.getMethods();
-			for (int i = 0; i < methods.length; i++) {
-				String methodName= methods[i].getName(); 
-				if (methodName.indexOf("Float") != -1 || methodName.indexOf("Double") != -1 || "readObject".equals(methodName) || "writeObject".equals(methodName)) {
-					ctClass.removeMethod(methods[i]);
-				}
-			}
-			//this is done in two steps because we can't guarantee that the read/writeVector methods will be removed before the rename step.   
-			for (int i = 0; i < methods.length; i++) {
-				String methodName= methods[i].getName(); 
-				if ("readObjectCLDC10".equals(methodName)) {
-					methods[i].setName("readObject");
-				}
-				if ("writeObjectCLDC10".equals(methodName)) {
-					methods[i].setName("writeObject");
-				}
-			}
-		} else {
-			CtMethod[] methods= ctClass.getMethods();
-			for (int i = 0; i < methods.length; i++) {
-				String methodName= methods[i].getName(); 
-				if (methodName.indexOf("CLDC10") != -1) {
-					ctClass.removeMethod(methods[i]);
-				}
-			}
-		}
-		embeddedClassesOutputPool.addClass(ctClass);
-	}
-
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws WeaverException DOCUMENT ME!
+	*/
 	public void execute() throws WeaverException {
 		long time = System.currentTimeMillis();
-		LOG.info("Floggy Persistence Weaver - " + MetadataManagerUtil.getBytecodeVersion());
+		LOG.info("Floggy Persistence Weaver - "
+			+ MetadataManagerUtil.getBytecodeVersion());
 		LOG.info("CLDC version: " + ((isCLDC10()) ? "1.0" : "1.1"));
+
 		try {
-//			readConfiguration();
-			URL fileURL = getClass().getResource("/net/sourceforge/floggy/persistence/impl/MetadataManagerUtil.class");
+			URL fileURL =
+				getClass()
+				 .getResource("/net/sourceforge/floggy/persistence/impl/MetadataManagerUtil.class");
 			classpathPool.makeClass(fileURL.openStream());
 
 			embeddedUnderlineCoreClasses();
 			adaptFrameworkToTargetCLDC();
+
 			List list = getClassThatImplementsPersistable();
 			int classCount = list.size();
 			LOG.info("Processing " + classCount + " bytecodes!");
+
 			for (int i = 0; i < classCount; i++) {
 				String className = (String) list.get(i);
 
@@ -352,50 +118,363 @@ public class Weaver {
 
 				LOG.info("Processing bytecode " + className + "!");
 
-				CodeGenerator codeGenerator = new CodeGenerator(ctClass, classpathPool,
-						configuration);
+				CodeGenerator codeGenerator =
+					new CodeGenerator(ctClass, classpathPool, configuration);
 				codeGenerator.generateCode();
+
 				if (configuration.isGenerateSource()) {
 					byte[] source = codeGenerator.getSource().getBytes();
-					String fileName = className
-							.replace('.', File.separatorChar)
-							+ ".txt";
-					outputPool.addResource(new ByteArrayInputStream(source),
-							fileName);
+					String fileName = className.replace('.', File.separatorChar) + ".txt";
+					outputPool.addResource(new ByteArrayInputStream(source), fileName);
 				}
 
-				// Adds modified class to output pool
 				this.outputPool.addClass(ctClass);
-				LOG.debug("Bytecode modified.");
+
+				if (LOG.isDebugEnabled())
+					LOG.debug("Bytecode modified.");
 			}
+
 			addMetadataManagerUtilClass();
 
 			if (embeddedClassesOutputPool != outputPool) {
 				embeddedClassesOutputPool.finish();
 			}
+
 			outputPool.finish();
- 
-//			writeConfiguration();
 		} catch (Exception e) {
 			LOG.error(e.getMessage(), e);
 			throw new WeaverException(e.getMessage(), e);
 		}
-		// Status
+
 		time = System.currentTimeMillis() - time;
 		LOG.info("Time elapsed: " + time + "ms");
 	}
 
-	private void addMetadataManagerUtilClass() throws  CannotCompileException, IOException, NotFoundException {
+	/**
+	* Sets the classpath.
+	*
+	* @param classpath DOCUMENT ME!
+	*/
+	public void setClasspath(String[] classpath) {
+		if ((classpath != null) && (classpath.length > 0)) {
+			for (int i = classpath.length - 1; i >= 0; i--) {
+				try {
+					this.classpathPool.insertClassPath(classpath[i]);
+				} catch (NotFoundException e) {
+				}
+			}
+		}
+	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param configuration DOCUMENT ME!
+	*/
+	public void setConfiguration(Configuration configuration) {
+		this.configuration = configuration;
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param embeddedClassesOutputFile DOCUMENT ME!
+	*
+	* @throws WeaverException DOCUMENT ME!
+	*/
+	public void setEmbeddedClassesOutputPool(File embeddedClassesOutputFile)
+		throws WeaverException {
+		embeddedClassesOutputPool = PoolFactory.createOutputPool(embeddedClassesOutputFile);
+	}
+
+	/**
+	* Sets the input file.
+	*
+	* @param inputFile DOCUMENT ME!
+	*
+	* @throws WeaverException DOCUMENT ME!
+	*/
+	public void setInputFile(File inputFile) throws WeaverException {
+		this.inputPool = PoolFactory.createInputPool(inputFile);
+
+		try {
+			this.classpathPool.insertClassPath(inputFile.getCanonicalPath());
+		} catch (NotFoundException e) {
+		} catch (IOException e) {
+		}
+	}
+
+	/**
+	* Sets the output file.
+	*
+	* @param outputFile
+	*
+	* @throws WeaverException DOCUMENT ME!
+	*/
+	public void setOutputFile(File outputFile) throws WeaverException {
+		outputPool = PoolFactory.createOutputPool(outputFile);
+
+		if (embeddedClassesOutputPool == null) {
+			embeddedClassesOutputPool = outputPool;
+		}
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws IOException DOCUMENT ME!
+	* @throws CannotCompileException DOCUMENT ME!
+	* @throws NotFoundException DOCUMENT ME!
+	*/
+	protected void adaptFrameworkToTargetCLDC()
+		throws IOException, CannotCompileException, NotFoundException {
+		URL fileURL =
+			getClass()
+			 .getResource("/net/sourceforge/floggy/persistence/impl/SerializationHelper.class");
+		classpathPool.makeClass(fileURL.openStream());
+
+		CtClass ctClass =
+			this.classpathPool.get(
+				"net.sourceforge.floggy.persistence.impl.SerializationHelper");
+
+		if (isCLDC10()) {
+			CtMethod[] methods = ctClass.getMethods();
+
+			for (int i = 0; i < methods.length; i++) {
+				String methodName = methods[i].getName();
+
+				if ((methodName.indexOf("Float") != -1)
+					 || (methodName.indexOf("Double") != -1)
+					 || "readObject".equals(methodName)
+					 || "writeObject".equals(methodName)) {
+					ctClass.removeMethod(methods[i]);
+				}
+			}
+
+			for (int i = 0; i < methods.length; i++) {
+				String methodName = methods[i].getName();
+
+				if ("readObjectCLDC10".equals(methodName)) {
+					methods[i].setName("readObject");
+				}
+
+				if ("writeObjectCLDC10".equals(methodName)) {
+					methods[i].setName("writeObject");
+				}
+			}
+		} else {
+			CtMethod[] methods = ctClass.getMethods();
+
+			for (int i = 0; i < methods.length; i++) {
+				String methodName = methods[i].getName();
+
+				if (methodName.indexOf("CLDC10") != -1) {
+					ctClass.removeMethod(methods[i]);
+				}
+			}
+		}
+
+		embeddedClassesOutputPool.addClass(ctClass);
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param fieldType DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*
+	* @throws NotFoundException DOCUMENT ME!
+	*/
+	protected Integer buildFloggyFieldType(CtClass fieldType)
+		throws NotFoundException {
+		int floggyFieldType = 0;
+
+		if (fieldType.isArray()) {
+			fieldType = fieldType.getComponentType();
+
+			if (fieldType.isPrimitive()) {
+				floggyFieldType = PersistableMetadata.PRIMITIVE
+					 | buildFloggyPrimitiveFieldType(fieldType);
+			} else {
+				floggyFieldType = buildFloggyObjectFieldType(fieldType);
+			}
+
+			floggyFieldType = floggyFieldType | PersistableMetadata.ARRAY;
+		} else {
+			if (fieldType.isPrimitive()) {
+				floggyFieldType = PersistableMetadata.PRIMITIVE
+					 | buildFloggyPrimitiveFieldType(fieldType);
+			} else {
+				floggyFieldType = buildFloggyObjectFieldType(fieldType);
+			}
+		}
+
+		if (floggyFieldType == 0) {
+			throw new NotFoundException(fieldType.getName());
+		}
+
+		return Integer.valueOf(floggyFieldType);
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param fieldType DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*
+	* @throws NotFoundException DOCUMENT ME!
+	*/
+	protected int buildFloggyObjectFieldType(CtClass fieldType)
+		throws NotFoundException {
+		int floggyFieldType = 0;
+		String typeName = fieldType.getName();
+
+		if ("java.lang.Boolean".equals(typeName)) {
+			floggyFieldType = PersistableMetadata.BOOLEAN;
+		}
+
+		if ("java.lang.Byte".equals(typeName)) {
+			floggyFieldType = PersistableMetadata.BYTE;
+		}
+
+		if ("java.lang.Character".equals(typeName)) {
+			floggyFieldType = PersistableMetadata.CHARACTER;
+		}
+
+		if ("java.lang.Double".equals(typeName)) {
+			floggyFieldType = PersistableMetadata.DOUBLE;
+		}
+
+		if ("java.lang.Float".equals(typeName)) {
+			floggyFieldType = PersistableMetadata.FLOAT;
+		}
+
+		if ("java.lang.Integer".equals(typeName)) {
+			floggyFieldType = PersistableMetadata.INT;
+		}
+
+		if ("java.lang.Long".equals(typeName)) {
+			floggyFieldType = PersistableMetadata.LONG;
+		}
+
+		if ("java.lang.Short".equals(typeName)) {
+			floggyFieldType = PersistableMetadata.SHORT;
+		}
+
+		if ("java.lang.String".equals(typeName)) {
+			floggyFieldType = PersistableMetadata.STRING;
+		}
+
+		if ("java.util.Calendar".equals(typeName)) {
+			floggyFieldType = PersistableMetadata.CALENDAR;
+		}
+
+		if ("java.util.Date".equals(typeName)) {
+			floggyFieldType = PersistableMetadata.DATE;
+		}
+
+		if ("java.util.Hashtable".equals(typeName)) {
+			floggyFieldType = PersistableMetadata.HASHTABLE;
+		}
+
+		if (fieldType.subtypeOf(fieldType.getClassPool()
+				 .get(Weaver.PERSISTABLE_CLASSNAME))) {
+			floggyFieldType = PersistableMetadata.PERSISTABLE;
+		}
+
+		if ("java.lang.StringBuffer".equals(typeName)) {
+			floggyFieldType = PersistableMetadata.STRINGBUFFER;
+		}
+
+		if ("java.util.Stack".equals(typeName)) {
+			floggyFieldType = PersistableMetadata.STACK;
+		}
+
+		if ("java.util.TimeZone".equals(typeName)) {
+			floggyFieldType = PersistableMetadata.TIMEZONE;
+		}
+
+		if ("java.util.Vector".equals(typeName)) {
+			floggyFieldType = PersistableMetadata.VECTOR;
+		}
+
+		return floggyFieldType;
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param fieldType DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	protected int buildFloggyPrimitiveFieldType(CtClass fieldType) {
+		int floggyFieldType = 0;
+
+		if (CtClass.booleanType.equals(fieldType)) {
+			floggyFieldType = PersistableMetadata.BOOLEAN;
+		}
+
+		if (CtClass.byteType.equals(fieldType)) {
+			floggyFieldType = PersistableMetadata.BYTE;
+		}
+
+		if (CtClass.charType.equals(fieldType)) {
+			floggyFieldType = PersistableMetadata.CHARACTER;
+		}
+
+		if (CtClass.doubleType.equals(fieldType)) {
+			floggyFieldType = PersistableMetadata.DOUBLE;
+		}
+
+		if (CtClass.floatType.equals(fieldType)) {
+			floggyFieldType = PersistableMetadata.FLOAT;
+		}
+
+		if (CtClass.intType.equals(fieldType)) {
+			floggyFieldType = PersistableMetadata.INT;
+		}
+
+		if (CtClass.longType.equals(fieldType)) {
+			floggyFieldType = PersistableMetadata.LONG;
+		}
+
+		if (CtClass.shortType.equals(fieldType)) {
+			floggyFieldType = PersistableMetadata.SHORT;
+		}
+
+		return floggyFieldType;
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param field DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	protected boolean ignoreField(CtField field) {
+		int modifier = field.getModifiers();
+
+		return field.getName().equals("__id")
+		 || field.getName().equals("__persistableMetadata")
+		 || Modifier.isTransient(modifier) || Modifier.isStatic(modifier);
+	}
+
+	private void addMetadataManagerUtilClass()
+		throws CannotCompileException, IOException, NotFoundException {
 		alreadyProcessedMetadatas.addAll(configuration.getPersistableMetadatas());
+
 		Set metadatas = alreadyProcessedMetadatas;
 		StringBuffer buffer = new StringBuffer();
-		
+
 		buffer.append("public static void init() throws Exception {\n");
 		buffer.append("rmsBasedMetadatas = new java.util.Hashtable();\n");
 		buffer.append("classBasedMetadatas = new java.util.Hashtable();\n");
 		buffer.append("java.util.Hashtable temp = null;\n");
-		
+
 		for (Iterator iterator = metadatas.iterator(); iterator.hasNext();) {
 			PersistableMetadata metadata = (PersistableMetadata) iterator.next();
 			boolean isAbstract = metadata.isAbstract();
@@ -403,18 +482,21 @@ public class Weaver {
 			String superClassName = metadata.getSuperClassName();
 			String[] fieldNames = metadata.getFieldNames();
 			int[] fieldTypes = metadata.getFieldTypes();
-			Hashtable persistableImplementations = metadata.getPersistableImplementations();
+			Hashtable persistableImplementations =
+				metadata.getPersistableImplementations();
 			String recordStoreName = metadata.getRecordStoreName();
 
 			StringBuffer fieldNamesBuffer = new StringBuffer("new String[");
 			StringBuffer fieldTypesBuffer = new StringBuffer("new int[");
 			boolean addHeader = true;
+
 			for (int i = 0; i < fieldNames.length; i++) {
 				if (addHeader) {
 					fieldNamesBuffer.append("]{");
 					fieldTypesBuffer.append("]{");
 					addHeader = false;
 				}
+
 				fieldNamesBuffer.append("\"");
 				fieldNamesBuffer.append(fieldNames[i]);
 				fieldNamesBuffer.append("\",");
@@ -422,6 +504,7 @@ public class Weaver {
 				fieldTypesBuffer.append(fieldTypes[i]);
 				fieldTypesBuffer.append(",");
 			}
+
 			if (addHeader) {
 				fieldNamesBuffer.append("0]");
 				fieldTypesBuffer.append("0]");
@@ -431,14 +514,17 @@ public class Weaver {
 				fieldTypesBuffer.deleteCharAt(fieldTypesBuffer.length() - 1);
 				fieldTypesBuffer.append("}");
 			}
-			
-			if (persistableImplementations != null && !persistableImplementations.isEmpty()) {
 
+			if ((persistableImplementations != null)
+				 && !persistableImplementations.isEmpty()) {
 				buffer.append("temp = new java.util.Hashtable();\n");
+
 				Enumeration enumeration = persistableImplementations.keys();
+
 				while (enumeration.hasMoreElements()) {
 					String fieldName = (String) enumeration.nextElement();
-					String classNameOfField = (String) persistableImplementations.get(fieldName);
+					String classNameOfField =
+						(String) persistableImplementations.get(fieldName);
 					buffer.append("temp.put(\"");
 					buffer.append(fieldName);
 					buffer.append("\", \"");
@@ -446,33 +532,32 @@ public class Weaver {
 					buffer.append("\");\n");
 				}
 
-				buffer.append("classBasedMetadatas.put(\"" + className 
-					+ "\", new net.sourceforge.floggy.persistence.impl.PersistableMetadata(" + isAbstract + ", \"" 
-					+ className + "\", " 
-					+ ((superClassName != null) ? ("\"" + superClassName + "\", ") : ("null, "))
-					+ fieldNamesBuffer.toString() + ", " 
-					+ fieldTypesBuffer.toString() + ", temp, "
-					+ "\"" + recordStoreName + "\""
-					+ "));\n");
-
+				buffer.append("classBasedMetadatas.put(\"" + className
+					+ "\", new net.sourceforge.floggy.persistence.impl.PersistableMetadata("
+					+ isAbstract + ", \"" + className + "\", "
+					+ ((superClassName != null) ? ("\"" + superClassName + "\", ")
+					: ("null, ")) + fieldNamesBuffer.toString() + ", "
+					+ fieldTypesBuffer.toString() + ", temp, " + "\"" + recordStoreName
+					+ "\"" + "));\n");
 			} else {
-				buffer.append("classBasedMetadatas.put(\"" + className 
-					+ "\", new net.sourceforge.floggy.persistence.impl.PersistableMetadata(" + isAbstract + ", \"" 
-					+ className + "\", " 
-					+ ((superClassName != null) ? ("\"" + superClassName + "\", ") : ("null, "))
-					+ fieldNamesBuffer.toString() + ", " 
-					+ fieldTypesBuffer.toString() + ", null, "
-					+ "\"" + recordStoreName + "\""
-					+ "));\n");
+				buffer.append("classBasedMetadatas.put(\"" + className
+					+ "\", new net.sourceforge.floggy.persistence.impl.PersistableMetadata("
+					+ isAbstract + ", \"" + className + "\", "
+					+ ((superClassName != null) ? ("\"" + superClassName + "\", ")
+					: ("null, ")) + fieldNamesBuffer.toString() + ", "
+					+ fieldTypesBuffer.toString() + ", null, " + "\"" + recordStoreName
+					+ "\"" + "));\n");
 			}
-
 		}
 
 		buffer.append("load();\n");
 		buffer.append("}\n");
 
-		CtClass ctClass= this.classpathPool.get("net.sourceforge.floggy.persistence.impl.MetadataManagerUtil");
-		CtMethod[] methods= ctClass.getMethods();
+		CtClass ctClass =
+			this.classpathPool.get(
+				"net.sourceforge.floggy.persistence.impl.MetadataManagerUtil");
+		CtMethod[] methods = ctClass.getMethods();
+
 		for (int i = 0; i < methods.length; i++) {
 			if (methods[i].getName().equals("init")) {
 				ctClass.removeMethod(methods[i]);
@@ -483,84 +568,200 @@ public class Weaver {
 		embeddedClassesOutputPool.addClass(ctClass);
 	}
 
+	private List buildClassTree(CtClass ctClass) throws NotFoundException {
+		final CtClass persistable = classpathPool.get(Weaver.PERSISTABLE_CLASSNAME);
+		List list = new ArrayList();
+		CtClass superClass = ctClass;
+		String superName = ctClass.getName();
+
+		do {
+			list.add(superName);
+
+			if (!configuration.containsPersistable(superName)) {
+				configuration.addPersistableMetadata(createPersistableMetadata(
+						superClass));
+			}
+
+			superClass = superClass.getSuperclass();
+			superName = superClass.getName();
+		} while (!"java.lang.Object".equals(superName)
+			 && superClass.subtypeOf(persistable));
+
+		return list;
+	}
+
+	private PersistableMetadata createPersistableMetadata(CtClass ctClass)
+		throws NotFoundException {
+		String className = ctClass.getName();
+		String superClassName = null;
+		ClassVerifier superClassVerifier =
+			new ClassVerifier(ctClass.getSuperclass(), classpathPool);
+
+		if (superClassVerifier.isPersistable()) {
+			superClassName = ctClass.getSuperclass().getName();
+		}
+
+		CtField[] fields = ctClass.getDeclaredFields();
+		List fieldNames = new ArrayList(fields.length);
+		List fieldTypes = new ArrayList(fields.length);
+		Hashtable persistableImplementations = null;
+
+		for (int i = 0; i < fields.length; i++) {
+			CtField field = (CtField) fields[i];
+
+			if (ignoreField(field)) {
+				continue;
+			}
+
+			fieldNames.add(field.getName());
+
+			Integer type = buildFloggyFieldType(field.getType());
+			fieldTypes.add(type);
+
+			if ((type.intValue() & PersistableMetadata.PERSISTABLE) == PersistableMetadata.PERSISTABLE) {
+				if (persistableImplementations == null) {
+					persistableImplementations = new Hashtable();
+				}
+
+				persistableImplementations.put(field.getName(),
+					field.getType().getName());
+			}
+		}
+
+		int[] temp = new int[fieldTypes.size()];
+
+		for (int i = 0; i < fieldTypes.size(); i++) {
+			temp[i] = ((Integer) fieldTypes.get(i)).intValue();
+		}
+
+		String recordStoreName = ctClass.getSimpleName() + className.hashCode();
+
+		if (recordStoreName.length() > 32) {
+			LOG.warn("The recordStore name " + recordStoreName
+				+ " is bigger than 32 characters. It will be truncated to "
+				+ recordStoreName.substring(0, 32));
+			recordStoreName = recordStoreName.substring(0, 32);
+		}
+
+		PersistableMetadata metadata =
+			new PersistableMetadata(Modifier.isAbstract(ctClass.getModifiers()),
+				className, superClassName,
+				(String[]) fieldNames.toArray(new String[fieldNames.size()]), temp,
+				persistableImplementations, recordStoreName);
+
+		return metadata;
+	}
+
+	private void embeddedClass(String fileName) throws IOException {
+		URL fileURL = getClass().getResource(fileName);
+
+		if (fileURL != null) {
+			fileName = fileName.replace('/', File.separatorChar);
+			embeddedClassesOutputPool.addFile(fileURL, fileName);
+			classpathPool.makeClass(fileURL.openStream());
+		}
+	}
+
+	private void embeddedUnderlineCoreClasses() throws IOException {
+		embeddedClass(
+			"/net/sourceforge/floggy/persistence/impl/FloggyOutputStream.class");
+		embeddedClass(
+			"/net/sourceforge/floggy/persistence/impl/FloggyProperties$1.class");
+		embeddedClass(
+			"/net/sourceforge/floggy/persistence/impl/ObjectComparator.class");
+		embeddedClass("/net/sourceforge/floggy/persistence/impl/ObjectFilter.class");
+		embeddedClass(
+			"/net/sourceforge/floggy/persistence/impl/ObjectSetImpl.class");
+		embeddedClass(
+			"/net/sourceforge/floggy/persistence/impl/__Persistable.class");
+		embeddedClass(
+			"/net/sourceforge/floggy/persistence/impl/PersistableManagerImpl.class");
+		embeddedClass(
+			"/net/sourceforge/floggy/persistence/impl/PersistableManagerImpl$1.class");
+		embeddedClass(
+			"/net/sourceforge/floggy/persistence/impl/PersistableManagerImpl$RecordStoreReference.class");
+		embeddedClass(
+			"/net/sourceforge/floggy/persistence/impl/PersistableMetadata.class");
+		embeddedClass(
+			"/net/sourceforge/floggy/persistence/impl/migration/MigrationManagerImpl.class");
+		embeddedClass(
+			"/net/sourceforge/floggy/persistence/impl/migration/EnumerationImpl.class");
+		embeddedClass(
+			"/net/sourceforge/floggy/persistence/impl/migration/HashtableValueNullable.class");
+	}
+
 	/**
-	 * Returns the class name given a file name.
-	 * 
-	 * @param fileName
-	 * @return
-	 */
+	* Returns the class name given a file name.
+	*
+	* @param fileName
+	*
+	* @return
+	*/
 	private String getClassName(String fileName) {
 		if (fileName.endsWith(".class")) {
 			String className = fileName.replace(File.separatorChar, '.');
+
 			return className.substring(0, className.length() - 6);
 		}
 
-		// File name does not represents a class file.
 		return null;
 	}
 
-	private List getClassThatImplementsPersistable() throws NotFoundException,
-			IOException {
+	private List getClassThatImplementsPersistable()
+		throws NotFoundException, IOException {
 		int classCount = this.inputPool.getFileCount();
 		LOG.info("Look up for classes that implements Persistable!");
+
 		List list = new LinkedList();
-		final CtClass persistable = classpathPool
-				.get(Weaver.PERSISTABLE_CLASSNAME);
-		final CtClass __persistable = classpathPool
-				.get(Weaver.__PERSISTABLE_CLASSNAME);
+		final CtClass persistable = classpathPool.get(Weaver.PERSISTABLE_CLASSNAME);
+		final CtClass __persistable =
+			classpathPool.get(Weaver.__PERSISTABLE_CLASSNAME);
+
 		for (int i = 0; i < classCount; i++) {
 			String fileName = this.inputPool.getFileName(i);
 			String className = getClassName(fileName);
-			// Adds non-class files to output pool
+
 			if (className == null) {
 				this.outputPool.addFile(inputPool.getFileURL(i), fileName);
+
 				continue;
 			}
 
 			CtClass ctClass = this.classpathPool.get(className);
-			// verifing if the bytecode are already processed.
-			if (ctClass.subtypeOf(persistable)
-					&& !ctClass.subtypeOf(__persistable)
-					&& !ctClass.isInterface()) {
-				// LOG.info(className);
+
+			if (ctClass.subtypeOf(persistable) && !ctClass.subtypeOf(__persistable)
+				 && !ctClass.isInterface()) {
 				List tree = buildClassTree(ctClass);
 				Collections.reverse(tree);
+
 				for (int j = 0; j < tree.size(); j++) {
 					Object object = tree.get(j);
+
 					if (!list.contains(object)) {
 						list.add(object);
 					}
 				}
 			} else {
 				LOG.debug("Bytecode NOT modified.");
+
 				if (ctClass.subtypeOf(__persistable) && !ctClass.equals(__persistable)) {
 					List temp = buildClassTree(ctClass);
-					Iterator iterator = temp.iterator(); 
+					Iterator iterator = temp.iterator();
+
 					while (iterator.hasNext()) {
 						className = (String) iterator.next();
+
 						PersistableMetadata metadata = createPersistableMetadata(ctClass);
 						alreadyProcessedMetadatas.add(metadata);
 					}
 				}
-				// Adds non-persistable class to output pool
+
 				this.outputPool.addFile(inputPool.getFileURL(i), fileName);
 			}
 		}
+
 		return list;
 	}
-
-//	private XStream getXStream() {
-//		XStream stream = new XStream();
-//		stream.alias("floggy", Configuration.class);
-//		stream.useAttributeFor(Configuration.class, "generateSource");
-//		stream.useAttributeFor(Configuration.class, "addDefaultConstructor");
-//
-//		stream.aliasType("persistables", ArrayList.class);
-//
-//		stream.alias("persistable", PersistableConfiguration.class);
-//		stream.useAttributeFor(PersistableConfiguration.class, "className");
-//		return stream;
-//	}
 
 	private boolean isCLDC10() {
 		try {
@@ -569,75 +770,7 @@ public class Weaver {
 		} catch (NotFoundException nfex) {
 			return true;
 		}
+
 		return false;
 	}
-
-//	private void readConfiguration() throws IOException {
-//		if (configFile != null && configFile.exists()) {
-//			XStream stream = getXStream();
-//			configuration = (Configuration) stream
-//					.fromXML(new FileReader(configFile));
-//		}
-//	}
-
-	/**
-	 * Sets the classpath.
-	 * 
-	 */
-	public void setClasspath(String[] classpath) {
-		if (classpath != null && classpath.length > 0) {
-			for (int i = classpath.length - 1; i >= 0; i--) {
-				try {
-					this.classpathPool.insertClassPath(classpath[i]);
-				} catch (NotFoundException e) {
-					// Ignore
-				}
-			}
-		}
-	}
-
-	public void setConfiguration(Configuration configuration) {
-		this.configuration = configuration;
-	}
-
-	/**
-	 * Sets the input file.
-	 * 
-	 */
-	public void setInputFile(File inputFile) throws WeaverException {
-		this.inputPool = PoolFactory.createInputPool(inputFile);
-
-		try {
-			this.classpathPool.insertClassPath(inputFile.getCanonicalPath());
-		} catch (NotFoundException e) {
-			// Ignore
-		} catch (IOException e) {
-			// Ignore
-		}
-	}
-
-	/**
-	 * Sets the output file.
-	 * 
-	 * @param outputFile
-	 */
-	public void setOutputFile(File outputFile) throws WeaverException {
-		outputPool = PoolFactory.createOutputPool(outputFile);
-		if (embeddedClassesOutputPool == null) {
-			embeddedClassesOutputPool = outputPool;
-		}
-	}
-
-	public void setEmbeddedClassesOutputPool(File embeddedClassesOutputFile) throws WeaverException {
-		embeddedClassesOutputPool = PoolFactory.createOutputPool(embeddedClassesOutputFile);
-	}
-
-//	private void writeConfiguration() throws IOException {
-//		if (configFile == null) {
-//			configFile= new File("floggy.xml");
-//		}
-//		XStream stream = getXStream();
-//		stream.toXML(configuration, new FileWriter(configFile));
-//	}
-
 }

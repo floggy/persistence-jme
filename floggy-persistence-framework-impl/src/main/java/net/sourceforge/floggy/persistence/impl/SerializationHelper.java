@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2006-2009 Floggy Open Source Group. All rights reserved.
+ * Copyright (c) 2006-2010 Floggy Open Source Group. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package net.sourceforge.floggy.persistence.impl;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Enumeration;
@@ -30,110 +31,241 @@ import net.sourceforge.floggy.persistence.FloggyException;
 import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.PersistableManager;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class SerializationHelper {
-
 	public static final int NOT_NULL = 0;
-
 	public static final int NULL = 1;
-
 	private static PersistableManager pm = null;
-	
-	public static void setPersistableManager(PersistableManager pm) {
-		SerializationHelper.pm = pm;
+
+	/**
+	 * Creates a new SerializationHelper object.
+	 */
+	protected SerializationHelper() {
 	}
 
-	public final static Boolean readBoolean(DataInput in) throws IOException {
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param in DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*
+	* @throws IOException DOCUMENT ME!
+	*/
+	public static final Boolean readBoolean(DataInput in)
+		throws IOException {
 		Boolean b = null;
+
 		if (in.readByte() == NOT_NULL) {
 			b = (in.readBoolean()) ? Boolean.TRUE : Boolean.FALSE;
 		}
+
 		return b;
 	}
 
-	public final static Byte readByte(DataInput in) throws IOException {
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param in DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*
+	* @throws IOException DOCUMENT ME!
+	*/
+	public static final Byte readByte(DataInput in) throws IOException {
 		Byte b = null;
+
 		if (in.readByte() == NOT_NULL) {
 			b = new Byte(in.readByte());
 		}
+
 		return b;
 	}
 
-	public final static Calendar readCalendar(DataInput in) throws IOException {
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param in DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*
+	* @throws IOException DOCUMENT ME!
+	*/
+	public static final Calendar readCalendar(DataInput in)
+		throws IOException {
 		Calendar c = null;
+
 		if (in.readByte() == NOT_NULL) {
 			String timeZoneID = in.readUTF();
 			c = Calendar.getInstance(TimeZone.getTimeZone(timeZoneID));
 			c.setTime(new Date(in.readLong()));
 		}
+
 		return c;
 	}
 
-	public final static Character readChar(DataInput in) throws IOException {
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param in DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*
+	* @throws IOException DOCUMENT ME!
+	*/
+	public static final Character readChar(DataInput in)
+		throws IOException {
 		Character c = null;
+
 		if (in.readByte() == NOT_NULL) {
 			c = new Character(in.readChar());
 		}
+
 		return c;
 	}
 
-	public final static Date readDate(DataInput in) throws IOException {
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param in DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*
+	* @throws IOException DOCUMENT ME!
+	*/
+	public static final Date readDate(DataInput in) throws IOException {
 		Date d = null;
+
 		if (in.readByte() == NOT_NULL) {
 			d = new Date(in.readLong());
 		}
+
 		return d;
 	}
 
-	public final static Double readDouble(DataInput in) throws IOException {
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param in DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*
+	* @throws IOException DOCUMENT ME!
+	*/
+	public static final Double readDouble(DataInput in) throws IOException {
 		Double d = null;
+
 		if (in.readByte() == NOT_NULL) {
 			d = new Double(in.readDouble());
 		}
+
 		return d;
 	}
 
-	public final static Float readFloat(DataInput in) throws IOException {
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param in DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*
+	* @throws IOException DOCUMENT ME!
+	*/
+	public static final Float readFloat(DataInput in) throws IOException {
 		Float f = null;
+
 		if (in.readByte() == NOT_NULL) {
 			f = new Float(in.readFloat());
 		}
+
 		return f;
 	}
 
-	public final static Hashtable readHashtable(DataInput in)
-			throws Exception {
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param in DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
+	public static final Hashtable readHashtable(DataInput in)
+		throws Exception {
 		Hashtable h = null;
+
 		if (in.readByte() == NOT_NULL) {
 			int size = in.readInt();
 			h = new Hashtable(size);
+
 			for (int i = 0; i < size; i++) {
 				Object key = readObject(in, false);
 				Object value = readObject(in, false);
 				h.put(key, value);
 			}
 		}
+
 		return h;
 	}
 
-	public final static Integer readInt(DataInput in) throws IOException {
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param in DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*
+	* @throws IOException DOCUMENT ME!
+	*/
+	public static final Integer readInt(DataInput in) throws IOException {
 		Integer i = null;
+
 		if (in.readByte() == NOT_NULL) {
 			i = new Integer(in.readInt());
 		}
+
 		return i;
 	}
 
-	public final static Long readLong(DataInput in) throws IOException {
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param in DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*
+	* @throws IOException DOCUMENT ME!
+	*/
+	public static final Long readLong(DataInput in) throws IOException {
 		Long l = null;
+
 		if (in.readByte() == NOT_NULL) {
 			l = new Long(in.readLong());
 		}
+
 		return l;
 	}
 
-	public final static Object readObject(DataInput in, boolean lazy) throws Exception {
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param in DOCUMENT ME!
+	* @param lazy DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
+	public static final Object readObject(DataInput in, boolean lazy)
+		throws Exception {
 		Object o = null;
 		String className = in.readUTF();
+
 		if ("java.lang.Boolean".equals(className)) {
 			o = (in.readBoolean()) ? Boolean.TRUE : Boolean.FALSE;
 		} else if ("java.lang.Byte".equals(className)) {
@@ -175,12 +307,25 @@ public class SerializationHelper {
 				pm.load((Persistable) o, in.readInt(), lazy);
 			}
 		}
+
 		return o;
 	}
 
-	public final static Object readObjectCLDC10(DataInput in, boolean lazy) throws Exception {
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param in DOCUMENT ME!
+	* @param lazy DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
+	public static final Object readObjectCLDC10(DataInput in, boolean lazy)
+		throws Exception {
 		Object o = null;
 		String className = in.readUTF();
+
 		if ("java.lang.Boolean".equals(className)) {
 			o = (in.readBoolean()) ? Boolean.TRUE : Boolean.FALSE;
 		} else if ("java.lang.Byte".equals(className)) {
@@ -218,86 +363,178 @@ public class SerializationHelper {
 				pm.load((Persistable) o, in.readInt(), lazy);
 			}
 		}
+
 		return o;
 	}
 
-	public final static Persistable readPersistable(DataInput in,
-			Persistable persistable, boolean lazy) throws Exception {
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param in DOCUMENT ME!
+	* @param persistable DOCUMENT ME!
+	* @param lazy DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
+	public static final Persistable readPersistable(DataInput in,
+		Persistable persistable, boolean lazy) throws Exception {
 		if (lazy) {
 			switch (in.readByte()) {
 			case -1:
 				in.readUTF();
+
 			case NOT_NULL:
 				in.readInt();
+
 			case NULL:
 				persistable = null;
 			}
 		} else {
 			switch (in.readByte()) {
 			case -1:
+
 				String className = in.readUTF();
 				persistable = (Persistable) Class.forName(className).newInstance();
+
 			case NOT_NULL:
 				pm.load(persistable, in.readInt());
+
 				break;
+
 			case NULL:
 				persistable = null;
+
 				break;
 			}
 		}
+
 		return persistable;
 	}
 
-	public final static Short readShort(DataInput in) throws IOException {
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param in DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*
+	* @throws IOException DOCUMENT ME!
+	*/
+	public static final Short readShort(DataInput in) throws IOException {
 		Short s = null;
+
 		if (in.readByte() == NOT_NULL) {
 			s = new Short(in.readShort());
 		}
+
 		return s;
 	}
 
-	public final static Stack readStack(DataInput in, boolean lazy) throws Exception {
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param in DOCUMENT ME!
+	* @param lazy DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
+	public static final Stack readStack(DataInput in, boolean lazy)
+		throws Exception {
 		Stack s = null;
 		Vector v = readVector(in, lazy);
+
 		if (v != null) {
 			s = new Stack();
+
 			for (int i = 0; i < v.size(); i++) {
 				s.push(v.elementAt(i));
 			}
 		}
+
 		return s;
 	}
 
-	public final static String readString(DataInput in) throws IOException {
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param in DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*
+	* @throws IOException DOCUMENT ME!
+	*/
+	public static final String readString(DataInput in) throws IOException {
 		String s = null;
+
 		if (in.readByte() == NOT_NULL) {
 			s = in.readUTF();
 		}
+
 		return s;
 	}
 
-	public final static StringBuffer readStringBuffer(DataInput in)
-			throws IOException {
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param in DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*
+	* @throws IOException DOCUMENT ME!
+	*/
+	public static final StringBuffer readStringBuffer(DataInput in)
+		throws IOException {
 		StringBuffer s = null;
+
 		if (in.readByte() == NOT_NULL) {
 			s = new StringBuffer(in.readUTF());
 		}
+
 		return s;
 	}
 
-	public final static TimeZone readTimeZone(DataInput in) throws IOException {
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param in DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*
+	* @throws IOException DOCUMENT ME!
+	*/
+	public static final TimeZone readTimeZone(DataInput in)
+		throws IOException {
 		TimeZone t = null;
+
 		if (in.readByte() == NOT_NULL) {
 			t = TimeZone.getTimeZone(in.readUTF());
 		}
+
 		return t;
 	}
 
-	public final static Vector readVector(DataInput in, boolean lazy) throws Exception {
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param in DOCUMENT ME!
+	* @param lazy DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
+	public static final Vector readVector(DataInput in, boolean lazy)
+		throws Exception {
 		Vector v = null;
+
 		if (in.readByte() == NOT_NULL) {
 			int size = in.readInt();
 			v = new Vector(size);
+
 			for (int i = 0; i < size; i++) {
 				if (in.readByte() == NULL) {
 					v.addElement(null);
@@ -306,11 +543,29 @@ public class SerializationHelper {
 				}
 			}
 		}
+
 		return v;
 	}
 
-	public final static void writeBoolean(DataOutput out, Boolean b)
-			throws IOException {
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param pm DOCUMENT ME!
+	*/
+	public static void setPersistableManager(PersistableManager pm) {
+		SerializationHelper.pm = pm;
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param out DOCUMENT ME!
+	* @param b DOCUMENT ME!
+	*
+	* @throws IOException DOCUMENT ME!
+	*/
+	public static final void writeBoolean(DataOutput out, Boolean b)
+		throws IOException {
 		if (b == null) {
 			out.writeByte(NULL);
 		} else {
@@ -319,8 +574,16 @@ public class SerializationHelper {
 		}
 	}
 
-	public final static void writeByte(DataOutput out, Byte b)
-			throws IOException {
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param out DOCUMENT ME!
+	* @param b DOCUMENT ME!
+	*
+	* @throws IOException DOCUMENT ME!
+	*/
+	public static final void writeByte(DataOutput out, Byte b)
+		throws IOException {
 		if (b == null) {
 			out.writeByte(NULL);
 		} else {
@@ -329,8 +592,16 @@ public class SerializationHelper {
 		}
 	}
 
-	public final static void writeCalendar(DataOutput out, Calendar c)
-			throws IOException {
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param out DOCUMENT ME!
+	* @param c DOCUMENT ME!
+	*
+	* @throws IOException DOCUMENT ME!
+	*/
+	public static final void writeCalendar(DataOutput out, Calendar c)
+		throws IOException {
 		if (c == null) {
 			out.writeByte(NULL);
 		} else {
@@ -340,8 +611,16 @@ public class SerializationHelper {
 		}
 	}
 
-	public final static void writeChar(DataOutput out, Character c)
-			throws IOException {
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param out DOCUMENT ME!
+	* @param c DOCUMENT ME!
+	*
+	* @throws IOException DOCUMENT ME!
+	*/
+	public static final void writeChar(DataOutput out, Character c)
+		throws IOException {
 		if (c == null) {
 			out.writeByte(NULL);
 		} else {
@@ -350,8 +629,16 @@ public class SerializationHelper {
 		}
 	}
 
-	public final static void writeDate(DataOutput out, Date d)
-			throws IOException {
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param out DOCUMENT ME!
+	* @param d DOCUMENT ME!
+	*
+	* @throws IOException DOCUMENT ME!
+	*/
+	public static final void writeDate(DataOutput out, Date d)
+		throws IOException {
 		if (d == null) {
 			out.writeByte(NULL);
 		} else {
@@ -360,8 +647,16 @@ public class SerializationHelper {
 		}
 	}
 
-	public final static void writeDouble(DataOutput out, Double d)
-			throws IOException {
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param out DOCUMENT ME!
+	* @param d DOCUMENT ME!
+	*
+	* @throws IOException DOCUMENT ME!
+	*/
+	public static final void writeDouble(DataOutput out, Double d)
+		throws IOException {
 		if (d == null) {
 			out.writeByte(NULL);
 		} else {
@@ -370,8 +665,16 @@ public class SerializationHelper {
 		}
 	}
 
-	public final static void writeFloat(DataOutput out, Float f)
-			throws IOException {
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param out DOCUMENT ME!
+	* @param f DOCUMENT ME!
+	*
+	* @throws IOException DOCUMENT ME!
+	*/
+	public static final void writeFloat(DataOutput out, Float f)
+		throws IOException {
 		if (f == null) {
 			out.writeByte(NULL);
 		} else {
@@ -380,14 +683,24 @@ public class SerializationHelper {
 		}
 	}
 
-	public final static void writeHashtable(DataOutput out, Hashtable h)
-			throws Exception {
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param out DOCUMENT ME!
+	* @param h DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
+	public static final void writeHashtable(DataOutput out, Hashtable h)
+		throws Exception {
 		if (h == null) {
 			out.writeByte(NULL);
 		} else {
 			out.writeByte(NOT_NULL);
 			out.writeInt(h.size());
+
 			Enumeration keys = h.keys();
+
 			while (keys.hasMoreElements()) {
 				Object o = keys.nextElement();
 				writeObject(out, o);
@@ -396,8 +709,16 @@ public class SerializationHelper {
 		}
 	}
 
-	public final static void writeInt(DataOutput out, Integer i)
-			throws IOException {
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param out DOCUMENT ME!
+	* @param i DOCUMENT ME!
+	*
+	* @throws IOException DOCUMENT ME!
+	*/
+	public static final void writeInt(DataOutput out, Integer i)
+		throws IOException {
 		if (i == null) {
 			out.writeByte(NULL);
 		} else {
@@ -406,8 +727,16 @@ public class SerializationHelper {
 		}
 	}
 
-	public final static void writeLong(DataOutput out, Long l)
-			throws IOException {
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param out DOCUMENT ME!
+	* @param l DOCUMENT ME!
+	*
+	* @throws IOException DOCUMENT ME!
+	*/
+	public static final void writeLong(DataOutput out, Long l)
+		throws IOException {
 		if (l == null) {
 			out.writeByte(NULL);
 		} else {
@@ -416,14 +745,25 @@ public class SerializationHelper {
 		}
 	}
 
-	public final static void writeObject(DataOutput out, Object o)
-			throws Exception {
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param out DOCUMENT ME!
+	* @param o DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	* @throws FloggyException DOCUMENT ME!
+	*/
+	public static final void writeObject(DataOutput out, Object o)
+		throws Exception {
 		String className = o.getClass().getName();
+
 		if (o instanceof Calendar) {
 			className = "java.util.Calendar";
 		} else if (o instanceof TimeZone) {
 			className = "java.util.TimeZone";
 		}
+
 		out.writeUTF(className);
 
 		if (o instanceof Boolean) {
@@ -466,18 +806,29 @@ public class SerializationHelper {
 			out.writeInt(id);
 		} else {
 			throw new FloggyException("The class " + className
-					+ " doesn't is a persistable class!");
+				+ " doesn't is a persistable class!");
 		}
 	}
 
-	public final static void writeObjectCLDC10(DataOutput out, Object o)
-			throws Exception {
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param out DOCUMENT ME!
+	* @param o DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	* @throws FloggyException DOCUMENT ME!
+	*/
+	public static final void writeObjectCLDC10(DataOutput out, Object o)
+		throws Exception {
 		String className = o.getClass().getName();
+
 		if (o instanceof Calendar) {
 			className = "java.util.Calendar";
 		} else if (o instanceof TimeZone) {
 			className = "java.util.TimeZone";
 		}
+
 		out.writeUTF(className);
 
 		if (o instanceof Boolean) {
@@ -516,28 +867,47 @@ public class SerializationHelper {
 			writeVector(out, v);
 		} else {
 			throw new FloggyException("The class " + className
-					+ " doesn't is a persistable class!");
+				+ " doesn't is a persistable class!");
 		}
 	}
 
-	public final static void writePersistable(DataOutput out,
-			String defaultClassName, Persistable persistable) throws Exception {
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param out DOCUMENT ME!
+	* @param defaultClassName DOCUMENT ME!
+	* @param persistable DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
+	public static final void writePersistable(DataOutput out,
+		String defaultClassName, Persistable persistable) throws Exception {
 		if (persistable == null) {
 			out.writeByte(NULL);
 		} else {
 			String className = persistable.getClass().getName();
+
 			if (!defaultClassName.equals(className)) {
 				out.writeByte(-1);
 				out.writeUTF(className);
 			} else {
 				out.writeByte(NOT_NULL);
 			}
+
 			out.writeInt(pm.save(persistable));
 		}
 	}
 
-	public final static void writeShort(DataOutput out, Short s)
-			throws IOException {
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param out DOCUMENT ME!
+	* @param s DOCUMENT ME!
+	*
+	* @throws IOException DOCUMENT ME!
+	*/
+	public static final void writeShort(DataOutput out, Short s)
+		throws IOException {
 		if (s == null) {
 			out.writeByte(NULL);
 		} else {
@@ -546,13 +916,29 @@ public class SerializationHelper {
 		}
 	}
 
-	public final static void writeStack(DataOutput out, Stack s)
-			throws Exception {
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param out DOCUMENT ME!
+	* @param s DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
+	public static final void writeStack(DataOutput out, Stack s)
+		throws Exception {
 		writeVector(out, s);
 	}
 
-	public final static void writeString(DataOutput out, String s)
-			throws IOException {
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param out DOCUMENT ME!
+	* @param s DOCUMENT ME!
+	*
+	* @throws IOException DOCUMENT ME!
+	*/
+	public static final void writeString(DataOutput out, String s)
+		throws IOException {
 		if (s == null) {
 			out.writeByte(NULL);
 		} else {
@@ -561,8 +947,16 @@ public class SerializationHelper {
 		}
 	}
 
-	public final static void writeStringBuffer(DataOutput out, StringBuffer s)
-			throws IOException {
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param out DOCUMENT ME!
+	* @param s DOCUMENT ME!
+	*
+	* @throws IOException DOCUMENT ME!
+	*/
+	public static final void writeStringBuffer(DataOutput out, StringBuffer s)
+		throws IOException {
 		if (s == null) {
 			out.writeByte(NULL);
 		} else {
@@ -571,8 +965,16 @@ public class SerializationHelper {
 		}
 	}
 
-	public final static void writeTimeZone(DataOutput out, TimeZone t)
-			throws IOException {
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param out DOCUMENT ME!
+	* @param t DOCUMENT ME!
+	*
+	* @throws IOException DOCUMENT ME!
+	*/
+	public static final void writeTimeZone(DataOutput out, TimeZone t)
+		throws IOException {
 		if (t == null) {
 			out.writeByte(NULL);
 		} else {
@@ -581,16 +983,27 @@ public class SerializationHelper {
 		}
 	}
 
-	public final static void writeVector(DataOutput out, Vector v)
-			throws Exception {
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param out DOCUMENT ME!
+	* @param v DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
+	public static final void writeVector(DataOutput out, Vector v)
+		throws Exception {
 		if (v == null) {
 			out.writeByte(NULL);
 		} else {
 			out.writeByte(NOT_NULL);
+
 			int size = v.size();
 			out.writeInt(size);
+
 			for (int i = 0; i < size; i++) {
 				Object object = v.elementAt(i);
+
 				if (object == null) {
 					out.writeByte(NULL);
 				} else {
@@ -600,8 +1013,4 @@ public class SerializationHelper {
 			}
 		}
 	}
-
-	protected SerializationHelper() {
-	}
-
 }

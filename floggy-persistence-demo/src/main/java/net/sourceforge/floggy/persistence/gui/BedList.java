@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2006-2009 Floggy Open Source Group. All rights reserved.
+ * Copyright (c) 2006-2010 Floggy Open Source Group. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,88 +27,115 @@ import net.sourceforge.floggy.persistence.PersistableManager;
 import net.sourceforge.floggy.persistence.model.Bed;
 import net.sourceforge.floggy.persistence.model.BedComparator;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class BedList extends List implements CommandListener {
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected Command cmdBack;
 
-    protected ObjectSet beds;
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected Command cmdCreate;
 
-    protected Command cmdCreate;
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected Command cmdDelete;
 
-    protected Command cmdEdit;
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected Command cmdEdit;
 
-    protected Command cmdDelete;
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected ObjectSet beds;
 
-    protected Command cmdBack;
+	/**
+	 * Creates a new BedList object.
+	 */
+	public BedList() {
+		super("Beds list", List.IMPLICIT);
 
-    public BedList() {
-        super("Beds list", List.IMPLICIT);
+		startData();
+		startComponents();
+	}
 
-        startData();
-        startComponents();
-    }
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param cmd DOCUMENT ME!
+	* @param dsp DOCUMENT ME!
+	*/
+	public void commandAction(Command cmd, Displayable dsp) {
+		if (cmd == this.cmdBack) {
+			MainForm mainForm = new MainForm();
+			HospitalMIDlet.setCurrent(mainForm);
+		} else if (cmd == this.cmdCreate) {
+			Bed bed = new Bed();
+			HospitalMIDlet.setCurrent(new BedForm(bed));
+		} else if (cmd == this.cmdEdit) {
+			if (this.getSelectedIndex() != -1) {
+				Bed bed = null;
 
-    private void startData() {
-        PersistableManager pm = PersistableManager.getInstance();
+				try {
+					bed = (Bed) beds.get(this.getSelectedIndex());
+					HospitalMIDlet.setCurrent(new BedForm(bed));
+				} catch (FloggyException e) {
+					HospitalMIDlet.showException(e);
+				}
+			}
+		} else if (cmd == this.cmdDelete) {
+			if (this.getSelectedIndex() != -1) {
+				try {
+					Bed bed = (Bed) beds.get(this.getSelectedIndex());
+					PersistableManager.getInstance().delete(bed);
+					this.startData();
+				} catch (FloggyException e) {
+					HospitalMIDlet.showException(e);
+				}
+			}
+		}
+	}
 
-        try {
-            this.deleteAll();
+	private void startComponents() {
+		this.cmdBack = new Command("Back", Command.BACK, 0);
+		this.addCommand(this.cmdBack);
 
-            beds = pm.find(Bed.class, null, new BedComparator());
+		this.cmdCreate = new Command("Create", Command.ITEM, 1);
+		this.addCommand(this.cmdCreate);
 
-            for (int i = 0; i < beds.size(); i++) {
-                Bed bed = (Bed) beds.get(i);
-                this.append(bed.getNumber() + " - Floor " + bed.getFloor(), null);
-            }
+		this.cmdEdit = new Command("Edit", Command.ITEM, 2);
+		this.addCommand(this.cmdEdit);
 
-        } catch (FloggyException e) {
-        	HospitalMIDlet.showException(e);
-        }
-    }
+		this.cmdDelete = new Command("Delete", Command.ITEM, 3);
+		this.addCommand(this.cmdDelete);
 
-    private void startComponents() {
-        this.cmdBack = new Command("Back", Command.BACK, 0);
-        this.addCommand(this.cmdBack);
+		this.setCommandListener(this);
+	}
 
-        this.cmdCreate = new Command("Create", Command.ITEM, 1);
-        this.addCommand(this.cmdCreate);
+	private void startData() {
+		PersistableManager pm = PersistableManager.getInstance();
 
-        this.cmdEdit = new Command("Edit", Command.ITEM, 2);
-        this.addCommand(this.cmdEdit);
+		try {
+			this.deleteAll();
 
-        this.cmdDelete = new Command("Delete", Command.ITEM, 3);
-        this.addCommand(this.cmdDelete);
+			beds = pm.find(Bed.class, null, new BedComparator());
 
-        this.setCommandListener(this);
-    }
-
-    public void commandAction(Command cmd, Displayable dsp) {
-        if (cmd == this.cmdBack) {
-            MainForm mainForm = new MainForm();
-            HospitalMIDlet.setCurrent(mainForm);
-        } else if (cmd == this.cmdCreate) {
-            Bed bed = new Bed();
-            HospitalMIDlet.setCurrent(new BedForm(bed));
-        } else if (cmd == this.cmdEdit) {
-            if (this.getSelectedIndex() != -1) {
-                Bed bed = null;
-
-                try {
-                    bed = (Bed) beds.get(this.getSelectedIndex());
-                    HospitalMIDlet.setCurrent(new BedForm(bed));
-                } catch (FloggyException e) {
-                	HospitalMIDlet.showException(e);
-                }
-            }
-        } else if (cmd == this.cmdDelete) {
-            if (this.getSelectedIndex() != -1) {
-
-                try {
-                    Bed bed = (Bed) beds.get(this.getSelectedIndex());
-                    PersistableManager.getInstance().delete(bed);
-                    this.startData();
-                } catch (FloggyException e) {
-                	HospitalMIDlet.showException(e);
-                }
-            }
-        }
-    }
+			for (int i = 0; i < beds.size(); i++) {
+				Bed bed = (Bed) beds.get(i);
+				this.append(bed.getNumber() + " - Floor " + bed.getFloor(), null);
+			}
+		} catch (FloggyException e) {
+			HospitalMIDlet.showException(e);
+		}
+	}
 }

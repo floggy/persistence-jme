@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2006-2009 Floggy Open Source Group. All rights reserved.
+ * Copyright (c) 2006-2010 Floggy Open Source Group. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,39 +18,90 @@ package net.sourceforge.floggy.persistence.pool;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+
 import java.net.URL;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class ZipInputPool implements InputPool {
-
+	/**
+	 * DOCUMENT ME!
+	 */
 	protected File file;
 
+	/**
+	 * DOCUMENT ME!
+	 */
 	protected List files;
 
- 	public ZipInputPool(File file) throws IOException {
-		this.file= file;
+	/**
+	 * Creates a new ZipInputPool object.
+	 *
+	 * @param file DOCUMENT ME!
+	 *
+	 * @throws IOException DOCUMENT ME!
+	 */
+	public ZipInputPool(File file) throws IOException {
+		this.file = file;
 		this.files = new ArrayList();
 		this.initFiles(file);
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public int getFileCount() {
 		return this.files.size();
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param index DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public String getFileName(int index) {
 		return this.files.get(index).toString();
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param index DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*
+	* @throws IOException DOCUMENT ME!
+	*/
+	public URL getFileURL(int index) throws IOException {
+		String name = getFileName(index);
+
+		name = "jar:" + file.toURL() + "!/" + name;
+
+		return new URL(name);
+	}
+
 	private void initFiles(File file) throws IOException {
 		ZipInputStream in = null;
+
 		try {
 			in = new ZipInputStream(new FileInputStream(file));
-			for (ZipEntry entry = in.getNextEntry(); entry != null; entry = in
-					.getNextEntry()) {
-				if(!entry.isDirectory()) {
+
+			for (ZipEntry entry = in.getNextEntry(); entry != null;
+				 entry = in.getNextEntry()) {
+				if (!entry.isDirectory()) {
 					String name = entry.getName();
 					name = name.replace('/', File.separatorChar);
 					this.files.add(name);
@@ -62,13 +113,4 @@ public class ZipInputPool implements InputPool {
 			}
 		}
 	}
-
-	public URL getFileURL(int index) throws IOException {
-		String name = getFileName(index);
-		// jar:http://www.foo.com/bar/baz.jar!/COM/foo/Quux.class
-		name= "jar:" + file.toURL() + "!/" + name;
-		//System.out.println(name);
-		return new URL(name);
-	}
-
 }

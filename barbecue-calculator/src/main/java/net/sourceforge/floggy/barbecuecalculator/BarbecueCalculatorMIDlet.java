@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2006-2009 Floggy Open Source Group. All rights reserved.
+ * Copyright (c) 2006-2010 Floggy Open Source Group. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,13 +23,19 @@ import net.sourceforge.floggy.barbecuecalculator.core.DisplayManager;
 import net.sourceforge.floggy.barbecuecalculator.core.FlowManager;
 import net.sourceforge.floggy.barbecuecalculator.ui.InitialScreenCanvas;
 
-
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class BarbecueCalculatorMIDlet extends MIDlet {
-
 	private InitialScreenCanvas initialScreen;
 
+	/**
+	 * Creates a new BarbecueCalculatorMIDlet object.
+	 */
 	public BarbecueCalculatorMIDlet() {
-
 		try {
 			DisplayManager.startDisplayManager(this);
 			FlowManager.startFlowManager(this);
@@ -46,15 +52,30 @@ public class BarbecueCalculatorMIDlet extends MIDlet {
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param unconditional DOCUMENT ME!
+	*
+	* @throws MIDletStateChangeException DOCUMENT ME!
+	*/
 	protected void destroyApp(boolean unconditional)
-			throws MIDletStateChangeException {
+		throws MIDletStateChangeException {
 		notifyDestroyed();
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*/
 	protected void pauseApp() {
 		notifyPaused();
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws MIDletStateChangeException DOCUMENT ME!
+	*/
 	protected void startApp() throws MIDletStateChangeException {
 		try {
 			DisplayManager.getInstance().show();
