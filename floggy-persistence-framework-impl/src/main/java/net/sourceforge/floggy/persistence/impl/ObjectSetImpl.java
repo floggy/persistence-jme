@@ -47,6 +47,11 @@ class ObjectSetImpl implements ObjectSet {
 	 * The lazy flag.
 	 */
 	protected boolean lazy;
+	
+	/**
+	 * The shared instance
+	 */
+	protected Persistable sharedInstance;
 
 	/**
 	 * Creates a new instance of ObjectSetImpl.
@@ -58,10 +63,11 @@ class ObjectSetImpl implements ObjectSet {
 	 *                objects.
 	 * @param manager TODO
 	 */
-	protected ObjectSetImpl(int[] ids, Class persistableClass, PersistableManagerImpl manager, boolean lazy) {
+	protected ObjectSetImpl(int[] ids, Class persistableClass, PersistableManagerImpl manager, boolean lazy) throws FloggyException {
 		this.ids = ids;
 		this.persistableClass = persistableClass;
-
+		this.sharedInstance = PersistableManagerImpl.createInstance(persistableClass);
+		
 		// Init attributes
 		this.size = (ids == null) ? 0 : ids.length;
 
@@ -106,6 +112,12 @@ class ObjectSetImpl implements ObjectSet {
 		}
 		
 		return ids[index];
+	}
+	
+	public Persistable getSharedInstance(int index) throws FloggyException {
+		manager.load(sharedInstance, getId(index), lazy);
+		
+		return sharedInstance;
 	}
 	
 	/**

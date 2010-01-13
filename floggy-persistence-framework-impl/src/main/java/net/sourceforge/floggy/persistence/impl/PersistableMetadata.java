@@ -42,6 +42,9 @@ public class PersistableMetadata {
 	public static final int VECTOR = 65536;
 	public static final int ARRAY = 131072;
 	public static final int PRIMITIVE = 262144;
+	public static final int JOINED_STRATEGY = 1;
+	public static final int PER_CLASS_STRATEGY = 2;
+	public static final int SINGLE_STRATEGY = 4;
 
     private static boolean equals(Hashtable h, Hashtable h2) {
 		if (h == h2)
@@ -142,26 +145,27 @@ public class PersistableMetadata {
 		return result;
 	}
 
-	private String className;
 	private boolean isAbstract;
+	private String className;
 	private String superClassName;
 	private String[] fieldNames;
 	private int[] fieldTypes;
 	private Hashtable persistableImplementations;
 	private String recordStoreName;
 	private transient int recordId;
+	private int persistableStrategy;
 
     public PersistableMetadata(boolean isAbstract, String className,
 			String superClassName, String[] fieldNames, int[] fieldTypes,
-			Hashtable persistableImplementations, String recordStoreName) {
+			Hashtable persistableImplementations, String recordStoreName, int persistableStrategy) {
 		this(isAbstract, className, superClassName, fieldNames, fieldTypes,
-				persistableImplementations, recordStoreName, -1);
+				persistableImplementations, recordStoreName, persistableStrategy, -1);
 	}
 
     public PersistableMetadata(boolean isAbstract, String className,
 			String superClassName, String[] fieldNames, int[] fieldTypes,
 			Hashtable persistableImplementations, String recordStoreName,
-			int recordId) {
+			int persistableStrategy, int recordId) {
 		super();
 		this.isAbstract = isAbstract;
 		this.className = className;
@@ -170,20 +174,18 @@ public class PersistableMetadata {
 		this.fieldTypes = fieldTypes;
 		this.persistableImplementations = persistableImplementations;
 		this.recordStoreName = recordStoreName;
+		this.persistableStrategy = persistableStrategy;
 		this.recordId = recordId;
 	}
 
-    /**
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	public boolean equals(Object obj) {
+    public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		final PersistableMetadata other = (PersistableMetadata) obj;
+		PersistableMetadata other = (PersistableMetadata) obj;
 		if (className == null) {
 			if (other.className != null)
 				return false;
@@ -200,6 +202,8 @@ public class PersistableMetadata {
 				return false;
 		} else if (!PersistableMetadata.equals(persistableImplementations,
 				other.persistableImplementations))
+			return false;
+		if (persistableStrategy != other.persistableStrategy)
 			return false;
 		if (recordStoreName == null) {
 			if (other.recordStoreName != null)
@@ -233,6 +237,10 @@ public class PersistableMetadata {
 	public Hashtable getPersistableImplementations() {
 		return persistableImplementations;
 	}
+	
+	public int getPersistableStrategy() {
+		return persistableStrategy;
+	}
 
 	public int getRecordId() {
 		return recordId;
@@ -246,9 +254,6 @@ public class PersistableMetadata {
 		return superClassName;
 	}
 
-	/**
-	 * @see java.lang.Object#hashCode()
-	 */
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
@@ -261,6 +266,7 @@ public class PersistableMetadata {
 				* result
 				+ ((persistableImplementations == null) ? 0
 						: persistableImplementations.hashCode());
+		result = prime * result + persistableStrategy;
 		result = prime * result
 				+ ((recordStoreName == null) ? 0 : recordStoreName.hashCode());
 		result = prime * result

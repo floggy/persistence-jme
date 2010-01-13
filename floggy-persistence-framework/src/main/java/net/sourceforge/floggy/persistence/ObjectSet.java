@@ -44,9 +44,10 @@ package net.sourceforge.floggy.persistence;
  */
 public interface ObjectSet {
     /**
-     * Returns the object at the specified index.
+     * Load the object at the specified index. A new instance will be 
+     * created to each invocation of this method.
      *
-     * @param index Index of the object to return.
+     * @param index Index of the object to be loaded.
      *
      * @return The object at the specified position in the set.
      *
@@ -55,26 +56,26 @@ public interface ObjectSet {
     Persistable get(int index) throws FloggyException;
 
     /**
-     * Load the object of a given index into the object instance.
+     * Load the object at the specified index into the object instance supplied.
      *
      * @param index Index of the object to be loaded.
      * @param object An instance of the object to be loaded. It cannot be
      *        <code>null</code>.
      *
-     * @throws FloggyException Exception thrown if a persistance error occurs.
+     * @throws FloggyException Exception thrown if a persistence error occurs.
+     * @deprecated use {@link ObjectSet.getSharedInstance}
      */
     void get(int index, Persistable object) throws FloggyException;
 
     /**
-     * Load the object of a given index into the object instance
-     * supplied.
+     * Get the object's id at the specified index.
      *
-     * @param index Index of the object to be loaded.
+     * @param index Index of the object.
      *
      * @return The id number at RMS system at the specified position in the
      *         set.
      *
-     * @throws FloggyException Exception thrown if a persistance error occurs.
+     * @throws FloggyException Exception thrown if a persistence error occurs.
      */
     int getId(int index) throws FloggyException;
 

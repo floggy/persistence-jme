@@ -42,7 +42,7 @@ public class MigrationManagerImpl extends MigrationManager {
 
 		PersistableManagerImpl.validatePersistableClassArgument(persistableClass);
 
-		EnumerationImpl impl = (EnumerationImpl) enumerations.get(persistableClass);
+		AbstractEnumerationImpl impl = (AbstractEnumerationImpl) enumerations.get(persistableClass);
 		if (impl != null) {
 			impl.finish();
 		}
@@ -107,18 +107,12 @@ public class MigrationManagerImpl extends MigrationManager {
 			}
 		}
 		
-		__Persistable persistable = PersistableManagerImpl
-				.createInstance(persistableClass);
-
 		RecordStore rs = null;
-		EnumerationImpl impl = null;
+		Enumeration impl = null;
 		PersistableMetadata rmsBasedMetadata = null; 
 
 		try {
 			rmsBasedMetadata = MetadataManagerUtil.getRMSBasedMetadata(persistableClass.getName());
-			rs = PersistableManagerImpl.getRecordStore(persistable.getRecordStoreName(),
-					classBasedMetadata, true);
-			RecordEnumeration en = rs.enumerateRecords(null, null, false);
 
 			if (rmsBasedMetadata == null) {
 				if (migrateFromPreviousFloggyVersion) {
@@ -128,6 +122,18 @@ public class MigrationManagerImpl extends MigrationManager {
 				}
 			}
 			
+			if (classBasedMetadata.getPersistableStrategy() == PersistableMetadata.SINGLE_STRATEGY &&
+					rmsBasedMetadata.getPersistableStrategy() == PersistableMetadata.JOINED_STRATEGY) {
+				
+				rs = PersistableManagerImpl.getRecordStore(rmsBasedMetadata.getRecordStoreName(), rmsBasedMetadata, true);
+			} else {
+				__Persistable persistable = PersistableManagerImpl.createInstance(persistableClass);
+
+				rs = PersistableManagerImpl.getRecordStore(persistable.getRecordStoreName(), classBasedMetadata, true);
+			}
+			
+			RecordEnumeration en = rs.enumerateRecords(null, null, false);
+
 			Hashtable persistableImplementations = rmsBasedMetadata.getPersistableImplementations();
 			if (!lazyLoad && persistableImplementations != null) {
 				java.util.Enumeration classNames = persistableImplementations.elements();
@@ -144,7 +150,19 @@ public class MigrationManagerImpl extends MigrationManager {
 				}
 			}
 
-			impl = new EnumerationImpl(rmsBasedMetadata, classBasedMetadata, en, rs, lazyLoad, iterationMode);
+			switch (rmsBasedMetadata.getPersistableStrategy()) {
+				case PersistableMetadata.SINGLE_STRATEGY:
+					impl = new SingleStrategyEnumerationImpl(rmsBasedMetadata, classBasedMetadata, en, rs, lazyLoad, iterationMode);
+					break;
+				case PersistableMetadata.PER_CLASS_STRATEGY:
+					impl = new PerClassStrategyEnumerationImpl(rmsBasedMetadata, classBasedMetadata, en, rs, lazyLoad, iterationMode);
+					break;
+				case PersistableMetadata.JOINED_STRATEGY:
+					impl = new JoinedStrategyEnumerationImpl(rmsBasedMetadata, classBasedMetadata, en, rs, lazyLoad, iterationMode);
+					break;
+				default:
+					break;
+			}
 			enumerations.put(persistableClass, impl);
 		} catch (Exception ex) {
 			throw PersistableManagerImpl.handleException(ex);

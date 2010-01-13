@@ -24,6 +24,7 @@ import javassist.NotFoundException;
 import junit.framework.TestCase;
 import net.sourceforge.floggy.persistence.Configuration;
 import net.sourceforge.floggy.persistence.Weaver;
+import net.sourceforge.floggy.persistence.codegen.strategy.JoinedStrategyCodeGenerator;
 import net.sourceforge.floggy.persistence.impl.PersistableMetadata;
 
 public class CodeGeneratorTest extends TestCase {
@@ -47,10 +48,13 @@ public class CodeGeneratorTest extends TestCase {
 		pool.insertClassPath(new LoaderClassPath(getClass().getClassLoader()));
 
 		Configuration configuration = new Configuration();
-		PersistableMetadata metadata = new PersistableMetadata(false, ctClass.getName(), null, null, null, null, ctClass.getSimpleName());
+		PersistableMetadata metadata = new PersistableMetadata(false, 
+			ctClass.getName(), null, null, null, null, 
+			ctClass.getSimpleName(), PersistableMetadata.JOINED_STRATEGY);
+		
 		configuration.addPersistableMetadata(metadata);
 		configuration.setAddDefaultConstructor(addDefaultConstructor);
-		return new CodeGenerator(ctClass, pool, configuration);
+		return new JoinedStrategyCodeGenerator(ctClass, pool, configuration);
 	}
 
 	public void testAddDefaultConstructorFalseWithFriendlyConstructor()

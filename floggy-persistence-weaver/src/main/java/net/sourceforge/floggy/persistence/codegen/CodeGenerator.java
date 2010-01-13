@@ -25,7 +25,6 @@ import javassist.CtNewMethod;
 import javassist.Modifier;
 import javassist.NotFoundException;
 import javassist.bytecode.AccessFlag;
-import net.sourceforge.floggy.persistence.ClassVerifier;
 import net.sourceforge.floggy.persistence.Configuration;
 import net.sourceforge.floggy.persistence.IDable;
 import net.sourceforge.floggy.persistence.Weaver;
@@ -34,14 +33,17 @@ import net.sourceforge.floggy.persistence.formatter.CodeFormatter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class CodeGenerator {
+public abstract class CodeGenerator {
 
 	private static final Log LOG = LogFactory.getLog(CodeGenerator.class);
-	private Configuration configuration;
-	private CtClass ctClass;
-	private ClassPool classPool;
 
-	private StringBuffer source;
+	/**
+	 * Class to be modified;
+	 */
+	protected CtClass ctClass;
+	protected ClassPool classPool;
+	protected Configuration configuration;
+	protected StringBuffer source;
 
 	/**
 	 * Creates a new code generator for the class.
@@ -58,39 +60,61 @@ public class CodeGenerator {
 		this.configuration = configuration;
 	}
 
+	protected final void addField(StringBuffer buffer)
+			throws CannotCompileException {
+		String temp = buffer.toString();
+		if (configuration.isGenerateSource()) {
+			source.append(CodeFormatter.format(temp));
+		}
+
+		try {
+			ctClass.addField(CtField.make(temp, ctClass));
+		} catch (CannotCompileException ccex) {
+			LOG.error("Adding field: \n" + CodeFormatter.format(temp));
+			throw ccex;
+		}
+	}
+
+	protected final void addMethod(StringBuffer buffer)
+			throws CannotCompileException {
+		String temp = buffer.toString();
+		if (configuration.isGenerateSource()) {
+			source.append(CodeFormatter.format(temp));
+		}
+
+		try {
+			ctClass.addMethod(CtNewMethod.make(temp, ctClass));
+		} catch (CannotCompileException ccex) {
+			LOG.error("Adding method: \n" + CodeFormatter.format(temp));
+			throw ccex;
+		}
+	}
+
 	/**
 	 * Generate all the necessary source code for this class.
 	 * 
 	 * @throws NotFoundException
 	 * @throws CannotCompileException
 	 */
-	public void generateCode() throws NotFoundException, CannotCompileException {
+	public final void generateCode() throws NotFoundException,
+			CannotCompileException {
 		if (configuration.isGenerateSource()) {
 			source = new StringBuffer();
 		}
 
 		// Constructor
-		generateDefaultConstructor();
+		this.generateDefaultConstructor();
 
 		// Remove final
-		generateNonFinalFields();
+		this.generateNonFinalFields();
 
-		// Attributes
-		generateIdField();
-
-		// Methods
-		generateGetIdMethod();
-		generateSetIdMethod();
-		generateGetRecordStoreNameMethod();
-		generateDeserializeMethod();
-		generateSerializeMethod();
-		generateDeleteMethod();
+		this.generateSpecificMethods();
 
 		// Implements interface
-		generatePersistableInterface();
+		this.generatePersistableInterface();
 	}
 
-	private void generateDefaultConstructor() throws NotFoundException,
+	protected void generateDefaultConstructor() throws NotFoundException,
 			CannotCompileException {
 		CtConstructor constructor = null;
 		try {
@@ -116,22 +140,8 @@ public class CodeGenerator {
 	 * 
 	 * @throws CannotCompileException
 	 */
-	private void generateGetIdMethod() throws CannotCompileException {
-		StringBuffer buffer = new StringBuffer();
-		buffer.append("public int __getId() {\n");
-		buffer.append("return __id;\n");
-		buffer.append("}\n");
-
-		// adicionando a classe
-		addMethod(buffer);
-	}
-
-	/**
-	 * 
-	 * @throws CannotCompileException
-	 */
-	private void generateGetRecordStoreNameMethod()
-			throws CannotCompileException {
+	protected void generateGetRecordStoreNameMethod()
+			throws CannotCompileException, NotFoundException {
 		try {
 			ctClass.getDeclaredMethod("getRecordStoreName");
 		} catch (NotFoundException nfex) {
@@ -141,134 +151,13 @@ public class CodeGenerator {
 					+ configuration.getPersistableMetadata(ctClass.getName())
 							.getRecordStoreName() + "\";\n");
 			buffer.append("}\n");
+
 			// adicionando a classe
 			addMethod(buffer);
 		}
 	}
-
-	/**
-	 * 
-	 * @throws CannotCompileException
-	 */
-	private void generateSetIdMethod() throws CannotCompileException,
-			NotFoundException {
-		StringBuffer buffer = new StringBuffer();
-		buffer.append("public void __setId(int id) {\n");
-		buffer.append("this.__id= id;\n");
-		if (isIDable(ctClass)) {
-			buffer.append("this.setId(id);\n");
-		}
-		buffer.append("}\n");
-
-		// adicionando a classe
-		addMethod(buffer);
-	}
-
-	/**
-	 * 
-	 * @throws CannotCompileException
-	 * @throws NotFoundException
-	 */
-	private void generateDeserializeMethod() throws CannotCompileException,
-			NotFoundException {
-		StringBuffer buffer = new StringBuffer();
-		// Header
-		buffer.append("public void __deserialize(byte[] buffer, boolean lazy) throws java.lang.Exception {\n");
-
-		StringBuffer tempBuffer = new StringBuffer();
-		// Streams
-		tempBuffer.append("java.io.DataInputStream dis = new java.io.DataInputStream(new java.io.ByteArrayInputStream(buffer));\n");
-		
-		int tempBufferSize = tempBuffer.length();
-
-		// Save the superclass if it is persistable.
-		CtClass superClass = ctClass.getSuperclass();
-		ClassVerifier verifier = new ClassVerifier(superClass, classPool);
-		if (verifier.isPersistable()) {
-			tempBuffer.append(SuperClassGenerator.generateLoadSource(superClass));
-		}
-
-		CtField[] fields = ctClass.getDeclaredFields();
-		if (fields != null && fields.length > 0) {
-			SourceCodeGenerator generator;
-			CtField field;
-			for (int i = 0; i < fields.length; i++) {
-				field = fields[i];
-
-				if (ignoreField(field)) {
-					continue;
-				}
-
-				generator = SourceCodeGeneratorFactory.getSourceCodeGenerator(
-						ctClass, field.getName(), field.getType());
-				if (generator != null) {
-					tempBuffer.append(generator.getLoadCode());
-				}
-			}
-		}
 	
-
-		if (tempBuffer.length() != tempBufferSize) {
-			// Close the streams
-			tempBuffer.append("dis.close();\n");
-
-			buffer.append(tempBuffer);
-		}
-		
-		buffer.append("}\n");
-
-		// adding the method
-		addMethod(buffer);
-	}
-
-	/**
-	 * 
-	 * @throws CannotCompileException
-	 */
-	private void generateDeleteMethod() throws CannotCompileException,
-			NotFoundException {
-		StringBuffer buffer = new StringBuffer();
-
-		buffer.append("public void __delete() throws java.lang.Exception {\n");
-
-		// Save the superclass if it is persistable.
-		CtClass superClass = this.ctClass.getSuperclass();
-		ClassVerifier verifier = new ClassVerifier(superClass, classPool);
-		if (verifier.isPersistable()) {
-			buffer.append("super.__delete();\n");
-			buffer.append("javax.microedition.rms.RecordStore superRS = net.sourceforge.floggy.persistence.impl.PersistableManagerImpl.getRecordStore(super.getRecordStoreName(), net.sourceforge.floggy.persistence.impl.MetadataManagerUtil.getClassBasedMetadata(super.getClass().getName()));\n");
-			buffer.append("try {\n");
-			buffer.append("superRS.deleteRecord(super.__getId());\n");
-			buffer.append("super.__setId(0);\n");
-			buffer.append("} finally {\n");
-			buffer
-					.append("net.sourceforge.floggy.persistence.impl.PersistableManagerImpl.closeRecordStore(superRS);\n");
-			buffer.append("}\n");
-		}
-
-		try {
-			ctClass.getDeclaredMethod("delete");
-			buffer.append("this.delete();\n");
-		} catch (NotFoundException nfex) {
-		}
-
-		buffer.append("}");
-
-		// adicionando a classe
-		addMethod(buffer);
-	}
-
-	/**
-	 * 
-	 * @throws CannotCompileException
-	 */
-	private void generateIdField() throws CannotCompileException {
-		String buffer = "public int __id = -1;";
-
-		addField(new StringBuffer(buffer));
-	}
-
-	private void generateNonFinalFields() {
+	protected void generateNonFinalFields() {
 		CtField[] fields = null;
 
 		fields = ctClass.getDeclaredFields();
@@ -285,109 +174,34 @@ public class CodeGenerator {
 	/**
 	 * @throws NotFoundException
 	 */
-	private void generatePersistableInterface() throws NotFoundException {
-		ctClass.addInterface(ctClass.getClassPool().get(
+	protected void generatePersistableInterface() throws NotFoundException {
+		this.ctClass.addInterface(this.ctClass.getClassPool().get(
 				Weaver.__PERSISTABLE_CLASSNAME));
 	}
 
-	/**
-	 * 
-	 * @throws CannotCompileException
-	 * @throws NotFoundException
-	 */
-	private void generateSerializeMethod() throws CannotCompileException,
-			NotFoundException {
-		StringBuffer buffer = new StringBuffer();
-		// Header
-		buffer.append("public byte[] __serialize() throws java.lang.Exception {\n");
-
-		StringBuffer tempBuffer = new StringBuffer();
-		// Streams
-		tempBuffer.append("net.sourceforge.floggy.persistence.impl.FloggyOutputStream fos= new net.sourceforge.floggy.persistence.impl.FloggyOutputStream();\n");
-
-		int tempBufferSize = tempBuffer.length();
-
-		// Save the superclass if it is persistable.
-		CtClass superClass = ctClass.getSuperclass();
-		ClassVerifier verifier = new ClassVerifier(superClass, classPool);
-		if (verifier.isPersistable()) {
-			tempBuffer.append(SuperClassGenerator.generateSaveSource(superClass));
-		}
-
-		CtField[] fields = ctClass.getDeclaredFields();
-		if (fields != null && fields.length > 0) {
-			SourceCodeGenerator generator;
-			CtField field;
-			for (int i = 0; i < fields.length; i++) {
-				field = fields[i];
-
-				if (ignoreField(field)) {
-					continue;
-				}
-
-				generator = SourceCodeGeneratorFactory.getSourceCodeGenerator(
-						ctClass, field.getName(), field.getType());
-				if (generator != null) {
-					tempBuffer.append(generator.getSaveCode());
-				}
-			}
-		}
-		
-		if (tempBuffer.length() != tempBufferSize) {
-			// Close the streams
-			tempBuffer.append("fos.flush();\n");
-			tempBuffer.append("return fos.toByteArray();\n");
-
-			buffer.append(tempBuffer);
-		} else {
-			buffer.append("return new byte[0];\n");
-		}
-
-		buffer.append("}");
-
-		// adding the method
-		addMethod(buffer);
-	}
-
-	private void addMethod(StringBuffer buffer) throws CannotCompileException {
-		String temp = buffer.toString();
-		if (configuration.isGenerateSource()) {
-			source.append(CodeFormatter.format(temp));
-		}
-
-		try {
-			ctClass.addMethod(CtNewMethod.make(temp, ctClass));
-		} catch (CannotCompileException ccex) {
-			LOG.error("Adding method: \n" + CodeFormatter.format(temp));
-			throw ccex;
-		}
-	}
-
-	private void addField(StringBuffer buffer) throws CannotCompileException {
-		String temp = buffer.toString();
-		if (configuration.isGenerateSource()) {
-			source.append(CodeFormatter.format(temp));
-		}
-		
-		try {
-			ctClass.addField(CtField.make(temp, ctClass));
-		} catch (CannotCompileException ccex) {
-			LOG.error("Adding field: \n" + CodeFormatter.format(temp));
-			throw ccex;
-		}
-	}
+	protected abstract void generateSpecificMethods() throws NotFoundException,
+			CannotCompileException;
 
 	public String getSource() {
 		return source.toString();
 	}
 
 	protected boolean ignoreField(CtField field) {
-		int modifier = field.getModifiers();
+		boolean ignore = false;
 
-		return field.getName().equals("__id")
-				|| field.getName().equals("__persistableMetadata")
-				|| Modifier.isTransient(modifier)
-				|| Modifier.isStatic(modifier);
+		// Ignores compiler fields.
+		if (field.getName().equals("__id")
+				|| field.getName().equals("__persistableMetadata")) {
+			ignore = true;
+		}
+
+		// Ignores transient and static fields.
+		int modifier = field.getModifiers();
+		if (Modifier.isTransient(modifier) || Modifier.isStatic(modifier)) {
+			ignore = true;
+		}
+
+		return ignore;
 	}
 
 	public boolean isIDable(CtClass ctClass) throws NotFoundException {

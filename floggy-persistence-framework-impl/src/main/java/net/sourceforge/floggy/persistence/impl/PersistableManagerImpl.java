@@ -18,7 +18,9 @@ package net.sourceforge.floggy.persistence.impl;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
+import javax.microedition.rms.RecordComparator;
 import javax.microedition.rms.RecordEnumeration;
+import javax.microedition.rms.RecordFilter;
 import javax.microedition.rms.RecordStore;
 import javax.microedition.rms.RecordStoreException;
 
@@ -45,8 +47,8 @@ public class PersistableManagerImpl extends PersistableManager {
 
 	private static Class __persistableClass;
 	private static Class deletableClass;
+	private static Class singleStrategyClass;
 	private static boolean batchMode = false;
-
 	private static Hashtable references = new Hashtable();
 
 	// this code is a workaround to the problem of missing
@@ -56,6 +58,7 @@ public class PersistableManagerImpl extends PersistableManager {
 			__persistableClass = Class
 					.forName("net.sourceforge.floggy.persistence.impl.__Persistable");
 			deletableClass = Class.forName("net.sourceforge.floggy.persistence.Deletable");
+			singleStrategyClass = Class.forName("net.sourceforge.floggy.persistence.strategy.SingleStrategy");
 		} catch (Exception e) {
 			throw new RuntimeException(e.getMessage());
 		}
@@ -125,35 +128,42 @@ public class PersistableManagerImpl extends PersistableManager {
 	public static RecordStore getRecordStore(String recordStoreName,
 			PersistableMetadata metadata, boolean isUpdateProcess) throws FloggyException {
 		try {
-			RecordStoreReference rsr = (RecordStoreReference) references
-					.get(recordStoreName);
+			RecordStoreReference rsr = (RecordStoreReference) references.get(recordStoreName);
 			if (rsr == null) {
-				rsr = new RecordStoreReference();
-				rsr.recordStore = RecordStore.openRecordStore(recordStoreName,
-						true);
-				PersistableMetadata rmsMetadata = MetadataManagerUtil.getRMSBasedMetadata(metadata.getClassName());
-				if (rmsMetadata == null) {
-					if (!MetadataManagerUtil.getBytecodeVersion().equals(MetadataManagerUtil.getRMSVersion())  && !isUpdateProcess) {
-						throw new FloggyException("You are trying to access a Persistable (" + metadata.getClassName() + ") entity that was not migrate. Please execute a migration first.");
-					}
-					MetadataManagerUtil.saveRMSStructure(metadata);
-				} else {
-					if (!metadata.equals(rmsMetadata) && !isUpdateProcess) {
-						throw new FloggyException("Class and RMS description doesn't match for class " + metadata.getClassName() + ". Please execute a migration first.");
-					}
-				}
+				check(metadata, isUpdateProcess);
 
+				rsr = new RecordStoreReference();
+				rsr.recordStore = RecordStore.openRecordStore(recordStoreName, true);
 				references.put(recordStoreName, rsr);
 			} else {
+				if (metadata.getPersistableStrategy() == PersistableMetadata.SINGLE_STRATEGY) {
+					check(metadata, isUpdateProcess);
+				}
+
 				if (rsr.references == 0) {
-					rsr.recordStore = RecordStore.openRecordStore(recordStoreName,
-                                                true);
+					rsr.recordStore = RecordStore.openRecordStore(recordStoreName, true);
 				}
 			}
 			rsr.references++;
 			return rsr.recordStore;
 		} catch (Exception ex) {
 			throw handleException(ex);
+		}
+	}
+	
+	private static void check(PersistableMetadata metadata, boolean isUpdateProcess) throws Exception {
+
+		PersistableMetadata rmsMetadata = MetadataManagerUtil.getRMSBasedMetadata(metadata.getClassName());
+
+		if (rmsMetadata == null) {
+			if (!MetadataManagerUtil.getBytecodeVersion().equals(MetadataManagerUtil.getRMSVersion()) && !isUpdateProcess) {
+				throw new FloggyException("You are trying to access a Persistable (" + metadata.getClassName() + ") entity that was not migrate. Please execute a migration first.");
+			}
+			MetadataManagerUtil.saveRMSStructure(metadata);
+		} else {
+			if (!metadata.equals(rmsMetadata) && !isUpdateProcess) {
+				throw new FloggyException("Class and RMS description doesn't match for class " + metadata.getClassName() + ". Please execute a migration first.");
+			}
 		}
 	}
 
@@ -256,7 +266,7 @@ public class PersistableManagerImpl extends PersistableManager {
 		if (deletableClass.isAssignableFrom(persistableClass) || metadata.getSuperClassName() != null) {
 			ObjectSet os = find(persistableClass, null, null);
 			for (int i = 0; i < os.size(); i++) {
-				os.get(i, persistable);
+				persistable = (__Persistable) os.get(i);
 				delete(persistable);
 			}
 		} else {
@@ -274,7 +284,7 @@ public class PersistableManagerImpl extends PersistableManager {
 	}
 
 	/**
-	 * Searches objects of an especific persistable class from the repository. <br>
+	 * Searches objects of an specific persistable class from the repository. <br>
 	 * <br>
 	 * An optional application-defined search criteria can be defined using a
 	 * <code>Filter</code>.<br>
@@ -297,7 +307,7 @@ public class PersistableManagerImpl extends PersistableManager {
 	}
 
 	/**
-	 * Searches objects of an especific persistable class from the repository. <br>
+	 * Searches objects of an specific persistable class from the repository. <br>
 	 * <br>
 	 * An optional application-defined search criteria can be defined using a
 	 * <code>Filter</code>.<br>
@@ -317,8 +327,8 @@ public class PersistableManagerImpl extends PersistableManager {
 	public ObjectSet find(Class persistableClass, Filter filter,
 			Comparator comparator, boolean lazy) throws FloggyException {
 
-		ObjectFilter objectFilter = null;
-		ObjectComparator objectComparator = null;
+		RecordFilter objectFilter = null;
+		RecordComparator objectComparator = null;
 
 		/*
 		 * this is a auxiliary object used to return the name of the
@@ -327,12 +337,17 @@ public class PersistableManagerImpl extends PersistableManager {
 		 */
 		__Persistable persistable = createInstance(persistableClass);
 
-		// Creates an auxiliar filter (if necessary)
-		if (filter != null) {
-			objectFilter = new ObjectFilter(persistable, filter, lazy);
+		// Creates an auxiliary filter (if necessary)
+		
+		if (singleStrategyClass.isAssignableFrom(persistableClass)) {
+			objectFilter = new SingleStrategyObjectFilter(persistable, filter, lazy);
+		} else {
+			if (filter != null) {
+				objectFilter = new ObjectFilter(persistable, filter, lazy);
+			}
 		}
 
-		// Creates an auxiliar comparator (if necessary)
+		// Creates an auxiliary comparator (if necessary)
 		if (comparator != null) {
 			objectComparator = new ObjectComparator(comparator,
 					createInstance(persistableClass),
@@ -463,7 +478,8 @@ public class PersistableManagerImpl extends PersistableManager {
 		try {
 			byte[] buffer = __persistable.__serialize();
 			int id = __persistable.__getId();
-	        if(id <= 0) {
+
+			if(id <= 0) {
 				id = rs.addRecord(buffer, 0, buffer.length);
 				__persistable.__setId(id);
 			} else {

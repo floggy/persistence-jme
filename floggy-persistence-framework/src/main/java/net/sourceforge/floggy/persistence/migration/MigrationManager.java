@@ -29,7 +29,7 @@ import net.sourceforge.floggy.persistence.FloggyException;
  * MigrationManager manager = MigrationManager.getInstance();<br>
  * String[] notMigratedClasses = manager.getNotMigratedClasses();<br>
  * <br>
- * for (int i = 0; i < notMigratedClasses.length; i++) {<br><br>
+ * for (int i = 0; i &lt; notMigratedClasses.length; i++) {<br><br>
  * &nbsp;if (notMigratedClasses[i].equals("net.sourceforge.floggy.Person")) {<br>
  * &nbsp;&nbsp;//does a quickMigration because the classes didn't changed between versions<br>
  * &nbsp;&nbsp;manager.quickMigration(Class.forName(notMigratedClasses[i]));<br>
