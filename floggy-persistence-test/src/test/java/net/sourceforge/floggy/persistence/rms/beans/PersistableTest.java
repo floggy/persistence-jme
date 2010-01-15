@@ -30,8 +30,6 @@ import net.sourceforge.floggy.persistence.rms.AbstractTest;
 
 public class PersistableTest extends AbstractTest {
 
-	public final static Person persistable = new Person();
-
 	protected Class getParameterType() {
 		return Person.class;
 	}
@@ -41,7 +39,7 @@ public class PersistableTest extends AbstractTest {
 	}
 
 	public Object getValueForSetMethod() {
-		return persistable;
+		return new Person();
 	}
 
 	public Persistable newInstance() {

@@ -27,14 +27,6 @@ import net.sourceforge.floggy.persistence.rms.AbstractTest;
 
 public class PersonArrayTest extends AbstractTest {
 
-	static Bird[] birds = new Bird[2];
-
-	static {
-		birds[0] = new Bird();
-		birds[0].setColor("red");
-		birds[1] = new Bird();
-	}
-
 	protected Class getParameterType() {
 		return Bird[].class;
 	}
@@ -44,6 +36,12 @@ public class PersonArrayTest extends AbstractTest {
 	}
 
 	public Object getValueForSetMethod() {
+		Bird[] birds = new Bird[2];
+
+		birds[0] = new Bird();
+		birds[0].setColor("red");
+		birds[1] = new Bird();
+
 		return birds;
 	}
 
@@ -53,7 +51,9 @@ public class PersonArrayTest extends AbstractTest {
 	
 	public void testFR2422928Read() throws Exception {
 		Persistable container = newInstance();
+		Bird[] birds = (Bird[])getValueForSetMethod();
 		int[] fieldId = new int[birds.length];
+		
 		for (int i = 0; i < birds.length; i++) {
 			fieldId[i] = manager.save(birds[i]);
 		}

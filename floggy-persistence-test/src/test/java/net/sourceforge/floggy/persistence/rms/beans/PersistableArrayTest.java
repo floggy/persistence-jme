@@ -28,15 +28,6 @@ import net.sourceforge.floggy.persistence.rms.AbstractTest;
 
 public class PersistableArrayTest extends AbstractTest {
 
-	static FloggyPersistable[] persistables = new FloggyPersistable[2];
-
-	static {
-		FloggyPersistable persistable = new FloggyPersistable();
-		persistable.setX(new Person());
-		persistables[0] = persistable;
-		persistables[1] = new FloggyPersistable();
-	}
-
 	protected Class getParameterType() {
 		return FloggyPersistable[].class;
 	}
@@ -46,6 +37,13 @@ public class PersistableArrayTest extends AbstractTest {
 	}
 
 	public Object getValueForSetMethod() {
+		FloggyPersistable[] persistables = new FloggyPersistable[2];
+		FloggyPersistable persistable = new FloggyPersistable();
+
+		persistable.setX(new Person());
+		persistables[0] = persistable;
+		persistables[1] = new FloggyPersistable();
+
 		return persistables;
 	}
 
@@ -55,7 +53,9 @@ public class PersistableArrayTest extends AbstractTest {
 
 	public void testFR2422928Read() throws Exception {
 		Persistable container = newInstance();
+		FloggyPersistable[] persistables = (FloggyPersistable[]) getValueForSetMethod();
 		int[] fieldId = new int[persistables.length];
+
 		for (int i = 0; i < persistables.length; i++) {
 			fieldId[i] = manager.save(persistables[i]);
 		}
