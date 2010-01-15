@@ -35,8 +35,6 @@ import net.sourceforge.floggy.persistence.rms.AbstractTest;
  * @version $Revision$
   */
 public class PersistableTest extends AbstractTest {
-	public static final Person persistable = new Person();
-
 	/**
 	 * DOCUMENT ME!
 	*
@@ -52,7 +50,7 @@ public class PersistableTest extends AbstractTest {
 	* @return DOCUMENT ME!
 	*/
 	public Object getValueForSetMethod() {
-		return persistable;
+		return new Person();
 	}
 
 	/**

@@ -33,8 +33,6 @@ import net.sourceforge.floggy.persistence.rms.AbstractTest;
  * @version $Revision$
   */
 public class BUG2313565Test extends AbstractTest {
-	public static final Bird persistable = new Bird();
-
 	/**
 	 * DOCUMENT ME!
 	*
@@ -50,7 +48,7 @@ public class BUG2313565Test extends AbstractTest {
 	* @return DOCUMENT ME!
 	*/
 	public Object getValueForSetMethod() {
-		return persistable;
+		return new Bird();
 	}
 
 	/**
