@@ -16,6 +16,8 @@
 
 News
 
+	<<16-Jan-10:>> The 1.3.1 maintenance release was made available, its target is fix an issue on Windows platform. Be aware of the {{{./changes-report.html#a1.3.1}change }}.
+
 	<<20-Dec-09:>> The 1.3.0 final release was made available, check the list of {{{./changes-report.html#a1.3.0}changes}}. Enjoy!
 	
 	<<18-Dec-09:>> A new {{{./qa.html}Q&A}} section was created. There you can check how we try to deliver a free of bug software.

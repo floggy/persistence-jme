@@ -121,6 +121,14 @@
 				<p>This is a configuration problem, all the Floggy's jar are available in the project's classpath this is wrong. Only the <b>floggy-persistence-framework.jar</b> library must be added to the project's classpath. Take a look in this <a href="./configuration/netbeans.html#classpath">image</a> for a correct configuration.</p>
 			</answer>
 		</faq>
+		<faq id="obfuscation-issues">
+			<question>I'm getting a java.lang.NullPointerException exception after obfuscating my application, what happened?</question>
+			<answer>
+				<p>The release 1.3.0 introduced a new feature that breaks during a regular obfuscation. If you obfuscate your project you MUST add the following line to your obfuscator configuration.</p>
+				
+				-keepnames class * implements net.sourceforge.floggy.persistence.Persistable
+			</answer>
+		</faq>
 	</part>
 	<part id="Developers">
 		<title>Developers</title>
