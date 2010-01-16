@@ -20,6 +20,11 @@
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
 <body>
+    <release version="1.3.1" date="01-16-2010" description="First 1.3.x maintenance release">
+      <action dev="dgem" type="fix" issue="2922250">
+		Fixed the creation of a zip/jar file on the Windows platform (it only affects Windows users).
+      </action>
+    </release>
     <release version="1.3.0" date="12-20-2009" description="Fourth public release">
       <action dev="thiagolm" type="update" issue="2836969">
 		Improved the message details for a not weaved execution exception.

@@ -24,11 +24,11 @@
 	</properties>
 	<body>
 		<section name="News">
+			<p><img src="images/starOn.png" alt="News" /><b> 16-Jan-10: The 1.3.1 maintenance release was made available, its target is fix an issue on Windows platform. Be aware of the <a href="./changes-report.html#a1.3.1">change</a>.</b></p>
 			<p><img src="images/starOn.png" alt="News" /><b> 20-Dec-09: The 1.3.0 final release was made available, check the list of <a href="./changes-report.html#a1.3.0">changes</a>. Enjoy!</b></p>
-			<p><img src="images/starOn.png" alt="News" /><b> 18-Dec-09: A new <a href="./qa.html">Q&amp;A</a> section was created. There you can check how we try to deliver a free of bug software.</b></p>
+			<p><b>18-Dec-09:</b> A new <a href="./qa.html">Q&amp;A</a> section was created. There you can check how we try to deliver a free of bug software.</p>
 			<p><b>25-Aug-09:</b> A new snapshot release was made available. Six features was added. More <a href="./changes-report.html#a1.3.0-SNAPSHOT">here</a>.</p>
 			<p><b>25-Aug-09:</b> Floggy now has a Fisheye tool linked to its source code. Check it out: <a href="http://fisheye3.atlassian.com/browse/floggy">http://fisheye3.atlassian.com/browse/floggy</a>.</p>
-			<p><b>14-Jun-09:</b> A new snapshot release was made available. This one changed only the Eclipse's plugin. Two bugs was fixed. More <a href="./changes-report.html#a1.3.0-SNAPSHOT">here</a>.</p>
 			<p>A complete list of news is available <a href="./news.html">here</a>. Stay tuned! Subscribe our <a href="https://sourceforge.net/export/rss2_keepsake.php?group_id=139426" >RSS</a> feed.<a href="https://sourceforge.net/export/rss2_keepsake.php?group_id=139426"><img src="images/rss.png" alt="RSS"/></a></p>
  		</section>
  		<section name="Welcome to Floggy">
