@@ -98,6 +98,8 @@ public class ZipOutputPool implements OutputPool {
 	*/
 	public void addResource(InputStream resourceStream, String fileName)
 		throws IOException {
+
+		fileName = fileName.replace(File.separatorChar, '/');
 		if (fileName.startsWith("/")) {
 			fileName = fileName.substring(1);
 		}
