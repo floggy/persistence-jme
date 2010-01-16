@@ -73,7 +73,8 @@ public class ZipInputPool implements InputPool {
 	* @return DOCUMENT ME!
 	*/
 	public String getFileName(int index) {
-		return this.files.get(index).toString();
+		String fileName = (String) this.files.get(index);
+		return fileName.replace('/', File.separatorChar);
 	}
 
 	/**
@@ -102,9 +103,7 @@ public class ZipInputPool implements InputPool {
 			for (ZipEntry entry = in.getNextEntry(); entry != null;
 				 entry = in.getNextEntry()) {
 				if (!entry.isDirectory()) {
-					String name = entry.getName();
-					name = name.replace('/', File.separatorChar);
-					this.files.add(name);
+					this.files.add(entry.getName());
 				}
 			}
 		} finally {

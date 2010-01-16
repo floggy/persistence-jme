@@ -50,7 +50,7 @@ public class ZipInputPoolTest extends TestCase {
 		File file = new File("target/test-classes/test.jar");
 		ZipInputPool pool = new ZipInputPool(file);
 
-		String nameExpected = "META-INF/MANIFEST.MF";
+		String nameExpected = "META-INF"+ File.separator + "MANIFEST.MF";
 		assertEquals(nameExpected, pool.getFileName(0));
 	}
 

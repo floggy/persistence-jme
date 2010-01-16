@@ -50,7 +50,7 @@ public class JarInputPoolTest extends TestCase {
 		File file = new File("target/test-classes/test.jar");
 		JarInputPool pool = new JarInputPool(file);
 
-		String nameExpected = "META-INF/MANIFEST.MF";
+		String nameExpected = "META-INF"+ File.separator + "MANIFEST.MF";
 		assertEquals(nameExpected, pool.getFileName(0));
 	}
 
