@@ -87,7 +87,7 @@ public class ZipInputPool implements InputPool {
 	* @throws IOException DOCUMENT ME!
 	*/
 	public URL getFileURL(int index) throws IOException {
-		String name = getFileName(index);
+		String name = (String) this.files.get(index);
 
 		name = "jar:" + file.toURL() + "!/" + name;
 
