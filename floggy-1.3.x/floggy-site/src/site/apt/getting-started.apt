@@ -1,0 +1,51 @@
+~~
+~~ Copyright (c) 2006-2009 Floggy Open Source Group. All rights reserved.
+~~
+~~ Licensed under the Apache License, Version 2.0 (the "License");
+~~ you may not use this file except in compliance with the License.
+~~ You may obtain a copy of the License at
+~~
+~~ http://www.apache.org/licenses/LICENSE-2.0
+~~
+~~ Unless required by applicable law or agreed to in writing, software
+~~ distributed under the License is distributed on an "AS IS" BASIS,
+~~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+~~ See the License for the specific language governing permissions and
+~~ limitations under the License.
+~~
+Getting started
+
+ Here is the starting point to learn Floggy, so if you are a beginner you are in the right place. Check the following steps:
+
+* Start! 
+ 
+  The very first thing that you MUST do is configure your environment, which means that you must add the weaver tool to your development cycle. {{{./faq.html#why-i-need-a-weaver}Why I need to add a weaver?}}
+
+  * {{{./configuration/eclipse.html} <<Eclipse>>}}
+ 
+  * {{{./configuration/netbeans.html} <<Netbeans>>}}
+ 
+  * {{{./configuration/ant.html} <<Ant>>}}
+ 
+  * {{{./configuration/maven.html} <<Maven>>}}
+
+  * {{{./configuration/commandline.html} <<Command line>>}}
+
+* Core package
+ 
+ After setting up the environment the next step is learn how the core classes work. There are one interface and one class that are the base of everything else.
+ The Persistable interface is an empty interface that roles the paper of identifying the classes that should be persisted. 
+ The PersistableManager class is where all operations of saving/loading/finding entities is located. {{{./core-package.html}Move to the core package section to get further information}}.
+ 
+* Migration package
+ 
+ Here you will find an advanced feature of Floggy. It was designed to help the developer to migrate between application's version. 
+ Imagine that you have a Persistable class with a long field, after the first release you decide to change the long field to a String object. How you would do to change the type of this field? 
+ Here is where the migration package take place. 
+ 
+ 
+* For advanced users
+ 
+ Now that you know how to use Floggy you can start to help us to improve it. We have a list of desired features available at {{{./roadmap.html}roadmap section}}. 
+ You can get the source code and how to build Floggy from scratch in our {{{./faq.html}FAQ section}}. However if you still need help please contact us.
+ 

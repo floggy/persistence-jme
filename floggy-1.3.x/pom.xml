@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+
+    Copyright (c) 2006-2009 Floggy Open Source Group. All rights reserved.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>net.sourceforge.floggy</groupId>
+	<artifactId>floggy</artifactId>
+	<version>1.3.1</version>
+	<name>Floggy Framework's for JME</name>
+	<url>http://floggy.sourceforge.net</url>
+	<description>A collection of frameworks for JME</description>
+	<inceptionYear>2006</inceptionYear>
+	<packaging>pom</packaging>
+	<organization>
+		<name>Floggy Open Source Group</name>
+		<url>http://floggy.org/</url>
+	</organization>
+	<licenses>
+		<license>
+			<distribution>manual</distribution>
+			<name>Apache License 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
+	</licenses>
+	<scm>
+		<connection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/tags/floggy-1.3.1</connection>
+		<developerConnection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/tags/floggy-1.3.1</developerConnection>
+		<url>https://floggy.svn.sourceforge.net/svnroot/floggy/tags/floggy-1.3.1</url>
+	</scm>
+	<repositories>
+		<repository>
+			<id>pyx4j-web-snapshot</id>
+			<url>http://repository.pyx4j.com/maven2-snapshot</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+		</repository>
+		<repository>
+			<id>pyx4j-web-release</id>
+			<url>http://repository.pyx4j.com/maven2-release</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</repository>
+		<repository>
+			<id>floggy</id>
+			<url>http://floggy.sourceforge.net/repository</url>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>floggy</id>
+			<url>http://floggy.sourceforge.net/repository</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</pluginRepository>
+	</pluginRepositories>
+	<issueManagement>
+		<system>sourceforge</system>
+		<url>http://sourceforge.net/tracker/?group_id=139426</url>
+	</issueManagement>
+	<ciManagement>
+		<system>parabuild</system>
+		<url>http://parabuild.viewtier.com:8080/parabuild/index.htm?cid=29a4&amp;view=detailed&amp;buildid=12739&amp;displaygroupid=-1</url>
+	</ciManagement>
+	<distributionManagement>
+		<site>
+			<id>sourceforge</id>
+			<name>SourceForge.net</name>
+			<url>scp://shell.sourceforge.net:/home/groups/f/fl/floggy/htdocs/modules/${project.artifactId}/${project.version}</url>
+		</site>
+		<repository>
+			<id>sourceforge</id>
+			<name>SourceForge.net</name>
+			<url>scp://shell.sourceforge.net:/home/groups/f/fl/floggy/htdocs/repository</url>
+		</repository>
+		<snapshotRepository>
+			<id>sourceforge</id>
+			<name>SourceForge.net</name>
+			<url>scp://shell.sourceforge.net:/home/groups/f/fl/floggy/htdocs/repository</url>
+		</snapshotRepository>
+	</distributionManagement>
+	<mailingLists>
+		<mailingList>
+			<name>Developer's mailing list</name>
+			<archive>http://sourceforge.net/mailarchive/forum.php?forum=floggy-developer</archive>
+			<post>floggy-developer@lists.sourceforge.net</post>
+			<subscribe>https://lists.sourceforge.net/lists/listinfo/floggy-developer</subscribe>
+			<unsubscribe>https://lists.sourceforge.net/lists/listinfo/floggy-developer</unsubscribe>
+		</mailingList>
+		<mailingList>
+			<name>User's mailing list</name>
+			<archive>http://sourceforge.net/mailarchive/forum.php?forum=floggy-user</archive>
+			<post>floggy-user@lists.sourceforge.net</post>
+			<subscribe>https://lists.sourceforge.net/lists/listinfo/floggy-user</subscribe>
+			<unsubscribe>https://lists.sourceforge.net/lists/listinfo/floggy-user</unsubscribe>
+		</mailingList>
+	</mailingLists>
+	<developers>
+		<developer>
+			<name>Thiago Moreira</name>
+			<id>thiagolm</id>
+			<email>thiago.moreira@floggy.org</email>
+			<organization>Floggy Open Source Group</organization>
+			<roles>
+				<role>Java Developer</role>
+				<role>Release Manager</role>
+			</roles>
+			<timezone>-3</timezone>
+		</developer>
+		<developer>
+			<name>Thiago Rossato</name>
+			<id>thiagorossato</id>
+			<email>thiago.rossato@@floggy.org</email>
+			<organization>Floggy Open Source Group</organization>
+			<roles>
+				<role>Java Developer</role>
+			</roles>
+			<timezone>-3</timezone>
+		</developer>
+		<developer>
+			<name>Priscila Tavares Lugon</name>
+			<id>priscilalugon</id>
+			<email>priscila.lugon@@floggy.org</email>
+			<organization>Floggy Open Source Group</organization>
+			<roles>
+				<role>Java Developer</role>
+			</roles>
+			<timezone>-3</timezone>
+		</developer>
+		<developer>
+			<name>Dan Murphy</name>
+			<id>dgem</id>
+			<email>dan.murphy@@floggy.org</email>
+			<organization>Floggy Open Source Group</organization>
+			<roles>
+				<role>Eclipse Developer</role>
+			</roles>
+			<timezone>+0</timezone>
+		</developer>
+	</developers>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>com.mycila.maven-license-plugin</groupId>
+				<artifactId>maven-license-plugin</artifactId>
+				<version>1.5.0</version>
+				<inherited>true</inherited>
+				<dependencies>
+					<dependency>
+						<groupId>net.sourceforge.floggy</groupId>
+						<artifactId>build-tools</artifactId>
+						<version>1.3.0</version>
+					</dependency>
+				</dependencies>
+				<configuration>
+					<header>license-header-template.txt</header>
+					<includes>
+						<include>src/**</include>
+					</includes>
+					<excludes>
+						<exclude>target/**</exclude>
+						<exclude>**/license-header-template.txt</exclude>
+					</excludes>
+					<properties>
+						<year>2010</year>
+						<organizationName>${project.organization.name}</organizationName>
+					</properties>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>2.4</version>
+				<inherited>true</inherited>
+				<dependencies>
+					<dependency>
+						<groupId>net.sourceforge.floggy</groupId>
+						<artifactId>build-tools</artifactId>
+						<version>1.3.0</version>
+					</dependency>
+				</dependencies>
+				<configuration>
+					<configLocation>checkstyle-checks-configuration.xml</configLocation>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.0.2</version>
+				<inherited>true</inherited>
+				<configuration>
+					<source>1.3</source>
+					<target>1.3</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<version>1.0-beta-1</version>
+				<executions>
+					<execution>
+						<id>enforce-versions</id>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<requireMavenVersion>
+									<version>2.2.0</version>
+								</requireMavenVersion>
+								<requireJavaVersion>
+									<version>1.4</version>
+								</requireJavaVersion>
+							</rules>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.0-beta-9</version>
+				<inherited>true</inherited>
+				<configuration>
+					<tagBase>https://floggy.svn.sourceforge.net/svnroot/floggy/tags</tagBase>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.4.3</version>
+				<inherited>true</inherited>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>jalopy-maven-plugin</artifactId>
+				<version>1.0-alpha-1</version>
+				<inherited>true</inherited>
+				<dependencies>
+					<dependency>
+						<groupId>net.sourceforge.floggy</groupId>
+						<artifactId>build-tools</artifactId>
+						<version>1.3.0</version>
+					</dependency>
+				</dependencies>
+				<configuration>
+					<convention>jalopy-code-convetion.xml</convention>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<configLocation>checkstyle-checks-configuration.xml</configLocation>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.6.1</version>
+				<inherited>true</inherited>
+				<configuration>
+					<minmemory>128m</minmemory>
+					<maxmemory>512</maxmemory>
+					<stylesheet>maven</stylesheet>
+					<excludePackageNames>*.internal</excludePackageNames>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jxr-plugin</artifactId>
+				<version>2.1</version>
+				<inherited>true</inherited>
+				<configuration>
+					<linkJavadoc>true</linkJavadoc>
+					<javadocDir>/apidocs/</javadocDir>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<version>2.1.2</version>
+				<inherited>true</inherited>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-report-plugin</artifactId>
+				<version>2.4.3</version>
+				<inherited>true</inherited>
+			</plugin>
+		</plugins>
+	</reporting>
+	<modules>
+		<module>build-tools</module>
+		<module>floggy-persistence-framework</module>
+		<module>floggy-persistence-framework-impl</module>
+		<module>floggy-persistence-weaver</module>
+		<module>maven-floggy-plugin</module>
+		<module>floggy-persistence-test</module>
+		<module>floggy-persistence-demo</module>
+		<module>barbecue-calculator</module>
+		<module>eclipse-floggy-plugin</module>
+		<module>eclipse-floggy-feature</module>
+		<module>floggy-site-skin</module>
+		<module>floggy-site</module>
+	</modules>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<floggy.storepass>f10ggy</floggy.storepass>
+	</properties>
+</project>

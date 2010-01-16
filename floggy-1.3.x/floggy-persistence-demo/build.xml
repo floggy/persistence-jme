@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- 
+	Copyright (c) 2005-2008 Floggy Open Source Group. All rights reserved.
+	
+	Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+	
+	http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
+-->
+<project name="hospital-me" default="jar" basedir=".">
+
+	<property file="user.properties" />
+	<property name="build.output" value="target/classes" />
+	<property name="build.directory" value="target" />
+	<property name="build.final.name" value="hospital-me-1.0" />
+	<property name="repo.local" value="${user.home}/.m2/repository" />
+	<property name="wtk.cldc.version" value="1.1" />
+	<property name="wtk.midp.version" value="2.0" />
+	<property name="floggy.version" value="1.2.0" />
+
+	<path id="build.classpath">
+		<fileset dir="${repo.local}">
+			<include name="net/sourceforge/floggy/floggy-persistence-framework/${floggy.version}/floggy-persistence-framework-${floggy.version}.jar" />
+		</fileset>
+	</path>
+
+	<path id="boot.classpath">
+		<fileset dir="${wtk.home}/lib">
+			<include name="cldcapi11.jar" />
+			<include name="midpapi20.jar" />
+		</fileset>
+	</path>
+
+	<path id="floggy.classpath">
+		<path refid="build.classpath" />
+		<fileset dir="${repo.local}">
+			<include name="commons-logging/commons-logging/1.0.4/commons-logging-1.0.4.jar" />
+			<include name="commons-io/commons-io/1.2/commons-io-1.2.jar" />
+			<include name="net/sourceforge/floggy/floggy-persistence-weaver/${floggy.version}/floggy-persistence-weaver-${floggy.version}.jar" />
+			<include name="jboss/javassist/3.4.ga/javassist-3.4.ga.jar" />
+			<include name="de/pleumann/antenna/0.9.14/antenna-0.9.14.jar" />
+		</fileset>
+	</path>
+
+	<target name="clean" description="Clean the output directory">
+		<delete dir="${build.directory}" />
+	</target>
+
+	<target name="compile" depends="get-deps" description="Compile the code">
+		<taskdef name="floggy-persistence-weaver" classname="net.sourceforge.floggy.persistence.WeaverTask" classpathref="floggy.classpath" />
+		<mkdir dir="${build.output}" />
+		<javac destdir="${build.output}" excludes="**/package.html" debug="true" deprecation="true" optimize="false" source="1.3" target="1.1">
+			<src>
+				<pathelement location="src" />
+			</src>
+			<classpath refid="build.classpath" />
+			<bootclasspath refid="boot.classpath" />
+		</javac>
+		<copy file="src/main/resources/floggy.png" todir="${build.output}" />
+		<floggy-persistence-weaver bootclasspathref="boot.classpath" classpathref="build.classpath" input="${build.output}" output="${build.output}" />
+	</target>
+
+	<target name="unjar-dependencies" description="Unjar the dependecies">
+		<mkdir dir="${build.output}" />
+		<unjar dest="${build.output}" src="${repo.local}/net/sourceforge/floggy/floggy-persistence-framework/${floggy.version}/floggy-persistence-framework-${floggy.version}.jar" />
+	</target>
+
+	<target name="jar" depends="compile, unjar-dependencies" description="Build and preverify the JAR">
+		<taskdef name="wtkjad" classname="de.pleumann.antenna.WtkJad" classpathref="floggy.classpath" />
+		<taskdef name="wtkpackage" classname="de.pleumann.antenna.WtkPackage" classpathref="floggy.classpath" />
+		<wtkjad jadfile="${build.directory}/${build.final.name}.jad" name="Hospital ME" manifest="${build.directory}/manifest.mf">
+			<midlet name="Hospital ME" class="net.sourceforge.floggy.persistence.HospitalMIDlet" icon="floggy.png" />
+			<attribute name="MIDlet-Name" value="Hospital ME" />
+			<attribute name="MIDlet-Vendor" value="Floggy Open Source Group" />
+			<attribute name="MIDlet-Version" value="1.0" />
+			<attribute name="MicroEdition-Configuration" value="CLDC-${wtk.cldc.version}" />
+			<attribute name="MicroEdition-Profile" value="MIDP-${wtk.midp.version}" />
+			<attribute name="MIDlet-Jar-URL" value="${build.final.name}.jar" />
+		</wtkjad>
+		<wtkpackage basedir="${build.output}" jadfile="${build.directory}/${build.final.name}.jad" jarfile="${build.directory}/${build.final.name}.jar" bootclasspathref="boot.classpath" preverify="true" />
+	</target>
+
+	<target name="get-deps" description="Download all dependencies">
+		<mkdir dir="${repo.local}/net/sourceforge/floggy/floggy-persistence-framework/${floggy.version}" />
+		<mkdir dir="${repo.local}/net/sourceforge/floggy/floggy-persistence-weaver/${floggy.version}" />
+		<mkdir dir="${repo.local}/de/pleumann/antenna/0.9.14" />
+		<mkdir dir="${repo.local}/jboss/javassist/3.4.ga" />
+		<mkdir dir="${repo.local}/commons-io/commons-io/1.2" />
+		<mkdir dir="${repo.local}/commons-logging/commons-logging/1.0.4" />
+		<get src="http://floggy.sourceforge.net/repository/net/sourceforge/floggy/floggy-persistence-framework/${floggy.version}/floggy-persistence-framework-${floggy.version}.jar" dest="${repo.local}/net/sourceforge/floggy/floggy-persistence-framework/${floggy.version}/floggy-persistence-framework-${floggy.version}.jar" usetimestamp="true" ignoreerrors="false" />
+		<get src="http://floggy.sourceforge.net/repository/net/sourceforge/floggy/floggy-persistence-weaver/${floggy.version}/floggy-persistence-weaver-${floggy.version}.jar" dest="${repo.local}/net/sourceforge/floggy/floggy-persistence-weaver/${floggy.version}/floggy-persistence-weaver-${floggy.version}.jar" usetimestamp="true" ignoreerrors="false" />
+		<get src="http://www.pyx4j.com/maven2/de/pleumann/antenna/0.9.14/antenna-0.9.14.jar" dest="${repo.local}/de/pleumann/antenna/0.9.14/antenna-0.9.14.jar" usetimestamp="true" ignoreerrors="true" />
+		<get src="http://repo1.maven.org/maven2/jboss/javassist/3.4.ga/javassist-3.4.ga.jar" dest="${repo.local}/jboss/javassist/3.4.ga/javassist-3.4.ga.jar" usetimestamp="true" ignoreerrors="true" />
+		<get src="http://repo1.maven.org/maven2/commons-io/commons-io/1.2/commons-io-1.2.jar" dest="${repo.local}/commons-io/commons-io/1.2/commons-io-1.2.jar" usetimestamp="true" ignoreerrors="true" />
+		<get src="http://repo1.maven.org/maven2/commons-logging/commons-logging/1.0.4/commons-logging-1.0.4.jar" dest="${repo.local}/commons-logging/commons-logging/1.0.4/commons-logging-1.0.4.jar" usetimestamp="true" ignoreerrors="true" />
+	</target>
+
+</project>

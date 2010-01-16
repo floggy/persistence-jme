@@ -1,0 +1,211 @@
+~~
+~~ Copyright (c) 2006-2010 Floggy Open Source Group. All rights reserved.
+~~
+~~ Licensed under the Apache License, Version 2.0 (the "License");
+~~ you may not use this file except in compliance with the License.
+~~ You may obtain a copy of the License at
+~~
+~~ http://www.apache.org/licenses/LICENSE-2.0
+~~
+~~ Unless required by applicable law or agreed to in writing, software
+~~ distributed under the License is distributed on an "AS IS" BASIS,
+~~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+~~ See the License for the specific language governing permissions and
+~~ limitations under the License.
+~~
+
+The Migration package
+
+ The migration package contains classes/interfaces that helps the developer build code to migrated between versions of its application.
+ It is necessary due the changes that the developer may have in the model. Following you will find contexts samples where this feature would be handy.
+
+ For all the following contexts we will use the snippet code of a Peristsbale class. Suppose that it was built in version 1.0.0 of your application.
+ 
++------------------------------+
+import net.sourceforge.floggy.persistence.Persistable;
+
+public class Person implements Persistable {
+
+ 	private String name;
+ 	private Date birthday;
+ 	private char gender;
+ 	
+}
+
++-----------------------------+
+
+ Now suppose that you have deployed your application to several devices in several companies and the users started to give you feedbacks requesting new fields . 
+ So you decided to change it, once you changed the number and/or type of fields in a Persistable entity the RMS related to it become inconsistently.
+ If you try to load an old register with your new Persistable structure you will get at least data corruption and at most an exception.
+ Therefore you must to have a way to migrate from your old RMS structure to the new one and that is where the migration package take place.
+
+* Basic operations
+
+ * {{{#Addingrenaming_a_field} Adding/renaming a field}}
+ 
+ * {{{#Migrating_a_Persistable_field} Migrating a Persistable field}}
+
+ * {{{#Deleting_a_field} Deleting a field}}
+
+ * {{{#Deleting_a_whole_register} Deleting a whole register}}
+
+
+** {Adding/renaming a field}
+
+ The first feedback that you got from your users is the missing of a last name field. So you decide to change your model to this:
+
++------------------------------+
+import net.sourceforge.floggy.persistence.Persistable;
+
+public class Person implements Persistable {
+
+ 	private String firstName;
+ 	private String lastName;
+ 	private Date birthday;
+ 	private char gender;
+ 	
+}
+
++-----------------------------+
+ 
+ Following you will find a snippet of code that will migrate from the old to the new RMS structure of Person entity.
+
++------------------------------+
+import net.sourceforge.floggy.persistence.migration.MigrationManager;
+
+public class ContactsMIDlet extends MIDlet {
+
+    protected void update() {
+        MigrationManager manager = MigrationManager.getInstance();
+        String[] notMigratedClasses = manager.getNotMigratedClasses();
+
+        for (int i = 0; i < notMigratedClasses.length; i++) {
+            if (notMigratedClasses[i].equals("net.sourceforge.floggy.Person")) {
+            
+                Enumeration enumeration = manager.start(Class.forName(notMigratedClasses[i]), null);
+                while (enumeration.hasMoreElements()) {
+
+                    Hashtable fields = enumeration.nextElement();
+                    String firstName = (String) fields.get("name");
+                    Date birthday = (Date) fields.get("birthday");
+                    Character gender = (Character) fields.get("gender");
+
+                    Person person = new Person();
+                    person.setFirstName(firstName);
+                    person.setLastName(lastName);
+                    person.setBirthday(birthday);
+                    person.setGender(gender.charValue());
+
+                    enumeration.update(person);
+                }
+            }
+        }
+    }
+    
+}
+
++------------------------------+
+
+** {Migrating a Persistable field}
+
+** {Deleting a field}
+
+ The birthday field users think that are completely useless. So you decide to remove it:
+
++------------------------------+
+import net.sourceforge.floggy.persistence.Persistable;
+
+public class Person implements Persistable {
+
+ 	private String name;
+ 	private char gender;
+ 	
+}
+
++-----------------------------+
+ 
+ Following you will find a snippet of code that will migrate from the old to the new RMS structure of Person entity.
+
++------------------------------+
+import net.sourceforge.floggy.persistence.migration.MigrationManager;
+
+public class ContactsMIDlet extends MIDlet {
+
+    protected void update() {
+        MigrationManager manager = MigrationManager.getInstance();
+        String[] notMigratedClasses = manager.getNotMigratedClasses();
+
+        for (int i = 0; i < notMigratedClasses.length; i++) {
+            if (notMigratedClasses[i].equals("net.sourceforge.floggy.Person")) {
+            
+                Enumeration enumeration = manager.start(Class.forName(notMigratedClasses[i]), null);
+                while (enumeration.hasMoreElements()) {
+
+                    Hashtable fields = enumeration.nextElement();
+                    String name = (String) fields.get("name");
+                    Character gender = (Character) fields.get("gender");
+                    //there is no need to read the birthday field, so you can comment this following line
+                    //Date birthday = (Date) fields.get("birthday");
+
+                    Person person = new Person();
+                    person.setName(name);
+                    person.setGender(gender.charValue());
+
+                    enumeration.update(person);
+                }
+            }
+        }
+    }
+    
+}
+
++------------------------------+
+
+** {Deleting a whole register}
+
+ A new requirement was requested and it demands that all registers that are set to M in gender field must be deleted, the gender field will be deleted as well.
+
++------------------------------+
+import net.sourceforge.floggy.persistence.Persistable;
+
+public class Person implements Persistable {
+
+ 	private String name;
+ 	private Date birthday;
+ 	
+}
+
++-----------------------------+
+ 
+ Following you will find a snippet of code that will migrate from the old to the new RMS structure of Person entity.
+
++------------------------------+
+import net.sourceforge.floggy.persistence.migration.MigrationManager;
+
+public class ContactsMIDlet extends MIDlet {
+
+    protected void update() {
+        MigrationManager manager = MigrationManager.getInstance();
+        String[] notMigratedClasses = manager.getNotMigratedClasses();
+
+        for (int i = 0; i < notMigratedClasses.length; i++) {
+            if (notMigratedClasses[i].equals("net.sourceforge.floggy.Person")) {
+            
+                Enumeration enumeration = manager.start(Class.forName(notMigratedClasses[i]), null);
+                while (enumeration.hasMoreElements()) {
+
+                    Hashtable fields = enumeration.nextElement();
+                    Character gender = (Character) fields.get("gender");
+                    
+                    if (gender.charValue() == 'm' || gender.charValue() == 'M') {
+                        int id = enumeration.delete();
+                    } 
+
+                }
+            }
+        }
+    }
+    
+}
+
++------------------------------+

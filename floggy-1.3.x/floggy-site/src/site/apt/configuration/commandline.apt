@@ -1,0 +1,44 @@
+~~
+~~ Copyright (c) 2006-2010 Floggy Open Source Group. All rights reserved.
+~~
+~~ Licensed under the Apache License, Version 2.0 (the "License");
+~~ you may not use this file except in compliance with the License.
+~~ You may obtain a copy of the License at
+~~
+~~ http://www.apache.org/licenses/LICENSE-2.0
+~~
+~~ Unless required by applicable law or agreed to in writing, software
+~~ distributed under the License is distributed on an "AS IS" BASIS,
+~~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+~~ See the License for the specific language governing permissions and
+~~ limitations under the License.
+~~
+
+Command line
+
+ Here we demostrate how to use the Floggy in the command line. 
+ We suggest that you use other way to build your project, for instance you may use {{{http://ant.apache.org}Ant}}.
+
+ The example is based on Linux like systems.
+ 
++------------------------------------------+
+ prompt> fpw.sh -cp ~/wtkhome/lib/midpapi20.jar:~/wtkhome/lib/cldc10.jar -s -o ./output ./input
++------------------------------------------+
+
+ 	The parameters declared in the command line execution has the following meaning.
+ 	
+ 	[[*]] cp (required): a reference to a path that contains the classes referenced by yours application. 
+ 	The packages cldcapi and midpapi must be into this classpath. 
+ 	This packages could be find at the {{{http://java.sun.com/jme/}Sun Java Wireless Toolkit}}.
+ 	
+ 	[[*]] -o output (optional): the directory or jar file where the weaved classes will be placed.
+ 	If omited the classes will be placed in the input directory|file.
+	
+ 	[[*]] input (required): the directory or jar file that contains the classes that will be processed by the weaver.
+ 	
+ 	[[*]] {-s} (optional): a flag indicating the weaver to generate or not the source of methods weaved in the bytecode.
+ 	
+ 	
+ 	
+
+

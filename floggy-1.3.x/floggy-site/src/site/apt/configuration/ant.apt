@@ -1,0 +1,75 @@
+~~
+~~ Copyright (c) 2006-2010 Floggy Open Source Group. All rights reserved.
+~~
+~~ Licensed under the Apache License, Version 2.0 (the "License");
+~~ you may not use this file except in compliance with the License.
+~~ You may obtain a copy of the License at
+~~
+~~ http://www.apache.org/licenses/LICENSE-2.0
+~~
+~~ Unless required by applicable law or agreed to in writing, software
+~~ distributed under the License is distributed on an "AS IS" BASIS,
+~~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+~~ See the License for the specific language governing permissions and
+~~ limitations under the License.
+~~
+
+Ant
+
+ "Apache {{{http://ant.apache.org}Ant}} is a Java-based build tool. In theory, it is kind of like Make, but without Make's wrinkles." 
+ 
+ To use Floggy with Ant you need to declare a taskdef like the snippet below.
+ 
++------------------------------------------+
+[...]
+  <!-- 
+      IMPORTANT: You must change the value of this property pointing it to the directory
+      where you have installed Floggy.
+        
+      Some examples:
+      Linux: /opt/floggy
+      Windows: c:\floggy
+  -->
+  <property name="floggy.path" value="c:\floggy"/>
+    
+  <path id="floggy.classpath">
+    <fileset dir="${floggy.path}\lib" includes="*.jar"/>
+  </path>
+    
+  <taskdef name="floggy-persistence-weaver" classname="net.sourceforge.floggy.persistence.WeaverTask" 
+    classpathref="floggy.classpath"/>
+[...]
++------------------------------------------+
+
+ Also you need to create a target to execute Floggy. 
+   
++------------------------------------------+
+[...]
+  <target name="floggy">
+	<floggy-persistence-weaver bootclasspathref="..." classpathref="..." input="..." output="..." generateSource="..."/>
+  </target>
+[...]
++------------------------------------------+
+
+ This target must run just after the compilation has done and before the preverification. 
+
+ 	The attributes declared in the floggy-persistence-weaver tag has the following meaning.
+ 	
+ 	[[*]] bootclasspathref (required): a reference to a path that contains the packages cldcapi and midpapi, any version. This packages could be find at 
+ 		the {{{http://java.sun.com/jme/}Sun Java Wireless Toolkit}}.
+ 	
+ 	[[*]] classpathref (required): a reference to a path that contains a version of the package floggy-persistence-framework. This package could be find at {{{http://sourceforge.net/project/showfiles.php?group_id=139426}here}}
+ 	
+ 	[[*]] input (required): the directory or jar file that contains the classes that will be processed by the weaver.
+ 	
+ 	[[*]] output (required): the directory or jar file when the weaved classes will be placed.
+ 	
+ 	[[*]] {generateSource} (optional): a boolean indicating the weaver to generate or not the source of methods weaved in the bytecode.
+ 	
+A build sample.
+
+  We developed a build file to the demo application. You can customize this file to your way of development. The file is 
+ available {{{http://floggy.svn.sourceforge.net/viewvc/*checkout*/floggy/trunk/floggy-persistence-demo/build.xml}here}}.
+ The build file use tasks from the {{{http://antenna.sourceforge.net/}Antenna}} project to generate the JAD file and to preverify the classes.
+
+

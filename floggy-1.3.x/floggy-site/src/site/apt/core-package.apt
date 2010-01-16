@@ -1,0 +1,332 @@
+~~
+~~ Copyright (c) 2006-2010 Floggy Open Source Group. All rights reserved.
+~~
+~~ Licensed under the Apache License, Version 2.0 (the "License");
+~~ you may not use this file except in compliance with the License.
+~~ You may obtain a copy of the License at
+~~
+~~ http://www.apache.org/licenses/LICENSE-2.0
+~~
+~~ Unless required by applicable law or agreed to in writing, software
+~~ distributed under the License is distributed on an "AS IS" BASIS,
+~~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+~~ See the License for the specific language governing permissions and
+~~ limitations under the License.
+~~
+
+Using the {framework}
+
+ It is really simple! All you have to do is to implement the empty interface {{{./modules/floggy-persistence-framework/apidocs/net/sourceforge/floggy/persistence/Persistable.html}<<net.sourceforge.floggy.persistence.Persistable>>}} or extend a class that implements it. 
+ 
+ <<IMPORTANT>>: All concrete classes which implement this interface must have a <<public default constructor>> like any other POJO.
+ 
++------------------------------+
+import net.sourceforge.floggy.persistence.Persistable;
+
+public class Person implements Persistable {
+
+	// Static fields aren't persisted
+	public static int SOME_STATIC_FIELD = 1;
+	
+ 	private String name;
+ 	private Date birthday;
+ 	private char gender;
+	private Phone[] phones;
+ 	
+ 	// Transient fields aren't persisted 
+ 	private transient int age;
+	
+	// Each persistable class must have a public default constructor.
+	public Person() {
+		// Do something ...
+	}
+	
+	...
+}
+
+... 
+
+public class Phone implements Persistable {
+
+	private String number;
+	private String extension;
+	private int type; // Mobile, Home, Work, etc
+	
+	public Phone() {
+		// Do something ...
+	}
+	
+	...
+}
++-----------------------------+
+
+* PersistableManager
+ 
+ All operations, such as saving, loading, deleting and finding objects are made through a single class called {{{./modules/floggy-persistence-framework/apidocs/net/sourceforge/floggy/persistence/PersistableManager.html} <<net.sourceforge.floggy.persistence.PersistableManager>>}}. 
+
+ The basic operations are explained in the following examples:
+ 
+ * {{{#Saving_a_new_object} Saving a new object}}
+ 
+ * {{{#Loading_a_stored_object} Loading a stored object}}
+ 
+ * {{{#Lazy_loading_a_tree_of_objects} Lazy loading a tree of objects}}
+ 
+ * {{{#Changing_the_name_of_the_RecordStore_where_the_Persistable_will_be_stored} Changing the name of the RecordStore where the Persistable will be stored}}
+ 
+ * {{{#Deleting_a_previously_saved_object} Deleting a previously saved object}}
+ 
+ * {{{#Deleting_all_entities_based_on_its_class} Deleting all entities based on its class}}
+ 
+ * {{{#Deleting_all_entities_stored_by_the_midlet} Deleting all entities stored by the midlet}}
+ 
+ * {{{#Listing_all_objects} Listing all objects}}
+
+ * {{{#Listing_all_objects_fast_version} Listing all objects (fast version)}}
+
+ * {{{#Using_a_filter_to_find_specific_objects} Using a filter to find specific objects}}
+
+ * {{{#Using_a_comparator_to_sort_the_results_of_a_search} Using a comparator to sort the results of a search}}
+ 
+ * {{{#Checking_if_the_object_is_already_persisted} Checking if the object is already persisted}}
+ 
+ * {{{#Getting_the_object_id} Getting the object id}}
+ 
+** {Saving a new object}
+ 
++------------------------------+
+Person p = new Person();
+p.setName(...);
+p.setBirthday(...);
+p.setGender(...);
+p.setPhones(...);
+
+try {
+	PersistableManager pm = PersistableManager.getInstance();
+	// A new object ID is generated.
+	// You can use it in future operations.
+	int id = pm.save(p);
+} catch (FloggyException e) {
+	...
+}
++-----------------------------+
+ 
+** {Loading a stored object}
+	
++------------------------------+
+Person person = new Person();
+
+try {
+	PersistableManager pm = PersistableManager.getInstance();
+
+	/* To load an object, use the object ID 
+	 * generated previously by the save() operation.
+	 */
+	pm.load(person, id);
+} catch (FloggyException e) {
+	...
+}
++-----------------------------+
+
+** {Lazy loading a tree of objects}
+
++------------------------------+
+try {
+	PersistableManager pm = PersistableManager.getInstance();
+
+	/* Passing the lazy parameter with value true will avoid the
+	 * load of the Phone object associated to the Person instance.
+	 */
+	pm.load(person, id, true);
+} catch (FloggyException e) {
+	...
+}
++-----------------------------+
+
+** {Changing the name of the RecordStore where the Persistable will be stored}
+	
++------------------------------+
+public class Person implements Persistable, Nameable {
+
+	...
+	
+	public String getRecordStoreName() {
+		return "NOSREP";
+	}
+	
+}
++-----------------------------+
+
+* {Deleting a previously saved object}
+	
++------------------------------+
+Person person = ...
+
+try {
+	PersistableManager pm = PersistableManager.getInstance();
+
+	// Delete the object.
+	pm.delete(person);
+} catch (FloggyException e) {
+	...
+}
++-----------------------------+
+
+* {Deleting all entities based on its class}.
+	
++------------------------------+
+try {
+	PersistableManager pm = PersistableManager.getInstance();
+
+	// Delete all objects based on its class.
+	pm.deleteAll(Person.class);
+} catch (FloggyException e) {
+	...
+}
++-----------------------------+
+
+* {Deleting all entities stored by the midlet}.
+	
++------------------------------+
+try {
+	PersistableManager pm = PersistableManager.getInstance();
+
+	// Delete all objetcs.
+	pm.deleteAll();
+} catch (FloggyException e) {
+	...
+}
++-----------------------------+
+
+* {Listing all objects}
+	
++------------------------------+
+PersistableManager pm = PersistableManager.getInstance();
+
+ObjectSet persons = pm.find(Person.class, null, null);
+for (int i = 0; i < persons.size(); i++) {
+	Person p = (Person) persons.get(i);
+	...
+}
++-----------------------------+
+
+* {Listing all objects (fast version)}
+	
++------------------------------+
+PersistableManager pm = PersistableManager.getInstance();
+
+Person person = new Person();
+
+ObjectSet persons = pm.find(Person.class, null, null);
+for (int i = 0; i < persons.size(); i++) {
+	/* The same instance is used to load the data. This avoid 
+	 * the creation of persons.size()-1 objects.  
+	 */
+	persons.get(i, person);
+
+	// Don't use the person reference outside the loop, only its data.
+	//BAD
+	list.add(person);
+	//GOOD
+	list.add(person.getName());
+	...
+}
++-----------------------------+
+
+* {Using a filter to find specific objects}
+	
++------------------------------+
+PersistableManager pm = PersistableManager.getInstance();
+
+// Filtering persons by gender
+ObjectSet persons = pm.find(Person.class, new MaleFilter(), null);
+for (int i = 0; i < persons.size(); i++) {
+	Person p = (Person) persons.get(i);
+	...
+}
+
+... 
+
+public class MaleFilter implements net.sourceforge.floggy.persistence.Filter {
+
+	public boolean matches(Persistable persistable) {
+		Person p = (Person) persistable;
+		return p.getGender() == 'M';
+	}
+	
+} 
+
++-----------------------------+
+
+* {Using a comparator to sort the results of a search} 
+	
++------------------------------+
+PersistableManager pm = PersistableManager.getInstance();
+
+// Sorting persons by age (younger first)
+ObjectSet persons = pm.find(Person.class, null, new AgeCompator());
+
+... 
+
+public class AgeComparator implements net.sourceforge.floggy.persistence.Comparator {
+
+	public int compare(Persistable o1, Persistable o2) {
+		Person p1 = (Person) o1;
+		Person p2 = (Person) o2;
+		
+		if (p1.getBirthday().getTime() < p2.getBirthday().getTime()) {
+			return PRECEDES;
+		} 
+		if (p1.getBirthday().getTime() > p2.getBirthday().getTime()) {
+			return FOLLOWS; 
+		} 
+		
+		return EQUIVALENT;
+	}
+
+}
++-----------------------------+
+
+* {Checking if the object is already persisted}.
+	
++------------------------------+
+Person person = new Person();
+
+try {
+	PersistableManager pm = PersistableManager.getInstance();
+	
+	// Checks if the object is persisted. This will return false
+	boolean persisted = pm.isPersisted(person);
+
+	// To load an object, use the object ID 
+	// generated previously by a save() operation.
+	pm.load(person, id);
+
+	//This will return true
+	persisted = pm.isPersisted(person);
+} catch (FloggyException e) {
+	...
+}
++-----------------------------+
+
+* {Getting the object id}.
+	
++------------------------------+
+Person person = new Person();
+
+try {
+	PersistableManager pm = PersistableManager.getInstance();
+	
+	// Gets the object id. This will return -1
+	int id = pm.getId(person);
+
+	// saving the object
+	pm.save(person);
+
+	//This will return a value greater than 0
+	id = pm.getId(person);
+} catch (FloggyException e) {
+	...
+}
++-----------------------------+
+

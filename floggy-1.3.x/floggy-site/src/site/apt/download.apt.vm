@@ -1,0 +1,43 @@
+#*
+ * Copyright (c) 2006-2010 Floggy Open Source Group. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *#
+
+#set($temp = $currentVersion.replace('-', '.')) 
+
+Download
+
+ Floggy can be downloaded in two flavors. 
+ 
+* Main bundle
+
+  This is the main bundle available from Floggy it contains all the jars and documentation required to use it.
+  
+  * {{{https://sourceforge.net/projects/floggy/files/floggy-persistence/${currentVersion}/floggy-persistence-${currentVersion}.zip/download}floggy-persistence-${currentVersion}.zip}}
+
+  * {{{https://sourceforge.net/projects/floggy/files/floggy-persistence/${currentVersion}/floggy-persistence-${currentVersion}.tar.gz/download}floggy-persistence-${currentVersion}.tar.gz}}
+
+  * {{{https://sourceforge.net/projects/floggy/files/floggy-persistence/${currentVersion}/floggy-persistence-${currentVersion}.tar.bz2/download}floggy-persistence-${currentVersion}.tar.bz2}}
+
+* Eclipse's plugin
+
+  This bundle contains the Eclipse's plugin. <<We really recommend you to follow the steps in the {{{./configuration/eclipse.html}configuration}} section to install it instead of download.>> 
+
+  * {{{https://sourceforge.net/projects/floggy/files/eclipse-floggy-plugin/${temp}/net.sourceforge.floggy_${temp}.jar/download}net.sourceforge.floggy_${temp}.jar}}
+
+  * {{{https://sourceforge.net/projects/floggy/files/eclipse-floggy-plugin/${temp}/net.sourceforge.floggy.feature_${temp}.jar/download}net.sourceforge.floggy.feature_${temp}.jar}}
+
+ To access the download page directly use this {{{http://sourceforge.net/project/showfiles.php?group_id=139426}link}}.
+
+ Enjoy!

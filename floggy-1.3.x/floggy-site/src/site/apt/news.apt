@@ -1,0 +1,67 @@
+~~
+~~ Copyright (c) 2006-2010 Floggy Open Source Group. All rights reserved.
+~~
+~~ Licensed under the Apache License, Version 2.0 (the "License");
+~~ you may not use this file except in compliance with the License.
+~~ You may obtain a copy of the License at
+~~
+~~ http://www.apache.org/licenses/LICENSE-2.0
+~~
+~~ Unless required by applicable law or agreed to in writing, software
+~~ distributed under the License is distributed on an "AS IS" BASIS,
+~~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+~~ See the License for the specific language governing permissions and
+~~ limitations under the License.
+~~
+
+News
+
+	<<16-Jan-10:>> The 1.3.1 maintenance release was made available, its target is fix an issue on Windows platform. Be aware of the {{{./changes-report.html#a1.3.1}change }}.
+
+	<<20-Dec-09:>> The 1.3.0 final release was made available, check the list of {{{./changes-report.html#a1.3.0}changes}}. Enjoy!
+	
+	<<18-Dec-09:>> A new {{{./qa.html}Q&A}} section was created. There you can check how we try to deliver a free of bug software.
+
+	<<05-Sep-09:>> A new {{{./demo.html}Demo}} section was created. There you can test applications that uses Floggy.
+	
+	<<25-Aug-09:>> A new snapshot release was made available. Six features was added. More {{{./changes-report.html#a1.3.0-SNAPSHOT}here}}.
+	
+	<<25-Aug-09:>> Floggy now has a Fisheye tool linked to its source code. Check it out: {{{http://fisheye3.atlassian.com/browse/floggy}http://fisheye3.atlassian.com/browse/floggy}}.
+	
+	<<14-Jun-09:>> A new snapshot release was made available. This one changed only the Eclipse's plugin. Two bugs was fixed. More {{{./changes-report.html#a1.3.0-SNAPSHOT}here}}.
+	
+	<<29-Apr-09:>> Floggy reached 10,000 downloads today it is another remarkable mark! Thank you Floggy community!
+	
+	<<05-Apr-09:>> A snapshot release (alpha) of 1.3.0 was made available, please test it and give us a feedback. Further information about the changes {{{./changes-report.html#a1.3.0-SNAPSHOT}here}}.
+
+	<<22-Feb-09:>> The documentation turned into a little out of date since the last release but it is not any more! Check it on {{{./getting-started.html}Getting Started}}, {{{./faq.html}FAQ}}, {{{./configuration/eclipse.html}Eclipse}} and {{{./datatypes.html}Weaver}} sections.
+
+	<<29-Jan-09:>> Floggy 1.2.0 was released. You can get further information about the changes {{{./changes-report.html#a1.2.0}here}}. Enjoy!
+
+	<<29-Jan-09:>> If you couldn't went to the {{{https://developerdays.dev.java.net/nonav/overview.html}M3DD}} Conference see Floggy live, now you can! Watch {{{http://channelsun.sun.com/video/open-source/java/1631259654/ts-12:+floggy+-+javame+persistence+made+easy+/8899391001}this}}.
+
+	<<15-Jan-09:>> Floggy will be presented at {{{https://developerdays.dev.java.net/nonav/overview.html}Java Mobile, Media & Embedded Developer Days Conference}}, our first international event. {{{http://www.slideshare.net/tmoreira2020/floggym3dd20090121-presentation}Presentation}} {{{http://channelsun.sun.com/video/open-source/java/1631259654/ts-12:+floggy+-+javame+persistence+made+easy+/8899391001}Video}}.
+
+	<<25-Nov-08:>> Floggy reached more than 5,000 downloads today. This is a historical mark for us and we are very glad with it.
+	
+	<<06-Nov-08:>> A new roadmap was planned. We expect to release a version of Floggy on the second week of December. Check it out the proposal features {{{./roadmap.html}here}}.
+
+	<<23-Sep-08:>> Floggy will be presented at another Java event in Brazil (our third time in one month)! This another time on the II Boot. For futher information follow the {{{http://bootxanxere.blogspot.com/}link}}. {{{http://www.slideshare.net/tmoreira2020/floggyiiboot20080925-presentation}Presentation}}.
+
+	<<13-Sep-08:>> Floggy will be presented at another Java event in Brazil this time on the GUJavaSC meeting. For futher information follow the {{{http://wiki.java.net/bin/view/JUGs/MesDeJava2008}link}}. {{{http://www.slideshare.net/tmoreira2020/floggygujavasc20080920-presentation/}Presentation}}.
+
+	<<08-Sep-08:>> Floggy will be presented at {{{http://www.sucesusp.org.br/justjava2008}JustJava 2008}}, one of the biggest Java events in Brazil. {{{http://www.slideshare.net/tmoreira2020/floggyjustjava20080910-presentation}Presentation}}.
+
+	<<22-Aug-08:>> Floggy completed 1 year old. To celebrate the date we made a release (1.1.3) of Eclipse plugin. You can install it following this {{{./configuration/eclipse.html}steps}}.
+
+	<<23-Jul-08:>> A article about the project was published on the 30th edition of a Brazilian magazine called Mundo Java. For futher information take a look at the {{{http://mundojava.com.br/NovoSite/30destaque.shtml}30th edition's}} url.
+
+	<<11-Jun-08:>> Improved the site documentation. Added new method's description to the getting started page. Refactored the support page.
+
+	<<26-Mar-08:>> Floggy 1.1.1 released. See the complete news {{{http://sourceforge.net/forum/forum.php?forum_id=803223}here}}. We are working now to update the documentation to the new version.
+	
+	<<31-Jan-08:>> Floggy 1.0.1 reached 1,000 downloads.
+	
+	<<19-Sep-07:>> A {{{./roadmap.html}Road Map}} is now available. There you can check our plans for future releases.
+	
+	<<22-Aug-07:>> Floggy 1.0.1 released. Here the project begins!

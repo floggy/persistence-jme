@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (c) 2006-2010 Floggy Open Source Group. All rights reserved.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+
+<!DOCTYPE site [
+<!ELEMENT site (description?, feature*, archive*, category-def*)>
+<!ATTLIST site
+    type                CDATA #IMPLIED
+    url                 CDATA #IMPLIED
+    mirrorURL           CDATA #IMPLIED
+    availableLocales    CDATA #IMPLIED
+    digestURL           CDATA #IMPLIED
+    associateSitesURL   CDATA #IMPLIED
+    pack200             CDATA #IMPLIED
+>
+
+<!ELEMENT description (#PCDATA)>
+<!ATTLIST description
+    url           CDATA #IMPLIED
+>
+
+<!ELEMENT feature (category*)>
+<!ATTLIST feature
+    type          CDATA #IMPLIED
+    id            CDATA #IMPLIED
+    version       CDATA #IMPLIED
+    url           CDATA #REQUIRED
+    patch         (false | true) "false"
+
+    os            CDATA #IMPLIED
+    nl            CDATA #IMPLIED
+    arch          CDATA #IMPLIED
+    ws            CDATA #IMPLIED
+>
+
+<!ELEMENT archive EMPTY>
+<!ATTLIST archive
+    path          CDATA #REQUIRED
+    url           CDATA #REQUIRED
+>
+
+<!ELEMENT category EMPTY>
+<!ATTLIST category
+    name          CDATA #REQUIRED
+>
+
+<!ELEMENT category-def (description?)>
+<!ATTLIST category-def
+    name          CDATA #REQUIRED
+    label         CDATA #REQUIRED
+>
+]>
+
+<site>
+	<description url="http://floggy.sourceforge.net/eclipse">Floggy Update Site</description>
+	<feature url="http://downloads.sourceforge.net/floggy/net.sourceforge.floggy.feature_1.0.0.jar?use_mirror=ufpr"	id="net.sourceforge.floggy.feature" version="1.0.0">
+		<category name="Floggy" />
+	</feature>
+	<feature url="http://downloads.sourceforge.net/floggy/net.sourceforge.floggy.feature_1.1.1.jar?use_mirror=ufpr" id="net.sourceforge.floggy.feature" version="1.1.1">
+		<category name="Floggy" />
+	</feature>
+	<feature url="http://downloads.sourceforge.net/floggy/net.sourceforge.floggy.feature_1.1.2.jar?use_mirror=ufpr"	id="net.sourceforge.floggy.feature" version="1.1.2">
+		<category name="Floggy" />
+	</feature>
+	<feature url="http://downloads.sourceforge.net/floggy/net.sourceforge.floggy.feature_1.1.3.jar?use_mirror=ufpr"	id="net.sourceforge.floggy.feature" version="1.1.3">
+		<category name="Floggy" />
+	</feature>
+	<feature url="http://downloads.sourceforge.net/floggy/net.sourceforge.floggy.feature_1.2.0.jar?use_mirror=ufpr"	id="net.sourceforge.floggy.feature" version="1.2.0">
+		<category name="Floggy" />
+	</feature>
+	<feature url="http://downloads.sourceforge.net/floggy/net.sourceforge.floggy.feature_1.3.0.jar?use_mirror=ufpr"	id="net.sourceforge.floggy.feature" version="1.3.0">
+		<category name="Floggy" />
+	</feature>
+	<feature url="http://downloads.sourceforge.net/floggy/net.sourceforge.floggy.feature_1.3.1.jar?use_mirror=ufpr" id="net.sourceforge.floggy.feature" version="1.3.1">
+		<category name="Floggy" />
+	</feature>
+	<archive path="plugins/net.sourceforge.floggy_1.0.0.jar" url="http://downloads.sourceforge.net/floggy/net.sourceforge.floggy_1.0.0.jar?use_mirror=ufpr" />
+	<archive path="plugins/net.sourceforge.floggy_1.1.1.jar" url="http://downloads.sourceforge.net/floggy/net.sourceforge.floggy_1.1.1.jar?use_mirror=ufpr" />
+	<archive path="plugins/net.sourceforge.floggy_1.1.2.jar" url="http://downloads.sourceforge.net/floggy/net.sourceforge.floggy_1.1.2.jar?use_mirror=ufpr" />
+	<archive path="plugins/net.sourceforge.floggy_1.1.3.jar" url="http://downloads.sourceforge.net/floggy/net.sourceforge.floggy_1.1.3.jar?use_mirror=ufpr" />
+	<archive path="plugins/net.sourceforge.floggy_1.2.0.jar" url="http://downloads.sourceforge.net/floggy/net.sourceforge.floggy_1.2.0.jar?use_mirror=ufpr" />
+	<archive path="plugins/net.sourceforge.floggy_1.3.0.jar" url="http://downloads.sourceforge.net/floggy/net.sourceforge.floggy_1.3.0.jar?use_mirror=ufpr" />
+	<archive path="plugins/net.sourceforge.floggy_1.3.1.jar" url="http://downloads.sourceforge.net/floggy/net.sourceforge.floggy_1.3.1.jar?use_mirror=ufpr" />
+	<category-def name="Floggy" label="Floggy">
+		<description>Floggy JME Development Support Feature</description>
+	</category-def>
+</site>
