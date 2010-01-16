@@ -21,16 +21,16 @@
 	<parent>
 		<groupId>net.sourceforge.floggy</groupId>
 		<artifactId>floggy</artifactId>
-		<version>1.3.1</version>
+		<version>1.3.2-SNAPSHOT</version>
 	</parent>
 	<artifactId>eclipse-floggy-feature</artifactId>
-	<version>1.3.1</version>
+	<version>1.3.2.SNAPSHOT</version>
 	<name>Floggy feature for Eclipse</name>
 	<description>A Floggy feature for Eclipse.</description>
 	<scm>
-		<connection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/tags/floggy-1.3.1/eclipse-floggy-feature</connection>
-		<developerConnection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/tags/floggy-1.3.1/eclipse-floggy-feature</developerConnection>
-		<url>https://floggy.svn.sourceforge.net/svnroot/floggy/tags/floggy-1.3.1/eclipse-floggy-feature</url>
+		<connection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/branches/floggy-1.3.x/eclipse-floggy-feature</connection>
+		<developerConnection>scm:svn:https://floggy.svn.sourceforge.net/svnroot/floggy/branches/floggy-1.3.x/eclipse-floggy-feature</developerConnection>
+		<url>https://floggy.svn.sourceforge.net/svnroot/floggy/branches/floggy-1.3.x/eclipse-floggy-feature</url>
 	</scm>
 	<build>
 		<finalName>${project.groupId}.feature_${project.version}</finalName>
