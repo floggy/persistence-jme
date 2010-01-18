@@ -44,7 +44,7 @@ public class ZipOutputPool implements OutputPool {
 	}
 
 	public void addClass(CtClass ctClass) throws NotFoundException,
-			IOException, CannotCompileException {
+		IOException, CannotCompileException {
 
 		String fileName = ctClass.getName();
 		fileName = fileName.replace('.', '/').concat(".class");
@@ -52,16 +52,14 @@ public class ZipOutputPool implements OutputPool {
 	}
 
 	public void addFile(URL fileURL, String fileName) throws IOException {
-		if (fileName.endsWith(".class")) {
-			fileName = fileName.replace(File.separatorChar, '/');
-		}
 		addResource(fileURL.openStream(), fileName);
 	}
 
 	public void addResource(InputStream resourceStream, String fileName)
-			throws IOException {
+		throws IOException {
 
-		if (fileName.startsWith("/") || fileName.startsWith("\\")) {
+		fileName = fileName.replace(File.separatorChar, '/');
+		if (fileName.startsWith("/")) {
 			fileName = fileName.substring(1);
 		}
 
