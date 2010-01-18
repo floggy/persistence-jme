@@ -41,7 +41,8 @@ public class ZipInputPool implements InputPool {
 	}
 
 	public String getFileName(int index) {
-		return this.files.get(index).toString();
+		String fileName = (String) this.files.get(index);
+		return fileName.replace('/', File.separatorChar);
 	}
 
 	private void initFiles(File file) throws IOException {
@@ -51,9 +52,7 @@ public class ZipInputPool implements InputPool {
 			for (ZipEntry entry = in.getNextEntry(); entry != null; entry = in
 					.getNextEntry()) {
 				if(!entry.isDirectory()) {
-					String name = entry.getName();
-					name = name.replace('/', File.separatorChar);
-					this.files.add(name);
+					this.files.add(entry.getName());
 				}
 			}
 		} finally {
@@ -64,7 +63,7 @@ public class ZipInputPool implements InputPool {
 	}
 
 	public URL getFileURL(int index) throws IOException {
-		String name = getFileName(index);
+		String name = (String) this.files.get(index);
 		// jar:http://www.foo.com/bar/baz.jar!/COM/foo/Quux.class
 		name= "jar:" + file.toURL() + "!/" + name;
 		//System.out.println(name);

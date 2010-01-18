@@ -43,7 +43,7 @@ public class ZipInputPoolTest extends TestCase {
 		ZipInputPool pool = new ZipInputPool(file);
 
 		URL urlExpected = new URL("jar:" + file.toURL()
-				+ "!/META-INF" + File.separator + "MANIFEST.MF");
+				+ "!/META-INF/MANIFEST.MF");
 		assertEquals(urlExpected, pool.getFileURL(0));
 	}
 
