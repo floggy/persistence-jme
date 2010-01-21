@@ -24,8 +24,9 @@ import javax.microedition.rms.RecordStore;
 import net.sourceforge.floggy.persistence.FloggyException;
 import net.sourceforge.floggy.persistence.PersistableManager;
 import net.sourceforge.floggy.persistence.impl.MetadataManagerUtil;
-import net.sourceforge.floggy.persistence.impl.PersistableManagerImpl;
 import net.sourceforge.floggy.persistence.impl.PersistableMetadata;
+import net.sourceforge.floggy.persistence.impl.RecordStoreManager;
+import net.sourceforge.floggy.persistence.impl.Utils;
 import net.sourceforge.floggy.persistence.impl.__Persistable;
 import net.sourceforge.floggy.persistence.migration.Enumeration;
 import net.sourceforge.floggy.persistence.migration.MigrationManager;
@@ -40,7 +41,7 @@ public class MigrationManagerImpl extends MigrationManager {
 
 	public void finish(Class persistableClass) throws FloggyException {
 
-		PersistableManagerImpl.validatePersistableClassArgument(persistableClass);
+		Utils.validatePersistableClassArgument(persistableClass);
 
 		AbstractEnumerationImpl impl = (AbstractEnumerationImpl) enumerations.get(persistableClass);
 		if (impl != null) {
@@ -57,7 +58,7 @@ public class MigrationManagerImpl extends MigrationManager {
 	
 	public void quickMigration(Class persistableClass) throws FloggyException {
 
-		PersistableManagerImpl.validatePersistableClassArgument(persistableClass);
+		Utils.validatePersistableClassArgument(persistableClass);
 		
 		String className = persistableClass.getName();
 		PersistableMetadata classBasedMetadata = MetadataManagerUtil.getClassBasedMetadata(className);
@@ -71,7 +72,7 @@ public class MigrationManagerImpl extends MigrationManager {
 			try {
 				MetadataManagerUtil.saveRMSStructure(classBasedMetadata);
 			} catch (Exception ex) {
-				throw PersistableManagerImpl.handleException(ex);
+				throw Utils.handleException(ex);
 			}
 		}
 	}
@@ -79,7 +80,7 @@ public class MigrationManagerImpl extends MigrationManager {
 	public Enumeration start(Class persistableClass, Hashtable properties)
 			throws FloggyException {
 		
-		PersistableManagerImpl.validatePersistableClassArgument(persistableClass);
+		Utils.validatePersistableClassArgument(persistableClass);
 
 		PersistableMetadata classBasedMetadata = MetadataManagerUtil.getClassBasedMetadata(persistableClass.getName()); 
 
@@ -125,11 +126,11 @@ public class MigrationManagerImpl extends MigrationManager {
 			if (classBasedMetadata.getPersistableStrategy() == PersistableMetadata.SINGLE_STRATEGY &&
 					rmsBasedMetadata.getPersistableStrategy() == PersistableMetadata.JOINED_STRATEGY) {
 				
-				rs = PersistableManagerImpl.getRecordStore(rmsBasedMetadata.getRecordStoreName(), rmsBasedMetadata, true);
+				rs = RecordStoreManager.getRecordStore(rmsBasedMetadata.getRecordStoreName(), rmsBasedMetadata, true);
 			} else {
-				__Persistable persistable = PersistableManagerImpl.createInstance(persistableClass);
+				__Persistable persistable = Utils.createInstance(persistableClass);
 
-				rs = PersistableManagerImpl.getRecordStore(persistable.getRecordStoreName(), classBasedMetadata, true);
+				rs = RecordStoreManager.getRecordStore(persistable.getRecordStoreName(), classBasedMetadata, true);
 			}
 			
 			RecordEnumeration en = rs.enumerateRecords(null, null, false);
@@ -165,7 +166,7 @@ public class MigrationManagerImpl extends MigrationManager {
 			}
 			enumerations.put(persistableClass, impl);
 		} catch (Exception ex) {
-			throw PersistableManagerImpl.handleException(ex);
+			throw Utils.handleException(ex);
 		}
 
 		return impl;

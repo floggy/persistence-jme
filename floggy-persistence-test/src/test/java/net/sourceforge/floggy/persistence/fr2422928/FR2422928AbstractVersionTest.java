@@ -26,7 +26,7 @@ import net.sourceforge.floggy.persistence.FloggyBaseTest;
 import net.sourceforge.floggy.persistence.FloggyException;
 import net.sourceforge.floggy.persistence.RMSMemoryMicroEmulator;
 import net.sourceforge.floggy.persistence.impl.MetadataManagerUtil;
-import net.sourceforge.floggy.persistence.impl.PersistableManagerImpl;
+import net.sourceforge.floggy.persistence.impl.RecordStoreManager;
 import net.sourceforge.floggy.persistence.migration.Enumeration;
 import net.sourceforge.floggy.persistence.migration.FieldPersistableInfo;
 import net.sourceforge.floggy.persistence.migration.MigrationManager;
@@ -50,7 +50,7 @@ public abstract class FR2422928AbstractVersionTest extends FloggyBaseTest {
 		IOUtils.copy(new FileInputStream("src/test/rms/" + getVersion() + "/Freezed-1739440490.rms"), new FileOutputStream("target/fr2422928/rms/" + getVersion() + "/Freezed-1739440490.rms"));
 		MIDletBridge.setMicroEmulator(new RMSMemoryMicroEmulator("target/fr2422928/rms/" + getVersion()));
 		MetadataManagerUtil.init();
-		PersistableManagerImpl.reset();
+		RecordStoreManager.reset();
 	}
 
 	protected void tearDown() throws Exception {

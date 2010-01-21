@@ -27,8 +27,8 @@ import javax.microedition.rms.RecordStoreException;
 
 import net.sourceforge.floggy.persistence.FloggyException;
 import net.sourceforge.floggy.persistence.impl.MetadataManagerUtil;
-import net.sourceforge.floggy.persistence.impl.PersistableManagerImpl;
 import net.sourceforge.floggy.persistence.impl.PersistableMetadata;
+import net.sourceforge.floggy.persistence.impl.RecordStoreManager;
 import net.sourceforge.floggy.persistence.impl.Utils;
 
 public class SingleStrategyEnumerationImpl extends AbstractEnumerationImpl {
@@ -106,14 +106,14 @@ public class SingleStrategyEnumerationImpl extends AbstractEnumerationImpl {
 	void finish() throws FloggyException {
 		if (!enumeration.hasNextElement()) {
 			enumeration.destroy();
-			PersistableManagerImpl.closeRecordStore(recordStore);
+			RecordStoreManager.closeRecordStore(recordStore);
 			if (rmsBasedMetadata != classBasedMetadata) {
 				try {
 					classBasedMetadata.setRecordId(rmsBasedMetadata
 							.getRecordId());
 					MetadataManagerUtil.saveRMSStructure(classBasedMetadata);
 				} catch (Exception ex) {
-					throw PersistableManagerImpl.handleException(ex);
+					throw Utils.handleException(ex);
 				}
 			}
 		} else {
@@ -146,7 +146,7 @@ public class SingleStrategyEnumerationImpl extends AbstractEnumerationImpl {
 			currentIndex++;
 
 		} catch (Exception ex) {
-			throw PersistableManagerImpl.handleException(ex);
+			throw Utils.handleException(ex);
 		}
 		return hashtable;
 	}

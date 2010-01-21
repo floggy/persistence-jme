@@ -21,10 +21,10 @@ public class SuperClassGenerator {
 
 	public static String generateLoadSource(CtClass superClass) {
 		String source = "\n";
-		source += "javax.microedition.rms.RecordStore superRS = net.sourceforge.floggy.persistence.impl.PersistableManagerImpl.getRecordStore(super.getRecordStoreName(), net.sourceforge.floggy.persistence.impl.MetadataManagerUtil.getClassBasedMetadata(\"" + superClass.getName() + "\"));\n";
+		source += "javax.microedition.rms.RecordStore superRS = net.sourceforge.floggy.persistence.impl.RecordStoreManager.getRecordStore(super.getRecordStoreName(), net.sourceforge.floggy.persistence.impl.MetadataManagerUtil.getClassBasedMetadata(\"" + superClass.getName() + "\"));\n";
 		source += "int superClassId = dis.readInt();\n";
 		source += "byte[] superClassBuffer = superRS.getRecord(superClassId);\n";
-		source += "net.sourceforge.floggy.persistence.impl.PersistableManagerImpl.closeRecordStore(superRS);\n";
+		source += "net.sourceforge.floggy.persistence.impl.RecordStoreManager.closeRecordStore(superRS);\n";
 		source += "super.__deserialize(superClassBuffer, lazy);\n";
 		source += "super.__setId(superClassId);\n";
 		source += "\n";
@@ -33,7 +33,7 @@ public class SuperClassGenerator {
 
 	public static String generateSaveSource(CtClass superClass) {
 		String source = "\n";
-		source += "javax.microedition.rms.RecordStore superRS = net.sourceforge.floggy.persistence.impl.PersistableManagerImpl.getRecordStore(super.getRecordStoreName(), net.sourceforge.floggy.persistence.impl.MetadataManagerUtil.getClassBasedMetadata(\"" + superClass.getName() + "\"));\n";
+		source += "javax.microedition.rms.RecordStore superRS = net.sourceforge.floggy.persistence.impl.RecordStoreManager.getRecordStore(super.getRecordStoreName(), net.sourceforge.floggy.persistence.impl.MetadataManagerUtil.getClassBasedMetadata(\"" + superClass.getName() + "\"));\n";
 		source += "byte[] superBuffer= super.__serialize();\n";
 		source += "int superId= super.__getId();\n";
 		source += "if(superId <= 0) {\n";
@@ -43,7 +43,7 @@ public class SuperClassGenerator {
 		source += "else {\n";
 		source += "superRS.setRecord(superId, superBuffer, 0, superBuffer.length);\n";
 		source += "}\n";
-		source += "net.sourceforge.floggy.persistence.impl.PersistableManagerImpl.closeRecordStore(superRS);\n";
+		source += "net.sourceforge.floggy.persistence.impl.RecordStoreManager.closeRecordStore(superRS);\n";
 		source += "fos.writeInt(superId);\n";
 		source += "\n";
 		return source;

@@ -32,9 +32,10 @@ import net.sourceforge.floggy.persistence.FloggyException;
 import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.PersistableManager;
 import net.sourceforge.floggy.persistence.impl.MetadataManagerUtil;
-import net.sourceforge.floggy.persistence.impl.PersistableManagerImpl;
 import net.sourceforge.floggy.persistence.impl.PersistableMetadata;
+import net.sourceforge.floggy.persistence.impl.RecordStoreManager;
 import net.sourceforge.floggy.persistence.impl.SerializationHelper;
+import net.sourceforge.floggy.persistence.impl.Utils;
 import net.sourceforge.floggy.persistence.impl.__Persistable;
 import net.sourceforge.floggy.persistence.migration.Enumeration;
 import net.sourceforge.floggy.persistence.migration.FieldPersistableInfo;
@@ -112,7 +113,7 @@ public abstract class AbstractEnumerationImpl implements Enumeration {
 				recordId = -1;
 				return temp;
 			} catch (RecordStoreException ex) {
-				throw PersistableManagerImpl.handleException(ex);
+				throw Utils.handleException(ex);
 			}
 		}
 		throw new FloggyException("There isn't a register to delete. You have to iterate over the enumeration before call delete.");
@@ -121,13 +122,13 @@ public abstract class AbstractEnumerationImpl implements Enumeration {
 	void finish() throws FloggyException {
 		if (!enumeration.hasNextElement()) {
 			enumeration.destroy();
-			PersistableManagerImpl.closeRecordStore(recordStore);
+			RecordStoreManager.closeRecordStore(recordStore);
 			if (rmsBasedMetadata != classBasedMetadata) {
 				try {
 					classBasedMetadata.setRecordId(rmsBasedMetadata.getRecordId());
 					MetadataManagerUtil.saveRMSStructure(classBasedMetadata);
 				} catch (Exception ex) {
-					throw PersistableManagerImpl.handleException(ex);
+					throw Utils.handleException(ex);
 				}
 			}
 		} else {
@@ -153,7 +154,7 @@ public abstract class AbstractEnumerationImpl implements Enumeration {
 			byte[] data = recordStore.getRecord(recordId);
 			buildPersistable(rmsBasedMetadata, data, hashtable);
 		} catch (Exception ex) {
-			throw PersistableManagerImpl.handleException(ex);
+			throw Utils.handleException(ex);
 		}
 		return hashtable;
 	}
@@ -346,7 +347,7 @@ public abstract class AbstractEnumerationImpl implements Enumeration {
 
 	public int update(Persistable persistable) throws FloggyException {
 		if (recordId != -1) {
-			__Persistable __persistable = PersistableManagerImpl.checkArgumentAndCast(persistable);
+			__Persistable __persistable = Utils.checkArgumentAndCast(persistable);
 			__persistable.__setId(recordId);
 			int temp = manager.save(__persistable);
 			recordId = -1;

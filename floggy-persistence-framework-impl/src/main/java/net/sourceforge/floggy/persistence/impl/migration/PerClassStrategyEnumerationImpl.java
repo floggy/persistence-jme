@@ -25,8 +25,8 @@ import javax.microedition.rms.RecordStore;
 import javax.microedition.rms.RecordStoreException;
 
 import net.sourceforge.floggy.persistence.FloggyException;
-import net.sourceforge.floggy.persistence.impl.PersistableManagerImpl;
 import net.sourceforge.floggy.persistence.impl.PersistableMetadata;
+import net.sourceforge.floggy.persistence.impl.Utils;
 
 public class PerClassStrategyEnumerationImpl extends AbstractEnumerationImpl {
 
@@ -88,7 +88,7 @@ public class PerClassStrategyEnumerationImpl extends AbstractEnumerationImpl {
 				recordId = -1;
 				return temp;
 			} catch (RecordStoreException ex) {
-				throw PersistableManagerImpl.handleException(ex);
+				throw Utils.handleException(ex);
 			}
 		}
 		throw new FloggyException("There isn't a register to delete. You have to iterate over the enumeration before call delete.");

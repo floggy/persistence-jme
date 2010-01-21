@@ -66,7 +66,7 @@ class ObjectSetImpl implements ObjectSet {
 	protected ObjectSetImpl(int[] ids, Class persistableClass, PersistableManagerImpl manager, boolean lazy) throws FloggyException {
 		this.ids = ids;
 		this.persistableClass = persistableClass;
-		this.sharedInstance = PersistableManagerImpl.createInstance(persistableClass);
+		this.sharedInstance = Utils.createInstance(persistableClass);
 		
 		// Init attributes
 		this.size = (ids == null) ? 0 : ids.length;
@@ -83,7 +83,7 @@ class ObjectSetImpl implements ObjectSet {
 	 */
 	public Persistable get(int index) throws FloggyException {
 		// Try to create a new instance of the persistable class.
-		Persistable persistable = PersistableManagerImpl.createInstance(persistableClass);
+		Persistable persistable = Utils.createInstance(persistableClass);
 
 		// Load the data from the repository.
 		get(index, persistable);

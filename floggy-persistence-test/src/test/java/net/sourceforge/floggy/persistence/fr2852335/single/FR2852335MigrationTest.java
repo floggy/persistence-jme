@@ -29,8 +29,8 @@ import net.sourceforge.floggy.persistence.FloggyException;
 import net.sourceforge.floggy.persistence.ObjectSet;
 import net.sourceforge.floggy.persistence.RMSMemoryMicroEmulator;
 import net.sourceforge.floggy.persistence.impl.MetadataManagerUtil;
-import net.sourceforge.floggy.persistence.impl.PersistableManagerImpl;
 import net.sourceforge.floggy.persistence.impl.PersistableMetadata;
+import net.sourceforge.floggy.persistence.impl.RecordStoreManager;
 import net.sourceforge.floggy.persistence.impl.migration.JoinedStrategyEnumerationImpl;
 import net.sourceforge.floggy.persistence.impl.migration.SingleStrategyEnumerationImpl;
 import net.sourceforge.floggy.persistence.migration.Enumeration;
@@ -68,7 +68,7 @@ public class FR2852335MigrationTest extends FloggyBaseTest {
 		IOUtils.copy(new FileInputStream("src/test/rms/1.4.0/single/CSCOfConcreteJoinedStrategy18561.rms"), new FileOutputStream("target/fr2852335/rms/1.4.0/single/CSCOfConcreteJoinedStrategy18561.rms"));
 		MIDletBridge.setMicroEmulator(new RMSMemoryMicroEmulator("target/fr2852335/rms/1.4.0/single"));
 		MetadataManagerUtil.init();
-		PersistableManagerImpl.reset();
+		RecordStoreManager.reset();
 	}
 	
 	protected void tearDown() throws Exception {

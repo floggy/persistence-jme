@@ -349,9 +349,10 @@ public class Weaver {
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/ObjectSetImpl.class");
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/__Persistable.class");
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/PersistableManagerImpl.class");
-		embeddedClass("/net/sourceforge/floggy/persistence/impl/PersistableManagerImpl$1.class");
-		embeddedClass("/net/sourceforge/floggy/persistence/impl/PersistableManagerImpl$RecordStoreReference.class");
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/PersistableMetadata.class");
+		embeddedClass("/net/sourceforge/floggy/persistence/impl/RecordStoreManager.class");
+		embeddedClass("/net/sourceforge/floggy/persistence/impl/RecordStoreManager$1.class");
+		embeddedClass("/net/sourceforge/floggy/persistence/impl/RecordStoreManager$RecordStoreReference.class");
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/SingleStrategyObjectFilter.class");
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/Utils.class");
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/migration/MigrationManagerImpl.class");

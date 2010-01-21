@@ -31,8 +31,8 @@ import net.sourceforge.floggy.persistence.FloggyException;
 import net.sourceforge.floggy.persistence.ObjectSet;
 import net.sourceforge.floggy.persistence.RMSMemoryMicroEmulator;
 import net.sourceforge.floggy.persistence.impl.MetadataManagerUtil;
-import net.sourceforge.floggy.persistence.impl.PersistableManagerImpl;
 import net.sourceforge.floggy.persistence.impl.PersistableMetadata;
+import net.sourceforge.floggy.persistence.impl.RecordStoreManager;
 import net.sourceforge.floggy.persistence.migration.Enumeration;
 import net.sourceforge.floggy.persistence.migration.MigrationManager;
 
@@ -61,7 +61,7 @@ public class FR2422928MigrationTest extends FloggyBaseTest {
 		IOUtils.copy(new FileInputStream("src/test/rms/1.3.0/FR2422928.rms"), new FileOutputStream("target/fr2422928/rms/1.3.0/FR2422928.rms"));
 		MIDletBridge.setMicroEmulator(new RMSMemoryMicroEmulator("target/fr2422928/rms/1.3.0"));
 		MetadataManagerUtil.init();
-		PersistableManagerImpl.reset();
+		RecordStoreManager.reset();
 	}
 	
 	protected void tearDown() throws Exception {
@@ -139,7 +139,7 @@ public class FR2422928MigrationTest extends FloggyBaseTest {
 			assertEquals(0, os.size());
 
 			PersistableMetadata metadata = MetadataManagerUtil.getClassBasedMetadata(AbstractSuperClass.class.getName());
-			RecordStore rs = PersistableManagerImpl.getRecordStore(metadata.getRecordStoreName(), metadata);
+			RecordStore rs = RecordStoreManager.getRecordStore(metadata.getRecordStoreName(), metadata);
 			
 			assertEquals(0, rs.getNumRecords());
 		} finally {
@@ -166,7 +166,7 @@ public class FR2422928MigrationTest extends FloggyBaseTest {
 			assertEquals(1, os.size());
 
 			PersistableMetadata metadata = MetadataManagerUtil.getClassBasedMetadata(AbstractSuperClass.class.getName());
-			RecordStore rs = PersistableManagerImpl.getRecordStore(metadata.getRecordStoreName(), metadata);
+			RecordStore rs = RecordStoreManager.getRecordStore(metadata.getRecordStoreName(), metadata);
 			
 			assertEquals(1, rs.getNumRecords());
 		} finally {

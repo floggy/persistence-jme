@@ -171,7 +171,7 @@ public class SerializationHelper {
 			if (lazy) {
 				in.readInt();
 			} else {
-				o = PersistableManagerImpl.createInstance(Class.forName(className));
+				o = Utils.createInstance(Class.forName(className));
 				pm.load((Persistable) o, in.readInt(), lazy);
 			}
 		}
@@ -214,7 +214,7 @@ public class SerializationHelper {
 			if (lazy) {
 				in.readInt();
 			} else {
-				o = PersistableManagerImpl.createInstance(Class.forName(className));
+				o = Utils.createInstance(Class.forName(className));
 				pm.load((Persistable) o, in.readInt(), lazy);
 			}
 		}

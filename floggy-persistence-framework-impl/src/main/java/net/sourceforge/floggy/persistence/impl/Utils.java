@@ -20,8 +20,57 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.io.UTFDataFormatException;
 
+import net.sourceforge.floggy.persistence.FloggyException;
+import net.sourceforge.floggy.persistence.Persistable;
+
 public class Utils {
 	
+	private static Class __persistableClass;
+	
+	static {
+		try {
+			__persistableClass = Class.forName("net.sourceforge.floggy.persistence.impl.__Persistable");
+		} catch (Exception ex) {
+			throw new RuntimeException(ex.getMessage());
+		}
+	}
+	
+	public static __Persistable checkArgumentAndCast(Persistable persistable) {
+		if (persistable == null) {
+			throw new IllegalArgumentException(
+					"The persistable object cannot be null!");
+		}
+		if (persistable instanceof __Persistable) {
+			return (__Persistable) persistable;
+		} else {
+			throw new IllegalArgumentException(
+					persistable.getClass().getName()
+							+ " is not a valid persistable class. Check the weaver execution!");
+		}
+	}
+
+	public static __Persistable createInstance(Class persistableClass)
+			throws FloggyException {
+		validatePersistableClassArgument(persistableClass);
+		// Try to create a new instance of the persistable class.
+		try {
+			return (__Persistable) persistableClass.newInstance();
+		} catch (Exception ex) {
+			throw Utils.handleException(ex);
+		}
+	}
+
+	public static FloggyException handleException(Exception ex) {
+		if (ex instanceof FloggyException) {
+			return (FloggyException)ex;
+		}
+		String message = ex.getMessage();
+		if (message == null) {
+			message= ex.getClass().getName();
+		}
+		return new FloggyException(message, ex);
+	}
+
 	public static String readUTF8(byte[] data) throws IOException {
 		int ch1 = data[0] & 0xff;
 		int ch2 = data[1] & 0xff;
@@ -89,6 +138,21 @@ public class Utils {
         }
         // The number of chars produced may be less than utflen
         return new String(chararr, 0, chararr_count);
+	}
+
+	public static void validatePersistableClassArgument(Class persistableClass)
+			throws IllegalArgumentException {
+		// testing if persistableClass is null
+		if (persistableClass == null) {
+			throw new IllegalArgumentException(
+					"The persistable class cannot be null!");
+		}
+		// Checks if the persistableClass is a valid persistable class.
+		if (!__persistableClass.isAssignableFrom(persistableClass)) {
+			throw new IllegalArgumentException(
+					persistableClass.getName()
+							+ " is not a valid persistable class. Check the weaver execution!");
+		}
 	}
 
 }

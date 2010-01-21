@@ -23,8 +23,8 @@ import net.sourceforge.floggy.persistence.FloggyBaseTest;
 import net.sourceforge.floggy.persistence.PersistableManager;
 import net.sourceforge.floggy.persistence.beans.Person;
 import net.sourceforge.floggy.persistence.impl.MetadataManagerUtil;
-import net.sourceforge.floggy.persistence.impl.PersistableManagerImpl;
 import net.sourceforge.floggy.persistence.impl.PersistableMetadata;
+import net.sourceforge.floggy.persistence.impl.RecordStoreManager;
 import net.sourceforge.floggy.persistence.impl.__Persistable;
 
 public class FR2857247Test extends FloggyBaseTest {
@@ -36,9 +36,9 @@ public class FR2857247Test extends FloggyBaseTest {
 		PersistableMetadata metadata = 
 			MetadataManagerUtil.getClassBasedMetadata(object.getClass().getName());
 		RecordStore rs = 
-			PersistableManagerImpl.getRecordStore(object.getRecordStoreName(), metadata);
+			RecordStoreManager.getRecordStore(object.getRecordStoreName(), metadata);
 
-		PersistableManagerImpl.closeRecordStore(rs);
+		RecordStoreManager.closeRecordStore(rs);
 
 		try {
 			assertEquals(0, rs.getNumRecords());
@@ -56,9 +56,9 @@ public class FR2857247Test extends FloggyBaseTest {
 		PersistableMetadata metadata = 
 			MetadataManagerUtil.getClassBasedMetadata(object.getClass().getName());
 		RecordStore rs = 
-			PersistableManagerImpl.getRecordStore(object.getRecordStoreName(), metadata);
+			RecordStoreManager.getRecordStore(object.getRecordStoreName(), metadata);
 		
-		PersistableManagerImpl.closeRecordStore(rs);
+		RecordStoreManager.closeRecordStore(rs);
 
 		manager.shutdown();
 
@@ -77,9 +77,9 @@ public class FR2857247Test extends FloggyBaseTest {
 		PersistableMetadata metadata = 
 			MetadataManagerUtil.getClassBasedMetadata(object.getClass().getName());
 		RecordStore rs = 
-			PersistableManagerImpl.getRecordStore(object.getRecordStoreName(), metadata);
+			RecordStoreManager.getRecordStore(object.getRecordStoreName(), metadata);
 
-		PersistableManagerImpl.closeRecordStore(rs);
+		RecordStoreManager.closeRecordStore(rs);
 
 		try {
 			rs.getNumRecords();

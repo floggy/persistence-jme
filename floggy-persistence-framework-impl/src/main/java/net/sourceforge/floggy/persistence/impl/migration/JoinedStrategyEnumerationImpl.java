@@ -27,8 +27,9 @@ import javax.microedition.rms.RecordStoreException;
 import net.sourceforge.floggy.persistence.FloggyException;
 import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.impl.MetadataManagerUtil;
-import net.sourceforge.floggy.persistence.impl.PersistableManagerImpl;
 import net.sourceforge.floggy.persistence.impl.PersistableMetadata;
+import net.sourceforge.floggy.persistence.impl.RecordStoreManager;
+import net.sourceforge.floggy.persistence.impl.Utils;
 import net.sourceforge.floggy.persistence.impl.__Persistable;
 
 public class JoinedStrategyEnumerationImpl extends AbstractEnumerationImpl {
@@ -58,7 +59,7 @@ public class JoinedStrategyEnumerationImpl extends AbstractEnumerationImpl {
 				if (superMetadata == null) {
 					superMetadata = MetadataManagerUtil.getClassBasedMetadata(superClassName);
 				}
-				RecordStore store = PersistableManagerImpl.getRecordStore(superMetadata.getRecordStoreName(), superMetadata);
+				RecordStore store = RecordStoreManager.getRecordStore(superMetadata.getRecordStoreName(), superMetadata);
 				byte[] superData = store.getRecord(id);
 				buildPersistable(superMetadata, superData, hashtable);
 				superClassesIDs.put(superClassName, new Integer(id));
@@ -106,7 +107,7 @@ public class JoinedStrategyEnumerationImpl extends AbstractEnumerationImpl {
 				recordId = -1;
 				return temp;
 			} catch (RecordStoreException ex) {
-				throw PersistableManagerImpl.handleException(ex);
+				throw Utils.handleException(ex);
 			}
 		}
 		throw new FloggyException("There isn't a register to delete. You have to iterate over the enumeration before call delete.");
@@ -119,7 +120,7 @@ public class JoinedStrategyEnumerationImpl extends AbstractEnumerationImpl {
 				String className = (String) keys.nextElement();
 				PersistableMetadata metadata = MetadataManagerUtil.getRMSBasedMetadata(className);
 				if (metadata != null) {
-					RecordStore superRecordStore = PersistableManagerImpl.getRecordStore(metadata.getRecordStoreName(), metadata);
+					RecordStore superRecordStore = RecordStoreManager.getRecordStore(metadata.getRecordStoreName(), metadata);
 					superRecordStore.deleteRecord(((Integer)superClassesIDs.get(className)).intValue());
 				}
 			}
@@ -137,14 +138,14 @@ public class JoinedStrategyEnumerationImpl extends AbstractEnumerationImpl {
 			byte[] data = recordStore.getRecord(recordId);
 			buildPersistable(rmsBasedMetadata, data, hashtable);
 		} catch (Exception ex) {
-			throw PersistableManagerImpl.handleException(ex);
+			throw Utils.handleException(ex);
 		}
 		return hashtable;
 	}
 
 	public int update(Persistable persistable) throws FloggyException {
 		if (recordId != -1) {
-			__Persistable __persistable = PersistableManagerImpl.checkArgumentAndCast(persistable);
+			__Persistable __persistable = Utils.checkArgumentAndCast(persistable);
 			try {
 				__persistable.__setId(recordId);
 				deleteSuperClassesRegisters();
@@ -152,7 +153,7 @@ public class JoinedStrategyEnumerationImpl extends AbstractEnumerationImpl {
 				recordId = -1;
 				return temp;
 			} catch (RecordStoreException ex) {
-				throw PersistableManagerImpl.handleException(ex);
+				throw Utils.handleException(ex);
 			}
 		}
 		throw new FloggyException("There isn't a register to update. You have to iterate over the enumeration before call update.");
