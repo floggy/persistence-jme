@@ -27,11 +27,11 @@ public class DateGenerator extends SourceCodeGenerator {
 	public void initLoadCode() throws NotFoundException {
 		addLoadCode("this."
 				+ fieldName
-				+ "= net.sourceforge.floggy.persistence.impl.SerializationHelper.readDate(dis);");
+				+ "= net.sourceforge.floggy.persistence.impl.SerializationManager.readDate(dis);");
 	}
 
 	public void initSaveCode() throws NotFoundException {
-		addSaveCode("net.sourceforge.floggy.persistence.impl.SerializationHelper.writeDate(fos, "
+		addSaveCode("net.sourceforge.floggy.persistence.impl.SerializationManager.writeDate(fos, "
 				+ fieldName + ");");
 	}
 

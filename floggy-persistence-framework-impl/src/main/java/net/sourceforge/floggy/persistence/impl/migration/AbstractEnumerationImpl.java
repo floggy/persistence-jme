@@ -31,10 +31,10 @@ import javax.microedition.rms.RecordStoreException;
 import net.sourceforge.floggy.persistence.FloggyException;
 import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.PersistableManager;
-import net.sourceforge.floggy.persistence.impl.MetadataManagerUtil;
 import net.sourceforge.floggy.persistence.impl.PersistableMetadata;
+import net.sourceforge.floggy.persistence.impl.PersistableMetadataManager;
 import net.sourceforge.floggy.persistence.impl.RecordStoreManager;
-import net.sourceforge.floggy.persistence.impl.SerializationHelper;
+import net.sourceforge.floggy.persistence.impl.SerializationManager;
 import net.sourceforge.floggy.persistence.impl.Utils;
 import net.sourceforge.floggy.persistence.impl.__Persistable;
 import net.sourceforge.floggy.persistence.migration.Enumeration;
@@ -126,7 +126,7 @@ public abstract class AbstractEnumerationImpl implements Enumeration {
 			if (rmsBasedMetadata != classBasedMetadata) {
 				try {
 					classBasedMetadata.setRecordId(rmsBasedMetadata.getRecordId());
-					MetadataManagerUtil.saveRMSStructure(classBasedMetadata);
+					PersistableMetadataManager.saveRMSStructure(classBasedMetadata);
 				} catch (Exception ex) {
 					throw Utils.handleException(ex);
 				}
@@ -162,7 +162,7 @@ public abstract class AbstractEnumerationImpl implements Enumeration {
 	protected Object readArray(int type, String fieldName, DataInputStream dis)
 			throws Exception {
 				Object object = null;
-				if (dis.readByte() == SerializationHelper.NOT_NULL) {
+				if (dis.readByte() == SerializationManager.NOT_NULL) {
 					int size = dis.readInt();
 					if ((type & PersistableMetadata.PRIMITIVE) == PersistableMetadata.PRIMITIVE) {
 						type = type & ~PersistableMetadata.PRIMITIVE;
@@ -265,32 +265,32 @@ public abstract class AbstractEnumerationImpl implements Enumeration {
 			throws Exception {
 				switch (type) {
 				case PersistableMetadata.BOOLEAN:
-					return SerializationHelper.readBoolean(dis);
+					return SerializationManager.readBoolean(dis);
 				case PersistableMetadata.BYTE:
-					return SerializationHelper.readByte(dis);
+					return SerializationManager.readByte(dis);
 				case PersistableMetadata.CALENDAR:
-					return SerializationHelper.readCalendar(dis);
+					return SerializationManager.readCalendar(dis);
 				case PersistableMetadata.CHARACTER:
-					return SerializationHelper.readChar(dis);
+					return SerializationManager.readChar(dis);
 				case PersistableMetadata.DATE:
-					return SerializationHelper.readDate(dis);
+					return SerializationManager.readDate(dis);
 				case PersistableMetadata.DOUBLE:
-					return SerializationHelper.readDouble(dis);
+					return SerializationManager.readDouble(dis);
 				case PersistableMetadata.FLOAT:
-					return SerializationHelper.readFloat(dis);
+					return SerializationManager.readFloat(dis);
 				case PersistableMetadata.HASHTABLE:
-					return SerializationHelper.readHashtable(dis);
+					return SerializationManager.readHashtable(dis);
 				case PersistableMetadata.INT:
-					return SerializationHelper.readInt(dis);
+					return SerializationManager.readInt(dis);
 				case PersistableMetadata.LONG:
-					return SerializationHelper.readLong(dis);
+					return SerializationManager.readLong(dis);
 				case PersistableMetadata.PERSISTABLE: {
 					FieldPersistableInfo fpi = null;
 					String fieldClassName = rmsBasedMetadata.getPersistableImplementationClassForField(fieldName);
 					switch (dis.readByte()) {
 					case -1:
 						fieldClassName = dis.readUTF();
-					case SerializationHelper.NOT_NULL:
+					case SerializationManager.NOT_NULL:
 						int fieldId = dis.readInt();
 						fpi = new FieldPersistableInfo(fieldId, fieldClassName);
 						break;
@@ -298,17 +298,17 @@ public abstract class AbstractEnumerationImpl implements Enumeration {
 					return fpi;
 				}
 				case PersistableMetadata.SHORT:
-					return SerializationHelper.readShort(dis);
+					return SerializationManager.readShort(dis);
 				case PersistableMetadata.STACK:
-					return SerializationHelper.readStack(dis, lazy);
+					return SerializationManager.readStack(dis, lazy);
 				case PersistableMetadata.STRING:
-					return SerializationHelper.readString(dis);
+					return SerializationManager.readString(dis);
 				case PersistableMetadata.STRINGBUFFER:
-					return SerializationHelper.readStringBuffer(dis);
+					return SerializationManager.readStringBuffer(dis);
 				case PersistableMetadata.TIMEZONE:
-					return SerializationHelper.readTimeZone(dis);
+					return SerializationManager.readTimeZone(dis);
 				case PersistableMetadata.VECTOR:
-					return SerializationHelper.readVector(dis, lazy);
+					return SerializationManager.readVector(dis, lazy);
 				default:
 					throw new FloggyException("Type Unknow: " + type);
 				}

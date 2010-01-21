@@ -28,11 +28,11 @@ public class VectorGenerator extends SourceCodeGenerator implements
 	public void initLoadCode() throws NotFoundException {
 		addLoadCode("this."
 				+ fieldName
-				+ "= net.sourceforge.floggy.persistence.impl.SerializationHelper.readVector(dis, lazy);");
+				+ "= net.sourceforge.floggy.persistence.impl.SerializationManager.readVector(dis, lazy);");
 	}
 
 	public void initSaveCode() throws NotFoundException {
-		addSaveCode("net.sourceforge.floggy.persistence.impl.SerializationHelper.writeVector(fos, "
+		addSaveCode("net.sourceforge.floggy.persistence.impl.SerializationManager.writeVector(fos, "
 				+ fieldName + ");");
 	}
 

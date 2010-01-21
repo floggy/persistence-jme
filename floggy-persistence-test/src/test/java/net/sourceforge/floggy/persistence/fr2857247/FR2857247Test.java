@@ -22,7 +22,7 @@ import javax.microedition.rms.RecordStoreNotOpenException;
 import net.sourceforge.floggy.persistence.FloggyBaseTest;
 import net.sourceforge.floggy.persistence.PersistableManager;
 import net.sourceforge.floggy.persistence.beans.Person;
-import net.sourceforge.floggy.persistence.impl.MetadataManagerUtil;
+import net.sourceforge.floggy.persistence.impl.PersistableMetadataManager;
 import net.sourceforge.floggy.persistence.impl.PersistableMetadata;
 import net.sourceforge.floggy.persistence.impl.RecordStoreManager;
 import net.sourceforge.floggy.persistence.impl.__Persistable;
@@ -34,7 +34,7 @@ public class FR2857247Test extends FloggyBaseTest {
 
 		__Persistable object = (__Persistable) new Person();
 		PersistableMetadata metadata = 
-			MetadataManagerUtil.getClassBasedMetadata(object.getClass().getName());
+			PersistableMetadataManager.getClassBasedMetadata(object.getClass().getName());
 		RecordStore rs = 
 			RecordStoreManager.getRecordStore(object.getRecordStoreName(), metadata);
 
@@ -54,7 +54,7 @@ public class FR2857247Test extends FloggyBaseTest {
 
 		__Persistable object = (__Persistable) new Person();
 		PersistableMetadata metadata = 
-			MetadataManagerUtil.getClassBasedMetadata(object.getClass().getName());
+			PersistableMetadataManager.getClassBasedMetadata(object.getClass().getName());
 		RecordStore rs = 
 			RecordStoreManager.getRecordStore(object.getRecordStoreName(), metadata);
 		
@@ -75,7 +75,7 @@ public class FR2857247Test extends FloggyBaseTest {
 
 		__Persistable object = (__Persistable) new Person();
 		PersistableMetadata metadata = 
-			MetadataManagerUtil.getClassBasedMetadata(object.getClass().getName());
+			PersistableMetadataManager.getClassBasedMetadata(object.getClass().getName());
 		RecordStore rs = 
 			RecordStoreManager.getRecordStore(object.getRecordStoreName(), metadata);
 

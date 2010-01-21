@@ -27,11 +27,11 @@ public class CalendarGenerator extends SourceCodeGenerator {
 	public void initLoadCode() throws NotFoundException {
 		addLoadCode("this."
 				+ fieldName
-				+ "= net.sourceforge.floggy.persistence.impl.SerializationHelper.readCalendar(dis);");
+				+ "= net.sourceforge.floggy.persistence.impl.SerializationManager.readCalendar(dis);");
 	}
 
 	public void initSaveCode() throws NotFoundException {
-		addSaveCode("net.sourceforge.floggy.persistence.impl.SerializationHelper.writeCalendar(fos, "
+		addSaveCode("net.sourceforge.floggy.persistence.impl.SerializationManager.writeCalendar(fos, "
 				+ fieldName + ");");
 	}
 

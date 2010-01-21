@@ -15,7 +15,7 @@
  */
 package net.sourceforge.floggy.persistence.fr2422928;
 
-import net.sourceforge.floggy.persistence.impl.MetadataManagerUtil;
+import net.sourceforge.floggy.persistence.impl.PersistableMetadataManager;
 
 
 public class FR2422928Version1_1_1Test extends FR2422928AbstractVersionTest {
@@ -25,6 +25,6 @@ public class FR2422928Version1_1_1Test extends FR2422928AbstractVersionTest {
 	}
 	
 	public void testGetRMSVersion() {
-		assertEquals("1.1.0", MetadataManagerUtil.getRMSVersion());
+		assertEquals("1.1.0", PersistableMetadataManager.getRMSVersion());
 	}
 }

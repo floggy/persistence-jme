@@ -27,12 +27,12 @@ public class WrapperGenerator extends SourceCodeGenerator {
 	public void initLoadCode() throws NotFoundException {
 		addLoadCode("this."
 				+ fieldName
-				+ "= net.sourceforge.floggy.persistence.impl.SerializationHelper.read"
+				+ "= net.sourceforge.floggy.persistence.impl.SerializationManager.read"
 				+ PrimitiveTypeGenerator.getType(fieldType) + "(dis);");
 	}
 
 	public void initSaveCode() throws NotFoundException {
-		addSaveCode("net.sourceforge.floggy.persistence.impl.SerializationHelper.write"
+		addSaveCode("net.sourceforge.floggy.persistence.impl.SerializationManager.write"
 				+ PrimitiveTypeGenerator.getType(fieldType) + "(fos, this." + fieldName + ");");
 	}
 

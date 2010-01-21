@@ -27,11 +27,11 @@ public class StringGenerator extends SourceCodeGenerator {
 	public void initLoadCode() throws NotFoundException {
 		addLoadCode("this."
 				+ fieldName
-				+ "= net.sourceforge.floggy.persistence.impl.SerializationHelper.readString(dis);");
+				+ "= net.sourceforge.floggy.persistence.impl.SerializationManager.readString(dis);");
 	}
 
 	public void initSaveCode() throws NotFoundException {
-		addSaveCode("net.sourceforge.floggy.persistence.impl.SerializationHelper.writeString(fos, "
+		addSaveCode("net.sourceforge.floggy.persistence.impl.SerializationManager.writeString(fos, "
 				+ fieldName + ");");
 	}
 

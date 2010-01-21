@@ -23,7 +23,7 @@ import javax.microedition.rms.RecordStore;
 
 import net.sourceforge.floggy.persistence.FloggyException;
 import net.sourceforge.floggy.persistence.PersistableManager;
-import net.sourceforge.floggy.persistence.impl.MetadataManagerUtil;
+import net.sourceforge.floggy.persistence.impl.PersistableMetadataManager;
 import net.sourceforge.floggy.persistence.impl.PersistableMetadata;
 import net.sourceforge.floggy.persistence.impl.RecordStoreManager;
 import net.sourceforge.floggy.persistence.impl.Utils;
@@ -50,7 +50,7 @@ public class MigrationManagerImpl extends MigrationManager {
 	}
 	
 	public String[] getNotMigratedClasses() {
-		Vector notMigratedClasses = MetadataManagerUtil.getNotMigratedClasses();
+		Vector notMigratedClasses = PersistableMetadataManager.getNotMigratedClasses();
 		String[] temp = new String[notMigratedClasses.size()];
 		notMigratedClasses.copyInto(temp);
 		return temp;
@@ -61,8 +61,8 @@ public class MigrationManagerImpl extends MigrationManager {
 		Utils.validatePersistableClassArgument(persistableClass);
 		
 		String className = persistableClass.getName();
-		PersistableMetadata classBasedMetadata = MetadataManagerUtil.getClassBasedMetadata(className);
-		PersistableMetadata rmsBasedMetadata = MetadataManagerUtil.getRMSBasedMetadata(className);
+		PersistableMetadata classBasedMetadata = PersistableMetadataManager.getClassBasedMetadata(className);
+		PersistableMetadata rmsBasedMetadata = PersistableMetadataManager.getRMSBasedMetadata(className);
 		
 		if (rmsBasedMetadata != null) {
 			if (!classBasedMetadata.equals(rmsBasedMetadata)) {
@@ -70,7 +70,7 @@ public class MigrationManagerImpl extends MigrationManager {
 			}
 		} else {
 			try {
-				MetadataManagerUtil.saveRMSStructure(classBasedMetadata);
+				PersistableMetadataManager.saveRMSStructure(classBasedMetadata);
 			} catch (Exception ex) {
 				throw Utils.handleException(ex);
 			}
@@ -82,7 +82,7 @@ public class MigrationManagerImpl extends MigrationManager {
 		
 		Utils.validatePersistableClassArgument(persistableClass);
 
-		PersistableMetadata classBasedMetadata = MetadataManagerUtil.getClassBasedMetadata(persistableClass.getName()); 
+		PersistableMetadata classBasedMetadata = PersistableMetadataManager.getClassBasedMetadata(persistableClass.getName()); 
 
 		if (classBasedMetadata.isAbstract()) {
 			throw new FloggyException("It is not possible migrate abstract classes. Instead migrate its subclasses");
@@ -113,7 +113,7 @@ public class MigrationManagerImpl extends MigrationManager {
 		PersistableMetadata rmsBasedMetadata = null; 
 
 		try {
-			rmsBasedMetadata = MetadataManagerUtil.getRMSBasedMetadata(persistableClass.getName());
+			rmsBasedMetadata = PersistableMetadataManager.getRMSBasedMetadata(persistableClass.getName());
 
 			if (rmsBasedMetadata == null) {
 				if (migrateFromPreviousFloggyVersion) {
@@ -143,8 +143,8 @@ public class MigrationManagerImpl extends MigrationManager {
 					if (className.endsWith("[]")) {
 						className = className.substring(0, className.length() - 2);
 					}
-					PersistableMetadata fieldClassMetadata = MetadataManagerUtil.getClassBasedMetadata(className);
-					PersistableMetadata fieldRMSMetadata = MetadataManagerUtil.getRMSBasedMetadata(className);
+					PersistableMetadata fieldClassMetadata = PersistableMetadataManager.getClassBasedMetadata(className);
+					PersistableMetadata fieldRMSMetadata = PersistableMetadataManager.getRMSBasedMetadata(className);
 					if (fieldClassMetadata != null && fieldRMSMetadata != null && !fieldClassMetadata.equals(fieldRMSMetadata)) {
 						throw new FloggyException("You first must migrate the class " + className + " than you can migrate " + persistableClass.getName());
 					}

@@ -82,7 +82,7 @@ public class JoinedStrategyCodeGenerator extends CodeGenerator {
 		ClassVerifier verifier = new ClassVerifier(superClass, classPool);
 		if (verifier.isPersistable()) {
 			buffer.append("super.__delete();\n");
-			buffer.append("javax.microedition.rms.RecordStore superRS = net.sourceforge.floggy.persistence.impl.RecordStoreManager.getRecordStore(super.getRecordStoreName(), net.sourceforge.floggy.persistence.impl.MetadataManagerUtil.getClassBasedMetadata(\"" + superClass.getName() + "\"));\n");
+			buffer.append("javax.microedition.rms.RecordStore superRS = net.sourceforge.floggy.persistence.impl.RecordStoreManager.getRecordStore(super.getRecordStoreName(), net.sourceforge.floggy.persistence.impl.PersistableMetadataManager.getClassBasedMetadata(\"" + superClass.getName() + "\"));\n");
 			buffer.append("try {\n");
 			buffer.append("superRS.deleteRecord(super.__getId());\n");
 			buffer.append("super.__setId(0);\n");

@@ -26,7 +26,7 @@ import javax.microedition.rms.RecordStore;
 import javax.microedition.rms.RecordStoreException;
 
 import net.sourceforge.floggy.persistence.FloggyException;
-import net.sourceforge.floggy.persistence.impl.MetadataManagerUtil;
+import net.sourceforge.floggy.persistence.impl.PersistableMetadataManager;
 import net.sourceforge.floggy.persistence.impl.PersistableMetadata;
 import net.sourceforge.floggy.persistence.impl.RecordStoreManager;
 import net.sourceforge.floggy.persistence.impl.Utils;
@@ -111,7 +111,7 @@ public class SingleStrategyEnumerationImpl extends AbstractEnumerationImpl {
 				try {
 					classBasedMetadata.setRecordId(rmsBasedMetadata
 							.getRecordId());
-					MetadataManagerUtil.saveRMSStructure(classBasedMetadata);
+					PersistableMetadataManager.saveRMSStructure(classBasedMetadata);
 				} catch (Exception ex) {
 					throw Utils.handleException(ex);
 				}

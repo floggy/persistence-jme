@@ -27,7 +27,7 @@ import java.util.TimeZone;
 import net.sourceforge.floggy.persistence.FloggyBaseTest;
 import net.sourceforge.floggy.persistence.FloggyException;
 import net.sourceforge.floggy.persistence.RMSMemoryMicroEmulator;
-import net.sourceforge.floggy.persistence.impl.MetadataManagerUtil;
+import net.sourceforge.floggy.persistence.impl.PersistableMetadataManager;
 import net.sourceforge.floggy.persistence.impl.PersistableMetadata;
 import net.sourceforge.floggy.persistence.impl.RecordStoreManager;
 import net.sourceforge.floggy.persistence.impl.migration.JoinedStrategyEnumerationImpl;
@@ -68,13 +68,13 @@ public class FR2852335MigrationTest extends FloggyBaseTest {
 		IOUtils.copy(new FileInputStream("src/test/rms/1.4.0/perclass/ConcreteJoinedStrategy-184426436.rms"), new FileOutputStream("target/fr2852335/rms/1.4.0/perclass/ConcreteJoinedStrategy-184426436.rms"));
 		IOUtils.copy(new FileInputStream("src/test/rms/1.4.0/perclass/CSCOfConcreteJoinedStrategy-9575.rms"), new FileOutputStream("target/fr2852335/rms/1.4.0/perclass/CSCOfConcreteJoinedStrategy-9575.rms"));
 		MIDletBridge.setMicroEmulator(new RMSMemoryMicroEmulator("target/fr2852335/rms/1.4.0/perclass"));
-		MetadataManagerUtil.init();
+		PersistableMetadataManager.init();
 		RecordStoreManager.reset();
 	}
 	
 	protected void tearDown() throws Exception {
 		MIDletBridge.setMicroEmulator(emulator);
-		MetadataManagerUtil.init();
+		PersistableMetadataManager.init();
 	}
 
 //	public void testGenerateRMS() throws Exception {
@@ -172,8 +172,8 @@ public class FR2852335MigrationTest extends FloggyBaseTest {
 	}
 	
 	public void testFindUpdatedToAbstractJoinedClass() {
-		PersistableMetadata rmsBasedMetadata = MetadataManagerUtil.getRMSBasedMetadata(CSCOfAbstractJoinedStrategy.class.getName());
-		PersistableMetadata classBasedMetadata = MetadataManagerUtil.getClassBasedMetadata(CSCOfAbstractJoinedStrategy.class.getName());
+		PersistableMetadata rmsBasedMetadata = PersistableMetadataManager.getRMSBasedMetadata(CSCOfAbstractJoinedStrategy.class.getName());
+		PersistableMetadata classBasedMetadata = PersistableMetadataManager.getClassBasedMetadata(CSCOfAbstractJoinedStrategy.class.getName());
 		
 		assertEquals(PersistableMetadata.JOINED_STRATEGY, rmsBasedMetadata.getPersistableStrategy());
 		assertEquals(PersistableMetadata.PER_CLASS_STRATEGY, classBasedMetadata.getPersistableStrategy());
@@ -202,16 +202,16 @@ public class FR2852335MigrationTest extends FloggyBaseTest {
 			mm.finish(CSCOfAbstractJoinedStrategy.class);
 		}
 
-		PersistableMetadata rmsBasedMetadata = MetadataManagerUtil.getRMSBasedMetadata(CSCOfAbstractJoinedStrategy.class.getName());
-		PersistableMetadata classBasedMetadata = MetadataManagerUtil.getClassBasedMetadata(CSCOfAbstractJoinedStrategy.class.getName());
+		PersistableMetadata rmsBasedMetadata = PersistableMetadataManager.getRMSBasedMetadata(CSCOfAbstractJoinedStrategy.class.getName());
+		PersistableMetadata classBasedMetadata = PersistableMetadataManager.getClassBasedMetadata(CSCOfAbstractJoinedStrategy.class.getName());
 
 		assertEquals(PersistableMetadata.PER_CLASS_STRATEGY, rmsBasedMetadata.getPersistableStrategy());
 		assertEquals(PersistableMetadata.PER_CLASS_STRATEGY, classBasedMetadata.getPersistableStrategy());
 	}
 
 	public void testFindUpdatedToConcreteJoinedClass() {
-		PersistableMetadata rmsBasedMetadata = MetadataManagerUtil.getRMSBasedMetadata(CSCOfConcreteJoinedStrategy.class.getName());
-		PersistableMetadata classBasedMetadata = MetadataManagerUtil.getClassBasedMetadata(CSCOfConcreteJoinedStrategy.class.getName());
+		PersistableMetadata rmsBasedMetadata = PersistableMetadataManager.getRMSBasedMetadata(CSCOfConcreteJoinedStrategy.class.getName());
+		PersistableMetadata classBasedMetadata = PersistableMetadataManager.getClassBasedMetadata(CSCOfConcreteJoinedStrategy.class.getName());
 		
 		assertEquals(PersistableMetadata.JOINED_STRATEGY, rmsBasedMetadata.getPersistableStrategy());
 		assertEquals(PersistableMetadata.PER_CLASS_STRATEGY, classBasedMetadata.getPersistableStrategy());
@@ -240,8 +240,8 @@ public class FR2852335MigrationTest extends FloggyBaseTest {
 			mm.finish(CSCOfConcreteJoinedStrategy.class);
 		}
 
-		PersistableMetadata rmsBasedMetadata = MetadataManagerUtil.getRMSBasedMetadata(CSCOfConcreteJoinedStrategy.class.getName());
-		PersistableMetadata classBasedMetadata = MetadataManagerUtil.getClassBasedMetadata(CSCOfAbstractJoinedStrategy.class.getName());
+		PersistableMetadata rmsBasedMetadata = PersistableMetadataManager.getRMSBasedMetadata(CSCOfConcreteJoinedStrategy.class.getName());
+		PersistableMetadata classBasedMetadata = PersistableMetadataManager.getClassBasedMetadata(CSCOfAbstractJoinedStrategy.class.getName());
 
 		assertEquals(PersistableMetadata.PER_CLASS_STRATEGY, rmsBasedMetadata.getPersistableStrategy());
 		assertEquals(PersistableMetadata.PER_CLASS_STRATEGY, classBasedMetadata.getPersistableStrategy());

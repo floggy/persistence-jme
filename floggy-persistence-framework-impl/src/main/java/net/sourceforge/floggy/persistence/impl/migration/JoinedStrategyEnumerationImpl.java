@@ -26,7 +26,7 @@ import javax.microedition.rms.RecordStoreException;
 
 import net.sourceforge.floggy.persistence.FloggyException;
 import net.sourceforge.floggy.persistence.Persistable;
-import net.sourceforge.floggy.persistence.impl.MetadataManagerUtil;
+import net.sourceforge.floggy.persistence.impl.PersistableMetadataManager;
 import net.sourceforge.floggy.persistence.impl.PersistableMetadata;
 import net.sourceforge.floggy.persistence.impl.RecordStoreManager;
 import net.sourceforge.floggy.persistence.impl.Utils;
@@ -55,9 +55,9 @@ public class JoinedStrategyEnumerationImpl extends AbstractEnumerationImpl {
 			String superClassName = rmsBasedMetadata.getSuperClassName();
 			if (superClassName != null) {
 				int id = dis.readInt();
-				PersistableMetadata superMetadata = MetadataManagerUtil.getRMSBasedMetadata(superClassName);
+				PersistableMetadata superMetadata = PersistableMetadataManager.getRMSBasedMetadata(superClassName);
 				if (superMetadata == null) {
-					superMetadata = MetadataManagerUtil.getClassBasedMetadata(superClassName);
+					superMetadata = PersistableMetadataManager.getClassBasedMetadata(superClassName);
 				}
 				RecordStore store = RecordStoreManager.getRecordStore(superMetadata.getRecordStoreName(), superMetadata);
 				byte[] superData = store.getRecord(id);
@@ -118,7 +118,7 @@ public class JoinedStrategyEnumerationImpl extends AbstractEnumerationImpl {
 			java.util.Enumeration keys = superClassesIDs.keys();
 			while (keys.hasMoreElements()) {
 				String className = (String) keys.nextElement();
-				PersistableMetadata metadata = MetadataManagerUtil.getRMSBasedMetadata(className);
+				PersistableMetadata metadata = PersistableMetadataManager.getRMSBasedMetadata(className);
 				if (metadata != null) {
 					RecordStore superRecordStore = RecordStoreManager.getRecordStore(metadata.getRecordStoreName(), metadata);
 					superRecordStore.deleteRecord(((Integer)superClassesIDs.get(className)).intValue());

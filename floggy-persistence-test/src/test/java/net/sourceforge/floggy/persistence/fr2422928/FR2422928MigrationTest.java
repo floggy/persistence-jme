@@ -30,7 +30,7 @@ import net.sourceforge.floggy.persistence.FloggyBaseTest;
 import net.sourceforge.floggy.persistence.FloggyException;
 import net.sourceforge.floggy.persistence.ObjectSet;
 import net.sourceforge.floggy.persistence.RMSMemoryMicroEmulator;
-import net.sourceforge.floggy.persistence.impl.MetadataManagerUtil;
+import net.sourceforge.floggy.persistence.impl.PersistableMetadataManager;
 import net.sourceforge.floggy.persistence.impl.PersistableMetadata;
 import net.sourceforge.floggy.persistence.impl.RecordStoreManager;
 import net.sourceforge.floggy.persistence.migration.Enumeration;
@@ -60,13 +60,13 @@ public class FR2422928MigrationTest extends FloggyBaseTest {
 		IOUtils.copy(new FileInputStream("src/test/rms/1.3.0/FloggyProperties.rms"), new FileOutputStream("target/fr2422928/rms/1.3.0/FloggyProperties.rms"));
 		IOUtils.copy(new FileInputStream("src/test/rms/1.3.0/FR2422928.rms"), new FileOutputStream("target/fr2422928/rms/1.3.0/FR2422928.rms"));
 		MIDletBridge.setMicroEmulator(new RMSMemoryMicroEmulator("target/fr2422928/rms/1.3.0"));
-		MetadataManagerUtil.init();
+		PersistableMetadataManager.init();
 		RecordStoreManager.reset();
 	}
 	
 	protected void tearDown() throws Exception {
 		MIDletBridge.setMicroEmulator(emulator);
-		MetadataManagerUtil.init();
+		PersistableMetadataManager.init();
 	}
 
 //	public void testGenerateRMS() throws Exception {
@@ -138,7 +138,7 @@ public class FR2422928MigrationTest extends FloggyBaseTest {
 			ObjectSet os = manager.find(ConcreteChildClass.class, null, null);
 			assertEquals(0, os.size());
 
-			PersistableMetadata metadata = MetadataManagerUtil.getClassBasedMetadata(AbstractSuperClass.class.getName());
+			PersistableMetadata metadata = PersistableMetadataManager.getClassBasedMetadata(AbstractSuperClass.class.getName());
 			RecordStore rs = RecordStoreManager.getRecordStore(metadata.getRecordStoreName(), metadata);
 			
 			assertEquals(0, rs.getNumRecords());
@@ -165,7 +165,7 @@ public class FR2422928MigrationTest extends FloggyBaseTest {
 			ObjectSet os = manager.find(ConcreteChildClass.class, null, null);
 			assertEquals(1, os.size());
 
-			PersistableMetadata metadata = MetadataManagerUtil.getClassBasedMetadata(AbstractSuperClass.class.getName());
+			PersistableMetadata metadata = PersistableMetadataManager.getClassBasedMetadata(AbstractSuperClass.class.getName());
 			RecordStore rs = RecordStoreManager.getRecordStore(metadata.getRecordStoreName(), metadata);
 			
 			assertEquals(1, rs.getNumRecords());

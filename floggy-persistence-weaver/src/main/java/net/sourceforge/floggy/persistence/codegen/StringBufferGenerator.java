@@ -27,11 +27,11 @@ public class StringBufferGenerator extends SourceCodeGenerator {
 	public void initLoadCode() throws NotFoundException {
 		addLoadCode("this."
 				+ fieldName
-				+ "= net.sourceforge.floggy.persistence.impl.SerializationHelper.readStringBuffer(dis);");
+				+ "= net.sourceforge.floggy.persistence.impl.SerializationManager.readStringBuffer(dis);");
 	}
 
 	public void initSaveCode() throws NotFoundException {
-		addSaveCode("net.sourceforge.floggy.persistence.impl.SerializationHelper.writeStringBuffer(fos, "
+		addSaveCode("net.sourceforge.floggy.persistence.impl.SerializationManager.writeStringBuffer(fos, "
 				+ fieldName + ");");
 	}
 

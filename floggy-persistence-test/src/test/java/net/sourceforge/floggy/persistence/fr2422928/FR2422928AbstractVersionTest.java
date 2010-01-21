@@ -25,7 +25,7 @@ import java.util.List;
 import net.sourceforge.floggy.persistence.FloggyBaseTest;
 import net.sourceforge.floggy.persistence.FloggyException;
 import net.sourceforge.floggy.persistence.RMSMemoryMicroEmulator;
-import net.sourceforge.floggy.persistence.impl.MetadataManagerUtil;
+import net.sourceforge.floggy.persistence.impl.PersistableMetadataManager;
 import net.sourceforge.floggy.persistence.impl.RecordStoreManager;
 import net.sourceforge.floggy.persistence.migration.Enumeration;
 import net.sourceforge.floggy.persistence.migration.FieldPersistableInfo;
@@ -49,13 +49,13 @@ public abstract class FR2422928AbstractVersionTest extends FloggyBaseTest {
 		IOUtils.copy(new FileInputStream("src/test/rms/" + getVersion() + "/FR2422928-284317062.rms"), new FileOutputStream("target/fr2422928/rms/" + getVersion() + "/FR2422928-284317062.rms"));
 		IOUtils.copy(new FileInputStream("src/test/rms/" + getVersion() + "/Freezed-1739440490.rms"), new FileOutputStream("target/fr2422928/rms/" + getVersion() + "/Freezed-1739440490.rms"));
 		MIDletBridge.setMicroEmulator(new RMSMemoryMicroEmulator("target/fr2422928/rms/" + getVersion()));
-		MetadataManagerUtil.init();
+		PersistableMetadataManager.init();
 		RecordStoreManager.reset();
 	}
 
 	protected void tearDown() throws Exception {
 		MIDletBridge.setMicroEmulator(emulator);
-		MetadataManagerUtil.init();
+		PersistableMetadataManager.init();
 	}
 
 	public void testFreezedClassIteration() throws Exception {
@@ -92,12 +92,12 @@ public abstract class FR2422928AbstractVersionTest extends FloggyBaseTest {
 	}
 
 	public void testGetRMSBasedMetadata() {
-		assertNull(MetadataManagerUtil.getRMSBasedMetadata(FR2422928.class.getName()));
-		assertNull(MetadataManagerUtil.getRMSBasedMetadata(Freezed.class.getName()));
+		assertNull(PersistableMetadataManager.getRMSBasedMetadata(FR2422928.class.getName()));
+		assertNull(PersistableMetadataManager.getRMSBasedMetadata(Freezed.class.getName()));
 	}
 
 	public void testGetRMSVersion() {
-		assertEquals(getVersion(), MetadataManagerUtil.getRMSVersion());
+		assertEquals(getVersion(), PersistableMetadataManager.getRMSVersion());
 	}
 
 	public void testNoMigrationExecution() {

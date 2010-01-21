@@ -27,11 +27,11 @@ public class TimeZoneGenerator extends SourceCodeGenerator {
 	public void initLoadCode() throws NotFoundException {
 		addLoadCode("this."
 				+ fieldName
-				+ "= net.sourceforge.floggy.persistence.impl.SerializationHelper.readTimeZone(dis);");
+				+ "= net.sourceforge.floggy.persistence.impl.SerializationManager.readTimeZone(dis);");
 	}
 
 	public void initSaveCode() throws NotFoundException {
-		addSaveCode("net.sourceforge.floggy.persistence.impl.SerializationHelper.writeTimeZone(fos, "
+		addSaveCode("net.sourceforge.floggy.persistence.impl.SerializationManager.writeTimeZone(fos, "
 				+ fieldName + ");");
 	}
 

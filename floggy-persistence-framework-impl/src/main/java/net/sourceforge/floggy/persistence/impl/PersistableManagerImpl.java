@@ -46,8 +46,8 @@ public class PersistableManagerImpl extends PersistableManager {
 	public PersistableManagerImpl() throws Exception {
 		deletableClass = Class.forName("net.sourceforge.floggy.persistence.Deletable");
 		singleStrategyClass = Class.forName("net.sourceforge.floggy.persistence.strategy.SingleStrategy");
-		SerializationHelper.setPersistableManager(this);
-		MetadataManagerUtil.init();
+		SerializationManager.setPersistableManager(this);
+		PersistableMetadataManager.init();
 	}
 
 	/**
@@ -122,7 +122,7 @@ public class PersistableManagerImpl extends PersistableManager {
 	public void deleteAll(Class persistableClass) throws FloggyException {
 		__Persistable persistable = Utils.createInstance(persistableClass);
 		RecordStoreManager.closeRecordStore(RecordStoreManager.getRecordStore(persistable));
-		PersistableMetadata metadata = MetadataManagerUtil.getClassBasedMetadata(persistableClass.getName());
+		PersistableMetadata metadata = PersistableMetadataManager.getClassBasedMetadata(persistableClass.getName());
 		if (deletableClass.isAssignableFrom(persistableClass) || metadata.getSuperClassName() != null) {
 			ObjectSet os = find(persistableClass, null, null);
 			for (int i = 0; i < os.size(); i++) {

@@ -32,19 +32,19 @@ public class PersistableGenerator extends SourceCodeGenerator {
 					+ fieldName
 					+ "= ("
 					+ fieldType.getName()
-					+ ")net.sourceforge.floggy.persistence.impl.SerializationHelper.readPersistable(dis, null, lazy);");
+					+ ")net.sourceforge.floggy.persistence.impl.SerializationManager.readPersistable(dis, null, lazy);");
 		} else {
 			addLoadCode("this."
 					+ fieldName
 					+ "= ("
 					+ fieldType.getName()
-					+ ")net.sourceforge.floggy.persistence.impl.SerializationHelper.readPersistable(dis, new "
+					+ ")net.sourceforge.floggy.persistence.impl.SerializationManager.readPersistable(dis, new "
 					+ fieldType.getName() + "(), lazy);");
 		}
 	}
 
 	public void initSaveCode() throws NotFoundException {
-		addSaveCode("net.sourceforge.floggy.persistence.impl.SerializationHelper.writePersistable(fos, \""
+		addSaveCode("net.sourceforge.floggy.persistence.impl.SerializationManager.writePersistable(fos, \""
 				+fieldType.getName()+"\", "+ fieldName + ");");
 	}
 

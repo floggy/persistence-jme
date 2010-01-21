@@ -33,7 +33,7 @@ import net.sourceforge.floggy.persistence.RMSMemoryMicroEmulator;
 import org.jmock.Mockery;
 import org.microemu.MIDletBridge;
 
-public class SerializationHelperTest extends TestCase {
+public class SerializationManagerTest extends TestCase {
 
 	private static final int NOT_NULL = 0;
 
@@ -41,7 +41,7 @@ public class SerializationHelperTest extends TestCase {
 
 	protected Mockery context = new Mockery();
 
-	public SerializationHelperTest() {
+	public SerializationManagerTest() {
 		MIDletBridge.setMicroEmulator(new RMSMemoryMicroEmulator("target/rms"));
 	}
 
@@ -66,7 +66,7 @@ public class SerializationHelperTest extends TestCase {
 
 		DataInput in = getDataInput(fos);
 
-		Object result = SerializationHelper.readBoolean(in);
+		Object result = SerializationManager.readBoolean(in);
 
 		assertEquals(value, result);
 	}
@@ -74,7 +74,7 @@ public class SerializationHelperTest extends TestCase {
 	public void testReadBooleanNull() throws IOException {
 		DataInput in = getDataInputToNullTestMethods();
 
-		Object result = SerializationHelper.readBoolean(in);
+		Object result = SerializationManager.readBoolean(in);
 
 		assertNull(result);
 	}
@@ -88,7 +88,7 @@ public class SerializationHelperTest extends TestCase {
 
 		DataInput in = getDataInput(fos);
 
-		Object result = SerializationHelper.readByte(in);
+		Object result = SerializationManager.readByte(in);
 
 		assertEquals(value, result);
 	}
@@ -96,7 +96,7 @@ public class SerializationHelperTest extends TestCase {
 	public void testReadByteNull() throws IOException {
 		DataInput in = getDataInputToNullTestMethods();
 
-		Object result = SerializationHelper.readByte(in);
+		Object result = SerializationManager.readByte(in);
 
 		assertNull(result);
 	}
@@ -111,7 +111,7 @@ public class SerializationHelperTest extends TestCase {
 
 		DataInput in = getDataInput(fos);
 
-		Object result = SerializationHelper.readCalendar(in);
+		Object result = SerializationManager.readCalendar(in);
 
 		assertEquals(value, result);
 	}
@@ -119,7 +119,7 @@ public class SerializationHelperTest extends TestCase {
 	public void testReadCalendarNull() throws IOException {
 		DataInput in = getDataInputToNullTestMethods();
 
-		Object result = SerializationHelper.readCalendar(in);
+		Object result = SerializationManager.readCalendar(in);
 
 		assertNull(result);
 	}
@@ -133,7 +133,7 @@ public class SerializationHelperTest extends TestCase {
 
 		DataInput in = getDataInput(fos);
 
-		Object result = SerializationHelper.readChar(in);
+		Object result = SerializationManager.readChar(in);
 
 		assertEquals(value, result);
 	}
@@ -141,7 +141,7 @@ public class SerializationHelperTest extends TestCase {
 	public void testReadCharNull() throws IOException {
 		DataInput in = getDataInputToNullTestMethods();
 
-		Object result = SerializationHelper.readChar(in);
+		Object result = SerializationManager.readChar(in);
 
 		assertNull(result);
 	}
@@ -155,7 +155,7 @@ public class SerializationHelperTest extends TestCase {
 
 		DataInput in = getDataInput(fos);
 
-		Object result = SerializationHelper.readDate(in);
+		Object result = SerializationManager.readDate(in);
 
 		assertEquals(value, result);
 	}
@@ -163,7 +163,7 @@ public class SerializationHelperTest extends TestCase {
 	public void testReadDateNull() throws IOException {
 		DataInput in = getDataInputToNullTestMethods();
 
-		Object result = SerializationHelper.readDate(in);
+		Object result = SerializationManager.readDate(in);
 
 		assertNull(result);
 	}
@@ -177,7 +177,7 @@ public class SerializationHelperTest extends TestCase {
 
 		DataInput in = getDataInput(fos);
 
-		Object result = SerializationHelper.readDouble(in);
+		Object result = SerializationManager.readDouble(in);
 
 		assertEquals(value, result);
 	}
@@ -185,7 +185,7 @@ public class SerializationHelperTest extends TestCase {
 	public void testReadDoubleNull() throws IOException {
 		DataInput in = getDataInputToNullTestMethods();
 
-		Object result = SerializationHelper.readDouble(in);
+		Object result = SerializationManager.readDouble(in);
 
 		assertNull(result);
 	}
@@ -199,7 +199,7 @@ public class SerializationHelperTest extends TestCase {
 
 		DataInput in = getDataInput(fos);
 
-		Object result = SerializationHelper.readFloat(in);
+		Object result = SerializationManager.readFloat(in);
 
 		assertEquals(value, result);
 	}
@@ -207,7 +207,7 @@ public class SerializationHelperTest extends TestCase {
 	public void testReadFloatNull() throws IOException {
 		DataInput in = getDataInputToNullTestMethods();
 
-		Object result = SerializationHelper.readFloat(in);
+		Object result = SerializationManager.readFloat(in);
 
 		assertNull(result);
 	}
@@ -239,7 +239,7 @@ public class SerializationHelperTest extends TestCase {
 
 		DataInput in = getDataInput(fos);
 
-		Hashtable actual = SerializationHelper.readHashtable(in);
+		Hashtable actual = SerializationManager.readHashtable(in);
 
 		assertEquals(expected, actual);
 	}
@@ -247,7 +247,7 @@ public class SerializationHelperTest extends TestCase {
 	public void testReadHashtableNull() throws Exception {
 		DataInput in = getDataInputToNullTestMethods();
 
-		Object result = SerializationHelper.readHashtable(in);
+		Object result = SerializationManager.readHashtable(in);
 
 		assertNull(result);
 	}
@@ -261,7 +261,7 @@ public class SerializationHelperTest extends TestCase {
 
 		DataInput in = getDataInput(fos);
 
-		Object result = SerializationHelper.readInt(in);
+		Object result = SerializationManager.readInt(in);
 
 		assertEquals(value, result);
 	}
@@ -269,7 +269,7 @@ public class SerializationHelperTest extends TestCase {
 	public void testReadIntNull() throws IOException {
 		DataInput in = getDataInputToNullTestMethods();
 
-		Object result = SerializationHelper.readInt(in);
+		Object result = SerializationManager.readInt(in);
 
 		assertNull(result);
 	}
@@ -283,7 +283,7 @@ public class SerializationHelperTest extends TestCase {
 
 		DataInput in = getDataInput(fos);
 
-		Object result = SerializationHelper.readLong(in);
+		Object result = SerializationManager.readLong(in);
 
 		assertEquals(value, result);
 	}
@@ -291,7 +291,7 @@ public class SerializationHelperTest extends TestCase {
 	public void testReadLongNull() throws IOException {
 		DataInput in = getDataInputToNullTestMethods();
 
-		Object result = SerializationHelper.readLong(in);
+		Object result = SerializationManager.readLong(in);
 
 		assertNull(result);
 	}
@@ -356,43 +356,43 @@ public class SerializationHelperTest extends TestCase {
 		DataInput in = getDataInput(fos);
 
 		// Boolean
-		Object actual = SerializationHelper.readObject(in, false);
+		Object actual = SerializationManager.readObject(in, false);
 		assertEquals(expectedBoolean, actual);
 		// Byte
-		actual = SerializationHelper.readObject(in, false);
+		actual = SerializationManager.readObject(in, false);
 		assertEquals(expectedByte, actual);
 		// Character
-		actual = SerializationHelper.readObject(in, false);
+		actual = SerializationManager.readObject(in, false);
 		assertEquals(expectedCharacter, actual);
 		// Double
-		actual = SerializationHelper.readObject(in, false);
+		actual = SerializationManager.readObject(in, false);
 		assertEquals(expectedDouble, actual);
 		// Float
-		actual = SerializationHelper.readObject(in, false);
+		actual = SerializationManager.readObject(in, false);
 		assertEquals(expectedFloat, actual);
 		// Integer
-		actual = SerializationHelper.readObject(in, false);
+		actual = SerializationManager.readObject(in, false);
 		assertEquals(expectedInteger, actual);
 		// Long
-		actual = SerializationHelper.readObject(in, false);
+		actual = SerializationManager.readObject(in, false);
 		assertEquals(expectedLong, actual);
 		// Short
-		actual = SerializationHelper.readObject(in, false);
+		actual = SerializationManager.readObject(in, false);
 		assertEquals(expectedShort, actual);
 		// String
-		actual = SerializationHelper.readObject(in, false);
+		actual = SerializationManager.readObject(in, false);
 		assertEquals(expectedString, actual);
 		// StringBuffer
-		actual = SerializationHelper.readObject(in, false);
+		actual = SerializationManager.readObject(in, false);
 		assertEquals(expectedStringBuffer.toString(), actual.toString());
 		// Calendar
-		actual = SerializationHelper.readObject(in, false);
+		actual = SerializationManager.readObject(in, false);
 		assertEquals(expectedCalendar, actual);
 		// Date
-		actual = SerializationHelper.readObject(in, false);
+		actual = SerializationManager.readObject(in, false);
 		assertEquals(expectedDate, actual);
 		// TimeZone
-		actual = SerializationHelper.readObject(in, false);
+		actual = SerializationManager.readObject(in, false);
 		assertEquals(expectedTimeZone, actual);
 	}
 
@@ -448,37 +448,37 @@ public class SerializationHelperTest extends TestCase {
 		DataInput in = getDataInput(fos);
 
 		// Boolean
-		Object actual = SerializationHelper.readObjectCLDC10(in, false);
+		Object actual = SerializationManager.readObjectCLDC10(in, false);
 		assertEquals(expectedBoolean, actual);
 		// Byte
-		actual = SerializationHelper.readObjectCLDC10(in, false);
+		actual = SerializationManager.readObjectCLDC10(in, false);
 		assertEquals(expectedByte, actual);
 		// Character
-		actual = SerializationHelper.readObjectCLDC10(in, false);
+		actual = SerializationManager.readObjectCLDC10(in, false);
 		assertEquals(expectedCharacter, actual);
 		// Integer
-		actual = SerializationHelper.readObjectCLDC10(in, false);
+		actual = SerializationManager.readObjectCLDC10(in, false);
 		assertEquals(expectedInteger, actual);
 		// Long
-		actual = SerializationHelper.readObjectCLDC10(in, false);
+		actual = SerializationManager.readObjectCLDC10(in, false);
 		assertEquals(expectedLong, actual);
 		// Short
-		actual = SerializationHelper.readObjectCLDC10(in, false);
+		actual = SerializationManager.readObjectCLDC10(in, false);
 		assertEquals(expectedShort, actual);
 		// String
-		actual = SerializationHelper.readObjectCLDC10(in, false);
+		actual = SerializationManager.readObjectCLDC10(in, false);
 		assertEquals(expectedString, actual);
 		// StringBuffer
-		actual = SerializationHelper.readObjectCLDC10(in, false);
+		actual = SerializationManager.readObjectCLDC10(in, false);
 		assertEquals(expectedStringBuffer.toString(), actual.toString());
 		// Calendar
-		actual = SerializationHelper.readObjectCLDC10(in, false);
+		actual = SerializationManager.readObjectCLDC10(in, false);
 		assertEquals(expectedCalendar, actual);
 		// Date
-		actual = SerializationHelper.readObjectCLDC10(in, false);
+		actual = SerializationManager.readObjectCLDC10(in, false);
 		assertEquals(expectedDate, actual);
 		// TimeZone
-		actual = SerializationHelper.readObjectCLDC10(in, false);
+		actual = SerializationManager.readObjectCLDC10(in, false);
 		assertEquals(expectedTimeZone, actual);
 	}
 
@@ -488,7 +488,7 @@ public class SerializationHelperTest extends TestCase {
 	public void testReadPersistableNull() throws Exception {
 		DataInput in = getDataInputToNullTestMethods();
 
-		Object result = SerializationHelper.readPersistable(in, null, false);
+		Object result = SerializationManager.readPersistable(in, null, false);
 
 		assertNull(result);
 	}
@@ -502,7 +502,7 @@ public class SerializationHelperTest extends TestCase {
 
 		DataInput in = getDataInput(fos);
 
-		Object result = SerializationHelper.readShort(in);
+		Object result = SerializationManager.readShort(in);
 
 		assertEquals(value, result);
 	}
@@ -510,7 +510,7 @@ public class SerializationHelperTest extends TestCase {
 	public void testReadShortNull() throws IOException {
 		DataInput in = getDataInputToNullTestMethods();
 
-		Object result = SerializationHelper.readShort(in);
+		Object result = SerializationManager.readShort(in);
 
 		assertNull(result);
 	}
@@ -527,7 +527,7 @@ public class SerializationHelperTest extends TestCase {
 
 		DataInput in = getDataInput(fos);
 
-		Object result = SerializationHelper.readStack(in, false);
+		Object result = SerializationManager.readStack(in, false);
 
 		assertEquals(value, result);
 	}
@@ -548,7 +548,7 @@ public class SerializationHelperTest extends TestCase {
 
 		DataInput in = getDataInput(fos);
 
-		Object result = SerializationHelper.readStack(in, false);
+		Object result = SerializationManager.readStack(in, false);
 
 		assertEquals(value, result);
 	}
@@ -556,7 +556,7 @@ public class SerializationHelperTest extends TestCase {
 	public void testReadStackNull() throws Exception {
 		DataInput in = getDataInputToNullTestMethods();
 
-		Object result = SerializationHelper.readStack(in, false);
+		Object result = SerializationManager.readStack(in, false);
 
 		assertNull(result);
 	}
@@ -570,7 +570,7 @@ public class SerializationHelperTest extends TestCase {
 
 		DataInput in = getDataInput(fos);
 
-		Object result = SerializationHelper.readStringBuffer(in);
+		Object result = SerializationManager.readStringBuffer(in);
 
 		assertEquals(value.toString(), result.toString());
 	}
@@ -578,7 +578,7 @@ public class SerializationHelperTest extends TestCase {
 	public void testReadStringBufferNull() throws IOException {
 		DataInput in = getDataInputToNullTestMethods();
 
-		Object result = SerializationHelper.readStringBuffer(in);
+		Object result = SerializationManager.readStringBuffer(in);
 
 		assertNull(result);
 	}
@@ -592,7 +592,7 @@ public class SerializationHelperTest extends TestCase {
 
 		DataInput in = getDataInput(fos);
 
-		Object result = SerializationHelper.readString(in);
+		Object result = SerializationManager.readString(in);
 
 		assertEquals(value, result);
 	}
@@ -600,7 +600,7 @@ public class SerializationHelperTest extends TestCase {
 	public void testReadStringNull() throws IOException {
 		DataInput in = getDataInputToNullTestMethods();
 
-		Object result = SerializationHelper.readString(in);
+		Object result = SerializationManager.readString(in);
 
 		assertNull(result);
 	}
@@ -608,7 +608,7 @@ public class SerializationHelperTest extends TestCase {
 	public void testReadTimeZoneBufferNull() throws IOException {
 		DataInput in = getDataInputToNullTestMethods();
 
-		Object result = SerializationHelper.readTimeZone(in);
+		Object result = SerializationManager.readTimeZone(in);
 
 		assertNull(result);
 	}
@@ -622,7 +622,7 @@ public class SerializationHelperTest extends TestCase {
 
 		DataInput in = getDataInput(fos);
 
-		Object result = SerializationHelper.readTimeZone(in);
+		Object result = SerializationManager.readTimeZone(in);
 
 		assertEquals(value, result);
 	}
@@ -640,7 +640,7 @@ public class SerializationHelperTest extends TestCase {
 
 		DataInput in = getDataInput(fos);
 
-		Object result = SerializationHelper.readVector(in, false);
+		Object result = SerializationManager.readVector(in, false);
 
 		assertEquals(value, result);
 	}
@@ -727,7 +727,7 @@ public class SerializationHelperTest extends TestCase {
 
 		DataInput in = getDataInput(fos);
 
-		Object result = SerializationHelper.readVector(in, false);
+		Object result = SerializationManager.readVector(in, false);
 
 		assertEquals(value, result);
 	}
@@ -748,7 +748,7 @@ public class SerializationHelperTest extends TestCase {
 
 		DataInput in = getDataInput(fos);
 
-		Object result = SerializationHelper.readVector(in, false);
+		Object result = SerializationManager.readVector(in, false);
 
 		assertEquals(value, result);
 	}
@@ -756,7 +756,7 @@ public class SerializationHelperTest extends TestCase {
 	public void testReadVectorNull() throws Exception {
 		DataInput in = getDataInputToNullTestMethods();
 
-		Object result = SerializationHelper.readVector(in, false);
+		Object result = SerializationManager.readVector(in, false);
 
 		assertNull(result);
 	}
@@ -767,7 +767,7 @@ public class SerializationHelperTest extends TestCase {
 		FloggyOutputStream fos = new FloggyOutputStream();
 
 		Boolean value = Boolean.TRUE;
-		SerializationHelper.writeBoolean(fos, value);
+		SerializationManager.writeBoolean(fos, value);
 
 		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(fos
 				.toByteArray()));
@@ -780,7 +780,7 @@ public class SerializationHelperTest extends TestCase {
 	public void testWriteBooleanNull() throws IOException {
 		FloggyOutputStream fos = new FloggyOutputStream();
 
-		SerializationHelper.writeBoolean(fos, null);
+		SerializationManager.writeBoolean(fos, null);
 
 		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(fos
 				.toByteArray()));
@@ -793,7 +793,7 @@ public class SerializationHelperTest extends TestCase {
 		FloggyOutputStream fos = new FloggyOutputStream();
 
 		Byte value = new Byte((byte) 235);
-		SerializationHelper.writeByte(fos, value);
+		SerializationManager.writeByte(fos, value);
 
 		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(fos
 				.toByteArray()));
@@ -806,7 +806,7 @@ public class SerializationHelperTest extends TestCase {
 	public void testWriteByteNull() throws IOException {
 		FloggyOutputStream fos = new FloggyOutputStream();
 
-		SerializationHelper.writeByte(fos, null);
+		SerializationManager.writeByte(fos, null);
 
 		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(fos
 				.toByteArray()));
@@ -819,7 +819,7 @@ public class SerializationHelperTest extends TestCase {
 		FloggyOutputStream fos = new FloggyOutputStream();
 
 		Calendar value = Calendar.getInstance();
-		SerializationHelper.writeCalendar(fos, value);
+		SerializationManager.writeCalendar(fos, value);
 
 		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(fos
 				.toByteArray()));
@@ -833,7 +833,7 @@ public class SerializationHelperTest extends TestCase {
 	public void testWriteCalendarNull() throws IOException {
 		FloggyOutputStream fos = new FloggyOutputStream();
 
-		SerializationHelper.writeCalendar(fos, null);
+		SerializationManager.writeCalendar(fos, null);
 
 		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(fos
 				.toByteArray()));
@@ -846,7 +846,7 @@ public class SerializationHelperTest extends TestCase {
 		FloggyOutputStream fos = new FloggyOutputStream();
 
 		Character value = new Character('q');
-		SerializationHelper.writeChar(fos, value);
+		SerializationManager.writeChar(fos, value);
 
 		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(fos
 				.toByteArray()));
@@ -859,7 +859,7 @@ public class SerializationHelperTest extends TestCase {
 	public void testWriteCharNull() throws IOException {
 		FloggyOutputStream fos = new FloggyOutputStream();
 
-		SerializationHelper.writeChar(fos, null);
+		SerializationManager.writeChar(fos, null);
 
 		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(fos
 				.toByteArray()));
@@ -872,7 +872,7 @@ public class SerializationHelperTest extends TestCase {
 		FloggyOutputStream fos = new FloggyOutputStream();
 
 		Date value = new Date();
-		SerializationHelper.writeDate(fos, value);
+		SerializationManager.writeDate(fos, value);
 
 		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(fos
 				.toByteArray()));
@@ -885,7 +885,7 @@ public class SerializationHelperTest extends TestCase {
 	public void testWriteDateNull() throws IOException {
 		FloggyOutputStream fos = new FloggyOutputStream();
 
-		SerializationHelper.writeDate(fos, null);
+		SerializationManager.writeDate(fos, null);
 
 		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(fos
 				.toByteArray()));
@@ -898,7 +898,7 @@ public class SerializationHelperTest extends TestCase {
 		FloggyOutputStream fos = new FloggyOutputStream();
 
 		Double value = new Double(1212.32);
-		SerializationHelper.writeDouble(fos, value);
+		SerializationManager.writeDouble(fos, value);
 
 		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(fos
 				.toByteArray()));
@@ -911,7 +911,7 @@ public class SerializationHelperTest extends TestCase {
 	public void testWriteDoubleNull() throws IOException {
 		FloggyOutputStream fos = new FloggyOutputStream();
 
-		SerializationHelper.writeDouble(fos, null);
+		SerializationManager.writeDouble(fos, null);
 
 		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(fos
 				.toByteArray()));
@@ -924,7 +924,7 @@ public class SerializationHelperTest extends TestCase {
 		FloggyOutputStream fos = new FloggyOutputStream();
 
 		Float value = new Float(1212.32);
-		SerializationHelper.writeFloat(fos, value);
+		SerializationManager.writeFloat(fos, value);
 
 		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(fos
 				.toByteArray()));
@@ -937,7 +937,7 @@ public class SerializationHelperTest extends TestCase {
 	public void testWriteFloatNull() throws IOException {
 		FloggyOutputStream fos = new FloggyOutputStream();
 
-		SerializationHelper.writeFloat(fos, null);
+		SerializationManager.writeFloat(fos, null);
 
 		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(fos
 				.toByteArray()));
@@ -950,7 +950,7 @@ public class SerializationHelperTest extends TestCase {
 		FloggyOutputStream fos = new FloggyOutputStream();
 
 		Hashtable value = new Hashtable();
-		SerializationHelper.writeHashtable(fos, value);
+		SerializationManager.writeHashtable(fos, value);
 
 		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(fos
 				.toByteArray()));
@@ -970,7 +970,7 @@ public class SerializationHelperTest extends TestCase {
 		// value.put("6", new Integer(940));
 		// value.put("7", new Long(390));
 		// value.put("8", new Short((short)43));
-		SerializationHelper.writeHashtable(fos, value);
+		SerializationManager.writeHashtable(fos, value);
 
 		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(fos
 				.toByteArray()));
@@ -992,7 +992,7 @@ public class SerializationHelperTest extends TestCase {
 	public void testWriteHashtableNull() throws Exception {
 		FloggyOutputStream fos = new FloggyOutputStream();
 
-		SerializationHelper.writeHashtable(fos, null);
+		SerializationManager.writeHashtable(fos, null);
 
 		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(fos
 				.toByteArray()));
@@ -1005,7 +1005,7 @@ public class SerializationHelperTest extends TestCase {
 		FloggyOutputStream fos = new FloggyOutputStream();
 
 		Integer value = new Integer(23165465);
-		SerializationHelper.writeInt(fos, value);
+		SerializationManager.writeInt(fos, value);
 
 		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(fos
 				.toByteArray()));
@@ -1018,7 +1018,7 @@ public class SerializationHelperTest extends TestCase {
 	public void testWriteIntNull() throws IOException {
 		FloggyOutputStream fos = new FloggyOutputStream();
 
-		SerializationHelper.writeInt(fos, null);
+		SerializationManager.writeInt(fos, null);
 
 		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(fos
 				.toByteArray()));
@@ -1031,7 +1031,7 @@ public class SerializationHelperTest extends TestCase {
 		FloggyOutputStream fos = new FloggyOutputStream();
 
 		Long value = new Long(23165465);
-		SerializationHelper.writeLong(fos, value);
+		SerializationManager.writeLong(fos, value);
 
 		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(fos
 				.toByteArray()));
@@ -1044,7 +1044,7 @@ public class SerializationHelperTest extends TestCase {
 	public void testWriteLongNull() throws IOException {
 		FloggyOutputStream fos = new FloggyOutputStream();
 
-		SerializationHelper.writeLong(fos, null);
+		SerializationManager.writeLong(fos, null);
 
 		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(fos
 				.toByteArray()));
@@ -1058,43 +1058,43 @@ public class SerializationHelperTest extends TestCase {
 
 		// Boolean
 		Boolean expectedBoolean = Boolean.FALSE;
-		SerializationHelper.writeObject(fos, expectedBoolean);
+		SerializationManager.writeObject(fos, expectedBoolean);
 		// Byte
 		Byte expectedByte = new Byte((byte) 34);
-		SerializationHelper.writeObject(fos, expectedByte);
+		SerializationManager.writeObject(fos, expectedByte);
 		// Character
 		Character expectedCharacter = new Character('w');
-		SerializationHelper.writeObject(fos, expectedCharacter);
+		SerializationManager.writeObject(fos, expectedCharacter);
 		// Double
 		Double expectedDouble = new Double(23465d);
-		SerializationHelper.writeObject(fos, expectedDouble);
+		SerializationManager.writeObject(fos, expectedDouble);
 		// Float
 		Float expectedFloat = new Float(654887f);
-		SerializationHelper.writeObject(fos, expectedFloat);
+		SerializationManager.writeObject(fos, expectedFloat);
 		// Integer
 		Integer expectedInteger = new Integer(987);
-		SerializationHelper.writeObject(fos, expectedInteger);
+		SerializationManager.writeObject(fos, expectedInteger);
 		// Long
 		Long expectedLong = new Long(34563457);
-		SerializationHelper.writeObject(fos, expectedLong);
+		SerializationManager.writeObject(fos, expectedLong);
 		// Short
 		Short expectedShort = new Short((short) 34);
-		SerializationHelper.writeObject(fos, expectedShort);
+		SerializationManager.writeObject(fos, expectedShort);
 		// String
 		String expectedString = "asdkljf";
-		SerializationHelper.writeObject(fos, expectedString);
+		SerializationManager.writeObject(fos, expectedString);
 		// StringBuffer
 		StringBuffer expectedStringBuffer = new StringBuffer("flogggyter");
-		SerializationHelper.writeObject(fos, expectedStringBuffer);
+		SerializationManager.writeObject(fos, expectedStringBuffer);
 		// Calendar
 		Calendar expectedCalendar = Calendar.getInstance();
-		SerializationHelper.writeObject(fos, expectedCalendar);
+		SerializationManager.writeObject(fos, expectedCalendar);
 		// Date
 		Date expectedDate = new Date();
-		SerializationHelper.writeObject(fos, expectedDate);
+		SerializationManager.writeObject(fos, expectedDate);
 		// TimeZone
 		TimeZone expectedTimeZone = TimeZone.getDefault();
-		SerializationHelper.writeObject(fos, expectedTimeZone);
+		SerializationManager.writeObject(fos, expectedTimeZone);
 
 		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(fos
 				.toByteArray()));
@@ -1149,7 +1149,7 @@ public class SerializationHelperTest extends TestCase {
 		FloggyOutputStream fos = new FloggyOutputStream();
 
 		try {
-			SerializationHelper.writeObject(fos, new Object());
+			SerializationManager.writeObject(fos, new Object());
 			fail("Must throw a FloggyException");
 		} catch (Exception e) {
 			assertEquals(FloggyException.class, e.getClass());
@@ -1161,37 +1161,37 @@ public class SerializationHelperTest extends TestCase {
 
 		// Boolean
 		Boolean expectedBoolean = Boolean.FALSE;
-		SerializationHelper.writeObjectCLDC10(fos, expectedBoolean);
+		SerializationManager.writeObjectCLDC10(fos, expectedBoolean);
 		// Byte
 		Byte expectedByte = new Byte((byte) 34);
-		SerializationHelper.writeObjectCLDC10(fos, expectedByte);
+		SerializationManager.writeObjectCLDC10(fos, expectedByte);
 		// Character
 		Character expectedCharacter = new Character('w');
-		SerializationHelper.writeObjectCLDC10(fos, expectedCharacter);
+		SerializationManager.writeObjectCLDC10(fos, expectedCharacter);
 		// Integer
 		Integer expectedInteger = new Integer(987);
-		SerializationHelper.writeObjectCLDC10(fos, expectedInteger);
+		SerializationManager.writeObjectCLDC10(fos, expectedInteger);
 		// Long
 		Long expectedLong = new Long(34563457);
-		SerializationHelper.writeObjectCLDC10(fos, expectedLong);
+		SerializationManager.writeObjectCLDC10(fos, expectedLong);
 		// Short
 		Short expectedShort = new Short((short) 34);
-		SerializationHelper.writeObjectCLDC10(fos, expectedShort);
+		SerializationManager.writeObjectCLDC10(fos, expectedShort);
 		// String
 		String expectedString = "asdkljf";
-		SerializationHelper.writeObjectCLDC10(fos, expectedString);
+		SerializationManager.writeObjectCLDC10(fos, expectedString);
 		// StringBuffer
 		StringBuffer expectedStringBuffer = new StringBuffer("flogggyter");
-		SerializationHelper.writeObjectCLDC10(fos, expectedStringBuffer);
+		SerializationManager.writeObjectCLDC10(fos, expectedStringBuffer);
 		// Calendar
 		Calendar expectedCalendar = Calendar.getInstance();
-		SerializationHelper.writeObjectCLDC10(fos, expectedCalendar);
+		SerializationManager.writeObjectCLDC10(fos, expectedCalendar);
 		// Date
 		Date expectedDate = new Date();
-		SerializationHelper.writeObjectCLDC10(fos, expectedDate);
+		SerializationManager.writeObjectCLDC10(fos, expectedDate);
 		// TimeZone
 		TimeZone expectedTimeZone = TimeZone.getDefault();
-		SerializationHelper.writeObjectCLDC10(fos, expectedTimeZone);
+		SerializationManager.writeObjectCLDC10(fos, expectedTimeZone);
 
 		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(fos
 				.toByteArray()));
@@ -1240,7 +1240,7 @@ public class SerializationHelperTest extends TestCase {
 		FloggyOutputStream fos = new FloggyOutputStream();
 
 		try {
-			SerializationHelper.writeObjectCLDC10(fos, new Object());
+			SerializationManager.writeObjectCLDC10(fos, new Object());
 			fail("Must throw a FloggyException");
 		} catch (Exception e) {
 			assertEquals(FloggyException.class, e.getClass());
@@ -1251,7 +1251,7 @@ public class SerializationHelperTest extends TestCase {
 		// FloggyOutputStream fos= new FloggyOutputStream();
 		//		
 		// Long value= new Long(23165465);
-		// SerializationHelper.writeLong(fos, value);
+		// SerializationManager.writeLong(fos, value);
 		//		
 		// DataInputStream dis= new DataInputStream(new
 		// ByteArrayInputStream(fos.toByteArray()));
@@ -1263,7 +1263,7 @@ public class SerializationHelperTest extends TestCase {
 	public void testWritePersistableNull() throws Exception {
 		FloggyOutputStream fos = new FloggyOutputStream();
 
-		SerializationHelper.writePersistable(fos, null, null);
+		SerializationManager.writePersistable(fos, null, null);
 
 		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(fos
 				.toByteArray()));
@@ -1276,7 +1276,7 @@ public class SerializationHelperTest extends TestCase {
 		FloggyOutputStream fos = new FloggyOutputStream();
 
 		Short value = new Short((short) 465);
-		SerializationHelper.writeShort(fos, value);
+		SerializationManager.writeShort(fos, value);
 
 		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(fos
 				.toByteArray()));
@@ -1289,7 +1289,7 @@ public class SerializationHelperTest extends TestCase {
 	public void testWriteShortNull() throws IOException {
 		FloggyOutputStream fos = new FloggyOutputStream();
 
-		SerializationHelper.writeShort(fos, null);
+		SerializationManager.writeShort(fos, null);
 
 		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(fos
 				.toByteArray()));
@@ -1302,7 +1302,7 @@ public class SerializationHelperTest extends TestCase {
 		FloggyOutputStream fos = new FloggyOutputStream();
 
 		Stack value = new Stack();
-		SerializationHelper.writeStack(fos, value);
+		SerializationManager.writeStack(fos, value);
 
 		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(fos
 				.toByteArray()));
@@ -1319,7 +1319,7 @@ public class SerializationHelperTest extends TestCase {
 		value.push(null);
 		value.push(null);
 		value.push(null);
-		SerializationHelper.writeStack(fos, value);
+		SerializationManager.writeStack(fos, value);
 
 		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(fos
 				.toByteArray()));
@@ -1342,7 +1342,7 @@ public class SerializationHelperTest extends TestCase {
 		value.push(null);
 		value.push(null);
 		value.push(null);
-		SerializationHelper.writeStack(fos, value);
+		SerializationManager.writeStack(fos, value);
 
 		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(fos
 				.toByteArray()));
@@ -1358,7 +1358,7 @@ public class SerializationHelperTest extends TestCase {
 	public void testWriteStackNull() throws Exception {
 		FloggyOutputStream fos = new FloggyOutputStream();
 
-		SerializationHelper.writeStack(fos, null);
+		SerializationManager.writeStack(fos, null);
 
 		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(fos
 				.toByteArray()));
@@ -1371,7 +1371,7 @@ public class SerializationHelperTest extends TestCase {
 		FloggyOutputStream fos = new FloggyOutputStream();
 
 		String value = "floggy";
-		SerializationHelper.writeString(fos, value);
+		SerializationManager.writeString(fos, value);
 
 		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(fos
 				.toByteArray()));
@@ -1384,7 +1384,7 @@ public class SerializationHelperTest extends TestCase {
 	public void testWriteStringNull() throws IOException {
 		FloggyOutputStream fos = new FloggyOutputStream();
 
-		SerializationHelper.writeString(fos, null);
+		SerializationManager.writeString(fos, null);
 
 		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(fos
 				.toByteArray()));
@@ -1397,7 +1397,7 @@ public class SerializationHelperTest extends TestCase {
 		FloggyOutputStream fos = new FloggyOutputStream();
 
 		StringBuffer value = new StringBuffer("floggy");
-		SerializationHelper.writeStringBuffer(fos, value);
+		SerializationManager.writeStringBuffer(fos, value);
 
 		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(fos
 				.toByteArray()));
@@ -1410,7 +1410,7 @@ public class SerializationHelperTest extends TestCase {
 	public void testWriteStringBufferNull() throws IOException {
 		FloggyOutputStream fos = new FloggyOutputStream();
 
-		SerializationHelper.writeStringBuffer(fos, null);
+		SerializationManager.writeStringBuffer(fos, null);
 
 		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(fos
 				.toByteArray()));
@@ -1423,7 +1423,7 @@ public class SerializationHelperTest extends TestCase {
 		FloggyOutputStream fos = new FloggyOutputStream();
 
 		TimeZone value = TimeZone.getDefault();
-		SerializationHelper.writeTimeZone(fos, value);
+		SerializationManager.writeTimeZone(fos, value);
 
 		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(fos
 				.toByteArray()));
@@ -1436,7 +1436,7 @@ public class SerializationHelperTest extends TestCase {
 	public void testWriteTimeZoneNull() throws IOException {
 		FloggyOutputStream fos = new FloggyOutputStream();
 
-		SerializationHelper.writeTimeZone(fos, null);
+		SerializationManager.writeTimeZone(fos, null);
 
 		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(fos
 				.toByteArray()));
@@ -1449,7 +1449,7 @@ public class SerializationHelperTest extends TestCase {
 		FloggyOutputStream fos = new FloggyOutputStream();
 
 		Vector value = new Vector();
-		SerializationHelper.writeVector(fos, value);
+		SerializationManager.writeVector(fos, value);
 
 		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(fos
 				.toByteArray()));
@@ -1466,7 +1466,7 @@ public class SerializationHelperTest extends TestCase {
 		value.add(null);
 		value.add(null);
 		value.add(null);
-		SerializationHelper.writeVector(fos, value);
+		SerializationManager.writeVector(fos, value);
 
 		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(fos
 				.toByteArray()));
@@ -1486,7 +1486,7 @@ public class SerializationHelperTest extends TestCase {
 		value.add(Boolean.TRUE);
 		value.add(new Byte((byte) 3));
 		value.add(new Character('q'));
-		SerializationHelper.writeVector(fos, value);
+		SerializationManager.writeVector(fos, value);
 
 		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(fos
 				.toByteArray()));
@@ -1508,7 +1508,7 @@ public class SerializationHelperTest extends TestCase {
 	public void testWriteVectorNull() throws Exception {
 		FloggyOutputStream fos = new FloggyOutputStream();
 
-		SerializationHelper.writeVector(fos, null);
+		SerializationManager.writeVector(fos, null);
 
 		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(fos
 				.toByteArray()));

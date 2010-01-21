@@ -24,13 +24,13 @@ public class RecordStoreManager {
 
 	private static void check(PersistableMetadata metadata, boolean isUpdateProcess) throws Exception {
 	
-		PersistableMetadata rmsMetadata = MetadataManagerUtil.getRMSBasedMetadata(metadata.getClassName());
+		PersistableMetadata rmsMetadata = PersistableMetadataManager.getRMSBasedMetadata(metadata.getClassName());
 	
 		if (rmsMetadata == null) {
-			if (!MetadataManagerUtil.getBytecodeVersion().equals(MetadataManagerUtil.getRMSVersion()) && !isUpdateProcess) {
+			if (!PersistableMetadataManager.getBytecodeVersion().equals(PersistableMetadataManager.getRMSVersion()) && !isUpdateProcess) {
 				throw new FloggyException("You are trying to access a Persistable (" + metadata.getClassName() + ") entity that was not migrate. Please execute a migration first.");
 			}
-			MetadataManagerUtil.saveRMSStructure(metadata);
+			PersistableMetadataManager.saveRMSStructure(metadata);
 		} else {
 			if (!metadata.equals(rmsMetadata) && !isUpdateProcess) {
 				throw new FloggyException("Class and RMS description doesn't match for class " + metadata.getClassName() + ". Please execute a migration first.");
@@ -61,7 +61,7 @@ public class RecordStoreManager {
 	public static RecordStore getRecordStore(__Persistable persistable)
 			throws FloggyException {
 	
-		PersistableMetadata metadata = MetadataManagerUtil.getClassBasedMetadata(persistable.getClass().getName());
+		PersistableMetadata metadata = PersistableMetadataManager.getClassBasedMetadata(persistable.getClass().getName());
 		return getRecordStore(persistable.getRecordStoreName(), metadata, false);
 	}
 	
@@ -114,6 +114,9 @@ public class RecordStoreManager {
 				}
 			}
 		}
+	}
+	
+	protected RecordStoreManager() {
 	}
 
 }

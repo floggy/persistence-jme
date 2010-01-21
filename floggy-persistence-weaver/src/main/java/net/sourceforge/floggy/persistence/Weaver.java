@@ -47,7 +47,7 @@ import net.sourceforge.floggy.persistence.codegen.CodeGenerator;
 import net.sourceforge.floggy.persistence.codegen.strategy.JoinedStrategyCodeGenerator;
 import net.sourceforge.floggy.persistence.codegen.strategy.PerClassStrategyCodeGenerator;
 import net.sourceforge.floggy.persistence.codegen.strategy.SingleStrategyCodeGenerator;
-import net.sourceforge.floggy.persistence.impl.MetadataManagerUtil;
+import net.sourceforge.floggy.persistence.impl.PersistableMetadataManager;
 import net.sourceforge.floggy.persistence.impl.PersistableMetadata;
 import net.sourceforge.floggy.persistence.pool.InputPool;
 import net.sourceforge.floggy.persistence.pool.OutputPool;
@@ -364,10 +364,10 @@ public class Weaver {
 	}
 	
 	protected void adaptFrameworkToTargetCLDC() throws IOException, CannotCompileException, NotFoundException {
-		URL fileURL = getClass().getResource("/net/sourceforge/floggy/persistence/impl/SerializationHelper.class");
+		URL fileURL = getClass().getResource("/net/sourceforge/floggy/persistence/impl/SerializationManager.class");
 		classpathPool.makeClass(fileURL.openStream());
 
-		CtClass ctClass= this.classpathPool.get("net.sourceforge.floggy.persistence.impl.SerializationHelper");
+		CtClass ctClass= this.classpathPool.get("net.sourceforge.floggy.persistence.impl.SerializationManager");
 		if (isCLDC10()) {
 			CtMethod[] methods= ctClass.getMethods();
 			for (int i = 0; i < methods.length; i++) {
@@ -400,11 +400,11 @@ public class Weaver {
 
 	public void execute() throws WeaverException {
 		long time = System.currentTimeMillis();
-		LOG.info("Floggy Persistence Weaver - " + MetadataManagerUtil.getBytecodeVersion());
+		LOG.info("Floggy Persistence Weaver - " + PersistableMetadataManager.getBytecodeVersion());
 		LOG.info("CLDC version: " + ((isCLDC10()) ? "1.0" : "1.1"));
 		try {
 //			readConfiguration();
-			URL fileURL = getClass().getResource("/net/sourceforge/floggy/persistence/impl/MetadataManagerUtil.class");
+			URL fileURL = getClass().getResource("/net/sourceforge/floggy/persistence/impl/PersistableMetadataManager.class");
 			classpathPool.makeClass(fileURL.openStream());
 
 			embeddedUnderlineCoreClasses();
@@ -453,7 +453,7 @@ public class Weaver {
 				this.outputPool.addClass(ctClass);
 				LOG.debug("Bytecode modified.");
 			}
-			addMetadataManagerUtilClass();
+			addPersistableMetadataManagerClass();
 
 			if (embeddedClassesOutputPool != outputPool) {
 				embeddedClassesOutputPool.finish();
@@ -476,7 +476,7 @@ public class Weaver {
 		LOG.info("Time elapsed: " + time + "ms");
 	}
 
-	protected void addMetadataManagerUtilClass() throws  CannotCompileException, IOException, NotFoundException {
+	protected void addPersistableMetadataManagerClass() throws  CannotCompileException, IOException, NotFoundException {
 
 		alreadyProcessedMetadatas.addAll(configuration.getPersistableMetadatas());
 		Set metadatas = alreadyProcessedMetadatas;
@@ -563,7 +563,7 @@ public class Weaver {
 		buffer.append("load();\n");
 		buffer.append("}\n");
 		
-		CtClass ctClass= this.classpathPool.get("net.sourceforge.floggy.persistence.impl.MetadataManagerUtil");
+		CtClass ctClass= this.classpathPool.get("net.sourceforge.floggy.persistence.impl.PersistableMetadataManager");
 		CtMethod[] methods= ctClass.getMethods();
 		for (int i = 0; i < methods.length; i++) {
 			if (methods[i].getName().equals("init")) {

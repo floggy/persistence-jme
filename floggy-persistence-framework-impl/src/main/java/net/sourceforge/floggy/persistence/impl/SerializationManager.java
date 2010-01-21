@@ -30,7 +30,7 @@ import net.sourceforge.floggy.persistence.FloggyException;
 import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.PersistableManager;
 
-public class SerializationHelper {
+public class SerializationManager {
 
 	public static final int NOT_NULL = 0;
 
@@ -39,7 +39,7 @@ public class SerializationHelper {
 	private static PersistableManager pm = null;
 	
 	public static void setPersistableManager(PersistableManager pm) {
-		SerializationHelper.pm = pm;
+		SerializationManager.pm = pm;
 	}
 
 	public final static Boolean readBoolean(DataInput in) throws IOException {
@@ -601,7 +601,7 @@ public class SerializationHelper {
 		}
 	}
 
-	protected SerializationHelper() {
+	protected SerializationManager() {
 	}
 
 }

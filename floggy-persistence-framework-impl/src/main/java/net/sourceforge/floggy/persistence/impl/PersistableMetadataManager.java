@@ -26,7 +26,7 @@ import javax.microedition.rms.RecordEnumeration;
 import javax.microedition.rms.RecordStore;
 import javax.microedition.rms.RecordStoreException;
 
-public class MetadataManagerUtil {
+public class PersistableMetadataManager {
 
 	public static final String VERSION_1_0_1 = "1.0.1";
 	public static final String VERSION_1_1_0 = "1.1.0";
@@ -124,14 +124,14 @@ public class MetadataManagerUtil {
 			String className = dis.readUTF();
 			if (!"version".equals(className)) {
 				boolean isAbstract = dis.readBoolean();
-				String superClassName = SerializationHelper.readString(dis);
+				String superClassName = SerializationManager.readString(dis);
 				String fieldNames[] = new String[dis.readInt()]; 
 				int fieldTypes[] = new int[fieldNames.length];
 				for (int i = 0; i < fieldNames.length; i++) {
 					fieldNames[i] = dis.readUTF();
 					fieldTypes[i] = dis.readInt();
 				}
-				Hashtable persistableImplementations = SerializationHelper.readHashtable(dis);
+				Hashtable persistableImplementations = SerializationManager.readHashtable(dis);
 				String recordStoreName = dis.readUTF();
 				int persistableStrategy = PersistableMetadata.JOINED_STRATEGY;
 				if (dis.available() != 0) {
@@ -162,13 +162,13 @@ public class MetadataManagerUtil {
 
 		out.writeUTF(metadata.getClassName());
 		out.writeBoolean(metadata.isAbstract());
-		SerializationHelper.writeString(out, metadata.getSuperClassName());
+		SerializationManager.writeString(out, metadata.getSuperClassName());
 		out.writeInt(fieldTypes.length);
 		for (int i = 0; i < fieldTypes.length; i++) {
 			out.writeUTF(fieldNames[i]);
 			out.writeInt(fieldTypes[i]);
 		}
-		SerializationHelper.writeHashtable(out, metadata.getPersistableImplementations());
+		SerializationManager.writeHashtable(out, metadata.getPersistableImplementations());
 		out.writeUTF(metadata.getRecordStoreName());
 		out.writeInt(metadata.getPersistableStrategy());
 
@@ -192,7 +192,7 @@ public class MetadataManagerUtil {
 		return fos.toByteArray();
 	}
 
-	protected MetadataManagerUtil() {
+	protected PersistableMetadataManager() {
 	}
 
 }

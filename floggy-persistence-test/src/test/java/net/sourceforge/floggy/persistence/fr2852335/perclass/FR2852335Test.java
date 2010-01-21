@@ -32,7 +32,7 @@ import net.sourceforge.floggy.persistence.fr2852335.perclass.CSCOfAbstractSuperC
 import net.sourceforge.floggy.persistence.fr2852335.perclass.CSCOfConcreteSubClass;
 import net.sourceforge.floggy.persistence.fr2852335.perclass.CSCOfConcreteSuperClass;
 import net.sourceforge.floggy.persistence.fr2852335.perclass.ConcreteSuperClass;
-import net.sourceforge.floggy.persistence.impl.MetadataManagerUtil;
+import net.sourceforge.floggy.persistence.impl.PersistableMetadataManager;
 import net.sourceforge.floggy.persistence.impl.PersistableMetadata;
 import net.sourceforge.floggy.persistence.impl.__Persistable;
 
@@ -180,7 +180,7 @@ public class FR2852335Test extends FloggyBaseTest {
 		try {
 			manager.save(csc);
 
-			PersistableMetadata metadata = MetadataManagerUtil.getClassBasedMetadata(CSCOfAbstractSuperClass.class.getName());
+			PersistableMetadata metadata = PersistableMetadataManager.getClassBasedMetadata(CSCOfAbstractSuperClass.class.getName());
 			
 			assertEquals(((__Persistable)csc).getRecordStoreName(), metadata.getRecordStoreName());
 
@@ -204,7 +204,7 @@ public class FR2852335Test extends FloggyBaseTest {
 		try {
 			manager.save(csc);
 
-			PersistableMetadata metadata = MetadataManagerUtil
+			PersistableMetadata metadata = PersistableMetadataManager
 				.getClassBasedMetadata(CSCOfConcreteSuperClass.class.getName());
 	
 			assertEquals(((__Persistable)csc).getRecordStoreName(), metadata.getRecordStoreName());
@@ -325,9 +325,9 @@ public class FR2852335Test extends FloggyBaseTest {
 	}
 
 	public void testRecordStoreNameNotEquals() {
-		PersistableMetadata m1= MetadataManagerUtil.getClassBasedMetadata(ConcreteSuperClass.class.getName());
-		PersistableMetadata m2= MetadataManagerUtil.getClassBasedMetadata(CSCOfConcreteSuperClass.class.getName());
-		PersistableMetadata m3= MetadataManagerUtil.getClassBasedMetadata(CSCOfConcreteSubClass.class.getName());
+		PersistableMetadata m1= PersistableMetadataManager.getClassBasedMetadata(ConcreteSuperClass.class.getName());
+		PersistableMetadata m2= PersistableMetadataManager.getClassBasedMetadata(CSCOfConcreteSuperClass.class.getName());
+		PersistableMetadata m3= PersistableMetadataManager.getClassBasedMetadata(CSCOfConcreteSubClass.class.getName());
 		
 		assertFalse(m1.getRecordStoreName().equals(m2.getRecordStoreName()));
 		assertFalse(m1.getRecordStoreName().equals(m3.getRecordStoreName()));
