@@ -1,0 +1,12 @@
+<floggy xmlns="http://floggy.sourceforge.net/floggy-persistence-1.4.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://floggy.sourceforge.net/floggy-persistence-1.4.0 http://floggy.sourceforge.net/schema/floggy-persistence-1.4.0.xsd">
+	<persistables>
+		<persistable class-name="net.sourceforge.floggy.persistence.model.Doctor">
+			<record-store-name>Doctor</record-store-name>
+		</persistable>
+		<persistable class-name="net.sourceforge.floggy.persistence.model.Patient">
+			<record-store-name>Patient</record-store-name>
+		</persistable>
+	</persistables>
+</floggy>

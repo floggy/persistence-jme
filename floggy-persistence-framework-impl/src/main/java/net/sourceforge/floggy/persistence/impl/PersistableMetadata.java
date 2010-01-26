@@ -152,7 +152,7 @@ public class PersistableMetadata {
 	private int[] fieldTypes;
 	private Hashtable persistableImplementations;
 	private String recordStoreName;
-	private transient int recordId;
+	private transient int recordId = -1;
 	private int persistableStrategy;
 
     public PersistableMetadata(boolean isAbstract, String className,
@@ -277,9 +277,51 @@ public class PersistableMetadata {
 	public boolean isAbstract() {
 		return isAbstract;
 	}
+	
+	public void setPersistableStrategy(int persistableStrategy) {
+		this.persistableStrategy = persistableStrategy;
+	}
 
 	public void setRecordId(int recordId) {
 		this.recordId = recordId;
+	}
+
+	public void setRecordStoreName(String recordStoreName) {
+		this.recordStoreName = recordStoreName;
+	}
+
+	public String toString() {
+		return "PersistableMetadata [isAbstract="
+				+ isAbstract
+				+ ", className="
+				+ className
+				+ ", superClassName="
+				+ superClassName
+				+ ", fieldNames="
+				+ (fieldNames != null ? arrayToString(fieldNames,
+						fieldNames.length) : null)
+				+ ", fieldTypes="
+				+ (fieldTypes != null ? arrayToString(fieldTypes,
+						fieldTypes.length) : null)
+				+ ", persistableImplementations=" + persistableImplementations
+				+ ", recordStoreName=" + recordStoreName + ", recordId="
+				+ recordId + ", persistableStrategy=" + persistableStrategy
+				+ "]";
+	}
+
+	private String arrayToString(Object array, int len) {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("[");
+		for (int i = 0; i < len; i++) {
+			if (i > 0)
+				buffer.append(", ");
+			if (array instanceof int[])
+				buffer.append(((int[]) array)[i]);
+			if (array instanceof Object[])
+				buffer.append(((Object[]) array)[i]);
+		}
+		buffer.append("]");
+		return buffer.toString();
 	}
 
 }

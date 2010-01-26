@@ -63,7 +63,6 @@ public interface ObjectSet {
      *        <code>null</code>.
      *
      * @throws FloggyException Exception thrown if a persistence error occurs.
-     * @deprecated use {@link ObjectSet.getSharedInstance}
      */
     void get(int index, Persistable object) throws FloggyException;
 

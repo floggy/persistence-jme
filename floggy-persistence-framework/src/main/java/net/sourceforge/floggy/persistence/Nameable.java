@@ -35,7 +35,7 @@ package net.sourceforge.floggy.persistence;
  * </code>
  * <br>
  * @since 1.2.0
- * 
+ * @deprecated use the configuration file to set the RecordStore's name
  */
 public interface Nameable {
     /**
@@ -43,6 +43,7 @@ public interface Nameable {
      * class will be stored.
      *
      * @return the name of the RecordStore.
+     * @deprecated use the configuration file to set the RecordStore's name
      */
     String getRecordStoreName();
 }

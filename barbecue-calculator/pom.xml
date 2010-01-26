@@ -125,6 +125,7 @@
 						<phase>process-classes</phase>
 						<configuration>
 							<generateSource>false</generateSource>
+							<configurationFile>floggy.xml</configurationFile>
 						</configuration>
 					</execution>
 				</executions>

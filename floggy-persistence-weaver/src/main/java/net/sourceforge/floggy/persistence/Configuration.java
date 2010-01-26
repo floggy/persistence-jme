@@ -70,5 +70,34 @@ public class Configuration {
 	public void addPersistableMetadata(PersistableMetadata metadata) {
 		persistables.add(metadata);
 	}
+	
+	public void merge(Configuration configuration) {
+		addDefaultConstructor = configuration.addDefaultConstructor;
+		generateSource = configuration.generateSource;
+		Iterator iterator = configuration.persistables.iterator();
+		while (iterator.hasNext()) {
+			PersistableMetadata tempMetadata = (PersistableMetadata) iterator.next();
+			PersistableMetadata currentMetadata = getPersistableMetadata(tempMetadata.getClassName());
+			
+			if (currentMetadata != null) {
+				String recordStoreName = tempMetadata.getRecordStoreName();
+				if (recordStoreName != null) {
+					currentMetadata.setRecordStoreName(recordStoreName.trim());
+				}
+				
+				int persistableStrategy = tempMetadata.getPersistableStrategy();
+				if (persistableStrategy > 0) {
+					currentMetadata.setPersistableStrategy(persistableStrategy);
+				}
+			}
+			
+		}
+	}
+
+	public String toString() {
+		return "Configuration [addDefaultConstructor=" + addDefaultConstructor
+				+ ", generateSource=" + generateSource + ", persistables="
+				+ persistables + "]";
+	}
 
 }

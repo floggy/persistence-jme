@@ -68,10 +68,18 @@ public class DefaultBuilder extends AbstractBuilder {
 				floggyTemp.create(IResource.DERIVED, true, monitor);
 			}
 
+			IFile configurationFile = project.getFile("floggy.xml");
+
 			weaver.setOutputFile(floggyTemp.getLocation().toFile());
 			weaver.setInputFile(input);
 			weaver.setClasspath((String[]) classpathList.toArray(new String[classpathList.size()]));
-			weaver.setConfiguration(createWeaverConfiguration(project));
+
+			if (!configurationFile.exists()) {
+				weaver.setConfiguration(createWeaverConfiguration(project));
+			} else {
+				weaver.setConfigurationFile(configurationFile.getLocation().toFile());
+			}
+
 			weaver.execute();
 			
 			IPath path= javaProject.getOutputLocation();

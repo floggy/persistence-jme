@@ -66,6 +66,11 @@
 			<classifier>me</classifier>
 			<type>jad</type>
 		</dependency>
+		<dependency>
+			<groupId>net.sourceforge.floggy</groupId>
+			<artifactId>floggy-persistence-weaver</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
@@ -87,6 +92,23 @@
 							<overWriteIfNewer>true</overWriteIfNewer>
 							<excludeTransitive>true</excludeTransitive>
 						</configuration>
+					</execution>
+					<execution>
+						<id>unpack</id>
+						<phase>process-sources</phase>
+						<goals>
+							<goal>unpack</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>net.sourceforge.floggy</groupId>
+									<artifactId>floggy-persistence-weaver</artifactId>
+									<outputDirectory>${basedir}/target/site</outputDirectory>
+									<includes>schema/*</includes>
+								</artifactItem>
+							</artifactItems>
+   						</configuration>
 					</execution>
 				</executions>
 			</plugin>

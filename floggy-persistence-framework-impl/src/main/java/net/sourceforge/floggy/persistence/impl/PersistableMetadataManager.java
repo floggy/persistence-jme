@@ -69,10 +69,6 @@ public class PersistableMetadataManager {
 		return (PersistableMetadata) classBasedMetadatas.get(className);
 	}
 	
-	public static Hashtable test() {
-		return rmsBasedMetadatas;
-	}
-
 	public static Vector getNotMigratedClasses() {
 		return notMigratedClassNames; 
 	}

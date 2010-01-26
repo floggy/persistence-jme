@@ -1,0 +1,10 @@
+<floggy xmlns="http://floggy.sourceforge.net/floggy-persistence-1.4.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://floggy.sourceforge.net/floggy-persistence-1.4.0 http://floggy.sourceforge.net/schema/floggy-persistence-1.4.0.xsd">
+	<persistables>
+		<persistable class-name="net.sourceforge.floggy.barbecuecalculator.persistence.Barbecue">
+			<record-store-name>Barbecue</record-store-name>
+			<persistable-strategy>single</persistable-strategy>
+		</persistable>
+	</persistables>
+</floggy>

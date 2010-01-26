@@ -68,10 +68,10 @@ public class PersistenceMojo extends AbstractMojo {
 
 	/**
 	 * 
-	 * 
+	 * @parameter expression="${configurationFile}"
 	 * @optional
 	 */
-	private File configFile;
+	private File configurationFile;
 
 	/**
 	 * Location of the file.
@@ -98,13 +98,13 @@ public class PersistenceMojo extends AbstractMojo {
 			weaver.setOutputFile(temp);
 			weaver.setInputFile(input);
 			weaver.setClasspath((String[]) list.toArray(new String[list.size()]));
-			if (configFile == null) {
+			if (configurationFile == null) {
 				Configuration configuration= new Configuration();
 				configuration.setAddDefaultConstructor(addDefaultConstructor);
 				configuration.setGenerateSource(generateSource);
 				weaver.setConfiguration(configuration);
 			} else {
-				//TODO
+				weaver.setConfigurationFile(configurationFile);
 			}
 			weaver.execute();
 			FileUtils.copyDirectory(temp, output);

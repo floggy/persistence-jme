@@ -17,6 +17,7 @@ package net.sourceforge.floggy.persistence;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -47,16 +48,20 @@ import net.sourceforge.floggy.persistence.codegen.CodeGenerator;
 import net.sourceforge.floggy.persistence.codegen.strategy.JoinedStrategyCodeGenerator;
 import net.sourceforge.floggy.persistence.codegen.strategy.PerClassStrategyCodeGenerator;
 import net.sourceforge.floggy.persistence.codegen.strategy.SingleStrategyCodeGenerator;
-import net.sourceforge.floggy.persistence.impl.PersistableMetadataManager;
 import net.sourceforge.floggy.persistence.impl.PersistableMetadata;
+import net.sourceforge.floggy.persistence.impl.PersistableMetadataManager;
 import net.sourceforge.floggy.persistence.pool.InputPool;
 import net.sourceforge.floggy.persistence.pool.OutputPool;
 import net.sourceforge.floggy.persistence.pool.PoolFactory;
 import net.sourceforge.floggy.persistence.strategy.PerClassStrategy;
 import net.sourceforge.floggy.persistence.strategy.SingleStrategy;
+import net.sourceforge.floggy.persistence.xstream.PersistableStrategyConverter;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
 
 public class Weaver {
 
@@ -69,6 +74,8 @@ public class Weaver {
 	protected ClassPool classpathPool;
 	
 	protected Configuration configuration = new Configuration();
+	
+	protected File configurationFile;
 	
 	protected Set alreadyProcessedMetadatas = new HashSet();
 
@@ -403,7 +410,6 @@ public class Weaver {
 		LOG.info("Floggy Persistence Weaver - " + PersistableMetadataManager.getBytecodeVersion());
 		LOG.info("CLDC version: " + ((isCLDC10()) ? "1.0" : "1.1"));
 		try {
-//			readConfiguration();
 			URL fileURL = getClass().getResource("/net/sourceforge/floggy/persistence/impl/PersistableMetadataManager.class");
 			classpathPool.makeClass(fileURL.openStream());
 
@@ -411,6 +417,8 @@ public class Weaver {
 			adaptFrameworkToTargetCLDC();
 			
 			List list = getClassThatImplementsPersistable();
+
+			readConfiguration();
 			int classCount = list.size();
 			LOG.info("Processing " + classCount + " bytecodes!");
 			for (int i = 0; i < classCount; i++) {
@@ -465,8 +473,6 @@ public class Weaver {
 				LOG.warn("The PersistableManager.shutdown() method is not being called. Please call it from MIDlet.destroyApp(boolean) method"); 
 				LOG.warn("-------------------------------------------------------------------------------------------------------------------");
 			}
- 
-//			writeConfiguration();
 		} catch (Exception e) {
 			LOG.error(e.getMessage(), e);
 			throw new WeaverException(e.getMessage(), e);
@@ -686,18 +692,32 @@ public class Weaver {
 		}
 	}
 
-//	protected XStream getXStream() {
-//		XStream stream = new XStream();
-//		stream.alias("floggy", Configuration.class);
-//		stream.useAttributeFor(Configuration.class, "generateSource");
-//		stream.useAttributeFor(Configuration.class, "addDefaultConstructor");
-//
-//		stream.aliasType("persistables", ArrayList.class);
-//
-//		stream.alias("persistable", PersistableConfiguration.class);
-//		stream.useAttributeFor(PersistableConfiguration.class, "className");
-//		return stream;
-//	}
+	public XStream getXStream() {
+		XStream stream = new XStream(new DomDriver());
+		stream.alias("floggy", Configuration.class);
+		stream.useAttributeFor(Configuration.class, "generateSource");
+		stream.aliasAttribute("generate-source", "generateSource");
+		stream.useAttributeFor(Configuration.class, "addDefaultConstructor");
+		stream.aliasAttribute("add-default-constructor", "addDefaultConstructor");
+
+		stream.aliasType("persistables", ArrayList.class);
+
+		stream.alias("persistable", PersistableMetadata.class);
+		stream.omitField(PersistableMetadata.class, "isAbstract");
+		stream.omitField(PersistableMetadata.class, "fieldTypes");
+		stream.omitField(PersistableMetadata.class, "fieldNames");
+		stream.omitField(PersistableMetadata.class, "persistableImplementations");
+		stream.omitField(PersistableMetadata.class, "persistableStrategy");
+		stream.omitField(PersistableMetadata.class, "superClassName");
+		stream.omitField(PersistableMetadata.class, "recordId");
+		stream.aliasField("record-store-name", PersistableMetadata.class, "recordStoreName");
+		stream.aliasField("persistable-strategy", PersistableMetadata.class, "persistableStrategy");
+		stream.registerLocalConverter(PersistableMetadata.class, "persistableStrategy", new PersistableStrategyConverter());
+		stream.useAttributeFor(PersistableMetadata.class, "className");
+		stream.aliasAttribute("class-name", "className");
+
+		return stream;
+	}
 
 	protected boolean isCLDC10() {
 		try {
@@ -709,13 +729,14 @@ public class Weaver {
 		return false;
 	}
 
-//	protected void readConfiguration() throws IOException {
-//		if (configFile != null && configFile.exists()) {
-//			XStream stream = getXStream();
-//			configuration = (Configuration) stream
-//					.fromXML(new FileReader(configFile));
-//		}
-//	}
+	protected void readConfiguration() throws IOException {
+		if (configurationFile != null && configurationFile.exists()) {
+			XStream stream = getXStream();
+			Configuration temp = (Configuration) stream
+					.fromXML(new FileReader(configurationFile));
+			configuration.merge(temp);
+		}
+	}
 
 	/**
 	 * Sets the classpath.
@@ -769,12 +790,8 @@ public class Weaver {
 		embeddedClassesOutputPool = PoolFactory.createOutputPool(embeddedClassesOutputFile);
 	}
 
-//	protected void writeConfiguration() throws IOException {
-//		if (configFile == null) {
-//			configFile= new File("floggy.xml");
-//		}
-//		XStream stream = getXStream();
-//		stream.toXML(configuration, new FileWriter(configFile));
-//	}
+	public void setConfigurationFile(File configurationFile) {
+		this.configurationFile = configurationFile;
+	}
 
 }

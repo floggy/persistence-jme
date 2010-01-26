@@ -23,6 +23,29 @@ import java.util.List;
 public class Main {
 
 	/**
+	 * Get the configuration file.
+	 * 
+	 * @param args
+	 * @return
+	 */
+	private static File initConfigurationFile(List params) {
+		File outputFile = null;
+
+		int index = params.indexOf("-c");
+		if (index != -1) {
+			String value = params.get(index + 1).toString();
+
+			outputFile = new File(value.trim());
+
+			params.remove(index);
+			params.remove(value);
+
+		}
+
+		return outputFile;
+	}
+
+	/**
 	 * Get the classpath option.
 	 * 
 	 */
@@ -104,6 +127,7 @@ public class Main {
 		String[] classpath = initClasspath(params);
 		File outputFile = initOutputFile(params);
 		File inputFile = initInputFile(params);
+		File configurationFile = initConfigurationFile(params);
 		boolean generateSource = params.indexOf("-s") != -1;
 
 		// If no output file is defined, sets the output file the same as the
@@ -112,14 +136,18 @@ public class Main {
 			outputFile = inputFile;
 		}
 
-		Configuration configuration = new Configuration();
-		configuration.setGenerateSource(generateSource);
-		configuration.setAddDefaultConstructor(true);
-		
 		Weaver weaver = new Weaver();
 
 		try {
-			weaver.setConfiguration(configuration);
+			if (configurationFile == null) {
+				Configuration configuration = new Configuration();
+				configuration.setGenerateSource(generateSource);
+				configuration.setAddDefaultConstructor(true);
+				weaver.setConfiguration(configuration);
+			} else {
+				weaver.setConfigurationFile(configurationFile);
+			}
+
 			weaver.setClasspath(classpath);
 			weaver.setOutputFile(outputFile);
 			weaver.setInputFile(inputFile);
@@ -148,6 +176,9 @@ public class Main {
 
 		System.out
 				.println("-s\t if provided the code generated will be saved in a file");
+
+		System.out
+				.println("-c\t the configuration file");
 
 		System.exit(1);
 	}
