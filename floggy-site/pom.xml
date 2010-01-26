@@ -86,6 +86,7 @@
 							<goal>copy-dependencies</goal>
 						</goals>
 						<configuration>
+							<excludeArtifactIds>floggy-persistence-weaver</excludeArtifactIds>
 							<outputDirectory>${basedir}/target/site/demo</outputDirectory>
 							<overWriteReleases>false</overWriteReleases>
 							<overWriteSnapshots>true</overWriteSnapshots>
@@ -97,17 +98,12 @@
 						<id>unpack</id>
 						<phase>process-sources</phase>
 						<goals>
-							<goal>unpack</goal>
+							<goal>unpack-dependencies</goal>
 						</goals>
 						<configuration>
-							<artifactItems>
-								<artifactItem>
-									<groupId>net.sourceforge.floggy</groupId>
-									<artifactId>floggy-persistence-weaver</artifactId>
-									<outputDirectory>${basedir}/target/site</outputDirectory>
-									<includes>schema/*</includes>
-								</artifactItem>
-							</artifactItems>
+							<includeArtifactIds>floggy-persistence-weaver</includeArtifactIds>
+							<outputDirectory>${basedir}/target/site</outputDirectory>
+							<includes>schema/*</includes>
    						</configuration>
 					</execution>
 				</executions>
