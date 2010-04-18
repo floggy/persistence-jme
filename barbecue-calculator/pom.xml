@@ -42,7 +42,7 @@
 		<dependency>
 			<groupId>org.microemu</groupId>
 			<artifactId>midpapi20</artifactId>
-			<version>${me2Version}</version>
+			<version>${microemu.version}</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
@@ -59,7 +59,7 @@
 			<plugin>
 				<groupId>com.pyx4me</groupId>
 				<artifactId>j2me-maven-plugin</artifactId>
-				<version>2.0.3</version>
+				<version>2.0.4</version>
 				<dependencies>
 					<dependency>
 						<groupId>net.sf.proguard</groupId>
@@ -107,7 +107,7 @@
 			<plugin>
 				<groupId>com.pyx4me</groupId>
 				<artifactId>obex-maven-plugin</artifactId>
-				<version>2.0.3</version>
+				<version>2.0.4</version>
 				<configuration>
 					<jarfile>${project.artifactId}-${project.version}-me.jar</jarfile>
 				</configuration>
@@ -166,7 +166,4 @@
 			</plugin>
 		</plugins>
 	</build>
-	<properties>
-		<me2Version>2.0.3</me2Version>
-	</properties>
 </project>

@@ -57,8 +57,8 @@ public class RMSMemoryMicroEmulator implements MicroEmulator {
 		return null;
 	}
 
-	public InputStream getResourceAsStream(String name) {
+	public InputStream getResourceAsStream(Class clazz, String name) {
 		return null;
 	}
-
+	
 }

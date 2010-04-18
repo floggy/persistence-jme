@@ -338,5 +338,6 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<floggy.storepass>f10ggy</floggy.storepass>
+		<microemu.version>3.0.0-SNAPSHOT</microemu.version>
 	</properties>
 </project>
