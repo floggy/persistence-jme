@@ -112,6 +112,7 @@
 							<input>${project.build.outputDirectory}</input>
 							<output>${project.build.outputDirectory}</output>
 							<generateSource>true</generateSource>
+							<configurationFile>floggy.xml</configurationFile>
 						</configuration>
 					</execution>
 				</executions>

@@ -19,11 +19,15 @@ package net.sourceforge.floggy.persistence.fr2937635;
 import java.io.File;
 import java.io.FileInputStream;
 
+import javassist.ClassPool;
+
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.converters.reflection.AbstractReflectionConverter;
 
 import net.sourceforge.floggy.persistence.Configuration;
+import net.sourceforge.floggy.persistence.FloggyException;
 import net.sourceforge.floggy.persistence.Weaver;
+import net.sourceforge.floggy.persistence.impl.PersistableMetadata;
 
 import junit.framework.TestCase;
 
@@ -42,6 +46,120 @@ public class FR2937635Test extends TestCase {
 			fail("It should throw a exception");
 		} catch (Exception e) {
 			assertEquals(AbstractReflectionConverter.DuplicateFieldException.class, e.getClass());
+		}
+	}
+
+	public void testDoesNotExistField() {
+		File file = new File("target/test-classes/fr2937635/floggy-does-not-exist-field.xml");
+		assertTrue(file.exists());
+		
+		Weaver weaver = new Weaver();
+		
+		String className = FR2937635.class.getName();
+		String[] fieldNames = new String[]{"name"};
+		Configuration c1 = new Configuration();
+		PersistableMetadata metadata = new PersistableMetadata(false, className, null, fieldNames, null, null, null, null, 0);
+		
+		c1.addPersistableMetadata(metadata);
+		
+		XStream stream = weaver.getXStream();
+
+		try {
+			Configuration c2 = (Configuration) stream.fromXML(new FileInputStream(file));
+			weaver.mergeConfigurations(c1, c2);
+			fail("It should throw a exception");
+		} catch (Exception e) {
+			assertEquals(FloggyException.class, e.getClass());
+		}
+	}
+
+	public void testValidIndexFieldTypeByte() {
+		validateIndexFieldType("byte");
+	}
+
+	public void testValidIndexFieldTypeChar() {
+		validateIndexFieldType("char");
+	}
+
+	public void testValidIndexFieldTypeDouble() {
+		validateIndexFieldType("double");
+	}
+
+	public void testValidIndexFieldTypeInt() {
+		validateIndexFieldType("int");
+	}
+
+	public void testValidIndexFieldTypeLong() {
+		validateIndexFieldType("long");
+	}
+
+	public void testValidIndexFieldTypeShort() {
+		validateIndexFieldType("short");
+	}
+
+	public void testValidIndexFieldTypeJavaLangByte() {
+		validateIndexFieldType("java.lang.Byte");
+	}
+
+	public void testValidIndexFieldTypeJavaLangChar() {
+		validateIndexFieldType("java.lang.Character");
+	}
+
+	public void testValidIndexFieldTypeJavaLangDouble() {
+		validateIndexFieldType("java.lang.Double");
+	}
+
+	public void testValidIndexFieldTypeJavaLangInteger() {
+		validateIndexFieldType("java.lang.Integer");
+	}
+
+	public void testValidIndexFieldTypeJavaLangLong() {
+		validateIndexFieldType("java.lang.Long");
+	}
+
+	public void testValidIndexFieldTypeJavaLangShort() {
+		validateIndexFieldType("java.lang.Short");
+	}
+
+	public void testValidIndexFieldTypeJavaLangString() {
+		validateIndexFieldType("java.lang.String");
+	}
+
+	public void testValidIndexFieldTypeJavaLangStringBuffer() {
+		validateIndexFieldType("java.lang.StringBuffer");
+	}
+
+	public void testValidIndexFieldTypeJavaUtilDate() {
+		validateIndexFieldType("java.util.Date");
+	}
+
+	public void testValidIndexFieldTypeJavaUtilTimezone() {
+		validateIndexFieldType("java.util.TimeZone");
+	}
+
+	protected void validateIndexFieldType(String type) {
+		File file = new File("target/test-classes/fr2937635/floggy-valid-field-type-" + type + ".xml");
+		assertTrue(file.exists());
+		
+		
+		try {
+			ClassPool classPool = new ClassPool(true);
+			classPool.appendClassPath("target/test-classes");
+			classPool.appendClassPath("../floggy-persistence-framework/target/classes");
+			
+			Weaver weaver = new Weaver(classPool);
+
+
+			PersistableMetadata metadata = weaver.createPersistableMetadata(classPool.get(FR2937635.class.getName()));
+			Configuration c1 = new Configuration();
+			c1.addPersistableMetadata(metadata);
+			
+			XStream stream = weaver.getXStream();
+
+			Configuration c2 = (Configuration) stream.fromXML(new FileInputStream(file));
+			weaver.mergeConfigurations(c1, c2);
+		} catch (Exception e) {
+			fail(e.getMessage());
 		}
 	}
 

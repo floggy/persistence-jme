@@ -26,6 +26,8 @@ Road map
 
 * Next release
 
+	* {{{http://sourceforge.net/tracker/?func=detail&aid=2935390&group_id=139426&atid=743544}Add support to index fields, speeding up find operations.}}
+	
 	* {{{http://sourceforge.net/tracker2/?func=detail&aid=2243110&group_id=139426&atid=743544}Add support for a polymorphic find.}}
 	
 	* {{{http://sourceforge.net/tracker2/?func=detail&aid=2243110&group_id=139426&atid=2880506}Enable the PersistableManager open RecordStore from a specific vendor and suite (RecordStore sharing).}}

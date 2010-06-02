@@ -115,6 +115,23 @@ public class SerializationManager {
 		return h;
 	}
 
+	public final static Vector readIndexMetadata(DataInput in) throws Exception {
+		Vector v = null;
+		if (in.readByte() == NOT_NULL) {
+			int size = in.readInt();
+			v = new Vector(size);
+			for (int i = 0; i < size; i++) {
+				String recordStoreName = in.readUTF();
+				String name = in.readUTF();
+				Vector fields = SerializationManager.readStringVector(in);
+
+				IndexMetadata indexMetadata = new IndexMetadata(recordStoreName, name, fields);
+				v.addElement(indexMetadata);
+			}
+		}
+		return v;
+	}
+
 	public final static Integer readInt(DataInput in) throws IOException {
 		Integer i = null;
 		if (in.readByte() == NOT_NULL) {
@@ -293,6 +310,30 @@ public class SerializationManager {
 		return t;
 	}
 
+	public final static Vector readIntVector(DataInput in) throws Exception {
+		Vector v = null;
+		if (in.readByte() == NOT_NULL) {
+			int size = in.readInt();
+			v = new Vector(size);
+			for (int i = 0; i < size; i++) {
+				v.addElement(new Integer(in.readInt()));
+			}
+		}
+		return v;
+	}
+
+	public final static Vector readStringVector(DataInput in) throws Exception {
+		Vector v = null;
+		if (in.readByte() == NOT_NULL) {
+			int size = in.readInt();
+			v = new Vector(size);
+			for (int i = 0; i < size; i++) {
+				v.addElement(in.readUTF());
+			}
+		}
+		return v;
+	}
+
 	public final static Vector readVector(DataInput in, boolean lazy) throws Exception {
 		Vector v = null;
 		if (in.readByte() == NOT_NULL) {
@@ -405,6 +446,25 @@ public class SerializationManager {
 			out.writeInt(i.intValue());
 		}
 	}
+
+	public final static void writeIndexMetadata(DataOutput out, Vector v)
+			throws Exception {
+
+		if (v == null) {
+			out.writeByte(NULL);
+		} else {
+			out.writeByte(NOT_NULL);
+			int size = v.size();
+			out.writeInt(size);
+			for (int i = 0; i < size; i++) {
+				IndexMetadata indexMetadata = (IndexMetadata) v.elementAt(i);
+				out.writeUTF(indexMetadata.getRecordStoreName());
+				out.writeUTF(indexMetadata.getName());
+				SerializationManager.writeStringVector(out, indexMetadata.getFields());
+			}
+		}
+	}
+
 
 	public final static void writeLong(DataOutput out, Long l)
 			throws IOException {
@@ -581,8 +641,36 @@ public class SerializationManager {
 		}
 	}
 
-	public final static void writeVector(DataOutput out, Vector v)
+	public final static void writeIntVector(DataOutput out, Vector v)
 			throws Exception {
+		if (v == null) {
+			out.writeByte(NULL);
+		} else {
+			out.writeByte(NOT_NULL);
+			int size = v.size();
+			out.writeInt(size);
+			for (int i = 0; i < size; i++) {
+				out.writeInt(((Integer)v.elementAt(i)).intValue());
+			}
+		}
+	}
+
+	public final static void writeStringVector(DataOutput out, Vector v)
+			throws Exception {
+		if (v == null) {
+			out.writeByte(NULL);
+		} else {
+			out.writeByte(NOT_NULL);
+			int size = v.size();
+			out.writeInt(size);
+			for (int i = 0; i < size; i++) {
+				out.writeUTF((String)v.elementAt(i));
+			}
+		}
+	}
+
+	public final static void writeVector(DataOutput out, Vector v)
+		throws Exception {
 		if (v == null) {
 			out.writeByte(NULL);
 		} else {

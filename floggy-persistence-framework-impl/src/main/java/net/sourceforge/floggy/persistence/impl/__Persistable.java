@@ -33,7 +33,9 @@ public interface __Persistable extends Persistable, Nameable {
 	public int __getId();
 
 	public void __setId(int id);
-	
+
+	public Object __getIndexValue(String indexName);
+
 	public void __delete() throws FloggyException;
 
 	public void __deserialize(byte[] buffer, boolean lazy) throws Exception;

@@ -7,6 +7,11 @@
 		</persistable>
 		<persistable class-name="net.sourceforge.floggy.persistence.model.Patient">
 			<record-store-name>Patient</record-store-name>
+			<indexes>
+				<index name="byName">
+					<field>name</field>
+				</index>
+			</indexes>
 		</persistable>
 	</persistables>
 </floggy>

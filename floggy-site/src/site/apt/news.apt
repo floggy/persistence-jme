@@ -16,7 +16,9 @@
  
 News
 
-	<<16-Jan-10:>> The 1.3.1 maintenance release was made available, its target is fix an issue on Windows platform. Be aware of the {{{./changes-report.html#a1.3.1}change }}. 
+	<<25-Apr-10:>> Call for testers: we just built an alpha package for the new Index feature, we need testers! Be one! Check it out how {{{./core-package.html#Using_the_index_feature_only_available_on_package_1.4.0-alpha}here}}.
+	
+	<<16-Jan-10:>> The 1.3.1 maintenance release was made available, its target is fix an issue on Windows platform. Be aware of the {{{./changes-report.html#a1.3.1}change}}. 
 
 	<<20-Dec-09:>> The 1.3.0 final release was made available, check the list of {{{./changes-report.html#a1.3.0}changes}}. Enjoy!
 	

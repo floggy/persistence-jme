@@ -28,4 +28,8 @@ public class FloggyOutputStream extends DataOutputStream {
 		return ((ByteArrayOutputStream)out).toByteArray();
 	}
 
+	public void reset() {
+		((ByteArrayOutputStream)out).reset();
+	}
+
 }

@@ -29,6 +29,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.Vector;
 
 import javassist.CannotCompileException;
 import javassist.ClassPool;
@@ -48,8 +49,10 @@ import net.sourceforge.floggy.persistence.codegen.CodeGenerator;
 import net.sourceforge.floggy.persistence.codegen.strategy.JoinedStrategyCodeGenerator;
 import net.sourceforge.floggy.persistence.codegen.strategy.PerClassStrategyCodeGenerator;
 import net.sourceforge.floggy.persistence.codegen.strategy.SingleStrategyCodeGenerator;
+import net.sourceforge.floggy.persistence.impl.IndexMetadata;
 import net.sourceforge.floggy.persistence.impl.PersistableMetadata;
 import net.sourceforge.floggy.persistence.impl.PersistableMetadataManager;
+import net.sourceforge.floggy.persistence.impl.Utils;
 import net.sourceforge.floggy.persistence.pool.InputPool;
 import net.sourceforge.floggy.persistence.pool.OutputPool;
 import net.sourceforge.floggy.persistence.pool.PoolFactory;
@@ -103,6 +106,160 @@ public class Weaver {
 	 */
 	public Weaver(ClassPool classPool) {
 		this.classpathPool = classPool;
+	}
+
+	protected void adaptFrameworkToTargetCLDC() throws IOException, CannotCompileException, NotFoundException {
+		URL fileURL = getClass().getResource("/net/sourceforge/floggy/persistence/impl/SerializationManager.class");
+		classpathPool.makeClass(fileURL.openStream());
+
+		CtClass ctClass= this.classpathPool.get("net.sourceforge.floggy.persistence.impl.SerializationManager");
+		if (isCLDC10()) {
+			CtMethod[] methods= ctClass.getMethods();
+			for (int i = 0; i < methods.length; i++) {
+				String methodName= methods[i].getName(); 
+				if (methodName.indexOf("Float") != -1 || methodName.indexOf("Double") != -1 || "readObject".equals(methodName) || "writeObject".equals(methodName)) {
+					ctClass.removeMethod(methods[i]);
+				}
+			}
+			//this is done in two steps because we can't guarantee that the read/writeVector methods will be removed before the rename step.   
+			for (int i = 0; i < methods.length; i++) {
+				String methodName= methods[i].getName(); 
+				if ("readObjectCLDC10".equals(methodName)) {
+					methods[i].setName("readObject");
+				}
+				if ("writeObjectCLDC10".equals(methodName)) {
+					methods[i].setName("writeObject");
+				}
+			}
+		} else {
+			CtMethod[] methods= ctClass.getMethods();
+			for (int i = 0; i < methods.length; i++) {
+				String methodName= methods[i].getName(); 
+				if (methodName.indexOf("CLDC10") != -1) {
+					ctClass.removeMethod(methods[i]);
+				}
+			}
+		}
+		embeddedClassesOutputPool.addClass(ctClass);
+	}
+
+	protected void addPersistableMetadataManagerClass() throws  CannotCompileException, IOException, NotFoundException {
+
+		alreadyProcessedMetadatas.addAll(configuration.getPersistableMetadatas());
+		Set metadatas = alreadyProcessedMetadatas;
+		StringBuffer buffer = new StringBuffer();
+		
+		buffer.append("public static void init() throws Exception {\n");
+		buffer.append("rmsBasedMetadatas = new java.util.Hashtable();\n");
+		buffer.append("classBasedMetadatas = new java.util.Hashtable();\n");
+		buffer.append("java.util.Hashtable persistableImplementations = null;\n");
+		buffer.append("java.util.Vector indexMetadatas = null;\n");
+		buffer.append("java.util.Vector fields = null;\n");
+
+		for (Iterator iterator = metadatas.iterator(); iterator.hasNext();) {
+			PersistableMetadata metadata = (PersistableMetadata) iterator.next();
+			boolean isAbstract = metadata.isAbstract();
+			String className = metadata.getClassName();
+			String superClassName = metadata.getSuperClassName();
+			String[] fieldNames = metadata.getFieldNames();
+			int[] fieldTypes = metadata.getFieldTypes();
+			Hashtable persistableImplementations = metadata.getPersistableImplementations();
+			String recordStoreName = metadata.getRecordStoreName();
+			int persistableStrategy = metadata.getPersistableStrategy();
+			Vector indexMetadatas = metadata.getIndexMetadatas();
+
+			StringBuffer fieldNamesBuffer = new StringBuffer("new String[");
+			StringBuffer fieldTypesBuffer = new StringBuffer("new int[");
+			boolean addHeader = true;
+			for (int i = 0; i < fieldNames.length; i++) {
+				if (addHeader) {
+					fieldNamesBuffer.append("]{");
+					fieldTypesBuffer.append("]{");
+					addHeader = false;
+				}
+				fieldNamesBuffer.append("\"");
+				fieldNamesBuffer.append(fieldNames[i]);
+				fieldNamesBuffer.append("\",");
+
+				fieldTypesBuffer.append(fieldTypes[i]);
+				fieldTypesBuffer.append(",");
+			}
+			if (addHeader) {
+				fieldNamesBuffer.append("0]");
+				fieldTypesBuffer.append("0]");
+			} else {
+				fieldNamesBuffer.deleteCharAt(fieldNamesBuffer.length() - 1);
+				fieldNamesBuffer.append("}");
+				fieldTypesBuffer.deleteCharAt(fieldTypesBuffer.length() - 1);
+				fieldTypesBuffer.append("}");
+			}
+			
+			if (persistableImplementations != null && !persistableImplementations.isEmpty()) {
+
+				buffer.append("persistableImplementations = new java.util.Hashtable();\n");
+				Enumeration enumeration = persistableImplementations.keys();
+				while (enumeration.hasMoreElements()) {
+					String fieldName = (String) enumeration.nextElement();
+					String classNameOfField = (String) persistableImplementations.get(fieldName);
+					buffer.append("persistableImplementations.put(\"");
+					buffer.append(fieldName);
+					buffer.append("\", \"");
+					buffer.append(classNameOfField);
+					buffer.append("\");\n");
+				}
+			} else {
+				buffer.append("persistableImplementations = null;\n");
+			}
+
+			if (indexMetadatas != null && !indexMetadatas.isEmpty()) {
+
+				buffer.append("indexMetadatas = new java.util.Vector();\n");
+				Enumeration enumeration = indexMetadatas.elements();
+				while (enumeration.hasMoreElements()) {
+					IndexMetadata indexMetadata = (IndexMetadata) enumeration.nextElement();
+
+					buffer.append("fields = new java.util.Vector();\n");
+					Vector fields = indexMetadata.getFields();
+					for (int j = 0; j < fields.size(); j++) {
+						buffer.append("fields.addElement(\"");
+						buffer.append(fields.elementAt(j));
+						buffer.append("\");\n");
+					}
+
+					buffer.append("indexMetadatas.addElement(new net.sourceforge.floggy.persistence.impl.IndexMetadata(\"");
+					buffer.append(indexMetadata.getRecordStoreName());
+					buffer.append("\", \"");
+					buffer.append(indexMetadata.getName());
+					buffer.append("\", fields));\n");
+				}
+			} else {
+				buffer.append("indexMetadatas = null;\n");
+			}
+
+			buffer.append("classBasedMetadatas.put(\"" + className 
+				+ "\", new net.sourceforge.floggy.persistence.impl.PersistableMetadata(" + isAbstract + ", \"" 
+				+ className + "\", " 
+				+ ((superClassName != null) ? ("\"" + superClassName + "\", ") : ("null, "))
+				+ fieldNamesBuffer.toString() + ", " 
+				+ fieldTypesBuffer.toString() + ", persistableImplementations, indexMetadatas, "
+				+ "\"" + recordStoreName + "\", "
+				+ persistableStrategy + "));\n");
+
+		}
+
+		buffer.append("load();\n");
+		buffer.append("}\n");
+		
+		CtClass ctClass= this.classpathPool.get("net.sourceforge.floggy.persistence.impl.PersistableMetadataManager");
+		CtMethod[] methods= ctClass.getMethods();
+		for (int i = 0; i < methods.length; i++) {
+			if (methods[i].getName().equals("init")) {
+				ctClass.removeMethod(methods[i]);
+			}
+		}
+
+		ctClass.addMethod(CtNewMethod.make(buffer.toString(), ctClass));
+		embeddedClassesOutputPool.addClass(ctClass);
 	}
 
 	protected List buildClassTree(CtClass ctClass) throws NotFoundException {
@@ -247,16 +404,18 @@ public class Weaver {
 		return floggyFieldType;
 	}
 
-	protected boolean ignoreField(CtField field) {
-		int modifier = field.getModifiers();
-
-		return field.getName().equals("__id")
-				|| field.getName().equals("__persistableMetadata")
-				|| Modifier.isTransient(modifier)
-				|| Modifier.isStatic(modifier);
+	protected boolean containsField(String className, String fieldName) {
+		try {
+			CtClass ctClass = classpathPool.get(className);
+			ctClass.getField(fieldName);
+			return true;
+		} catch (NotFoundException e) {
+			return false;
+		}
+		
 	}
 
-	protected PersistableMetadata createPersistableMetadata(CtClass ctClass) throws NotFoundException {
+	public PersistableMetadata createPersistableMetadata(CtClass ctClass) throws NotFoundException {
 
 		CtClass singleRecordStoreStrategy = classpathPool.get(SingleStrategy.class.getName());
 		CtClass recordStorePerClassStrategy = classpathPool.get(PerClassStrategy.class.getName());
@@ -285,6 +444,8 @@ public class Weaver {
 		List fieldNames = new ArrayList(fields.length);
 		List fieldTypes = new ArrayList(fields.length);
 		Hashtable persistableImplementations = null;
+		Vector indexMetadatas = null;
+
 		for (int i = 0; i < fields.length; i++) {
 			CtField field = (CtField) fields[i];
 			if (ignoreField(field)) {
@@ -335,10 +496,10 @@ public class Weaver {
 		}
 		
 		PersistableMetadata metadata = new PersistableMetadata(Modifier.isAbstract(ctClass.getModifiers()), className, superClassName, 
-			(String[])fieldNames.toArray(new String[fieldNames.size()]), temp, persistableImplementations, recordStoreName, persistableStrategy);
+			(String[])fieldNames.toArray(new String[fieldNames.size()]), temp, persistableImplementations, indexMetadatas, recordStoreName, persistableStrategy);
 		return metadata;
 	}
-
+	
 	protected void embeddedClass(String fileName) throws IOException {
 		URL fileURL = getClass().getResource(fileName);
 		if (fileURL != null) {
@@ -351,6 +512,10 @@ public class Weaver {
 	protected void embeddedUnderlineCoreClasses() throws IOException {
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/FloggyOutputStream.class");
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/FloggyProperties$1.class");
+		embeddedClass("/net/sourceforge/floggy/persistence/impl/IndexMetadata.class");
+		embeddedClass("/net/sourceforge/floggy/persistence/impl/IndexManager.class");
+		embeddedClass("/net/sourceforge/floggy/persistence/impl/Index.class");
+		embeddedClass("/net/sourceforge/floggy/persistence/impl/IndexEntry.class");
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/ObjectComparator.class");
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/ObjectFilter.class");
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/ObjectSetImpl.class");
@@ -368,41 +533,6 @@ public class Weaver {
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/migration/PerClassStrategyEnumerationImpl.class");
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/migration/JoinedStrategyEnumerationImpl.class");
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/migration/HashtableValueNullable.class");
-	}
-	
-	protected void adaptFrameworkToTargetCLDC() throws IOException, CannotCompileException, NotFoundException {
-		URL fileURL = getClass().getResource("/net/sourceforge/floggy/persistence/impl/SerializationManager.class");
-		classpathPool.makeClass(fileURL.openStream());
-
-		CtClass ctClass= this.classpathPool.get("net.sourceforge.floggy.persistence.impl.SerializationManager");
-		if (isCLDC10()) {
-			CtMethod[] methods= ctClass.getMethods();
-			for (int i = 0; i < methods.length; i++) {
-				String methodName= methods[i].getName(); 
-				if (methodName.indexOf("Float") != -1 || methodName.indexOf("Double") != -1 || "readObject".equals(methodName) || "writeObject".equals(methodName)) {
-					ctClass.removeMethod(methods[i]);
-				}
-			}
-			//this is done in two steps because we can't guarantee that the read/writeVector methods will be removed before the rename step.   
-			for (int i = 0; i < methods.length; i++) {
-				String methodName= methods[i].getName(); 
-				if ("readObjectCLDC10".equals(methodName)) {
-					methods[i].setName("readObject");
-				}
-				if ("writeObjectCLDC10".equals(methodName)) {
-					methods[i].setName("writeObject");
-				}
-			}
-		} else {
-			CtMethod[] methods= ctClass.getMethods();
-			for (int i = 0; i < methods.length; i++) {
-				String methodName= methods[i].getName(); 
-				if (methodName.indexOf("CLDC10") != -1) {
-					ctClass.removeMethod(methods[i]);
-				}
-			}
-		}
-		embeddedClassesOutputPool.addClass(ctClass);
 	}
 
 	public void execute() throws WeaverException {
@@ -482,103 +612,47 @@ public class Weaver {
 		LOG.info("Time elapsed: " + time + "ms");
 	}
 
-	protected void addPersistableMetadataManagerClass() throws  CannotCompileException, IOException, NotFoundException {
+	protected void findInvocationOfShutdownMethod(CtClass ctClass) {
 
-		alreadyProcessedMetadatas.addAll(configuration.getPersistableMetadatas());
-		Set metadatas = alreadyProcessedMetadatas;
-		StringBuffer buffer = new StringBuffer();
-		
-		buffer.append("public static void init() throws Exception {\n");
-		buffer.append("rmsBasedMetadatas = new java.util.Hashtable();\n");
-		buffer.append("classBasedMetadatas = new java.util.Hashtable();\n");
-		buffer.append("java.util.Hashtable temp = null;\n");
-		
-		for (Iterator iterator = metadatas.iterator(); iterator.hasNext();) {
-			PersistableMetadata metadata = (PersistableMetadata) iterator.next();
-			boolean isAbstract = metadata.isAbstract();
-			String className = metadata.getClassName();
-			String superClassName = metadata.getSuperClassName();
-			String[] fieldNames = metadata.getFieldNames();
-			int[] fieldTypes = metadata.getFieldTypes();
-			Hashtable persistableImplementations = metadata.getPersistableImplementations();
-			String recordStoreName = metadata.getRecordStoreName();
-			int persistableStrategy = metadata.getPersistableStrategy();
+		if (!ctClass.isInterface()) {
+			try {
+				ClassFile classFile = ctClass.getClassFile2();
+				ConstPool constantPool = classFile.getConstPool();
+				List methods = classFile.getMethods();
+				for (Iterator iterator = methods.iterator(); iterator.hasNext();) {
 
-			StringBuffer fieldNamesBuffer = new StringBuffer("new String[");
-			StringBuffer fieldTypesBuffer = new StringBuffer("new int[");
-			boolean addHeader = true;
-			for (int i = 0; i < fieldNames.length; i++) {
-				if (addHeader) {
-					fieldNamesBuffer.append("]{");
-					fieldTypesBuffer.append("]{");
-					addHeader = false;
+					MethodInfo method = (MethodInfo) iterator.next();
+					if ((method.getAccessFlags() & AccessFlag.ABSTRACT) != AccessFlag.ABSTRACT) {
+
+						CodeAttribute codeAttribute = method.getCodeAttribute();
+
+						if (codeAttribute != null) {
+							byte[] code = codeAttribute.getCode();
+							CodeIterator codeIterator = codeAttribute.iterator();
+							while (codeIterator.hasNext()) {
+		
+								int index = codeIterator.next();
+								int opcode = codeIterator.byteAt(index);
+								if (opcode == CodeAttribute.INVOKEVIRTUAL) {
+									int temp = (code[index+1] << 8) | code[index+2];
+									String className = constantPool.getMethodrefClassName(temp); 
+									String methodName = constantPool.getMethodrefName(temp);
+	
+									if (PersistableManager.class.getName().equals(className) && 
+										"shutdown".equals(methodName)) {
+										
+										invocationOfShutdownMethodFound = true;
+									}
+								}
+							}
+						}
+					}
+
 				}
-				fieldNamesBuffer.append("\"");
-				fieldNamesBuffer.append(fieldNames[i]);
-				fieldNamesBuffer.append("\",");
-
-				fieldTypesBuffer.append(fieldTypes[i]);
-				fieldTypesBuffer.append(",");
-			}
-			if (addHeader) {
-				fieldNamesBuffer.append("0]");
-				fieldTypesBuffer.append("0]");
-			} else {
-				fieldNamesBuffer.deleteCharAt(fieldNamesBuffer.length() - 1);
-				fieldNamesBuffer.append("}");
-				fieldTypesBuffer.deleteCharAt(fieldTypesBuffer.length() - 1);
-				fieldTypesBuffer.append("}");
-			}
-			
-			if (persistableImplementations != null && !persistableImplementations.isEmpty()) {
-
-				buffer.append("temp = new java.util.Hashtable();\n");
-				Enumeration enumeration = persistableImplementations.keys();
-				while (enumeration.hasMoreElements()) {
-					String fieldName = (String) enumeration.nextElement();
-					String classNameOfField = (String) persistableImplementations.get(fieldName);
-					buffer.append("temp.put(\"");
-					buffer.append(fieldName);
-					buffer.append("\", \"");
-					buffer.append(classNameOfField);
-					buffer.append("\");\n");
-				}
-
-				buffer.append("classBasedMetadatas.put(\"" + className 
-					+ "\", new net.sourceforge.floggy.persistence.impl.PersistableMetadata(" + isAbstract + ", \"" 
-					+ className + "\", " 
-					+ ((superClassName != null) ? ("\"" + superClassName + "\", ") : ("null, "))
-					+ fieldNamesBuffer.toString() + ", " 
-					+ fieldTypesBuffer.toString() + ", temp, "
-					+ "\"" + recordStoreName + "\", "
-					+ persistableStrategy + "));\n");
-
-			} else {
-				buffer.append("classBasedMetadatas.put(\"" + className 
-					+ "\", new net.sourceforge.floggy.persistence.impl.PersistableMetadata(" + isAbstract + ", \"" 
-					+ className + "\", " 
-					+ ((superClassName != null) ? ("\"" + superClassName + "\", ") : ("null, "))
-					+ fieldNamesBuffer.toString() + ", " 
-					+ fieldTypesBuffer.toString() + ", null, "
-					+ "\"" + recordStoreName + "\", "
-					+ persistableStrategy + "));\n");
-			}
-
-		}
-
-		buffer.append("load();\n");
-		buffer.append("}\n");
-		
-		CtClass ctClass= this.classpathPool.get("net.sourceforge.floggy.persistence.impl.PersistableMetadataManager");
-		CtMethod[] methods= ctClass.getMethods();
-		for (int i = 0; i < methods.length; i++) {
-			if (methods[i].getName().equals("init")) {
-				ctClass.removeMethod(methods[i]);
+			} catch (Exception ex) {
+				LOG.warn(ex.getMessage(), ex);
 			}
 		}
-
-		ctClass.addMethod(CtNewMethod.make(buffer.toString(), ctClass));
-		embeddedClassesOutputPool.addClass(ctClass);
 	}
 
 	/**
@@ -596,7 +670,7 @@ public class Weaver {
 		// File name does not represents a class file.
 		return null;
 	}
-
+	
 	protected List getClassThatImplementsPersistable() throws NotFoundException,
 			IOException {
 		int classCount = this.inputPool.getFileCount();
@@ -648,49 +722,6 @@ public class Weaver {
 		}
 		return list;
 	}
-	
-	protected void findInvocationOfShutdownMethod(CtClass ctClass) {
-
-		if (!ctClass.isInterface()) {
-			try {
-				ClassFile classFile = ctClass.getClassFile2();
-				ConstPool constantPool = classFile.getConstPool();
-				List methods = classFile.getMethods();
-				for (Iterator iterator = methods.iterator(); iterator.hasNext();) {
-
-					MethodInfo method = (MethodInfo) iterator.next();
-					if ((method.getAccessFlags() & AccessFlag.ABSTRACT) != AccessFlag.ABSTRACT) {
-
-						CodeAttribute codeAttribute = method.getCodeAttribute();
-
-						if (codeAttribute != null) {
-							byte[] code = codeAttribute.getCode();
-							CodeIterator codeIterator = codeAttribute.iterator();
-							while (codeIterator.hasNext()) {
-		
-								int index = codeIterator.next();
-								int opcode = codeIterator.byteAt(index);
-								if (opcode == CodeAttribute.INVOKEVIRTUAL) {
-									int temp = (code[index+1] << 8) | code[index+2];
-									String className = constantPool.getMethodrefClassName(temp); 
-									String methodName = constantPool.getMethodrefName(temp);
-	
-									if (PersistableManager.class.getName().equals(className) && 
-										"shutdown".equals(methodName)) {
-										
-										invocationOfShutdownMethodFound = true;
-									}
-								}
-							}
-						}
-					}
-
-				}
-			} catch (Exception ex) {
-				LOG.warn(ex.getMessage(), ex);
-			}
-		}
-	}
 
 	public XStream getXStream() {
 		XStream stream = new XStream(new DomDriver());
@@ -710,13 +741,31 @@ public class Weaver {
 		stream.omitField(PersistableMetadata.class, "persistableStrategy");
 		stream.omitField(PersistableMetadata.class, "superClassName");
 		stream.omitField(PersistableMetadata.class, "recordId");
+		stream.aliasField("indexes", PersistableMetadata.class, "indexMetadatas");
 		stream.aliasField("record-store-name", PersistableMetadata.class, "recordStoreName");
 		stream.aliasField("persistable-strategy", PersistableMetadata.class, "persistableStrategy");
 		stream.registerLocalConverter(PersistableMetadata.class, "persistableStrategy", new PersistableStrategyConverter());
 		stream.useAttributeFor(PersistableMetadata.class, "className");
 		stream.aliasAttribute("class-name", "className");
 
+		//indexInfo
+		stream.aliasType("indexes", Vector.class);
+		stream.alias("index", IndexMetadata.class);
+		stream.alias("field", String.class);
+		stream.useAttributeFor(IndexMetadata.class, "name");
+		stream.aliasField("record-store-name", IndexMetadata.class, "recordStoreName");
+		stream.addImplicitCollection(IndexMetadata.class, "fields");
+
 		return stream;
+	}
+
+	protected boolean ignoreField(CtField field) {
+		int modifier = field.getModifiers();
+
+		return field.getName().equals("__id")
+				|| field.getName().equals("__persistableMetadata")
+				|| Modifier.isTransient(modifier)
+				|| Modifier.isStatic(modifier);
 	}
 
 	protected boolean isCLDC10() {
@@ -729,12 +778,100 @@ public class Weaver {
 		return false;
 	}
 
-	protected void readConfiguration() throws IOException {
+	protected boolean isIndexableField(String className, String fieldName) {
+		try {
+			CtClass ctClass = classpathPool.get(className);
+			CtField field = ctClass.getField(fieldName);
+			CtClass fieldType = field.getType();
+			String fieldTypeClassName = fieldType.getName();
+			
+			if("byte".equals(fieldTypeClassName) || 
+				"char".equals(fieldTypeClassName) ||
+				"double".equals(fieldTypeClassName) ||
+				"float".equals(fieldTypeClassName) ||
+				"int".equals(fieldTypeClassName) ||
+				"long".equals(fieldTypeClassName) ||
+				"short".equals(fieldTypeClassName) ||
+				"java.lang.Byte".equals(fieldTypeClassName) ||
+				"java.lang.Character".equals(fieldTypeClassName) ||
+				"java.lang.Double".equals(fieldTypeClassName) ||
+				"java.lang.Float".equals(fieldTypeClassName) ||
+				"java.lang.Integer".equals(fieldTypeClassName) ||
+				"java.lang.Long".equals(fieldTypeClassName) ||
+				"java.lang.Short".equals(fieldTypeClassName) ||
+				"java.lang.String".equals(fieldTypeClassName) ||
+				"java.lang.StringBuffer".equals(fieldTypeClassName) ||
+				"java.util.Date".equals(fieldTypeClassName) ||
+				"java.util.TimeZone".equals(fieldTypeClassName)) {
+				return true;
+			} else {
+				return false;
+			}
+		} catch (NotFoundException e) {
+			return false;
+		}
+		
+	}
+
+	public void mergeConfigurations(Configuration c1, Configuration c2) throws FloggyException {
+		c1.setAddDefaultConstructor(c2.isAddDefaultConstructor());
+		c1.setGenerateSource(c2.isGenerateSource());
+		Iterator iterator = c2.getPersistableMetadatas().iterator();
+		while (iterator.hasNext()) {
+			PersistableMetadata tempMetadata = (PersistableMetadata) iterator.next();
+			String className = tempMetadata.getClassName();
+			PersistableMetadata currentMetadata = c1.getPersistableMetadata(className);
+			
+			if (currentMetadata != null) {
+				String recordStoreName = tempMetadata.getRecordStoreName();
+				if (!Utils.isEmpty(recordStoreName)) {
+					currentMetadata.setRecordStoreName(recordStoreName.trim());
+				}
+				
+				int persistableStrategy = tempMetadata.getPersistableStrategy();
+				if (persistableStrategy > 0) {
+					currentMetadata.setPersistableStrategy(persistableStrategy);
+				}
+				
+				Vector indexMetadatas = tempMetadata.getIndexMetadatas();
+				if (indexMetadatas != null) {
+					int size = indexMetadatas.size();
+					for (int i = 0; i < size; i++) {
+						IndexMetadata indexMetadata = (IndexMetadata) indexMetadatas.get(i);
+						int hashCode = Math.abs(className.hashCode()); 
+						recordStoreName = "Index"+ hashCode + indexMetadata.getName();
+						indexMetadata.setRecordStoreName(recordStoreName);
+						
+						Vector fields = indexMetadata.getFields();
+						for (int j = 0; j < fields.size(); j++) {
+							String fieldName = (String) fields.get(j);
+							if (!containsField(className, fieldName)) {
+								throw new FloggyException("The field " + 
+									fieldName + " that compounds the index " +
+									indexMetadata.getName() + 
+									" does not exist on persistable " +
+									className);
+							} else if (!isIndexableField(className, fieldName)) {
+								throw new FloggyException("The field " + 
+									fieldName + " that compounds the index " +
+									indexMetadata.getName() + " on persistable " +
+									className + " it is not from a valid type");
+							}
+						}
+					}
+					currentMetadata.setIndexMetadatas(indexMetadatas);
+				}
+			}
+			
+		}
+	}
+
+	protected void readConfiguration() throws FloggyException, IOException {
 		if (configurationFile != null && configurationFile.exists()) {
 			XStream stream = getXStream();
 			Configuration temp = (Configuration) stream
 					.fromXML(new FileReader(configurationFile));
-			configuration.merge(temp);
+			mergeConfigurations(configuration, temp);
 		}
 	}
 
@@ -758,6 +895,14 @@ public class Weaver {
 		this.configuration = configuration;
 	}
 
+	public void setConfigurationFile(File configurationFile) {
+		this.configurationFile = configurationFile;
+	}
+	
+	public void setEmbeddedClassesOutputPool(File embeddedClassesOutputFile) throws WeaverException {
+		embeddedClassesOutputPool = PoolFactory.createOutputPool(embeddedClassesOutputFile);
+	}
+	
 	/**
 	 * Sets the input file.
 	 * 
@@ -785,13 +930,4 @@ public class Weaver {
 			embeddedClassesOutputPool = outputPool;
 		}
 	}
-
-	public void setEmbeddedClassesOutputPool(File embeddedClassesOutputFile) throws WeaverException {
-		embeddedClassesOutputPool = PoolFactory.createOutputPool(embeddedClassesOutputFile);
-	}
-
-	public void setConfigurationFile(File configurationFile) {
-		this.configurationFile = configurationFile;
-	}
-
 }

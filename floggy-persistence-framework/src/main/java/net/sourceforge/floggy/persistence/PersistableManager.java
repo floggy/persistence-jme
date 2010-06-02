@@ -171,7 +171,24 @@ public abstract class PersistableManager {
         throws FloggyException;
 
     /**
-     * Searches objects of an especific persistable class from the
+     * Searches objects of a specific persistable class from the
+     * repository. It uses an index as the base mechanism to evaluate 
+     * the registers in the repository<br>
+     *
+     * @param persistableClass The persistable class to search the objects.
+     * @param indexFilter The filter object based on an index.
+     * @param lazy A flag indicating to load or not all composite
+     *        relationships.
+     *
+     * @return List of objects that matches the defined criteria.
+     *
+     * @throws FloggyException DOCUMENT ME!
+     */
+	public abstract ObjectSet find(Class persistableClass, 
+		IndexFilter indexFilter, boolean lazy) throws FloggyException;
+	
+    /**
+     * Searches objects of a specific persistable class from the
      * repository. <br>
      * <br>
      * An optional application-defined search criteria can be  defined using a <code>Filter</code>.<br>

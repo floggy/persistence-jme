@@ -18,8 +18,11 @@ package net.sourceforge.floggy.persistence;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Vector;
 
+import net.sourceforge.floggy.persistence.impl.IndexMetadata;
 import net.sourceforge.floggy.persistence.impl.PersistableMetadata;
+import net.sourceforge.floggy.persistence.impl.Utils;
 
 public class Configuration {
 	
@@ -71,29 +74,6 @@ public class Configuration {
 		persistables.add(metadata);
 	}
 	
-	public void merge(Configuration configuration) {
-		addDefaultConstructor = configuration.addDefaultConstructor;
-		generateSource = configuration.generateSource;
-		Iterator iterator = configuration.persistables.iterator();
-		while (iterator.hasNext()) {
-			PersistableMetadata tempMetadata = (PersistableMetadata) iterator.next();
-			PersistableMetadata currentMetadata = getPersistableMetadata(tempMetadata.getClassName());
-			
-			if (currentMetadata != null) {
-				String recordStoreName = tempMetadata.getRecordStoreName();
-				if (recordStoreName != null) {
-					currentMetadata.setRecordStoreName(recordStoreName.trim());
-				}
-				
-				int persistableStrategy = tempMetadata.getPersistableStrategy();
-				if (persistableStrategy > 0) {
-					currentMetadata.setPersistableStrategy(persistableStrategy);
-				}
-			}
-			
-		}
-	}
-
 	public String toString() {
 		return "Configuration [addDefaultConstructor=" + addDefaultConstructor
 				+ ", generateSource=" + generateSource + ", persistables="

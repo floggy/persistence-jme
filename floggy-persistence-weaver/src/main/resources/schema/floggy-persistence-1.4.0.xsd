@@ -24,27 +24,50 @@
 		<sequence minOccurs="1" maxOccurs="1">
 			<element name="persistables" type="tns:persistablesType"></element>
 		</sequence>
-		<attribute name="add-default-constructor" type="boolean" default="true" use="optional"></attribute>
-		<attribute name="generate-source" type="boolean" default="false" use="optional"></attribute>
 	</complexType>
 
 	<complexType name="persistablesType">
 		<sequence minOccurs="1">
 			<element name="persistable" type="tns:persistableType" minOccurs="1" maxOccurs="unbounded"></element>
 		</sequence>
+		<attribute name="add-default-constructor" type="boolean" default="true" use="optional"></attribute>
+		<attribute name="generate-source" type="boolean" default="false" use="optional"></attribute>
 	</complexType>
 
 	<complexType name="persistableType">
 		<sequence>
-			<element name="record-store-name" type="tns:recordStoreNameType"></element>
+			<element name="record-store-name" type="tns:recordStoreNameType" minOccurs="0" maxOccurs="1"></element>
 			<element name="persistable-strategy" type="tns:persistableStrategyType" minOccurs="0" maxOccurs="1" ></element>
+			<sequence minOccurs="0" maxOccurs="1">
+				<element name="indexes" type="tns:indexesType"></element>
+			</sequence>
 		</sequence>
 		<attribute name="class-name" type="tns:classNameType" use="required"></attribute>
+	</complexType>
+
+	<complexType name="indexesType">
+		<sequence minOccurs="1">
+			<element name="index" type="tns:indexType" minOccurs="1" maxOccurs="unbounded"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="indexType">
+		<sequence>
+			<element name="record-store-name" type="tns:recordStoreNameType" minOccurs="0" maxOccurs="1"></element>
+			<element name="field" type="tns:javaType" minOccurs="1" maxOccurs="unbounded"></element>
+		</sequence>
+		<attribute name="name" type="tns:recordStoreNameType" use="optional"></attribute>
 	</complexType>
 
 	<simpleType name="recordStoreNameType">
 		<restriction base="string">
 			<maxLength value="32"></maxLength>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="javaType">
+		<restriction base="string">
+			<pattern value="[a-zA-Z$_][a-zA-Z0-9$_]*"></pattern>
 		</restriction>
 	</simpleType>
 

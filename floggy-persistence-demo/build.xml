@@ -95,8 +95,9 @@
 		<mkdir dir="${repo.local}/jboss/javassist/3.4.ga" />
 		<mkdir dir="${repo.local}/commons-io/commons-io/1.2" />
 		<mkdir dir="${repo.local}/commons-logging/commons-logging/1.0.4" />
-		<get src="http://floggy.sourceforge.net/repository/net/sourceforge/floggy/floggy-persistence-framework/${floggy.version}/floggy-persistence-framework-${floggy.version}.jar" dest="${repo.local}/net/sourceforge/floggy/floggy-persistence-framework/${floggy.version}/floggy-persistence-framework-${floggy.version}.jar" usetimestamp="true" ignoreerrors="true" />
-		<get src="http://floggy.sourceforge.net/repository/net/sourceforge/floggy/floggy-persistence-weaver/${floggy.version}/floggy-persistence-weaver-${floggy.version}.jar" dest="${repo.local}/net/sourceforge/floggy/floggy-persistence-weaver/${floggy.version}/floggy-persistence-weaver-${floggy.version}.jar" usetimestamp="true" ignoreerrors="true" />
+		<mkdir dir="${repo.local}/com/thoughtworks/xstream/xstream/1.3.1" />
+		<get src="http://oss.sonatype.org/content/repositories/sourceforge-snapshots/net/sourceforge/floggy/floggy-persistence-framework/1.4.0-SNAPSHOT/floggy-persistence-framework-1.4.0-20100423.132735-1.jar" dest="${repo.local}/net/sourceforge/floggy/floggy-persistence-framework/${floggy.version}/floggy-persistence-framework-${floggy.version}.jar" usetimestamp="true" ignoreerrors="true" />
+		<get src="http://oss.sonatype.org/content/repositories/sourceforge-snapshots/net/sourceforge/floggy/floggy-persistence-weaver/1.4.0-SNAPSHOT/floggy-persistence-weaver-1.4.0-20100423.132735-1.jar" dest="${repo.local}/net/sourceforge/floggy/floggy-persistence-weaver/${floggy.version}/floggy-persistence-weaver-${floggy.version}.jar" usetimestamp="true" ignoreerrors="true" />
 		<get src="http://www.pyx4j.com/maven2/de/pleumann/antenna/0.9.14/antenna-0.9.14.jar" dest="${repo.local}/de/pleumann/antenna/0.9.14/antenna-0.9.14.jar" usetimestamp="true" ignoreerrors="true" />
 		<get src="http://repo1.maven.org/maven2/jboss/javassist/3.4.ga/javassist-3.4.ga.jar" dest="${repo.local}/jboss/javassist/3.4.ga/javassist-3.4.ga.jar" usetimestamp="true" ignoreerrors="true" />
 		<get src="http://repo1.maven.org/maven2/commons-io/commons-io/1.2/commons-io-1.2.jar" dest="${repo.local}/commons-io/commons-io/1.2/commons-io-1.2.jar" usetimestamp="true" ignoreerrors="true" />

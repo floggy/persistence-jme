@@ -28,7 +28,7 @@ public class HospitalMIDlet extends MIDlet {
 
     static Display display;
     
-    static MIDlet midlet;
+    static HospitalMIDlet midlet;
     
     static Exception exception;
 
@@ -44,9 +44,14 @@ public class HospitalMIDlet extends MIDlet {
     }
 
     protected void pauseApp() {
+    	try {
+			PersistableManager.getInstance().shutdown();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
     }
 
-    protected void destroyApp(boolean arg0) throws MIDletStateChangeException {
+    protected void destroyApp(boolean unconditional) {
     	try {
 			PersistableManager.getInstance().shutdown();
 		} catch (Exception ex) {
@@ -66,6 +71,7 @@ public class HospitalMIDlet extends MIDlet {
     }
     
     public static void exit(){
+    	midlet.destroyApp(true);
         midlet.notifyDestroyed();
     }
     

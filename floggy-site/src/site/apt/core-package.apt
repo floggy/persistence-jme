@@ -100,6 +100,8 @@ public class Phone implements Persistable {
  
  * {{{#Getting_the_object_id} Getting the object id}}
  
+ * {{{#Using_the_index_feature_only_available_on_package_1.4.0-alpha} Using the index feature}}
+ 
 ** {Saving a new object}
  
 +------------------------------+
@@ -338,3 +340,49 @@ try {
 }
 +-----------------------------+
 
+* {Using the index feature (only available on package 1.4.0-alpha)}.
+
+	<<Please keep in mind that this is not a completed task, you may find issues using it. Be patient! Let us know what we can improve and/or fix.>>
+	
+	First of all, you must create a floggy.xml file containing the following definitions:
+	
++------------------------------+
+<?xml version="1.0" encoding="UTF-8"?>
+<floggy xmlns:tns="http://floggy.sourceforge.net/floggy-persistence-1.4.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://floggy.sourceforge.net/floggy-persistence-1.4.0 http://floggy.sourceforge.net/schema/floggy-persistence-1.4.0.xsd" generate-source="true">
+	<persistables>
+		<persistable class-name="net.sourceforge.floggy.persistence.Person">
+			<record-store-name>Person</record-store-name>
+			<indexes>
+				<index name="byName">
+					<field>name</field>
+				</index>
+			</indexes>
+		</persistable>
+	</persistables>
+</floggy>
++------------------------------+
+
+	This XML instance refer to a class called "Person" that contains a field named "name" that is configured as an index to our Person persistable class. 
+	You have to add the parameter <<configurationFile>> pointing to the file above in configuration of both Ant and Maven to get it worked, <<there isn't support for Eclipse yet.>> 
+	
+	Here is the package that <<MUST>> be used: {{http://floggy.sourceforge.net/1.4.0-alpha/floggy-persistence-1.4.0-SNAPSHOT.zip}}. We also provided a sample working application {{http://floggy.sourceforge.net/1.4.0-alpha/floggy-persistence-demo-1.4.0-SNAPSHOT.zip}}.   
+
++------------------------------+
+Person person = new Person();
+person.setName("Floggy");
+
+try {
+	PersistableManager pm = PersistableManager.getInstance();
+	
+	// saving the object
+	pm.save(person);
+
+	IndexFilter indexFilter = new IndexFilter("byName", "Floggy");
+	ObjectSet os = manager.find(Person.class, indexFilter, false);
+} catch (FloggyException e) {
+	...
+}
++-----------------------------+
+	

@@ -15,8 +15,8 @@
  */
 package net.sourceforge.floggy.persistence.impl;
 
-import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Vector;
 
 /**
  * <b>IMPORTANT:</b> This class is for internal use only.
@@ -46,126 +46,30 @@ public class PersistableMetadata {
 	public static final int PER_CLASS_STRATEGY = 2;
 	public static final int SINGLE_STRATEGY = 4;
 
-    private static boolean equals(Hashtable h, Hashtable h2) {
-		if (h == h2)
-			return true;
-		if (h == null || h2 == null)
-			return false;
-
-		if (h.size() != h2.size())
-			return false;
-
-		Enumeration keys = h.keys();
-		while (keys.hasMoreElements()) {
-			Object key = keys.nextElement();
-			Object value = h.get(key);
-			if (value == null) {
-				if (!(h2.get(key) == null && h2.containsKey(key)))
-					return false;
-			} else {
-				if (!value.equals(h2.get(key)))
-					return false;
-			}
-		}
-
-		return true;
-	}
-
-	private static boolean equals(int[] a, int[] a2) {
-		if (a == a2)
-			return true;
-		if (a == null || a2 == null)
-			return false;
-
-		int length = a.length;
-		if (a2.length != length)
-			return false;
-
-		for (int i = 0; i < length; i++)
-			if (a[i] != a2[i])
-				return false;
-
-		return true;
-	}
-
-	private static boolean equals(String[] a, String[] a2) {
-		if (a == a2)
-			return true;
-		if (a == null || a2 == null)
-			return false;
-
-		int length = a.length;
-		if (a2.length != length)
-			return false;
-
-		for (int i = 0; i < length; i++) {
-			Object o1 = a[i];
-			Object o2 = a2[i];
-			if (!(o1 == null ? o2 == null : o1.equals(o2)))
-				return false;
-		}
-
-		return true;
-	}
-
-	/**
-	 * Returns a hash code value for the array
-	 * 
-	 * @param array
-	 *            the array to create a hash code value for
-	 * @return a hash code value for the array
-	 */
-	private static int hashCode(int[] array) {
-		final int prime = 31;
-		if (array == null)
-			return 0;
-		int result = 1;
-		for (int index = 0; index < array.length; index++) {
-			result = prime * result + array[index];
-		}
-		return result;
-	}
-
-	/**
-	 * Returns a hash code value for the array
-	 * 
-	 * @param array
-	 *            the array to create a hash code value for
-	 * @return a hash code value for the array
-	 */
-	private static int hashCode(Object[] array) {
-		final int prime = 31;
-		if (array == null)
-			return 0;
-		int result = 1;
-		for (int index = 0; index < array.length; index++) {
-			result = prime * result
-					+ (array[index] == null ? 0 : array[index].hashCode());
-		}
-		return result;
-	}
-
 	private boolean isAbstract;
 	private String className;
 	private String superClassName;
 	private String[] fieldNames;
 	private int[] fieldTypes;
 	private Hashtable persistableImplementations;
+	private Vector indexMetadatas;
 	private String recordStoreName;
 	private transient int recordId = -1;
 	private int persistableStrategy;
 
-    public PersistableMetadata(boolean isAbstract, String className,
+	public PersistableMetadata(boolean isAbstract, String className,
 			String superClassName, String[] fieldNames, int[] fieldTypes,
-			Hashtable persistableImplementations, String recordStoreName, int persistableStrategy) {
+			Hashtable persistableImplementations, Vector indexMetadatas,
+			String recordStoreName, int persistableStrategy) {
 		this(isAbstract, className, superClassName, fieldNames, fieldTypes,
-				persistableImplementations, recordStoreName, persistableStrategy, -1);
+				persistableImplementations, indexMetadatas, recordStoreName,
+				persistableStrategy, -1);
 	}
 
-    public PersistableMetadata(boolean isAbstract, String className,
+	public PersistableMetadata(boolean isAbstract, String className,
 			String superClassName, String[] fieldNames, int[] fieldTypes,
-			Hashtable persistableImplementations, String recordStoreName,
-			int persistableStrategy, int recordId) {
+			Hashtable persistableImplementations, Vector indexMetadatas,
+			String recordStoreName, int persistableStrategy, int recordId) {
 		super();
 		this.isAbstract = isAbstract;
 		this.className = className;
@@ -173,12 +77,28 @@ public class PersistableMetadata {
 		this.fieldNames = fieldNames;
 		this.fieldTypes = fieldTypes;
 		this.persistableImplementations = persistableImplementations;
+		this.indexMetadatas = indexMetadatas;
 		this.recordStoreName = recordStoreName;
 		this.persistableStrategy = persistableStrategy;
 		this.recordId = recordId;
 	}
 
-    public boolean equals(Object obj) {
+	private String arrayToString(Object array2, int len) {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("[");
+		for (int i = 0; i < len; i++) {
+			if (i > 0)
+				buffer.append(", ");
+			if (array2 instanceof int[])
+				buffer.append(((int[]) array2)[i]);
+			if (array2 instanceof Object[])
+				buffer.append(((Object[]) array2)[i]);
+		}
+		buffer.append("]");
+		return buffer.toString();
+	}
+
+	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -191,16 +111,25 @@ public class PersistableMetadata {
 				return false;
 		} else if (!className.equals(other.className))
 			return false;
-		if (!PersistableMetadata.equals(fieldNames, other.fieldNames))
+		if (!Utils.equals(fieldNames, other.fieldNames))
 			return false;
-		if (!PersistableMetadata.equals(fieldTypes, other.fieldTypes))
+		if (!Utils.equals(fieldTypes, other.fieldTypes))
 			return false;
 		if (isAbstract != other.isAbstract)
 			return false;
+		if (PersistableMetadataManager.VERSION_1_4_0
+				.equals(PersistableMetadataManager.getRMSVersion())) {
+			if (indexMetadatas == null) {
+				if (other.indexMetadatas != null)
+					return false;
+			} else if (!Utils
+					.equals(indexMetadatas, other.indexMetadatas))
+				return false;
+		}
 		if (persistableImplementations == null) {
 			if (other.persistableImplementations != null)
 				return false;
-		} else if (!PersistableMetadata.equals(persistableImplementations,
+		} else if (!Utils.equals(persistableImplementations,
 				other.persistableImplementations))
 			return false;
 		if (persistableStrategy != other.persistableStrategy)
@@ -230,6 +159,10 @@ public class PersistableMetadata {
 		return fieldTypes;
 	}
 
+	public Vector getIndexMetadatas() {
+		return indexMetadatas;
+	}
+
 	public String getPersistableImplementationClassForField(String fieldName) {
 		return (String) persistableImplementations.get(fieldName);
 	}
@@ -237,7 +170,7 @@ public class PersistableMetadata {
 	public Hashtable getPersistableImplementations() {
 		return persistableImplementations;
 	}
-	
+
 	public int getPersistableStrategy() {
 		return persistableStrategy;
 	}
@@ -259,13 +192,18 @@ public class PersistableMetadata {
 		int result = 1;
 		result = prime * result
 				+ ((className == null) ? 0 : className.hashCode());
-		result = prime * result + PersistableMetadata.hashCode(fieldNames);
-		result = prime * result + PersistableMetadata.hashCode(fieldTypes);
+		result = prime * result + Utils.hashCode(fieldNames);
+		result = prime * result + Utils.hashCode(fieldTypes);
 		result = prime * result + (isAbstract ? 1231 : 1237);
 		result = prime
 				* result
 				+ ((persistableImplementations == null) ? 0
 						: persistableImplementations.hashCode());
+		if (PersistableMetadataManager.VERSION_1_4_0
+				.equals(PersistableMetadataManager.getRMSVersion())) {
+			result = prime * result
+					+ ((indexMetadatas == null) ? 0 : indexMetadatas.hashCode());
+		}
 		result = prime * result + persistableStrategy;
 		result = prime * result
 				+ ((recordStoreName == null) ? 0 : recordStoreName.hashCode());
@@ -277,7 +215,11 @@ public class PersistableMetadata {
 	public boolean isAbstract() {
 		return isAbstract;
 	}
-	
+
+	public void setIndexMetadatas(Vector indexMetadatas) {
+		this.indexMetadatas = indexMetadatas;
+	}
+
 	public void setPersistableStrategy(int persistableStrategy) {
 		this.persistableStrategy = persistableStrategy;
 	}
@@ -304,24 +246,9 @@ public class PersistableMetadata {
 				+ (fieldTypes != null ? arrayToString(fieldTypes,
 						fieldTypes.length) : null)
 				+ ", persistableImplementations=" + persistableImplementations
-				+ ", recordStoreName=" + recordStoreName + ", recordId="
-				+ recordId + ", persistableStrategy=" + persistableStrategy
-				+ "]";
-	}
-
-	private String arrayToString(Object array, int len) {
-		StringBuffer buffer = new StringBuffer();
-		buffer.append("[");
-		for (int i = 0; i < len; i++) {
-			if (i > 0)
-				buffer.append(", ");
-			if (array instanceof int[])
-				buffer.append(((int[]) array)[i]);
-			if (array instanceof Object[])
-				buffer.append(((Object[]) array)[i]);
-		}
-		buffer.append("]");
-		return buffer.toString();
+				+ ", indexMetadatas=" + indexMetadatas + ", recordStoreName="
+				+ recordStoreName + ", persistableStrategy="
+				+ persistableStrategy + "]";
 	}
 
 }

@@ -73,6 +73,14 @@ public class RecordStoreManager {
 			throw Utils.handleException(ex);
 		}
 	}
+	
+	public static void init() {
+		
+	}
+
+	public static void deleteRecordStore(String recordStoreName) throws Exception{
+		RecordStore.deleteRecordStore(recordStoreName);
+	}
 
 	public static RecordStore getRecordStore(__Persistable persistable)
 			throws FloggyException {
@@ -81,6 +89,11 @@ public class RecordStoreManager {
 		return getRecordStore(persistable.getRecordStoreName(), metadata, false);
 	}
 	
+	public static RecordStore getRecordStore(IndexMetadata indexMetadata,
+			PersistableMetadata metadata) throws Exception {
+		return getRecordStore(indexMetadata.getRecordStoreName(), metadata, false);
+	}
+
 	public static RecordStore getRecordStore(String recordStoreName,
 			PersistableMetadata metadata) throws FloggyException {
 		return getRecordStore(recordStoreName, metadata, false);

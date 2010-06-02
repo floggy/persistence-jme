@@ -20,7 +20,7 @@ import net.sourceforge.floggy.persistence.Persistable;
 public class Bird extends Animal implements Persistable {
 
 	private String color;
-	
+
 	public String getColor() {
 		return color;
 	}
@@ -51,5 +51,5 @@ public class Bird extends Animal implements Persistable {
 			return false;
 		return true;
 	}
-	
+
 }

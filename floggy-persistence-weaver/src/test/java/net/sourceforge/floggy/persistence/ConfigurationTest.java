@@ -89,7 +89,7 @@ public class ConfigurationTest extends TestCase {
 		String className = "test";
 		Configuration configuration = new Configuration();
 		PersistableMetadata metadata = new PersistableMetadata(false,
-				className, null, null, null, null, null, 0);
+				className, null, null, null, null, null, null, 0);
 
 		configuration.addPersistableMetadata(metadata);
 
@@ -103,7 +103,7 @@ public class ConfigurationTest extends TestCase {
 		String className = "test";
 		Configuration configuration = new Configuration();
 		PersistableMetadata metadata = new PersistableMetadata(false,
-				className, null, null, null, null, null, 0);
+				className, null, null, null, null, null, null, 0);
 
 		configuration.addPersistableMetadata(metadata);
 
@@ -114,7 +114,7 @@ public class ConfigurationTest extends TestCase {
 		String className = "test";
 		Configuration configuration = new Configuration();
 		PersistableMetadata metadata = new PersistableMetadata(false,
-				className, null, null, null, null, null, 0);
+				className, null, null, null, null, null, null, 0);
 
 		configuration.addPersistableMetadata(metadata);
 
@@ -122,30 +122,6 @@ public class ConfigurationTest extends TestCase {
 				.getPersistableMetadata(className);
 
 		assertSame(metadata, temp);
-	}
-
-	public void testMerge() {
-		String className = "test";
-		String recordStoreName = "Floggy";
-		int persistableStrategy = 2;
-		Configuration configuration1 = new Configuration();
-		PersistableMetadata metadata1 = new PersistableMetadata(false,
-				className, null, null, null, null, null, persistableStrategy);
-
-		configuration1.addPersistableMetadata(metadata1);
-
-		Configuration configuration2 = new Configuration();
-		PersistableMetadata metadata2 = new PersistableMetadata(false,
-				className, null, null, null, null, recordStoreName, 0);
-
-		configuration2.addPersistableMetadata(metadata2);
-
-		configuration1.merge(configuration2);
-
-		metadata1 = configuration1.getPersistableMetadata(className);
-
-		assertEquals(recordStoreName, metadata1.getRecordStoreName());
-		assertEquals(persistableStrategy, metadata1.getPersistableStrategy());
 	}
 
 }

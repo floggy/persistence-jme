@@ -15,6 +15,8 @@
  */
 package net.sourceforge.floggy.persistence.codegen;
 
+import java.util.Vector;
+
 import javassist.CannotCompileException;
 import javassist.ClassPool;
 import javassist.CtClass;
@@ -29,6 +31,8 @@ import net.sourceforge.floggy.persistence.Configuration;
 import net.sourceforge.floggy.persistence.IDable;
 import net.sourceforge.floggy.persistence.Weaver;
 import net.sourceforge.floggy.persistence.formatter.CodeFormatter;
+import net.sourceforge.floggy.persistence.impl.IndexMetadata;
+import net.sourceforge.floggy.persistence.impl.PersistableMetadata;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -112,6 +116,9 @@ public abstract class CodeGenerator {
 
 		// Implements interface
 		this.generatePersistableInterface();
+
+		// index method
+		this.generateGetIndexValueMethod();
 	}
 
 	protected void generateDefaultConstructor() throws NotFoundException,
@@ -136,6 +143,42 @@ public abstract class CodeGenerator {
 		}
 	}
 
+	/**
+	 * 
+	 * @throws CannotCompileException
+	 */
+	protected void generateGetIndexValueMethod()
+			throws CannotCompileException, NotFoundException {
+		PersistableMetadata metadata = 
+			configuration.getPersistableMetadata(ctClass.getName());
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("public Object __getIndexValue(String indexName) {\n");
+
+		Vector indexMetadatas = metadata.getIndexMetadatas();
+		
+		if (indexMetadatas != null) {
+			int indexMetadatasSize = indexMetadatas.size();
+			for (int i = 0; i < indexMetadatasSize; i++) {
+				IndexMetadata indexMetadata = (IndexMetadata) indexMetadatas.elementAt(i);
+				
+				buffer.append("if (\"" + indexMetadata.getName() + "\".equals(indexName)) {\n");
+
+				Vector fields = indexMetadata.getFields();
+				int fieldsSize = fields.size();
+				for (int j = 0; j < fieldsSize; j++) {
+					String fieldName = (String) fields.get(j);
+					buffer.append("return this." + fieldName + ";\n");
+				}
+				buffer.append("}\n");
+			}
+		}
+		buffer.append("return null;\n");
+		buffer.append("}\n");
+
+		// adicionando a classe
+		addMethod(buffer);
+	}
+	
 	/**
 	 * 
 	 * @throws CannotCompileException

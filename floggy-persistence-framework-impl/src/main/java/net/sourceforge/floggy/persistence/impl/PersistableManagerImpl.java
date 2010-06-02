@@ -15,6 +15,9 @@
  */
 package net.sourceforge.floggy.persistence.impl;
 
+import java.util.Enumeration;
+import java.util.Vector;
+
 import javax.microedition.rms.RecordComparator;
 import javax.microedition.rms.RecordEnumeration;
 import javax.microedition.rms.RecordFilter;
@@ -24,6 +27,7 @@ import javax.microedition.rms.RecordStoreException;
 import net.sourceforge.floggy.persistence.Comparator;
 import net.sourceforge.floggy.persistence.Filter;
 import net.sourceforge.floggy.persistence.FloggyException;
+import net.sourceforge.floggy.persistence.IndexFilter;
 import net.sourceforge.floggy.persistence.ObjectSet;
 import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.PersistableManager;
@@ -48,6 +52,7 @@ public class PersistableManagerImpl extends PersistableManager {
 		singleStrategyClass = Class.forName("net.sourceforge.floggy.persistence.strategy.SingleStrategy");
 		SerializationManager.setPersistableManager(this);
 		PersistableMetadataManager.init();
+		IndexManager.init();
 	}
 
 	/**
@@ -72,8 +77,9 @@ public class PersistableManagerImpl extends PersistableManager {
 			try {
 				__persistable.__delete();
 				rs.deleteRecord(id);
+				IndexManager.afterDelete(__persistable);
 				__persistable.__setId(0);
-			} catch (RecordStoreException ex) {
+			} catch (Exception ex) {
 				throw Utils.handleException(ex);
 			} finally {
 				RecordStoreManager.closeRecordStore(rs);
@@ -95,12 +101,18 @@ public class PersistableManagerImpl extends PersistableManager {
 	 */
 	public void deleteAll() throws FloggyException {
 		try {
-			String[] recordStoreNames = RecordStore.listRecordStores();
-			for (int i = 0; i < recordStoreNames.length; i++) {
-				if (recordStoreNames[i].equals("FloggyProperties")) {
-					continue;
+			Enumeration metadatas = PersistableMetadataManager.getClassBasedMetadatas();
+			while (metadatas.hasMoreElements()) {
+				PersistableMetadata metadata = (PersistableMetadata) metadatas.nextElement();
+				Vector indexMetadatas = metadata.getIndexMetadatas();
+				if (indexMetadatas != null) {
+					int size = indexMetadatas.size();
+					for (int i = 0; i < size; i++) {
+						IndexMetadata indexMetadata = (IndexMetadata) indexMetadatas.elementAt(i);
+						RecordStore.deleteRecordStore(indexMetadata.getRecordStoreName());
+					}
 				}
-				RecordStore.deleteRecordStore(recordStoreNames[i]);
+				RecordStore.deleteRecordStore(metadata.getRecordStoreName());
 			}
 		} catch (Exception ex) {
 			throw Utils.handleException(ex);
@@ -121,7 +133,6 @@ public class PersistableManagerImpl extends PersistableManager {
 	 */
 	public void deleteAll(Class persistableClass) throws FloggyException {
 		__Persistable persistable = Utils.createInstance(persistableClass);
-		RecordStoreManager.closeRecordStore(RecordStoreManager.getRecordStore(persistable));
 		PersistableMetadata metadata = PersistableMetadataManager.getClassBasedMetadata(persistableClass.getName());
 		if (deletableClass.isAssignableFrom(persistableClass) || metadata.getSuperClassName() != null) {
 			ObjectSet os = find(persistableClass, null, null);
@@ -132,6 +143,7 @@ public class PersistableManagerImpl extends PersistableManager {
 		} else {
 			try {
 				RecordStore.deleteRecordStore(persistable.getRecordStoreName());
+				IndexManager.deleteIndex(persistableClass);
 			} catch (Exception ex) {
 				throw Utils.handleException(ex);
 			}
@@ -239,6 +251,40 @@ public class PersistableManagerImpl extends PersistableManager {
 		return new ObjectSetImpl(ids, persistableClass, this, lazy);
 	}
 
+	/**
+	 * Searches objects of an especific persistable class from the repository. <br>
+	 * <br>
+	 * An optional application-defined search criteria can be defined using a
+	 * <code>IndexFilter</code>.<br>
+	 * <br>
+	 * An optional application-defined sort order can be defined using a
+	 * <code>Comparator</code>.
+	 * 
+	 * @param persistableClass
+	 *            The persistable class to search the objects.
+	 * @param filter
+	 *            An optional application-defined criteria for searching
+	 *            objects.
+	 * @param comparator
+	 *            An optional application-defined criteria for sorting objects.
+	 * @return List of objects that matches the defined criteria.
+	 */
+	public ObjectSet find(Class persistableClass, IndexFilter indexFilter, boolean lazy) throws FloggyException {
+
+		if(indexFilter == null)
+			throw new IllegalArgumentException("The indexFilter cannot be null");
+		
+		Utils.validatePersistableClassArgument(persistableClass);
+	
+		// Searchs the index repository for objects that contains index value.
+		try {
+			int[] ids = IndexManager.getId(persistableClass, indexFilter.getIndexName(), indexFilter.getIndexValue());
+			return new ObjectSetImpl(ids, persistableClass, this, lazy);
+		} catch (Exception ex) {
+			throw Utils.handleException(ex);
+		}
+	}
+
 	public boolean isPersisted(Persistable persistable) {
 		__Persistable __persistable = Utils.checkArgumentAndCast(persistable);
 		return __persistable.__getId() > 0;
@@ -321,8 +367,6 @@ public class PersistableManagerImpl extends PersistableManager {
 	 */
 	public int save(Persistable persistable) throws FloggyException {
 		__Persistable __persistable = Utils.checkArgumentAndCast(persistable);
-		// posso fazer cache do metadata e um contador com as
-		// referencias!!!!!!!!!
 		RecordStore rs = RecordStoreManager.getRecordStore(__persistable);
 		try {
 			byte[] buffer = __persistable.__serialize();
@@ -334,6 +378,7 @@ public class PersistableManagerImpl extends PersistableManager {
 			} else {
 				rs.setRecord(id, buffer, 0, buffer.length);
 			}
+			IndexManager.afterSave(__persistable);
 			return id;
 		} catch (Exception ex) {
 			throw Utils.handleException(ex);
@@ -359,7 +404,12 @@ public class PersistableManagerImpl extends PersistableManager {
 	}
 	
 	public void shutdown() throws FloggyException {
-		RecordStoreManager.shutdown();
+		try {
+			IndexManager.shutdown();
+			RecordStoreManager.shutdown();
+		} catch (Exception ex) {
+			throw Utils.handleException(ex);
+		}
 	}
 
 }

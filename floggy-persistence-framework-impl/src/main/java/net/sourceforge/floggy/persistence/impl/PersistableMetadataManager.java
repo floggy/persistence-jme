@@ -69,6 +69,10 @@ public class PersistableMetadataManager {
 		return (PersistableMetadata) classBasedMetadatas.get(className);
 	}
 	
+	public static Enumeration getClassBasedMetadatas() {
+		return classBasedMetadatas.elements();
+	}
+	
 	public static Vector getNotMigratedClasses() {
 		return notMigratedClassNames; 
 	}
@@ -110,6 +114,12 @@ public class PersistableMetadataManager {
 			}
 		}
 	}
+	
+	public static void reset() {
+		classBasedMetadatas.clear();
+		rmsBasedMetadatas.clear();
+		notMigratedClassNames.removeAllElements();
+	}
 
 	private static void loadRMSStructure() throws Exception {
 		RecordStore rs = RecordStore.openRecordStore("FloggyProperties", true);
@@ -133,9 +143,15 @@ public class PersistableMetadataManager {
 				if (dis.available() != 0) {
 					persistableStrategy = dis.readInt();
 				}
+				
+				Vector indexMetadatas = null;
+				if (dis.available() != 0) {
+					indexMetadatas = SerializationManager.readIndexMetadata(dis);
+				}
+
 				addRMSMetadata(new PersistableMetadata(isAbstract, className, 
 					superClassName, fieldNames, fieldTypes, 
-					persistableImplementations, recordStoreName, 
+					persistableImplementations, indexMetadatas, recordStoreName, 
 					persistableStrategy, recordId));
 			}
 		}
@@ -167,6 +183,7 @@ public class PersistableMetadataManager {
 		SerializationManager.writeHashtable(out, metadata.getPersistableImplementations());
 		out.writeUTF(metadata.getRecordStoreName());
 		out.writeInt(metadata.getPersistableStrategy());
+		SerializationManager.writeIndexMetadata(out, metadata.getIndexMetadatas());
 
 		byte[] data = out.toByteArray();
 		RecordStore rs = RecordStore.openRecordStore("FloggyProperties", true);

@@ -38,30 +38,45 @@ public class PatientList extends List implements CommandListener {
 
 	protected Command cmdDelete;
 
+	protected Command cmdSearch;
+
 	protected Command cmdBack;
 
     public PatientList() {
         super("Patients list", List.IMPLICIT);
 
-        startData();
+        startData(null);
         startComponents();
         
     }
 
-    private void startData() {
-        PersistableManager pm = PersistableManager.getInstance();
+    public PatientList(ObjectSet patients) {
+        super("Patients list", List.IMPLICIT);
+
+        ;
+
+        startData(patients);
+        startComponents();
+        
+    }
+
+    private void startData(ObjectSet patients) {
 
         try {
             this.deleteAll();
             
-            patients = pm.find(Patient.class, null, new Comparator() {
-                public int compare(Persistable arg0, Persistable arg1) {
-                    String s1 = arg0 == null ? "" : ((Patient) arg0).getName();
-                    String s2 = arg1 == null ? "" : ((Patient) arg1).getName();
+        	if (patients == null) {
+                PersistableManager pm = PersistableManager.getInstance();
+                patients = pm.find(Patient.class, null, new Comparator() {
+                    public int compare(Persistable arg0, Persistable arg1) {
+                        String s1 = arg0 == null ? "" : ((Patient) arg0).getName();
+                        String s2 = arg1 == null ? "" : ((Patient) arg1).getName();
 
-                    return s1.compareTo(s2);
-                }
-            });
+                        return s1.compareTo(s2);
+                    }
+                });
+        	}
+        	this.patients = patients;
 
             for (int i = 0; i < patients.size(); i++) {
                 Patient patient = (Patient) patients.get(i);
@@ -92,6 +107,9 @@ public class PatientList extends List implements CommandListener {
         this.cmdDelete = new Command("Delete", Command.ITEM, 3);
         this.addCommand(this.cmdDelete);
 
+        this.cmdSearch = new Command("Search", Command.ITEM, 4);
+        this.addCommand(this.cmdSearch);
+
         this.setCommandListener(this);
     }
 
@@ -121,11 +139,13 @@ public class PatientList extends List implements CommandListener {
                     Patient patient = (Patient) patients.get(this
                             .getSelectedIndex());
                     PersistableManager.getInstance().delete(patient);
-                    this.startData();
+                    this.startData(null);
                 } catch (FloggyException e) {
                 	HospitalMIDlet.showException(e);
                 }
             }
-        }
+	    } else if (cmd == this.cmdSearch) {
+            HospitalMIDlet.setCurrent(new PatientSearchForm());
+	    }
     }
 }
