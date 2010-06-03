@@ -742,11 +742,16 @@ public class Weaver {
 		stream.omitField(PersistableMetadata.class, "superClassName");
 		stream.omitField(PersistableMetadata.class, "recordId");
 		stream.aliasField("indexes", PersistableMetadata.class, "indexMetadatas");
-		stream.aliasField("record-store-name", PersistableMetadata.class, "recordStoreName");
 		stream.aliasField("persistable-strategy", PersistableMetadata.class, "persistableStrategy");
 		stream.registerLocalConverter(PersistableMetadata.class, "persistableStrategy", new PersistableStrategyConverter());
 		stream.useAttributeFor(PersistableMetadata.class, "className");
 		stream.aliasAttribute("class-name", "className");
+		stream.useAttributeFor(PersistableMetadata.class, "recordStoreName");
+		stream.aliasAttribute("record-store-name", "recordStoreName");
+		stream.useAttributeFor(PersistableMetadata.class, "suiteName");
+		stream.aliasAttribute("suite-name", "suiteName");
+		stream.useAttributeFor(PersistableMetadata.class, "vendorName");
+		stream.aliasAttribute("vendor-name", "vendorName");
 
 		//indexInfo
 		stream.aliasType("indexes", Vector.class);
@@ -820,8 +825,13 @@ public class Weaver {
 		while (iterator.hasNext()) {
 			PersistableMetadata tempMetadata = (PersistableMetadata) iterator.next();
 			String className = tempMetadata.getClassName();
+			String suiteName = tempMetadata.getSuiteName();
+			String vendorName = tempMetadata.getVendorName();
 			PersistableMetadata currentMetadata = c1.getPersistableMetadata(className);
 			
+			if ((suiteName == null && vendorName != null) || (suiteName != null && vendorName == null)) {
+				throw new FloggyException("You must provide suite-name and vendor-name for persistable " + className);
+			}
 			if (currentMetadata != null) {
 				String recordStoreName = tempMetadata.getRecordStoreName();
 				if (!Utils.isEmpty(recordStoreName)) {

@@ -19,13 +19,12 @@
 <floggy xmlns="http://floggy.sourceforge.net/floggy-persistence-1.4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://floggy.sourceforge.net/floggy-persistence-1.4.0 ../../../main/resources/schema/floggy-persistence-1.4.0.xsd">
 	<persistables>
-		<persistable class-name="net.sourceforge.floggy.persistence.fr2937635.FR2937635">
- 			<record-store-name>FR2937635</record-store-name>
+		<persistable class-name="net.sourceforge.floggy.persistence.fr2937635.FR2937635" record-store-name="FR2937635" >
 			<indexes>
 				<index name="byColor">
 					<field>color</field>
 				</index>
 			</indexes>
- 		</persistable>
+		</persistable>
 	</persistables>
 </floggy>

@@ -107,7 +107,16 @@ public class RecordStoreManager {
 				check(metadata, isUpdateProcess);
 	
 				rsr = new RecordStoreReference();
-				rsr.recordStore = RecordStore.openRecordStore(recordStoreName, true);
+
+				String suiteName = metadata.getSuiteName();
+				String vendorName = metadata.getVendorName();
+				
+				if (suiteName != null && vendorName != null) {
+					rsr.recordStore = RecordStore.openRecordStore(recordStoreName, vendorName, suiteName);
+				} else {
+					rsr.recordStore = RecordStore.openRecordStore(recordStoreName, true);
+				}
+
 				references.put(recordStoreName, rsr);
 			} else {
 				if (metadata.getPersistableStrategy() == PersistableMetadata.SINGLE_STRATEGY) {
@@ -115,7 +124,14 @@ public class RecordStoreManager {
 				}
 	
 				if (rsr.references == 0) {
-					rsr.recordStore = RecordStore.openRecordStore(recordStoreName, true);
+					String suiteName = metadata.getSuiteName();
+					String vendorName = metadata.getVendorName();
+					
+					if (suiteName != null && vendorName != null) {
+						rsr.recordStore = RecordStore.openRecordStore(recordStoreName, vendorName, suiteName);
+					} else {
+						rsr.recordStore = RecordStore.openRecordStore(recordStoreName, true);
+					}
 				}
 			}
 			rsr.references++;

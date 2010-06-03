@@ -24,9 +24,13 @@ import java.util.Vector;
 public class PersistableMetadata {
 
 	public static final int BOOLEAN = 1;
+
 	public static final int BYTE = 2;
+
 	public static final int CALENDAR = 4;
+
 	public static final int CHARACTER = 8;
+
 	public static final int DATE = 16;
 	public static final int DOUBLE = 32;
 	public static final int FLOAT = 64;
@@ -45,7 +49,6 @@ public class PersistableMetadata {
 	public static final int JOINED_STRATEGY = 1;
 	public static final int PER_CLASS_STRATEGY = 2;
 	public static final int SINGLE_STRATEGY = 4;
-
 	private boolean isAbstract;
 	private String className;
 	private String superClassName;
@@ -54,9 +57,12 @@ public class PersistableMetadata {
 	private Hashtable persistableImplementations;
 	private Vector indexMetadatas;
 	private String recordStoreName;
+	private String suiteName;
+	private String vendorName;
 	private transient int recordId = -1;
 	private int persistableStrategy;
-
+	
+	
 	public PersistableMetadata(boolean isAbstract, String className,
 			String superClassName, String[] fieldNames, int[] fieldTypes,
 			Hashtable persistableImplementations, Vector indexMetadatas,
@@ -65,7 +71,7 @@ public class PersistableMetadata {
 				persistableImplementations, indexMetadatas, recordStoreName,
 				persistableStrategy, -1);
 	}
-
+	
 	public PersistableMetadata(boolean isAbstract, String className,
 			String superClassName, String[] fieldNames, int[] fieldTypes,
 			Hashtable persistableImplementations, Vector indexMetadatas,
@@ -82,7 +88,7 @@ public class PersistableMetadata {
 		this.persistableStrategy = persistableStrategy;
 		this.recordId = recordId;
 	}
-
+	
 	private String arrayToString(Object array2, int len) {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("[");
@@ -97,7 +103,7 @@ public class PersistableMetadata {
 		buffer.append("]");
 		return buffer.toString();
 	}
-
+	
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
@@ -183,8 +189,16 @@ public class PersistableMetadata {
 		return recordStoreName;
 	}
 
+	public String getSuiteName() {
+		return suiteName;
+	}
+
 	public String getSuperClassName() {
 		return superClassName;
+	}
+
+	public String getVendorName() {
+		return vendorName;
 	}
 
 	public int hashCode() {
@@ -230,6 +244,14 @@ public class PersistableMetadata {
 
 	public void setRecordStoreName(String recordStoreName) {
 		this.recordStoreName = recordStoreName;
+	}
+
+	public void setSuiteName(String suiteName) {
+		this.suiteName = suiteName;
+	}
+
+	public void setVendorName(String vendorName) {
+		this.vendorName = vendorName;
 	}
 
 	public String toString() {

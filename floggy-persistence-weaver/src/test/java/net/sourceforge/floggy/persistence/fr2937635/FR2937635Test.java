@@ -20,35 +20,16 @@ import java.io.File;
 import java.io.FileInputStream;
 
 import javassist.ClassPool;
-
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.converters.reflection.AbstractReflectionConverter;
-
+import junit.framework.TestCase;
 import net.sourceforge.floggy.persistence.Configuration;
 import net.sourceforge.floggy.persistence.FloggyException;
 import net.sourceforge.floggy.persistence.Weaver;
 import net.sourceforge.floggy.persistence.impl.PersistableMetadata;
 
-import junit.framework.TestCase;
+import com.thoughtworks.xstream.XStream;
 
 public class FR2937635Test extends TestCase {
 	
-	public void testInvalidXMLFileDuplicatedField() {
-		File file = new File("target/test-classes/fr2937635/floggy-invalid-duplicated-field.xml");
-		assertTrue(file.exists());
-		
-		Weaver weaver = new Weaver();
-		
-		XStream stream = weaver.getXStream();
-
-		try {
-			stream.fromXML(new FileInputStream(file));
-			fail("It should throw a exception");
-		} catch (Exception e) {
-			assertEquals(AbstractReflectionConverter.DuplicateFieldException.class, e.getClass());
-		}
-	}
-
 	public void testDoesNotExistField() {
 		File file = new File("target/test-classes/fr2937635/floggy-does-not-exist-field.xml");
 		assertTrue(file.exists());
@@ -87,14 +68,6 @@ public class FR2937635Test extends TestCase {
 
 	public void testValidIndexFieldTypeInt() {
 		validateIndexFieldType("int");
-	}
-
-	public void testValidIndexFieldTypeLong() {
-		validateIndexFieldType("long");
-	}
-
-	public void testValidIndexFieldTypeShort() {
-		validateIndexFieldType("short");
 	}
 
 	public void testValidIndexFieldTypeJavaLangByte() {
@@ -137,6 +110,30 @@ public class FR2937635Test extends TestCase {
 		validateIndexFieldType("java.util.TimeZone");
 	}
 
+	public void testValidIndexFieldTypeLong() {
+		validateIndexFieldType("long");
+	}
+
+	public void testValidIndexFieldTypeShort() {
+		validateIndexFieldType("short");
+	}
+
+	public void testValidXMLFile() {
+		File file = new File("target/test-classes/fr2937635/floggy-valid.xml");
+		assertTrue(file.exists());
+		
+		Weaver weaver = new Weaver();
+		
+		XStream stream = weaver.getXStream();
+
+		try {
+			Configuration configuration = (Configuration) stream.fromXML(new FileInputStream(file));
+			assertNotNull(configuration);
+		} catch (Exception e) {
+			fail(e.getMessage());
+		}
+	}
+
 	protected void validateIndexFieldType(String type) {
 		File file = new File("target/test-classes/fr2937635/floggy-valid-field-type-" + type + ".xml");
 		assertTrue(file.exists());
@@ -158,22 +155,6 @@ public class FR2937635Test extends TestCase {
 
 			Configuration c2 = (Configuration) stream.fromXML(new FileInputStream(file));
 			weaver.mergeConfigurations(c1, c2);
-		} catch (Exception e) {
-			fail(e.getMessage());
-		}
-	}
-
-	public void testValidXMLFile() {
-		File file = new File("target/test-classes/fr2937635/floggy-valid.xml");
-		assertTrue(file.exists());
-		
-		Weaver weaver = new Weaver();
-		
-		XStream stream = weaver.getXStream();
-
-		try {
-			Configuration configuration = (Configuration) stream.fromXML(new FileInputStream(file));
-			assertNotNull(configuration);
 		} catch (Exception e) {
 			fail(e.getMessage());
 		}
