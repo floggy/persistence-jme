@@ -54,6 +54,18 @@ public class PersistableManagerImpl extends PersistableManager {
 		PersistableMetadataManager.init();
 		IndexManager.init();
 	}
+	
+	public int batchSave(Persistable persistable) throws FloggyException {
+		__Persistable __persistable = Utils.checkArgumentAndCast(persistable);
+		int id = __persistable.__getId();
+		if (id > 0) {
+			throw new FloggyException("You should not use this method to update the persistable object.");
+		} else {
+			id = save(persistable);
+			__persistable.__setId(0);
+		}
+		return id;
+	}
 
 	/**
 	 * Removes an object from the repository. If the object is not stored in the

@@ -22,7 +22,7 @@ package net.sourceforge.floggy.persistence;
  * supplied) using the <code>get(int index)</code> method. <br>
  * <br>
  * <code>
- * PersistableManager pm = PersistableManager.getInstance();<br>
+ * PersistableManager manager = PersistableManager.getInstance();<br>
  * ObjectSet os = manager.find(Customer.class, null, null);<br>
  * for(int i = 0; i < os.size(); i++) {<br>
  * &nbsp;&nbsp;Customer customer = (Customer) os.get(i);<br>

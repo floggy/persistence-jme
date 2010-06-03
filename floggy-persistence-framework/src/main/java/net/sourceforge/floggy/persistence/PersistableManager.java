@@ -60,6 +60,37 @@ public abstract class PersistableManager {
     }
 
     /**
+     * Store an object in the repository, it will always create a new entry 
+     * on the repository.<br> The main use of this method is to import data 
+     * from a remote source.<br> Set the property BATCH_MODE to true to improve 
+     * the performance and create only one object to save the data.
+     * <br><br>
+     * <code>
+     * PersistableManager manager = PersistableManager.getInstance();<br>
+     * manager.setProperty(PersistableManager.BATCH_MODE, Boolean.TRUE);<br>
+     * Customer customer = new Customer(); <br>
+     * for(int i = 0; i < ...; i++) {<br>
+     * &nbsp;&nbsp;loadDataFromServerOnCustomer(customer);<br>
+     * &nbsp;&nbsp;manager.batchSave(customer);<br>
+     * }
+     * manager.setProperty(PersistableManager.BATCH_MODE, Boolean.FALSE);<br>
+     * </code>
+     * <br><br>
+     * The object ID obtained from this operation can be used in the load
+     * operations.
+     *
+     * @param persistable Object to be stored.
+     *
+     * @return The ID of the object.
+     *
+     * @throws FloggyException Exception thrown if an error occurs while
+     *         storing the object.
+     *
+     * @see #load(Persistable, int)
+     */
+    public abstract int batchSave(Persistable persistable) throws FloggyException;
+
+    /**
      * Load an previously stored object from the repository using the
      * object ID.<br>
      * The object ID is the result of a save operation or you can obtain it
