@@ -17,5 +17,57 @@
 				</index>
 			</indexes>
 		</persistable>
+		<persistable class-name="net.sourceforge.floggy.persistence.fr2937635.FR2937635" record-store-name="FR2937635">
+			<indexes>
+				<index name="byByte1">
+					<field>byte1</field>
+				</index>
+				<index name="byChar1">
+					<field>char1</field>
+				</index>
+				<index name="byDouble1">
+					<field>double1</field>
+				</index>
+				<index name="byInt1">
+					<field>int1</field>
+				</index>
+				<index name="byLong1">
+					<field>long1</field>
+				</index>
+				<index name="byShort1">
+					<field>short1</field>
+				</index>
+				<index name="byByte2">
+					<field>byte2</field>
+				</index>
+				<index name="byChar2">
+					<field>char2</field>
+				</index>
+				<index name="byDouble2">
+					<field>double2</field>
+				</index>
+				<index name="byInt2">
+					<field>int2</field>
+				</index>
+				<index name="byLong2">
+					<field>long2</field>
+				</index>
+				<index name="byShort2">
+					<field>short2</field>
+				</index>
+				<index name="byString1">
+					<field>string1</field>
+				</index>
+				<index name="byDate">
+					<field>date</field>
+				</index>
+				<index name="byStringBuffer">
+					<field>stringBuffer</field>
+				</index>
+				<index name="byTimeZone">
+					<field>timeZone</field>
+				</index>
+			</indexes>
+		</persistable>
 	</persistables>
 </floggy>

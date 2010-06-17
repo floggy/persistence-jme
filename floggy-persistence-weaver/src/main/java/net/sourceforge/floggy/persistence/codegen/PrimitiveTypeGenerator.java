@@ -65,4 +65,35 @@ public class PrimitiveTypeGenerator extends SourceCodeGenerator {
 		throw new NotFoundException("Type not found: "+name);
 	}
 
+	public static String getWrapperNameClass(CtClass fieldType) throws NotFoundException {
+		String name = fieldType.getName();
+		
+		if (name.equals(Boolean.class.getName()) || name.equals(boolean.class.getName())) {
+			return "java.lang.Boolean";
+		}
+		if (name.equals(Byte.class.getName()) || name.equals(byte.class.getName())) {
+			return "java.lang.Byte";
+		}
+		if (name.equals(Character.class.getName()) || name.equals(char.class.getName())) {
+			return "java.lang.Character";
+		}
+		if (name.equals(Double.class.getName()) || name.equals(double.class.getName())) {
+			return "java.lang.Double";
+		}
+		if (name.equals(Float.class.getName()) || name.equals(float.class.getName())) {
+			return "java.lang.Float";
+		}
+		if (name.equals(Integer.class.getName()) || name.equals(int.class.getName())) {
+			return "java.lang.Integer";
+		}
+		if (name.equals(Long.class.getName()) || name.equals(long.class.getName())) {
+			return "java.lang.Long";
+		}
+		if (name.equals(Short.class.getName()) || name.equals(short.class.getName())) {
+			return "java.lang.Short";
+		}
+	
+		throw new NotFoundException("Type not found: "+name);
+	}
+
 }

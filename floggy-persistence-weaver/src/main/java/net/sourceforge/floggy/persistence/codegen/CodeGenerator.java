@@ -167,7 +167,14 @@ public abstract class CodeGenerator {
 				int fieldsSize = fields.size();
 				for (int j = 0; j < fieldsSize; j++) {
 					String fieldName = (String) fields.get(j);
-					buffer.append("return this." + fieldName + ";\n");
+					
+					CtClass fieldType = ctClass.getField(fieldName).getType(); 
+					if (fieldType.isPrimitive()) {
+						buffer.append("return new " + PrimitiveTypeGenerator.getWrapperNameClass(fieldType) + "(this." + fieldName + ");\n");
+					}
+					else {
+						buffer.append("return this." + fieldName + ";\n");
+					}
 				}
 				buffer.append("}\n");
 			}
