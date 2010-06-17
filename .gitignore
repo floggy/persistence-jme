@@ -1,0 +1,9 @@
+.classpath
+.metadata
+.project
+.settings/
+eclipse-floggy-plugin/.externalToolBuilders/
+eclipse-floggy-plugin/META-INF/
+eclipse-floggy-plugin/lib/
+eclipse-floggy-plugin/maven-eclipse.xml
+target/
