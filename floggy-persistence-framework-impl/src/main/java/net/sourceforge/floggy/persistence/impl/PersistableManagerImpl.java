@@ -121,10 +121,10 @@ public class PersistableManagerImpl extends PersistableManager {
 					int size = indexMetadatas.size();
 					for (int i = 0; i < size; i++) {
 						IndexMetadata indexMetadata = (IndexMetadata) indexMetadatas.elementAt(i);
-						RecordStore.deleteRecordStore(indexMetadata.getRecordStoreName());
+						RecordStoreManager.deleteRecordStore(indexMetadata.getRecordStoreName());
 					}
 				}
-				RecordStore.deleteRecordStore(metadata.getRecordStoreName());
+				RecordStoreManager.deleteRecordStore(metadata.getRecordStoreName());
 			}
 		} catch (Exception ex) {
 			throw Utils.handleException(ex);
@@ -154,7 +154,7 @@ public class PersistableManagerImpl extends PersistableManager {
 			}
 		} else {
 			try {
-				RecordStore.deleteRecordStore(persistable.getRecordStoreName());
+				RecordStoreManager.deleteRecordStore(persistable.getRecordStoreName());
 				IndexManager.deleteIndex(persistableClass);
 			} catch (Exception ex) {
 				throw Utils.handleException(ex);

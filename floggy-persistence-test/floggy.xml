@@ -10,6 +10,13 @@
 				</index>
 			</indexes>
 		</persistable>
+		<persistable class-name="net.sourceforge.floggy.persistence.bug3017424.BUG3017424" record-store-name="BUG3017424">
+			<indexes>
+				<index name="byName">
+					<field>name</field>
+				</index>
+			</indexes>
+		</persistable>
 		<persistable class-name="net.sourceforge.floggy.persistence.fr2935390.FR2935390" record-store-name="FR2935390">
 			<indexes>
 				<index name="byName">

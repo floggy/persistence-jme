@@ -21,6 +21,7 @@ import java.util.Hashtable;
 
 import javax.microedition.rms.RecordStore;
 import javax.microedition.rms.RecordStoreException;
+import javax.microedition.rms.RecordStoreNotFoundException;
 
 import net.sourceforge.floggy.persistence.FloggyException;
 
@@ -79,7 +80,10 @@ public class RecordStoreManager {
 	}
 
 	public static void deleteRecordStore(String recordStoreName) throws Exception{
-		RecordStore.deleteRecordStore(recordStoreName);
+		try {
+			RecordStore.deleteRecordStore(recordStoreName);
+		} catch (RecordStoreNotFoundException e) {
+		}
 	}
 
 	public static RecordStore getRecordStore(__Persistable persistable)
