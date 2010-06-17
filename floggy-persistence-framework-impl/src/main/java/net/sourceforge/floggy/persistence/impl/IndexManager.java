@@ -134,9 +134,9 @@ public class IndexManager {
 		}
 	}
 
-	public static void deleteIndex(Class persistableClass) throws Exception {
+	public static void deleteIndex(String persistableClassName) throws Exception {
 		PersistableMetadata metadata = PersistableMetadataManager
-				.getClassBasedMetadata(persistableClass.getName());
+				.getClassBasedMetadata(persistableClassName);
 		Vector indexMetadatas = metadata.getIndexMetadatas();
 
 		if (indexMetadatas != null) {
@@ -144,7 +144,13 @@ public class IndexManager {
 
 			for (int i = 0; i < size; i++) {
 				IndexMetadata indexMetadata = (IndexMetadata) indexMetadatas.elementAt(i);
-				RecordStoreManager.deleteRecordStore(indexMetadata.getId());
+				
+				String id = indexMetadata.getId();
+				if (indexes.containsKey(id)) {
+					Index index = (Index) indexes.get(id);
+					index.clear();
+				}
+				RecordStoreManager.deleteRecordStore(id);
 			}
 		}
 	}
@@ -240,6 +246,7 @@ public class IndexManager {
 				indexEntry.serialize(fos);
 				int id = indexEntry.getRecordId();
 				byte[] data = fos.toByteArray();
+
 				if (id != -1) {
 					rs.setRecord(id, data, 0, data.length);
 				} else {

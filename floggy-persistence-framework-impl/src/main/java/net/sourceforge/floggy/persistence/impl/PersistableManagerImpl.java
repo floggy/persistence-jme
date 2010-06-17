@@ -116,14 +116,7 @@ public class PersistableManagerImpl extends PersistableManager {
 			Enumeration metadatas = PersistableMetadataManager.getClassBasedMetadatas();
 			while (metadatas.hasMoreElements()) {
 				PersistableMetadata metadata = (PersistableMetadata) metadatas.nextElement();
-				Vector indexMetadatas = metadata.getIndexMetadatas();
-				if (indexMetadatas != null) {
-					int size = indexMetadatas.size();
-					for (int i = 0; i < size; i++) {
-						IndexMetadata indexMetadata = (IndexMetadata) indexMetadatas.elementAt(i);
-						RecordStoreManager.deleteRecordStore(indexMetadata.getRecordStoreName());
-					}
-				}
+				IndexManager.deleteIndex(metadata.getClassName());
 				RecordStoreManager.deleteRecordStore(metadata.getRecordStoreName());
 			}
 		} catch (Exception ex) {
@@ -155,7 +148,7 @@ public class PersistableManagerImpl extends PersistableManager {
 		} else {
 			try {
 				RecordStoreManager.deleteRecordStore(persistable.getRecordStoreName());
-				IndexManager.deleteIndex(persistableClass);
+				IndexManager.deleteIndex(persistableClass.getName());
 			} catch (Exception ex) {
 				throw Utils.handleException(ex);
 			}

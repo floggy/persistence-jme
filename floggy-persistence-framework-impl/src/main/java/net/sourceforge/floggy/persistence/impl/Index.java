@@ -34,6 +34,11 @@ public class Index {
 		return valueIds.containsKey(key);
 	}
 
+	public void clear() {
+		idValue.clear();
+		valueIds.clear();
+	}
+
 	public int[] getIds(Object value) {
 		if (value instanceof String) {
 			String stringValue = (String) value;
