@@ -23,12 +23,14 @@ import net.sourceforge.floggy.persistence.Persistable;
 
 public class FR2937635 implements Persistable {
 
+	protected boolean boolean1;
 	protected byte byte1;
 	protected char char1;
 	protected double double1;
 	protected int int1;
 	protected long long1;
 	protected short short1;
+	protected Boolean boolean2;
 	protected Byte byte2;
 	protected Character char2;
 	protected Double double2;
@@ -39,6 +41,14 @@ public class FR2937635 implements Persistable {
 	protected Date date;
 	protected StringBuffer stringBuffer;
 	protected TimeZone timeZone;
+
+	public boolean getBoolean1() {
+		return boolean1;
+	}
+
+	public Boolean getBoolean2() {
+		return boolean2;
+	}
 
 	public byte getByte1() {
 		return byte1;
@@ -102,6 +112,18 @@ public class FR2937635 implements Persistable {
 
 	public TimeZone getTimeZone() {
 		return timeZone;
+	}
+
+	public boolean isBoolean1() {
+		return boolean1;
+	}
+
+	public void setBoolean1(boolean boolean1) {
+		this.boolean1 = boolean1;
+	}
+
+	public void setBoolean2(Boolean boolean2) {
+		this.boolean2 = boolean2;
 	}
 
 	public void setByte1(byte byte1) {

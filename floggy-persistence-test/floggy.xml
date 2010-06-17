@@ -19,6 +19,9 @@
 		</persistable>
 		<persistable class-name="net.sourceforge.floggy.persistence.fr2937635.FR2937635" record-store-name="FR2937635">
 			<indexes>
+				<index name="byBoolean1">
+					<field>boolean1</field>
+				</index>
 				<index name="byByte1">
 					<field>byte1</field>
 				</index>
@@ -36,6 +39,9 @@
 				</index>
 				<index name="byShort1">
 					<field>short1</field>
+				</index>
+				<index name="byBoolean2">
+					<field>boolean2</field>
 				</index>
 				<index name="byByte2">
 					<field>byte2</field>

@@ -55,6 +55,33 @@ public class FR2937635Test extends FloggyBaseTest {
 		}
 	}
 
+	public void testIndexFindTypeBoolean() throws Exception {
+		boolean boolean1 = false;
+
+		FR2937635 fr2937635 = new FR2937635();
+
+		fr2937635.setBoolean1(boolean1);
+
+		try {
+			IndexFilter filter = new IndexFilter("byBoolean1", new Boolean(boolean1));
+
+			ObjectSet os = manager.find(FR2937635.class, filter, true);
+
+			assertEquals(0, os.size());
+
+			manager.save(fr2937635);
+
+			os = manager.find(FR2937635.class, filter, true);
+
+			assertEquals(1, os.size());
+			assertEquals(boolean1, ((FR2937635) os.get(0)).getBoolean1());
+		} catch (Exception e) {
+			fail(e.getMessage());
+		} finally {
+			manager.delete(fr2937635);
+		}
+	}
+
 	public void testIndexFindFieldTypeChar() throws Exception {
 		char char1 = (char) 126;
 
@@ -134,6 +161,33 @@ public class FR2937635Test extends FloggyBaseTest {
 
 			assertEquals(1, os.size());
 			assertEquals(int1, ((FR2937635) os.get(0)).getInt1());
+		} catch (Exception e) {
+			fail(e.getMessage());
+		} finally {
+			manager.delete(fr2937635);
+		}
+	}
+
+	public void testIndexFindFieldTypeJavaLangBoolean() throws Exception {
+		Boolean boolean2 = Boolean.TRUE;
+
+		FR2937635 fr2937635 = new FR2937635();
+
+		fr2937635.setBoolean2(boolean2);
+
+		try {
+			IndexFilter filter = new IndexFilter("byBoolean2", boolean2);
+
+			ObjectSet os = manager.find(FR2937635.class, filter, true);
+
+			assertEquals(0, os.size());
+
+			manager.save(fr2937635);
+
+			os = manager.find(FR2937635.class, filter, true);
+
+			assertEquals(1, os.size());
+			assertEquals(boolean2, ((FR2937635) os.get(0)).getBoolean2());
 		} catch (Exception e) {
 			fail(e.getMessage());
 		} finally {

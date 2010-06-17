@@ -790,13 +790,15 @@ public class Weaver {
 			CtClass fieldType = field.getType();
 			String fieldTypeClassName = fieldType.getName();
 			
-			if("byte".equals(fieldTypeClassName) || 
+			if("boolean".equals(fieldTypeClassName) || 
+				"byte".equals(fieldTypeClassName) || 
 				"char".equals(fieldTypeClassName) ||
 				"double".equals(fieldTypeClassName) ||
 				"float".equals(fieldTypeClassName) ||
 				"int".equals(fieldTypeClassName) ||
 				"long".equals(fieldTypeClassName) ||
 				"short".equals(fieldTypeClassName) ||
+				"java.lang.Boolean".equals(fieldTypeClassName) ||
 				"java.lang.Byte".equals(fieldTypeClassName) ||
 				"java.lang.Character".equals(fieldTypeClassName) ||
 				"java.lang.Double".equals(fieldTypeClassName) ||
