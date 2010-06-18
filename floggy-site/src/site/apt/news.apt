@@ -1,5 +1,5 @@
 ~~
-~~ Copyright (c) 2006-2009 Floggy Open Source Group. All rights reserved.
+~~ Copyright (c) 2006-2010 Floggy Open Source Group. All rights reserved.
 ~~
 ~~ Licensed under the Apache License, Version 2.0 (the "License");
 ~~ you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
 ~~ See the License for the specific language governing permissions and
 ~~ limitations under the License.
 ~~
- 
+
 News
 
 	<<25-Apr-10:>> Call for testers: we just built an alpha package for the new Index feature, we need testers! Be one! Check it out how {{{./core-package.html#Using_the_index_feature_only_available_on_package_1.4.0-alpha}here}}.
