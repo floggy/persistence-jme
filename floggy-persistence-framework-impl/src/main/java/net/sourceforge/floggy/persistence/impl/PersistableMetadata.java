@@ -25,13 +25,9 @@ import java.util.Vector;
 public class PersistableMetadata {
 
 	public static final int BOOLEAN = 1;
-
 	public static final int BYTE = 2;
-
 	public static final int CALENDAR = 4;
-
 	public static final int CHARACTER = 8;
-
 	public static final int DATE = 16;
 	public static final int DOUBLE = 32;
 	public static final int FLOAT = 64;
@@ -58,6 +54,7 @@ public class PersistableMetadata {
 	private Hashtable persistableImplementations;
 	private Vector indexMetadatas;
 	private String recordStoreName;
+	private String recordStoreVersion;
 	private String suiteName;
 	private String vendorName;
 	private transient int recordId = -1;
@@ -70,13 +67,14 @@ public class PersistableMetadata {
 			String recordStoreName, int persistableStrategy) {
 		this(isAbstract, className, superClassName, fieldNames, fieldTypes,
 				persistableImplementations, indexMetadatas, recordStoreName,
-				persistableStrategy, -1);
+				null, persistableStrategy, -1);
 	}
 	
 	public PersistableMetadata(boolean isAbstract, String className,
 			String superClassName, String[] fieldNames, int[] fieldTypes,
 			Hashtable persistableImplementations, Vector indexMetadatas,
-			String recordStoreName, int persistableStrategy, int recordId) {
+			String recordStoreName, String recordStoreVersion, 
+			int persistableStrategy, int recordId) {
 		super();
 		this.isAbstract = isAbstract;
 		this.className = className;
@@ -86,6 +84,7 @@ public class PersistableMetadata {
 		this.persistableImplementations = persistableImplementations;
 		this.indexMetadatas = indexMetadatas;
 		this.recordStoreName = recordStoreName;
+		this.recordStoreVersion= recordStoreVersion;
 		this.persistableStrategy = persistableStrategy;
 		this.recordId = recordId;
 	}
@@ -190,6 +189,10 @@ public class PersistableMetadata {
 		return recordStoreName;
 	}
 
+	public String getRecordStoreVersion() {
+		return recordStoreVersion;
+	}
+
 	public String getSuiteName() {
 		return suiteName;
 	}
@@ -245,6 +248,10 @@ public class PersistableMetadata {
 
 	public void setRecordStoreName(String recordStoreName) {
 		this.recordStoreName = recordStoreName;
+	}
+
+	public void setRecordStoreVersion(String recordStoreVersion) {
+		this.recordStoreVersion = recordStoreVersion;
 	}
 
 	public void setSuiteName(String suiteName) {

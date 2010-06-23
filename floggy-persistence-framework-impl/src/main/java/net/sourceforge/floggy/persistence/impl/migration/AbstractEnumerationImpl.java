@@ -126,6 +126,7 @@ public abstract class AbstractEnumerationImpl implements Enumeration {
 			if (rmsBasedMetadata != classBasedMetadata) {
 				try {
 					classBasedMetadata.setRecordId(rmsBasedMetadata.getRecordId());
+					classBasedMetadata.setRecordStoreVersion(PersistableMetadataManager.getBytecodeVersion());
 					PersistableMetadataManager.saveRMSStructure(classBasedMetadata);
 				} catch (Exception ex) {
 					throw Utils.handleException(ex);

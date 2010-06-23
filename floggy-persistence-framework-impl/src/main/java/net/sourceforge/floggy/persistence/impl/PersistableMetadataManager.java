@@ -100,7 +100,7 @@ public class PersistableMetadataManager {
 			rmsVersion = CURRENT_VERSION;
 			save(rs);
 		}
-		
+
 		if (classBasedMetadatas != null) {
 			Enumeration classNames = classBasedMetadatas.keys();
 			while (classNames.hasMoreElements()) {
@@ -144,16 +144,21 @@ public class PersistableMetadataManager {
 				if (dis.available() != 0) {
 					persistableStrategy = dis.readInt();
 				}
-				
+
 				Vector indexMetadatas = null;
 				if (dis.available() != 0) {
 					indexMetadatas = SerializationManager.readIndexMetadata(dis);
 				}
 
+				String recordStoreVersion = getRMSVersion();
+				if (dis.available() != 0) {
+					recordStoreVersion = dis.readUTF();
+				}
+
 				addRMSMetadata(new PersistableMetadata(isAbstract, className, 
 					superClassName, fieldNames, fieldTypes, 
-					persistableImplementations, indexMetadatas, recordStoreName, 
-					persistableStrategy, recordId));
+					persistableImplementations, indexMetadatas, recordStoreName,
+					recordStoreVersion, persistableStrategy, recordId));
 			}
 		}
 	}
@@ -170,7 +175,13 @@ public class PersistableMetadataManager {
 	
 	public static void saveRMSStructure(PersistableMetadata metadata) throws Exception {
 		String[] fieldNames = metadata.getFieldNames(); 
+
 		int[] fieldTypes = metadata.getFieldTypes();
+
+		String recordStoreVersion = metadata.getRecordStoreVersion();
+
+		recordStoreVersion = (recordStoreVersion == null) ? getRMSVersion() : recordStoreVersion;
+
 		FloggyOutputStream out = new FloggyOutputStream();
 
 		out.writeUTF(metadata.getClassName());
@@ -185,6 +196,7 @@ public class PersistableMetadataManager {
 		out.writeUTF(metadata.getRecordStoreName());
 		out.writeInt(metadata.getPersistableStrategy());
 		SerializationManager.writeIndexMetadata(out, metadata.getIndexMetadatas());
+		out.writeUTF(recordStoreVersion);
 
 		byte[] data = out.toByteArray();
 		RecordStore rs = RecordStore.openRecordStore("FloggyProperties", true);

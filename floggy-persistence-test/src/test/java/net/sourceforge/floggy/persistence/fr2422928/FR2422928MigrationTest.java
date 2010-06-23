@@ -179,6 +179,11 @@ public class FR2422928MigrationTest extends FloggyBaseTest {
 	public void testAfterUpddate() throws Exception {
 		MigrationManager um = MigrationManager.getInstance();
 		Enumeration enumeration = um.start(FR2422928.class, null);
+
+		PersistableMetadata metadata = PersistableMetadataManager.getRMSBasedMetadata(FR2422928.class.getName());
+
+		assertEquals(PersistableMetadataManager.VERSION_1_3_0, metadata.getRecordStoreVersion());
+
 		try {
 			while (enumeration.hasMoreElements()) {
 				Hashtable data = (Hashtable) enumeration.nextElement();
@@ -194,6 +199,10 @@ public class FR2422928MigrationTest extends FloggyBaseTest {
 		} finally {
 			um.finish(FR2422928.class);
 		}
+
+		metadata = PersistableMetadataManager.getRMSBasedMetadata(FR2422928.class.getName());
+
+		assertEquals(PersistableMetadataManager.getBytecodeVersion(), metadata.getRecordStoreVersion());
 
 		try {
 			ObjectSet os = manager.find(FR2422928.class, null, null);
