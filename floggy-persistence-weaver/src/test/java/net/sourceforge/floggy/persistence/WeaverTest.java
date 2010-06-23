@@ -32,13 +32,13 @@ public class WeaverTest extends TestCase {
 		Configuration c1 = new Configuration();
 		PersistableMetadata metadata1 = new PersistableMetadata(false,
 			className, null, null, null, null, null, null,
-			persistableStrategy);
+			persistableStrategy, null);
 
 		c1.addPersistableMetadata(metadata1);
 
 		Configuration c2 = new Configuration();
 		PersistableMetadata metadata2 = new PersistableMetadata(false,
-			className, null, null, null, null, null, recordStoreName, 0);
+			className, null, null, null, null, null, recordStoreName, 0, null);
 
 		c2.addPersistableMetadata(metadata2);
 

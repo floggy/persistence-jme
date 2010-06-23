@@ -22,6 +22,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
@@ -168,6 +169,7 @@ public class Weaver {
 			String recordStoreName = metadata.getRecordStoreName();
 			int persistableStrategy = metadata.getPersistableStrategy();
 			Vector indexMetadatas = metadata.getIndexMetadatas();
+			String[] descendents = metadata.getDescendents();
 
 			StringBuffer fieldNamesBuffer = new StringBuffer("new String[");
 			StringBuffer fieldTypesBuffer = new StringBuffer("new int[");
@@ -237,6 +239,27 @@ public class Weaver {
 				buffer.append("indexMetadatas = null;\n");
 			}
 
+			StringBuffer descendentsBuffer = new StringBuffer("new String[");
+			addHeader = true;
+			if (descendents != null) {
+				for (int i = 0; i < descendents.length; i++) {
+					if (addHeader) {
+						descendentsBuffer.append("]{");
+						addHeader = false;
+					}
+					descendentsBuffer.append("\"");
+					descendentsBuffer.append(descendents[i]);
+					descendentsBuffer.append("\",");
+
+				}
+			}
+			if (addHeader) {
+				descendentsBuffer.append("0]");
+			} else {
+				descendentsBuffer.deleteCharAt(descendentsBuffer.length() - 1);
+				descendentsBuffer.append("}");
+			}
+
 			buffer.append("classBasedMetadatas.put(\"" + className 
 				+ "\", new net.sourceforge.floggy.persistence.impl.PersistableMetadata(" + isAbstract + ", \"" 
 				+ className + "\", " 
@@ -244,13 +267,13 @@ public class Weaver {
 				+ fieldNamesBuffer.toString() + ", " 
 				+ fieldTypesBuffer.toString() + ", persistableImplementations, indexMetadatas, "
 				+ "\"" + recordStoreName + "\", "
-				+ persistableStrategy + "));\n");
+				+ persistableStrategy + ", "+ descendentsBuffer.toString() + "));\n");
 
 		}
 
 		buffer.append("load();\n");
 		buffer.append("}\n");
-		
+
 		CtClass ctClass= this.classpathPool.get("net.sourceforge.floggy.persistence.impl.PersistableMetadataManager");
 		CtMethod[] methods= ctClass.getMethods();
 		for (int i = 0; i < methods.length; i++) {
@@ -279,13 +302,28 @@ public class Weaver {
 
 		Collections.reverse(list);
 
-		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
-			String className = (String) iterator.next();
+		for (int i = 0; i < list.size(); i++) {
+			String className = (String) list.get(i);
 
-			if (!configuration.containsPersistable(className)) {
+			PersistableMetadata metadata = configuration.getPersistableMetadata(className);
+			if (metadata == null) {
 				CtClass clazz = classpathPool.get(className);
-				configuration
-						.addPersistableMetadata(createPersistableMetadata(clazz));
+
+				metadata = createPersistableMetadata(clazz);
+
+				configuration.addPersistableMetadata(metadata);
+			}
+			
+			if (i == 0) {
+				String[] descendents = metadata.getDescendents();
+				
+				if (descendents == null) {
+					descendents = new String[0];
+				}
+				Set temp = new HashSet(Arrays.asList(descendents));
+				temp.addAll(list);
+				
+				metadata.setDescendents((String[]) temp.toArray(new String[temp.size()]));
 			}
 		}
 		return list;
@@ -497,7 +535,7 @@ public class Weaver {
 		}
 		
 		PersistableMetadata metadata = new PersistableMetadata(Modifier.isAbstract(ctClass.getModifiers()), className, superClassName, 
-			(String[])fieldNames.toArray(new String[fieldNames.size()]), temp, persistableImplementations, indexMetadatas, recordStoreName, persistableStrategy);
+			(String[])fieldNames.toArray(new String[fieldNames.size()]), temp, persistableImplementations, indexMetadatas, recordStoreName, persistableStrategy, null);
 		return metadata;
 	}
 	
@@ -518,15 +556,15 @@ public class Weaver {
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/Index.class");
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/IndexEntry.class");
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/ObjectComparator.class");
-		embeddedClass("/net/sourceforge/floggy/persistence/impl/ObjectFilter.class");
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/ObjectSetImpl.class");
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/__Persistable.class");
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/PersistableManagerImpl.class");
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/PersistableMetadata.class");
+		embeddedClass("/net/sourceforge/floggy/persistence/impl/PolymorphicObjectSetImpl.class");
+		embeddedClass("/net/sourceforge/floggy/persistence/impl/PolymorphicObjectSetImpl$ObjectList.class");
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/RecordStoreManager.class");
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/RecordStoreManager$1.class");
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/RecordStoreManager$RecordStoreReference.class");
-		embeddedClass("/net/sourceforge/floggy/persistence/impl/SingleStrategyObjectFilter.class");
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/Utils.class");
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/migration/MigrationManagerImpl.class");
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/migration/AbstractEnumerationImpl.class");
@@ -534,6 +572,40 @@ public class Weaver {
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/migration/PerClassStrategyEnumerationImpl.class");
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/migration/JoinedStrategyEnumerationImpl.class");
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/migration/HashtableValueNullable.class");
+		embeddedClass("/net/sourceforge/floggy/persistence/impl/strategy/JoinedStrategyObjectFilter.class");
+		embeddedClass("/net/sourceforge/floggy/persistence/impl/strategy/PerClassStrategyObjectFilter.class");
+		embeddedClass("/net/sourceforge/floggy/persistence/impl/strategy/SingleStrategyObjectFilter.class");
+	}
+
+	protected void excludeAbstractDescendents() throws NotFoundException {
+		List persistables = configuration.getPersistableMetadatas();
+
+		for (int i = 0; i < persistables.size(); i++) {
+			PersistableMetadata metadata = (PersistableMetadata) persistables.get(i);
+
+			String[] temp = metadata.getDescendents();
+			
+			if (temp != null) {
+				Set descendents = new HashSet(Arrays.asList(temp));
+
+				List toRemove = new LinkedList();
+
+				Iterator iterator = descendents.iterator();
+
+				while (iterator.hasNext()) {
+					String className = (String) iterator.next();
+
+					CtClass ctClass = classpathPool.get(className);
+
+					if (Modifier.isAbstract(ctClass.getModifiers())) {
+						toRemove.add(className);
+					}
+				}
+				if (descendents.removeAll(toRemove)) {
+					metadata.setDescendents((String[])descendents.toArray(new String[descendents.size()]));
+				}
+			}
+		}
 	}
 
 	public void execute() throws WeaverException {
@@ -548,6 +620,8 @@ public class Weaver {
 			adaptFrameworkToTargetCLDC();
 			
 			List list = getClassThatImplementsPersistable();
+
+			excludeAbstractDescendents();
 
 			readConfiguration();
 			int classCount = list.size();

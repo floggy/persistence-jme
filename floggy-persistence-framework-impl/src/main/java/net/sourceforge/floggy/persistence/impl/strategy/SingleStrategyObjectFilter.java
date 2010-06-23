@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
-package net.sourceforge.floggy.persistence.impl;
+package net.sourceforge.floggy.persistence.impl.strategy;
 
 import javax.microedition.rms.RecordFilter;
 
 import net.sourceforge.floggy.persistence.Filter;
+import net.sourceforge.floggy.persistence.impl.Utils;
+import net.sourceforge.floggy.persistence.impl.__Persistable;
 
 /**
  * An internal implementation of <code>RecordComparator</code> for comparing two
@@ -26,18 +28,25 @@ import net.sourceforge.floggy.persistence.Filter;
  * 
  * @since 1.4.0
  */
-class SingleStrategyObjectFilter implements RecordFilter {
+public class SingleStrategyObjectFilter implements RecordFilter {
 
 	private final __Persistable persistable;
 	private final String className;
 	private final Filter filter;
 	private final boolean lazy;
 
-	SingleStrategyObjectFilter(__Persistable persistable, Filter filter,
+	public SingleStrategyObjectFilter(__Persistable persistable, Filter filter,
 			boolean lazy) {
 		this.persistable = persistable;
 		this.className = persistable.getClass().getName();
 		this.filter = filter;
+		this.lazy = lazy; 
+	}
+
+	public SingleStrategyObjectFilter(__Persistable persistable, boolean lazy) {
+		this.persistable = persistable;
+		this.className = persistable.getClass().getName();
+		this.filter = null;
 		this.lazy = lazy;
 	}
 

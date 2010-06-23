@@ -59,17 +59,18 @@ public class PersistableMetadata {
 	private String vendorName;
 	private transient int recordId = -1;
 	private int persistableStrategy;
-	
-	
+	private String[] descendents;
+
 	public PersistableMetadata(boolean isAbstract, String className,
 			String superClassName, String[] fieldNames, int[] fieldTypes,
 			Hashtable persistableImplementations, Vector indexMetadatas,
-			String recordStoreName, int persistableStrategy) {
+			String recordStoreName, int persistableStrategy, String[] descendents) {
 		this(isAbstract, className, superClassName, fieldNames, fieldTypes,
 				persistableImplementations, indexMetadatas, recordStoreName,
 				null, persistableStrategy, -1);
+		this.descendents = descendents;
 	}
-	
+
 	public PersistableMetadata(boolean isAbstract, String className,
 			String superClassName, String[] fieldNames, int[] fieldTypes,
 			Hashtable persistableImplementations, Vector indexMetadatas,
@@ -88,7 +89,7 @@ public class PersistableMetadata {
 		this.persistableStrategy = persistableStrategy;
 		this.recordId = recordId;
 	}
-	
+
 	private String arrayToString(Object array2, int len) {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("[");
@@ -103,7 +104,7 @@ public class PersistableMetadata {
 		buffer.append("]");
 		return buffer.toString();
 	}
-	
+
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
@@ -128,8 +129,7 @@ public class PersistableMetadata {
 			if (indexMetadatas == null) {
 				if (other.indexMetadatas != null)
 					return false;
-			} else if (!Utils
-					.equals(indexMetadatas, other.indexMetadatas))
+			} else if (!Utils.equals(indexMetadatas, other.indexMetadatas))
 				return false;
 		}
 		if (persistableImplementations == null) {
@@ -155,6 +155,10 @@ public class PersistableMetadata {
 
 	public String getClassName() {
 		return className;
+	}
+
+	public String[] getDescendents() {
+		return descendents;
 	}
 
 	public String[] getFieldNames() {
@@ -219,7 +223,8 @@ public class PersistableMetadata {
 						: persistableImplementations.hashCode());
 		if (PersistableMetadataManager.VERSION_1_4_0
 				.equals(PersistableMetadataManager.getRMSVersion())) {
-			result = prime * result
+			result = prime
+					* result
 					+ ((indexMetadatas == null) ? 0 : indexMetadatas.hashCode());
 		}
 		result = prime * result + persistableStrategy;
@@ -232,6 +237,10 @@ public class PersistableMetadata {
 
 	public boolean isAbstract() {
 		return isAbstract;
+	}
+
+	public void setDescendents(String[] descendents) {
+		this.descendents = descendents;
 	}
 
 	public void setIndexMetadatas(Vector indexMetadatas) {
@@ -257,7 +266,7 @@ public class PersistableMetadata {
 	public void setSuiteName(String suiteName) {
 		this.suiteName = suiteName;
 	}
-
+	
 	public void setVendorName(String vendorName) {
 		this.vendorName = vendorName;
 	}

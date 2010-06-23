@@ -17,7 +17,6 @@
 package net.sourceforge.floggy.persistence.impl;
 
 import java.util.Enumeration;
-import java.util.Vector;
 
 import javax.microedition.rms.RecordComparator;
 import javax.microedition.rms.RecordEnumeration;
@@ -32,6 +31,11 @@ import net.sourceforge.floggy.persistence.IndexFilter;
 import net.sourceforge.floggy.persistence.ObjectSet;
 import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.PersistableManager;
+import net.sourceforge.floggy.persistence.PolymorphicObjectSet;
+import net.sourceforge.floggy.persistence.SingleObjectSet;
+import net.sourceforge.floggy.persistence.impl.strategy.JoinedStrategyObjectFilter;
+import net.sourceforge.floggy.persistence.impl.strategy.PerClassStrategyObjectFilter;
+import net.sourceforge.floggy.persistence.impl.strategy.SingleStrategyObjectFilter;
 
 /**
  * This is the main class of the framework. All persistence operations methods
@@ -43,6 +47,7 @@ import net.sourceforge.floggy.persistence.PersistableManager;
 public class PersistableManagerImpl extends PersistableManager {
 
 	protected Class deletableClass;
+	protected Class perClassStrategyClass;
 	protected Class singleStrategyClass;
 
 	/**
@@ -50,6 +55,7 @@ public class PersistableManagerImpl extends PersistableManager {
 	 */
 	public PersistableManagerImpl() throws Exception {
 		deletableClass = Class.forName("net.sourceforge.floggy.persistence.Deletable");
+		perClassStrategyClass = Class.forName("net.sourceforge.floggy.persistence.strategy.PerClassStrategy");
 		singleStrategyClass = Class.forName("net.sourceforge.floggy.persistence.strategy.SingleStrategy");
 		SerializationManager.setPersistableManager(this);
 		PersistableMetadataManager.init();
@@ -179,7 +185,7 @@ public class PersistableManagerImpl extends PersistableManager {
 	 *            An optional application-defined criteria for sorting objects.
 	 * @return List of objects that matches the defined criteria.
 	 */
-	public ObjectSet find(Class persistableClass, Filter filter,
+	public SingleObjectSet find(Class persistableClass, Filter filter,
 			Comparator comparator) throws FloggyException {
 		return find(persistableClass, filter, comparator, false);
 	}
@@ -202,7 +208,7 @@ public class PersistableManagerImpl extends PersistableManager {
 	 *            An optional application-defined criteria for sorting objects.
 	 * @return List of objects that matches the defined criteria.
 	 */
-	public ObjectSet find(Class persistableClass, Filter filter,
+	public SingleObjectSet find(Class persistableClass, Filter filter,
 			Comparator comparator, boolean lazy) throws FloggyException {
 
 		RecordFilter objectFilter = null;
@@ -215,15 +221,7 @@ public class PersistableManagerImpl extends PersistableManager {
 		 */
 		__Persistable persistable = Utils.createInstance(persistableClass);
 
-		// Creates an auxiliary filter (if necessary)
-		
-		if (singleStrategyClass.isAssignableFrom(persistableClass)) {
-			objectFilter = new SingleStrategyObjectFilter(persistable, filter, lazy);
-		} else {
-			if (filter != null) {
-				objectFilter = new ObjectFilter(persistable, filter, lazy);
-			}
-		}
+		objectFilter = getFilter(persistable, filter, lazy);
 
 		// Creates an auxiliary comparator (if necessary)
 		if (comparator != null) {
@@ -275,7 +273,7 @@ public class PersistableManagerImpl extends PersistableManager {
 	 *            An optional application-defined criteria for sorting objects.
 	 * @return List of objects that matches the defined criteria.
 	 */
-	public ObjectSet find(Class persistableClass, IndexFilter indexFilter, boolean lazy) throws FloggyException {
+	public SingleObjectSet find(Class persistableClass, IndexFilter indexFilter, boolean lazy) throws FloggyException {
 
 		if(indexFilter == null)
 			throw new IllegalArgumentException("The indexFilter cannot be null");
@@ -289,6 +287,79 @@ public class PersistableManagerImpl extends PersistableManager {
 		} catch (Exception ex) {
 			throw Utils.handleException(ex);
 		}
+	}
+
+	public PolymorphicObjectSet polymorphicFind(Class persistableClass,
+			Filter filter, Comparator comparator, boolean lazy)
+			throws FloggyException {
+
+		RecordFilter objectFilter = null;
+		ObjectComparator objectComparator = null;
+
+		/*
+		 * this is a auxiliary object used to return the name of the
+		 * RecordStore. If the argument filter is not null this object is passed
+		 * to the ObjectFilter constructor
+		 */
+		__Persistable persistable = Utils.createInstance(persistableClass);
+
+		objectFilter = getFilter(persistable, filter, lazy);
+
+		// Creates an auxiliar comparator (if necessary)
+		if (comparator != null) {
+			objectComparator = new ObjectComparator(comparator,
+					Utils.createInstance(persistableClass),
+					Utils.createInstance(persistableClass), lazy);
+		}
+
+		// Searchs the repository and create an object set as result.
+		int[] ids = null;
+
+		PersistableMetadata metadata = PersistableMetadataManager
+				.getClassBasedMetadata(persistableClass.getName());
+
+		PolymorphicObjectSetImpl objectSet = new PolymorphicObjectSetImpl(this, lazy);
+
+		String[] persistables = metadata.getDescendents();
+
+		if (persistables == null || persistables.length == 0) {
+			persistables = new String[]{persistableClass.getName()};
+		}
+
+		for (int i = 0; i < persistables.length; i++) {
+			try {
+				persistableClass = Class.forName(persistables[i]);
+				persistable = Utils.createInstance(persistableClass);
+			} catch (ClassNotFoundException ex) {
+				throw Utils.handleException(ex);
+			}
+			
+			if (singleStrategyClass.isAssignableFrom(singleStrategyClass)) {
+				objectFilter = getFilter(persistable, filter, lazy);
+			}
+
+			RecordStore rs = RecordStoreManager.getRecordStore(persistable);
+
+			try {
+				RecordEnumeration en = rs.enumerateRecords(objectFilter,
+						objectComparator, false);
+				int numRecords = en.numRecords();
+				if (numRecords > 0) {
+					ids = new int[numRecords];
+					for (int j = 0; j < numRecords; j++) {
+						ids[j] = en.nextRecordId();
+					}
+					objectSet.addList(ids, persistableClass);
+				}
+				en.destroy();
+			} catch (RecordStoreException ex) {
+				throw Utils.handleException(ex);
+			} finally {
+				RecordStoreManager.closeRecordStore(rs);
+			}
+		}
+
+		return objectSet;
 	}
 
 	public boolean isPersisted(Persistable persistable) {
@@ -375,7 +446,7 @@ public class PersistableManagerImpl extends PersistableManager {
 		__Persistable __persistable = Utils.checkArgumentAndCast(persistable);
 		RecordStore rs = RecordStoreManager.getRecordStore(__persistable);
 		try {
-			byte[] buffer = __persistable.__serialize();
+			byte[] buffer = __persistable.__serialize(true);
 			int id = __persistable.__getId();
 
 			if(id <= 0) {
@@ -416,6 +487,37 @@ public class PersistableManagerImpl extends PersistableManager {
 		} catch (Exception ex) {
 			throw Utils.handleException(ex);
 		}
+	}
+	
+	protected RecordFilter getFilter(__Persistable persistable, Filter filter, boolean lazy) {
+		Class persistableClass = persistable.getClass();
+
+		RecordFilter recordFilter = null;
+		if (perClassStrategyClass.isAssignableFrom(persistableClass)) {
+			// Creates an auxiliar filter (if necessary)
+			if (filter != null) {
+				recordFilter = new PerClassStrategyObjectFilter(persistable, filter, lazy);
+			}
+		}
+		else if (singleStrategyClass.isAssignableFrom(persistableClass)) {
+			// Creates an auxiliar filter (if necessary)
+			if (filter != null) {
+				recordFilter = new SingleStrategyObjectFilter(persistable, filter, lazy);
+			}
+			else {
+				recordFilter = new SingleStrategyObjectFilter(persistable, lazy);
+			}
+		}
+		else {
+			// Creates an auxiliar filter (if necessary)
+			if (filter != null) {
+				recordFilter = new JoinedStrategyObjectFilter(persistable, filter, lazy);
+			} else {
+				recordFilter = new JoinedStrategyObjectFilter(lazy);
+			}
+		}
+		
+		return recordFilter;
 	}
 
 }

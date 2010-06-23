@@ -29,24 +29,24 @@ import javax.microedition.lcdui.TextField;
 import net.sourceforge.floggy.persistence.Comparator;
 import net.sourceforge.floggy.persistence.FloggyException;
 import net.sourceforge.floggy.persistence.HospitalMIDlet;
-import net.sourceforge.floggy.persistence.ObjectSet;
 import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.PersistableManager;
-import net.sourceforge.floggy.persistence.model.BedComparator;
-import net.sourceforge.floggy.persistence.model.Internment;
+import net.sourceforge.floggy.persistence.SingleObjectSet;
 import net.sourceforge.floggy.persistence.model.Bed;
+import net.sourceforge.floggy.persistence.model.BedComparator;
 import net.sourceforge.floggy.persistence.model.Doctor;
+import net.sourceforge.floggy.persistence.model.Internment;
 import net.sourceforge.floggy.persistence.model.Patient;
 
 public class InternmentForm extends Form implements CommandListener {
 
     protected Internment internment;
 
-    protected ObjectSet patients;
+    protected SingleObjectSet patients;
 
-    protected ObjectSet doctors;
+    protected SingleObjectSet doctors;
 
-    protected ObjectSet beds;
+    protected SingleObjectSet beds;
 
     protected DateField dtEnter;
 

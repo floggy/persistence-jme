@@ -20,12 +20,19 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.TimeZone;
+import java.util.Vector;
+
+import javax.microedition.rms.RecordStore;
 
 import net.sourceforge.floggy.persistence.FloggyBaseTest;
 import net.sourceforge.floggy.persistence.FloggyException;
+import net.sourceforge.floggy.persistence.ObjectSet;
 import net.sourceforge.floggy.persistence.beans.Person;
 import net.sourceforge.floggy.persistence.beans.animals.Bird;
 import net.sourceforge.floggy.persistence.beans.animals.Falcon;
+import net.sourceforge.floggy.persistence.impl.PersistableMetadata;
+import net.sourceforge.floggy.persistence.impl.PersistableMetadataManager;
+import net.sourceforge.floggy.persistence.impl.RecordStoreManager;
 import net.sourceforge.floggy.persistence.migration.Enumeration;
 import net.sourceforge.floggy.persistence.migration.FieldPersistableInfo;
 import net.sourceforge.floggy.persistence.migration.MigrationManager;
@@ -184,5 +191,106 @@ public class FR2422928Test extends FloggyBaseTest {
 			um.finish(PersistableFieldedClass.class);
 		}
 	}
+	
+	public void testAbstractInheritance() throws Exception {
+		Date creationDate = new Date(123456789);
+
+		AbstractSuperClass asc = new ConcreteChildClass();
+		asc.setCreationDate(creationDate);
+		
+		manager.save(asc);
+
+		MigrationManager um = MigrationManager.getInstance();
+		Enumeration enumeration = um.start(ConcreteChildClass.class, null);
+		try {
+			while (enumeration.hasMoreElements()) {
+				Hashtable data = (Hashtable) enumeration.nextElement();
+				assertEquals(creationDate, data.get("creationDate"));
+				assertEquals(new Vector(), data.get("dynamicFields"));
+			}
+		} finally {
+			um.finish(ConcreteChildClass.class);
+			manager.delete(asc);
+		}
+	}
+	
+	public void testAbstractInheritanceDelete() throws Exception {
+		AbstractSuperClass asc = new ConcreteChildClass();
+		asc.setCreationDate(new Date());
+		
+		manager.save(asc);
+
+		MigrationManager um = MigrationManager.getInstance();
+		Enumeration enumeration = um.start(ConcreteChildClass.class, null);
+		try {
+			while (enumeration.hasMoreElements()) {
+				enumeration.nextElement();
+				enumeration.delete();
+			}
+			ObjectSet os = manager.find(ConcreteChildClass.class, null, null);
+			assertEquals(0, os.size());
+
+			PersistableMetadata metadata = PersistableMetadataManager.getClassBasedMetadata(AbstractSuperClass.class.getName());
+			RecordStore rs = RecordStoreManager.getRecordStore(metadata.getRecordStoreName(), metadata);
+			
+			assertEquals(0, rs.getNumRecords());
+		} finally {
+			um.finish(ConcreteChildClass.class);
+		}
+	}
+
+	public void testAbstractInheritanceUpdate() throws Exception {
+		AbstractSuperClass asc = new ConcreteChildClass();
+		asc.setCreationDate(new Date());
+		
+		int id = manager.save(asc);
+
+		MigrationManager um = MigrationManager.getInstance();
+		Enumeration enumeration = um.start(ConcreteChildClass.class, null);
+		try {
+			while (enumeration.hasMoreElements()) {
+				enumeration.nextElement();
+				asc = new ConcreteChildClass();
+				int tempId = enumeration.update(asc);
+				assertEquals(id, tempId);
+			}
+			ObjectSet os = manager.find(ConcreteChildClass.class, null, null);
+			assertEquals(1, os.size());
+
+			PersistableMetadata metadata = PersistableMetadataManager.getClassBasedMetadata(AbstractSuperClass.class.getName());
+			RecordStore rs = RecordStoreManager.getRecordStore(metadata.getRecordStoreName(), metadata);
+			
+			assertEquals(1, rs.getNumRecords());
+		} finally {
+			um.finish(ConcreteChildClass.class);
+			manager.delete(asc);
+		}
+	}
+
+	public void testInheritanceRead() throws Exception {
+		String name = "Floggy";
+		int age = 23;
+
+		ChildClass cc = new ChildClass();
+		cc.setAge(age);
+		cc.setName(name);
+		
+		manager.save(cc);
+
+		MigrationManager um = MigrationManager.getInstance();
+		Enumeration enumeration = um.start(ChildClass.class, null);
+		try {
+			while (enumeration.hasMoreElements()) {
+				Hashtable data = (Hashtable) enumeration.nextElement();
+				assertEquals(name, data.get("name"));
+				assertEquals(new Integer(age), data.get("age"));
+			}
+		} finally {
+			um.finish(ChildClass.class);
+			manager.delete(cc);
+		}
+	}
+
+
 
 }

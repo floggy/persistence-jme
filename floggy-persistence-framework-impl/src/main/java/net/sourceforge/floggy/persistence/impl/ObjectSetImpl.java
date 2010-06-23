@@ -17,15 +17,15 @@
 package net.sourceforge.floggy.persistence.impl;
 
 import net.sourceforge.floggy.persistence.FloggyException;
-import net.sourceforge.floggy.persistence.ObjectSet;
 import net.sourceforge.floggy.persistence.Persistable;
+import net.sourceforge.floggy.persistence.SingleObjectSet;
 
 /**
  * An implementation of the <code>ObjectSet</code> interface.
  * 
  * @since 1.0
  */
-class ObjectSetImpl implements ObjectSet {
+class ObjectSetImpl implements SingleObjectSet {
 
 	/**
 	 * List of IDs.

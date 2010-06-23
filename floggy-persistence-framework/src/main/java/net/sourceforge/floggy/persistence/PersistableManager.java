@@ -198,7 +198,7 @@ public abstract class PersistableManager {
      *
      * @throws FloggyException DOCUMENT ME!
      */
-    public abstract ObjectSet find(Class persistableClass, Filter filter,
+    public abstract SingleObjectSet find(Class persistableClass, Filter filter,
                                    Comparator comparator)
         throws FloggyException;
 
@@ -216,7 +216,7 @@ public abstract class PersistableManager {
      *
      * @throws FloggyException DOCUMENT ME!
      */
-	public abstract ObjectSet find(Class persistableClass, 
+	public abstract SingleObjectSet find(Class persistableClass, 
 		IndexFilter indexFilter, boolean lazy) throws FloggyException;
 	
     /**
@@ -240,7 +240,31 @@ public abstract class PersistableManager {
      *
      * @throws FloggyException DOCUMENT ME!
      */
-    public abstract ObjectSet find(Class persistableClass, Filter filter,
+    public abstract SingleObjectSet find(Class persistableClass, Filter filter,
+                                   Comparator comparator, boolean lazy)
+        throws FloggyException;
+
+    /**
+     * Searches objects of an persistable class and its subclasses from the
+     * repository. <br>
+     * <br>
+     * An optional application-defined search criteria can be  defined using a <code>Filter</code>.<br>
+     * <br>
+     * An optional application-defined sort order can be defined using a
+     * <code>Comparator</code>.
+     *
+     * @param persistableClass The persistable class to search the objects.
+     * @param filter An optional application-defined criteria for searching
+     *        objects.
+     * @param comparator An optional application-defined criteria for sorting
+     *        objects.
+     * @param lazy A flag indicating to load or not all composite relationships.
+     *
+     * @return List of objects that matches the defined criteria.
+     *
+     * @throws FloggyException DOCUMENT ME!
+     */
+    public abstract PolymorphicObjectSet polymorphicFind(Class persistableClass, Filter filter,
                                    Comparator comparator, boolean lazy)
         throws FloggyException;
 

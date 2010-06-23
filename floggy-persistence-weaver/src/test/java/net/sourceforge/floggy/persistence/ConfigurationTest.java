@@ -89,7 +89,7 @@ public class ConfigurationTest extends TestCase {
 		String className = "test";
 		Configuration configuration = new Configuration();
 		PersistableMetadata metadata = new PersistableMetadata(false,
-				className, null, null, null, null, null, null, 0);
+				className, null, null, null, null, null, null, 0, null);
 
 		configuration.addPersistableMetadata(metadata);
 
@@ -103,7 +103,7 @@ public class ConfigurationTest extends TestCase {
 		String className = "test";
 		Configuration configuration = new Configuration();
 		PersistableMetadata metadata = new PersistableMetadata(false,
-				className, null, null, null, null, null, null, 0);
+				className, null, null, null, null, null, null, 0, null);
 
 		configuration.addPersistableMetadata(metadata);
 
@@ -114,7 +114,7 @@ public class ConfigurationTest extends TestCase {
 		String className = "test";
 		Configuration configuration = new Configuration();
 		PersistableMetadata metadata = new PersistableMetadata(false,
-				className, null, null, null, null, null, null, 0);
+				className, null, null, null, null, null, null, 0, null);
 
 		configuration.addPersistableMetadata(metadata);
 

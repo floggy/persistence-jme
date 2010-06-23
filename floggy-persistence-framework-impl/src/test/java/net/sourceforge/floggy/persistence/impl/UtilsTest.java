@@ -42,7 +42,7 @@ public class UtilsTest extends TestCase {
 			return null;
 		}
 
-		public byte[] __serialize() throws Exception {
+		public byte[] __serialize(boolean isRealObject) throws Exception {
 			return null;
 		}
 

@@ -27,6 +27,7 @@ import net.sourceforge.floggy.persistence.codegen.CodeGenerator;
 import net.sourceforge.floggy.persistence.codegen.SourceCodeGenerator;
 import net.sourceforge.floggy.persistence.codegen.SourceCodeGeneratorFactory;
 import net.sourceforge.floggy.persistence.codegen.SuperClassGenerator;
+import net.sourceforge.floggy.persistence.impl.PersistableMetadataManager;
 
 /**
  * Class JoinedStrategyCodeGenerator
@@ -121,6 +122,16 @@ public class JoinedStrategyCodeGenerator extends CodeGenerator {
 		// Streams
 		tempBuffer.append("java.io.DataInputStream dis = new java.io.DataInputStream(new java.io.ByteArrayInputStream(buffer));\n");
 		
+
+		tempBuffer.append("net.sourceforge.floggy.persistence.impl.PersistableMetadata metadata = net.sourceforge.floggy.persistence.impl.PersistableMetadataManager.getRMSBasedMetadata(\""+ ctClass.getName() +"\");\n");
+		tempBuffer.append("java.lang.String recordStoreVersion = metadata.getRecordStoreVersion();\n");
+		tempBuffer.append("if (recordStoreVersion == null) {\n");
+		tempBuffer.append("recordStoreVersion = net.sourceforge.floggy.persistence.impl.PersistableMetadataManager.getRMSVersion();\n");
+		tempBuffer.append("}\n");
+		tempBuffer.append("if (recordStoreVersion.equals(net.sourceforge.floggy.persistence.impl.PersistableMetadataManager.VERSION_1_4_0)) {\n");
+		tempBuffer.append("dis.skipBytes(4);\n");
+		tempBuffer.append("}\n");
+
 		int tempBufferSize = tempBuffer.length();
 
 		// Save the superclass if it is persistable.
@@ -196,19 +207,23 @@ public class JoinedStrategyCodeGenerator extends CodeGenerator {
 			NotFoundException {
 		StringBuffer buffer = new StringBuffer();
 		// Header
-		buffer.append("public byte[] __serialize() throws java.lang.Exception {\n");
+		buffer.append("public byte[] __serialize(boolean isRealObject) throws java.lang.Exception {\n");
 
-		StringBuffer tempBuffer = new StringBuffer();
 		// Streams
-		tempBuffer.append("net.sourceforge.floggy.persistence.impl.FloggyOutputStream fos= new net.sourceforge.floggy.persistence.impl.FloggyOutputStream();\n");
+		buffer.append("net.sourceforge.floggy.persistence.impl.FloggyOutputStream fos= new net.sourceforge.floggy.persistence.impl.FloggyOutputStream();\n");
 
-		int tempBufferSize = tempBuffer.length();
+		buffer.append("if (isRealObject) {\n");
+		buffer.append("fos.writeInt(1);\n");
+		buffer.append("isRealObject = false;\n");
+		buffer.append("} else {\n");
+		buffer.append("fos.writeInt(0);\n");
+		buffer.append("}\n");
 
 		// Save the superclass if it is persistable.
 		CtClass superClass = ctClass.getSuperclass();
 		ClassVerifier verifier = new ClassVerifier(superClass, classPool);
 		if (verifier.isPersistable()) {
-			tempBuffer.append(SuperClassGenerator.generateSaveSource(superClass));
+			buffer.append(SuperClassGenerator.generateSaveSource(superClass));
 		}
 
 		CtField[] fields = ctClass.getDeclaredFields();
@@ -225,20 +240,15 @@ public class JoinedStrategyCodeGenerator extends CodeGenerator {
 				generator = SourceCodeGeneratorFactory.getSourceCodeGenerator(
 						ctClass, field.getName(), field.getType());
 				if (generator != null) {
-					tempBuffer.append(generator.getSaveCode());
+					buffer.append(generator.getSaveCode());
 				}
 			}
 		}
 		
-		if (tempBuffer.length() != tempBufferSize) {
-			// Close the streams
-			tempBuffer.append("fos.flush();\n");
-			tempBuffer.append("return fos.toByteArray();\n");
+		// Close the streams
+		buffer.append("fos.flush();\n");
+		buffer.append("return fos.toByteArray();\n");
 
-			buffer.append(tempBuffer);
-		} else {
-			buffer.append("return new byte[0];\n");
-		}
 
 		buffer.append("}");
 

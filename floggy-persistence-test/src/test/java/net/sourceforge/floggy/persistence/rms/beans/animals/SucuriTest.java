@@ -27,12 +27,19 @@ public class SucuriTest extends FloggyBaseTest {
 		Sucuri sucuri= new Sucuri();
 		manager.save(sucuri);
 		assertTrue(manager.isPersisted(sucuri));
-		ObjectSet set= manager.find(Reptile.class, null, null);
+		ObjectSet set= manager.find(Sucuri.class, null, null);
 		assertEquals(1, set.size());
+
+		set = manager.find(Reptile.class, null, null);
+		assertEquals(0, set.size());
 		
 		manager.delete(sucuri);
 		assertFalse(manager.isPersisted(sucuri));
+
 		set= manager.find(Reptile.class, null, null);
+		assertEquals(0, set.size());
+
+		set= manager.find(Sucuri.class, null, null);
 		assertEquals(0, set.size());
 	}
 

@@ -27,6 +27,7 @@ import net.sourceforge.floggy.persistence.FloggyBaseTest;
 import net.sourceforge.floggy.persistence.FloggyException;
 import net.sourceforge.floggy.persistence.ObjectSet;
 import net.sourceforge.floggy.persistence.Persistable;
+import net.sourceforge.floggy.persistence.SingleObjectSet;
 import net.sourceforge.floggy.persistence.migration.Enumeration;
 import net.sourceforge.floggy.persistence.migration.MigrationManager;
 
@@ -199,7 +200,7 @@ public abstract class AbstractTest extends FloggyBaseTest {
 		setX(object, getValueForSetMethod());
 		int id = manager.save(object);
 		try {
-			ObjectSet set = manager.find(object.getClass(), getFilter(), null);
+			SingleObjectSet set = manager.find(object.getClass(), getFilter(), null);
 			assertEquals(1, set.size());
 			assertEquals(set.getId(0), id);
 			equals(getValueForSetMethod(), getX(set.get(0)));

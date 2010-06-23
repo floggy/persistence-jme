@@ -17,6 +17,7 @@
 package net.sourceforge.floggy.persistence.impl;
 
 import net.sourceforge.floggy.persistence.Filter;
+import net.sourceforge.floggy.persistence.impl.strategy.JoinedStrategyObjectFilter;
 
 import org.jmock.Expectations;
 import org.jmock.Mockery;
@@ -29,13 +30,13 @@ public class ObjectFilterTest extends TestCase {
 	
 	public void testMatches() throws Exception {
 	     // set up
-		final byte[] data= new byte[]{};
+		final byte[] data= new byte[]{0, 0, 0, 1};
 		
         final __Persistable persistable = (__Persistable)context.mock(__Persistable.class);
         
         final Filter filter= (Filter) context.mock(Filter.class);
 
-        ObjectFilter objectFilter= new ObjectFilter(persistable, filter, false);
+        JoinedStrategyObjectFilter objectFilter= new JoinedStrategyObjectFilter(persistable, filter, false);
 
         // expectations
         context.checking(new Expectations() {{

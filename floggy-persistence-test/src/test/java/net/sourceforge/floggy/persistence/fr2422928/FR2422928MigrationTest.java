@@ -101,81 +101,6 @@ public class FR2422928MigrationTest extends FloggyBaseTest {
 //		
 //	}
 	
-	public void testAbstractInheritance() throws Exception {
-		Date creationDate = new Date(123456789);
-
-		AbstractSuperClass asc = new ConcreteChildClass();
-		asc.setCreationDate(creationDate);
-		
-		manager.save(asc);
-
-		MigrationManager um = MigrationManager.getInstance();
-		Enumeration enumeration = um.start(ConcreteChildClass.class, null);
-		try {
-			while (enumeration.hasMoreElements()) {
-				Hashtable data = (Hashtable) enumeration.nextElement();
-				assertEquals(creationDate, data.get("creationDate"));
-				assertEquals(new Vector(), data.get("dynamicFields"));
-			}
-		} finally {
-			um.finish(ConcreteChildClass.class);
-			manager.delete(asc);
-		}
-	}
-	
-	public void testAbstractInheritanceDelete() throws Exception {
-		AbstractSuperClass asc = new ConcreteChildClass();
-		asc.setCreationDate(new Date());
-		
-		manager.save(asc);
-
-		MigrationManager um = MigrationManager.getInstance();
-		Enumeration enumeration = um.start(ConcreteChildClass.class, null);
-		try {
-			while (enumeration.hasMoreElements()) {
-				enumeration.nextElement();
-				enumeration.delete();
-			}
-			ObjectSet os = manager.find(ConcreteChildClass.class, null, null);
-			assertEquals(0, os.size());
-
-			PersistableMetadata metadata = PersistableMetadataManager.getClassBasedMetadata(AbstractSuperClass.class.getName());
-			RecordStore rs = RecordStoreManager.getRecordStore(metadata.getRecordStoreName(), metadata);
-			
-			assertEquals(0, rs.getNumRecords());
-		} finally {
-			um.finish(ConcreteChildClass.class);
-		}
-	}
-
-	public void testAbstractInheritanceUpdate() throws Exception {
-		AbstractSuperClass asc = new ConcreteChildClass();
-		asc.setCreationDate(new Date());
-		
-		int id = manager.save(asc);
-
-		MigrationManager um = MigrationManager.getInstance();
-		Enumeration enumeration = um.start(ConcreteChildClass.class, null);
-		try {
-			while (enumeration.hasMoreElements()) {
-				enumeration.nextElement();
-				asc = new ConcreteChildClass();
-				int tempId = enumeration.update(asc);
-				assertEquals(id, tempId);
-			}
-			ObjectSet os = manager.find(ConcreteChildClass.class, null, null);
-			assertEquals(1, os.size());
-
-			PersistableMetadata metadata = PersistableMetadataManager.getClassBasedMetadata(AbstractSuperClass.class.getName());
-			RecordStore rs = RecordStoreManager.getRecordStore(metadata.getRecordStoreName(), metadata);
-			
-			assertEquals(1, rs.getNumRecords());
-		} finally {
-			um.finish(ConcreteChildClass.class);
-			manager.delete(asc);
-		}
-	}
-
 	public void testAfterUpddate() throws Exception {
 		MigrationManager um = MigrationManager.getInstance();
 		Enumeration enumeration = um.start(FR2422928.class, null);
@@ -199,6 +124,7 @@ public class FR2422928MigrationTest extends FloggyBaseTest {
 		} finally {
 			um.finish(FR2422928.class);
 		}
+		
 
 		metadata = PersistableMetadataManager.getRMSBasedMetadata(FR2422928.class.getName());
 
@@ -264,30 +190,6 @@ public class FR2422928MigrationTest extends FloggyBaseTest {
 		}
 	}
 
-	public void testInheritanceRead() throws Exception {
-		String name = "Floggy";
-		int age = 23;
-
-		ChildClass cc = new ChildClass();
-		cc.setAge(age);
-		cc.setName(name);
-		
-		manager.save(cc);
-
-		MigrationManager um = MigrationManager.getInstance();
-		Enumeration enumeration = um.start(ChildClass.class, null);
-		try {
-			while (enumeration.hasMoreElements()) {
-				Hashtable data = (Hashtable) enumeration.nextElement();
-				assertEquals(name, data.get("name"));
-				assertEquals(new Integer(age), data.get("age"));
-			}
-		} finally {
-			um.finish(ChildClass.class);
-			manager.delete(cc);
-		}
-	}
-
 	public void testInheritanceUpdate() throws Exception {
 		String name = "Floggy";
 		int age = 23;
@@ -311,7 +213,7 @@ public class FR2422928MigrationTest extends FloggyBaseTest {
 			assertEquals(1, os.size());
 
 			os = manager.find(SuperClass.class, null, null);
-			assertEquals(1, os.size());
+			assertEquals(0, os.size());
 		} finally {
 			um.finish(ChildClass.class);
 			manager.delete(cc);

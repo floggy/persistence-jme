@@ -55,29 +55,22 @@ public interface ObjectSet {
      * @throws FloggyException Exception thrown if a persistence error occurs.
      */
     Persistable get(int index) throws FloggyException;
-
+    
     /**
-     * Load the object at the specified index into the object instance supplied.
+     * Returns the object at the specified index. The object returned is a 
+     * instance shared by the ObjectSet. Use it with caution because the 
+     * reference of the object don't change across multiple invocation of the 
+     * getSharedInstance method only the value of the fields change.
+     * 
+     * @param index Index of the object to return.
      *
-     * @param index Index of the object to be loaded.
-     * @param object An instance of the object to be loaded. It cannot be
-     *        <code>null</code>.
+     * @return The shared object at the specified position in the set.
      *
      * @throws FloggyException Exception thrown if a persistence error occurs.
+     * 
+     * @since 1.4.0
      */
-    void get(int index, Persistable object) throws FloggyException;
-
-    /**
-     * Get the object's id at the specified index.
-     *
-     * @param index Index of the object.
-     *
-     * @return The id number at RMS system at the specified position in the
-     *         set.
-     *
-     * @throws FloggyException Exception thrown if a persistence error occurs.
-     */
-    int getId(int index) throws FloggyException;
+    Persistable getSharedInstance(int index) throws FloggyException;
 
     /**
      * Gets the lazy property.

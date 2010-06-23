@@ -51,7 +51,7 @@ public class CodeGeneratorTest extends TestCase {
 		Configuration configuration = new Configuration();
 		PersistableMetadata metadata = new PersistableMetadata(false, 
 			ctClass.getName(), null, null, null, null, null, 
-			ctClass.getSimpleName(), PersistableMetadata.JOINED_STRATEGY);
+			ctClass.getSimpleName(), PersistableMetadata.JOINED_STRATEGY, null);
 		
 		configuration.addPersistableMetadata(metadata);
 		configuration.setAddDefaultConstructor(addDefaultConstructor);

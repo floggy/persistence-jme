@@ -39,7 +39,7 @@ public class FR2886470Test extends TestCase {
 		String className = FR2937635.class.getName();
 		String[] fieldNames = new String[]{"name"};
 		Configuration c1 = new Configuration();
-		PersistableMetadata metadata = new PersistableMetadata(false, className, null, fieldNames, null, null, null, null, 0);
+		PersistableMetadata metadata = new PersistableMetadata(false, className, null, fieldNames, null, null, null, null, 0, null);
 		
 		c1.addPersistableMetadata(metadata);
 		
@@ -63,7 +63,7 @@ public class FR2886470Test extends TestCase {
 		String className = FR2937635.class.getName();
 		String[] fieldNames = new String[]{"name"};
 		Configuration c1 = new Configuration();
-		PersistableMetadata metadata = new PersistableMetadata(false, className, null, fieldNames, null, null, null, null, 0);
+		PersistableMetadata metadata = new PersistableMetadata(false, className, null, fieldNames, null, null, null, null, 0, null);
 		
 		c1.addPersistableMetadata(metadata);
 		
@@ -87,7 +87,7 @@ public class FR2886470Test extends TestCase {
 		String className = FR2937635.class.getName();
 		String[] fieldNames = new String[]{"name"};
 		Configuration c1 = new Configuration();
-		PersistableMetadata metadata = new PersistableMetadata(false, className, null, fieldNames, null, null, null, null, 0);
+		PersistableMetadata metadata = new PersistableMetadata(false, className, null, fieldNames, null, null, null, null, 0, null);
 		
 		c1.addPersistableMetadata(metadata);
 		

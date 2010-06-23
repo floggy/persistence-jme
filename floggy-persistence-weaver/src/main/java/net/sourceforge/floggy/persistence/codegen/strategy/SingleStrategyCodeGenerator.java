@@ -171,7 +171,7 @@ public class SingleStrategyCodeGenerator extends CodeGenerator {
 		if (!Modifier.isAbstract(ctClass.getModifiers())) {
 			StringBuffer buffer = new StringBuffer();
 			// Header
-			buffer.append("public byte[] __serialize() throws java.lang.Exception {\n");
+			buffer.append("public byte[] __serialize(boolean isRealObject) throws java.lang.Exception {\n");
 	
 			// Streams
 			buffer.append("net.sourceforge.floggy.persistence.impl.FloggyOutputStream fos= new net.sourceforge.floggy.persistence.impl.FloggyOutputStream();\n");

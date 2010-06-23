@@ -41,6 +41,6 @@ public interface __Persistable extends Persistable, Nameable {
 
 	public void __deserialize(byte[] buffer, boolean lazy) throws Exception;
 
-	public byte[] __serialize() throws Exception;
+	public byte[] __serialize(boolean isRealObject) throws Exception;
 
 }
