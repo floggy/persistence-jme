@@ -25,23 +25,22 @@ public class RF2243110Test extends FloggyBaseTest {
 	public void testGetNewInstance() throws Exception {
 		SSuperClass superClass = new SSuperClass();
 		SConcreteClass2ExtendingAbstractClass concreteClass2ExtendingAbstractClass = new SConcreteClass2ExtendingAbstractClass();
-		SConcreteClass4ExtendingSuperClass concreteClass4ExtendingSuperClass = new SConcreteClass4ExtendingSuperClass();
-		SConcreteClass4ExtendingSuperClass concreteClass4ExtendingSuperClass2 = new SConcreteClass4ExtendingSuperClass();
+		SConcreteClass3ExtendingConcreteClass2 concreteClass3ExtendingConcreteClass2 = new SConcreteClass3ExtendingConcreteClass2();
+		SConcreteClass3ExtendingConcreteClass2 concreteClass3ExtendingConcreteClass22 = new SConcreteClass3ExtendingConcreteClass2();
 
 		try {
 
 			manager.save(superClass);
 			manager.save(concreteClass2ExtendingAbstractClass);
-			manager.save(concreteClass4ExtendingSuperClass);
-			manager.save(concreteClass4ExtendingSuperClass2);
+			manager.save(concreteClass3ExtendingConcreteClass2);
+			manager.save(concreteClass3ExtendingConcreteClass22);
 
-			PolymorphicObjectSet os = manager.polymorphicFind(SSuperClass.class,
+			PolymorphicObjectSet os = manager.polymorphicFind(SConcreteClass2ExtendingAbstractClass.class,
 					null, null, false);
 
 			int instancesOfSuperClass = 0;
 			int instancesOfConcreteClass2ExtendingAbstractClass = 0;
-			int instancesOfConcreteClass4ExtendingSuperClass = 0;
-
+			int instancesOfConcreteClass3ExtendingConcreteClass2 = 0;
 			for (int i = 0; i < os.size(); i++) {
 				SSuperClass persistable = (SSuperClass) os.get(i);
 
@@ -51,47 +50,45 @@ public class RF2243110Test extends FloggyBaseTest {
 				if (persistable.getClass() == SConcreteClass2ExtendingAbstractClass.class) {
 					instancesOfConcreteClass2ExtendingAbstractClass++;
 				}
-				if (persistable.getClass() == SConcreteClass4ExtendingSuperClass.class) {
-					instancesOfConcreteClass4ExtendingSuperClass++;
+				if (persistable.getClass() == SConcreteClass3ExtendingConcreteClass2.class) {
+					instancesOfConcreteClass3ExtendingConcreteClass2++;
 				}
 			}
 
-			assertEquals(1, instancesOfSuperClass);
+			assertEquals(0, instancesOfSuperClass);
 			assertEquals(1, instancesOfConcreteClass2ExtendingAbstractClass);
-			assertEquals(2, instancesOfConcreteClass4ExtendingSuperClass);
+			assertEquals(2, instancesOfConcreteClass3ExtendingConcreteClass2);
 
 		} finally {
 			manager.delete(superClass);
 			manager.delete(concreteClass2ExtendingAbstractClass);
-			manager.delete(concreteClass4ExtendingSuperClass);
-			manager.delete(concreteClass4ExtendingSuperClass2);
+			manager.delete(concreteClass3ExtendingConcreteClass2);
+			manager.delete(concreteClass3ExtendingConcreteClass22);
 		}
 
 	}
 
 	public void testGetSharedInstance() throws Exception {
 		SSuperClass superClass = new SSuperClass();
-		SSuperClass superClass2 = new SSuperClass();
-		SSuperClass superClass3 = new SSuperClass();
-		SConcreteClass4ExtendingSuperClass concreteClass4ExtendingSuperClass = new SConcreteClass4ExtendingSuperClass();
 		SConcreteClass2ExtendingAbstractClass concreteClass2ExtendingAbstractClass = new SConcreteClass2ExtendingAbstractClass();
+		SConcreteClass3ExtendingConcreteClass2 concreteClass3ExtendingConcreteClass2 = new SConcreteClass3ExtendingConcreteClass2();
+		SConcreteClass3ExtendingConcreteClass2 concreteClass3ExtendingConcreteClass22 = new SConcreteClass3ExtendingConcreteClass2();
 
 		try {
 
 			manager.save(superClass);
-			manager.save(superClass2);
-			manager.save(superClass3);
-			manager.save(concreteClass4ExtendingSuperClass);
 			manager.save(concreteClass2ExtendingAbstractClass);
+			manager.save(concreteClass3ExtendingConcreteClass2);
+			manager.save(concreteClass3ExtendingConcreteClass22);
 
-			PolymorphicObjectSet os = manager.polymorphicFind(SSuperClass.class,
+			PolymorphicObjectSet os = manager.polymorphicFind(SConcreteClass2ExtendingAbstractClass.class,
 					null, null, false);
 
 			int instancesOfSuperClass = 0;
 			int instancesOfConcreteClass2ExtendingAbstractClass = 0;
-			int instancesOfConcreteClass4ExtendingSuperClass = 0;
+			int instancesOfConcreteClass3ExtendingConcreteClass2 = 0;
 
-			assertEquals(5, os.size());
+			assertEquals(3, os.size());
 			
 			Persistable temp = null;
 			for (int i = 0; i < os.size(); i++) {
@@ -108,20 +105,19 @@ public class RF2243110Test extends FloggyBaseTest {
 				if (persistable.getClass() == SConcreteClass2ExtendingAbstractClass.class) {
 					instancesOfConcreteClass2ExtendingAbstractClass++;
 				}
-				if (persistable.getClass() == SConcreteClass4ExtendingSuperClass.class) {
-					instancesOfConcreteClass4ExtendingSuperClass++;
+				if (persistable.getClass() == SConcreteClass3ExtendingConcreteClass2.class) {
+					instancesOfConcreteClass3ExtendingConcreteClass2++;
 				}
 			}
 
-			assertEquals(3, instancesOfSuperClass);
+			assertEquals(0, instancesOfSuperClass);
 			assertEquals(1, instancesOfConcreteClass2ExtendingAbstractClass);
-			assertEquals(1, instancesOfConcreteClass4ExtendingSuperClass);
+			assertEquals(2, instancesOfConcreteClass3ExtendingConcreteClass2);
 		} finally {
 			manager.delete(superClass);
-			manager.delete(superClass2);
-			manager.delete(superClass3);
 			manager.delete(concreteClass2ExtendingAbstractClass);
-			manager.delete(concreteClass4ExtendingSuperClass);
+			manager.delete(concreteClass3ExtendingConcreteClass2);
+			manager.delete(concreteClass3ExtendingConcreteClass22);
 		}
 
 	}
@@ -192,6 +188,110 @@ public class RF2243110Test extends FloggyBaseTest {
 			manager.delete(concreteClass4ExtendingSuperClass2);
 			manager.delete(concreteClass4ExtendingSuperClass3);
 		}
+	}
+
+	public void testRootClassGetNewInstance() throws Exception {
+		SSuperClass superClass = new SSuperClass();
+		SConcreteClass2ExtendingAbstractClass concreteClass2ExtendingAbstractClass = new SConcreteClass2ExtendingAbstractClass();
+		SConcreteClass4ExtendingSuperClass concreteClass4ExtendingSuperClass = new SConcreteClass4ExtendingSuperClass();
+		SConcreteClass4ExtendingSuperClass concreteClass4ExtendingSuperClass2 = new SConcreteClass4ExtendingSuperClass();
+
+		try {
+
+			manager.save(superClass);
+			manager.save(concreteClass2ExtendingAbstractClass);
+			manager.save(concreteClass4ExtendingSuperClass);
+			manager.save(concreteClass4ExtendingSuperClass2);
+
+			PolymorphicObjectSet os = manager.polymorphicFind(SSuperClass.class,
+					null, null, false);
+
+			int instancesOfSuperClass = 0;
+			int instancesOfConcreteClass2ExtendingAbstractClass = 0;
+			int instancesOfConcreteClass4ExtendingSuperClass = 0;
+
+			for (int i = 0; i < os.size(); i++) {
+				SSuperClass persistable = (SSuperClass) os.get(i);
+
+				if (persistable.getClass() == SSuperClass.class) {
+					instancesOfSuperClass++;
+				}
+				if (persistable.getClass() == SConcreteClass2ExtendingAbstractClass.class) {
+					instancesOfConcreteClass2ExtendingAbstractClass++;
+				}
+				if (persistable.getClass() == SConcreteClass4ExtendingSuperClass.class) {
+					instancesOfConcreteClass4ExtendingSuperClass++;
+				}
+			}
+
+			assertEquals(1, instancesOfSuperClass);
+			assertEquals(1, instancesOfConcreteClass2ExtendingAbstractClass);
+			assertEquals(2, instancesOfConcreteClass4ExtendingSuperClass);
+
+		} finally {
+			manager.delete(superClass);
+			manager.delete(concreteClass2ExtendingAbstractClass);
+			manager.delete(concreteClass4ExtendingSuperClass);
+			manager.delete(concreteClass4ExtendingSuperClass2);
+		}
+
+	}
+
+	public void testRootClassGetSharedInstance() throws Exception {
+		SSuperClass superClass = new SSuperClass();
+		SSuperClass superClass2 = new SSuperClass();
+		SSuperClass superClass3 = new SSuperClass();
+		SConcreteClass4ExtendingSuperClass concreteClass4ExtendingSuperClass = new SConcreteClass4ExtendingSuperClass();
+		SConcreteClass2ExtendingAbstractClass concreteClass2ExtendingAbstractClass = new SConcreteClass2ExtendingAbstractClass();
+
+		try {
+
+			manager.save(superClass);
+			manager.save(superClass2);
+			manager.save(superClass3);
+			manager.save(concreteClass4ExtendingSuperClass);
+			manager.save(concreteClass2ExtendingAbstractClass);
+
+			PolymorphicObjectSet os = manager.polymorphicFind(SSuperClass.class,
+					null, null, false);
+
+			int instancesOfSuperClass = 0;
+			int instancesOfConcreteClass2ExtendingAbstractClass = 0;
+			int instancesOfConcreteClass4ExtendingSuperClass = 0;
+
+			assertEquals(5, os.size());
+			
+			Persistable temp = null;
+			for (int i = 0; i < os.size(); i++) {
+				SSuperClass persistable = (SSuperClass) os.getSharedInstance(i);
+
+				if (persistable.getClass() == SSuperClass.class) {
+					instancesOfSuperClass++;
+					if (temp == null) {
+						temp = persistable;
+					} else {
+						assertSame(temp, persistable);
+					}
+				}
+				if (persistable.getClass() == SConcreteClass2ExtendingAbstractClass.class) {
+					instancesOfConcreteClass2ExtendingAbstractClass++;
+				}
+				if (persistable.getClass() == SConcreteClass4ExtendingSuperClass.class) {
+					instancesOfConcreteClass4ExtendingSuperClass++;
+				}
+			}
+
+			assertEquals(3, instancesOfSuperClass);
+			assertEquals(1, instancesOfConcreteClass2ExtendingAbstractClass);
+			assertEquals(1, instancesOfConcreteClass4ExtendingSuperClass);
+		} finally {
+			manager.delete(superClass);
+			manager.delete(superClass2);
+			manager.delete(superClass3);
+			manager.delete(concreteClass2ExtendingAbstractClass);
+			manager.delete(concreteClass4ExtendingSuperClass);
+		}
+
 	}
 
 }

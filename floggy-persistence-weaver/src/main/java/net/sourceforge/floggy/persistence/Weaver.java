@@ -314,17 +314,15 @@ public class Weaver {
 				configuration.addPersistableMetadata(metadata);
 			}
 			
-			if (i == 0) {
-				String[] descendents = metadata.getDescendents();
-				
-				if (descendents == null) {
-					descendents = new String[0];
-				}
-				Set temp = new HashSet(Arrays.asList(descendents));
-				temp.addAll(list);
-				
-				metadata.setDescendents((String[]) temp.toArray(new String[temp.size()]));
+			String[] descendents = metadata.getDescendents();
+			
+			if (descendents == null) {
+				descendents = new String[0];
 			}
+			Set temp = new HashSet(Arrays.asList(descendents));
+			temp.addAll(list.subList(i, list.size()));
+			
+			metadata.setDescendents((String[]) temp.toArray(new String[temp.size()]));
 		}
 		return list;
 	}
