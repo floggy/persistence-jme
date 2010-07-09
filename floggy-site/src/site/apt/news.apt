@@ -16,6 +16,8 @@
 
 News
 
+	<<30-Jun-10:>> New download record for a month, exactly 1500. Thank you community! {{{http://sourceforge.net/project/stats/detail.php?group_id=139426&ugn=floggy&type=prdownload&mode=12months&file_id=0}Statistics}}.
+
 	<<25-Apr-10:>> Call for testers: we just built an alpha package for the new Index feature, we need testers! Be one! Check it out how {{{./core-package.html#Using_the_index_feature_only_available_on_package_1.4.0-alpha}here}}.
 	
 	<<16-Jan-10:>> The 1.3.1 maintenance release was made available, its target is fix an issue on Windows platform. Be aware of the {{{./changes-report.html#a1.3.1}change}}. 

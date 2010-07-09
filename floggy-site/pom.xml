@@ -104,7 +104,7 @@
 							<includeArtifactIds>floggy-persistence-weaver</includeArtifactIds>
 							<outputDirectory>${basedir}/target/site</outputDirectory>
 							<includes>schema/*</includes>
-   						</configuration>
+					</configuration>
 					</execution>
 				</executions>
 			</plugin>
