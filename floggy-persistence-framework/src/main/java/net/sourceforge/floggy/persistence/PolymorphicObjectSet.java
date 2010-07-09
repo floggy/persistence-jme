@@ -38,7 +38,7 @@ package net.sourceforge.floggy.persistence;
  * By using an optional <code>Comparator</code>, the order of the objects in
  * this set will be determined by the comparator.
  * 
- * @see PersistableManager#polymorphicFind(Class, Filter, Comparator, boolean)
+ * @see PersistableManager#polymorphicFind(Class, Filter, boolean)
  * @see Filter
  * @see Comparator
  * 

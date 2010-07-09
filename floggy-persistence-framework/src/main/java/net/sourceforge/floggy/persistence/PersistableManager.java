@@ -256,16 +256,13 @@ public abstract class PersistableManager {
      * @param persistableClass The persistable class to search the objects.
      * @param filter An optional application-defined criteria for searching
      *        objects.
-     * @param comparator An optional application-defined criteria for sorting
-     *        objects.
      * @param lazy A flag indicating to load or not all composite relationships.
-     *
      * @return List of objects that matches the defined criteria.
      *
      * @throws FloggyException DOCUMENT ME!
      */
     public abstract PolymorphicObjectSet polymorphicFind(Class persistableClass, Filter filter,
-                                   Comparator comparator, boolean lazy)
+                                   boolean lazy)
         throws FloggyException;
 
     /**

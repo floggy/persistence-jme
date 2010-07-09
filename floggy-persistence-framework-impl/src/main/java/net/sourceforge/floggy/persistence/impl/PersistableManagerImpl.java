@@ -290,7 +290,7 @@ public class PersistableManagerImpl extends PersistableManager {
 	}
 
 	public PolymorphicObjectSet polymorphicFind(Class persistableClass,
-			Filter filter, Comparator comparator, boolean lazy)
+			Filter filter, boolean lazy)
 			throws FloggyException {
 
 		RecordFilter objectFilter = null;
@@ -304,13 +304,6 @@ public class PersistableManagerImpl extends PersistableManager {
 		__Persistable persistable = Utils.createInstance(persistableClass);
 
 		objectFilter = getFilter(persistable, filter, lazy);
-
-		// Creates an auxiliar comparator (if necessary)
-		if (comparator != null) {
-			objectComparator = new ObjectComparator(comparator,
-					Utils.createInstance(persistableClass),
-					Utils.createInstance(persistableClass), lazy);
-		}
 
 		// Searchs the repository and create an object set as result.
 		int[] ids = null;

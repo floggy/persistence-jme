@@ -36,7 +36,7 @@ public class RF2243110Test extends FloggyBaseTest {
 			manager.save(concreteClass3ExtendingConcreteClass22);
 
 			PolymorphicObjectSet os = manager.polymorphicFind(PCConcreteClass2ExtendingAbstractClass.class,
-					null, null, false);
+					null, false);
 
 			int instancesOfSuperClass = 0;
 			int instancesOfConcreteClass2ExtendingAbstractClass = 0;
@@ -82,7 +82,7 @@ public class RF2243110Test extends FloggyBaseTest {
 			manager.save(concreteClass3ExtendingConcreteClass22);
 
 			PolymorphicObjectSet os = manager.polymorphicFind(PCConcreteClass2ExtendingAbstractClass.class,
-					null, null, false);
+					null, false);
 
 			int instancesOfSuperClass = 0;
 			int instancesOfConcreteClass2ExtendingAbstractClass = 0;
@@ -131,7 +131,7 @@ public class RF2243110Test extends FloggyBaseTest {
 			manager.save(concreteClass4ExtendingSuperClass);
 
 			PolymorphicObjectSet os = manager.polymorphicFind(
-					PCConcreteClass4ExtendingSuperClass.class, null, null, false);
+					PCConcreteClass4ExtendingSuperClass.class, null, false);
 
 			for (int i = 0; i < os.size(); i++) {
 				PCSuperClass persistable = (PCSuperClass) os.get(i);
@@ -160,7 +160,7 @@ public class RF2243110Test extends FloggyBaseTest {
 			manager.save(concreteClass4ExtendingSuperClass3);
 
 			PolymorphicObjectSet os = manager.polymorphicFind(
-					PCConcreteClass4ExtendingSuperClass.class, null, null, false);
+					PCConcreteClass4ExtendingSuperClass.class, null, false);
 
 			Persistable temp = null;
 			for (int i = 0; i < os.size(); i++) {
@@ -204,7 +204,7 @@ public class RF2243110Test extends FloggyBaseTest {
 			manager.save(concreteClass4ExtendingSuperClass2);
 
 			PolymorphicObjectSet os = manager.polymorphicFind(PCSuperClass.class,
-					null, null, false);
+					null, false);
 
 			int instancesOfSuperClass = 0;
 			int instancesOfConcreteClass2ExtendingAbstractClass = 0;
@@ -252,7 +252,7 @@ public class RF2243110Test extends FloggyBaseTest {
 			manager.save(concreteClass2ExtendingAbstractClass);
 
 			PolymorphicObjectSet os = manager.polymorphicFind(PCSuperClass.class,
-					null, null, false);
+					null, false);
 
 			int instancesOfSuperClass = 0;
 			int instancesOfConcreteClass2ExtendingAbstractClass = 0;
