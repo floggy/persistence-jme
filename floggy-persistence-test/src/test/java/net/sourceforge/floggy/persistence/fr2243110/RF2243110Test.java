@@ -22,6 +22,106 @@ import net.sourceforge.floggy.persistence.PolymorphicObjectSet;
 
 public class RF2243110Test extends FloggyBaseTest {
 
+	public void testAbstractClassGetNewInstance() throws Exception {
+		JSuperClass superClass = new JSuperClass();
+		JConcreteClass2ExtendingAbstractClass concreteClass2ExtendingAbstractClass = new JConcreteClass2ExtendingAbstractClass();
+		JConcreteClass3ExtendingConcreteClass2 concreteClass3ExtendingConcreteClass2 = new JConcreteClass3ExtendingConcreteClass2();
+		JConcreteClass3ExtendingConcreteClass2 concreteClass3ExtendingConcreteClass22 = new JConcreteClass3ExtendingConcreteClass2();
+
+		try {
+
+			manager.save(superClass);
+			manager.save(concreteClass2ExtendingAbstractClass);
+			manager.save(concreteClass3ExtendingConcreteClass2);
+			manager.save(concreteClass3ExtendingConcreteClass22);
+
+			PolymorphicObjectSet os = manager.polymorphicFind(JAbstractClassExtendingSuperClass.class,
+					null, false);
+
+			int instancesOfSuperClass = 0;
+			int instancesOfConcreteClass2ExtendingAbstractClass = 0;
+			int instancesOfConcreteClass3ExtendingConcreteClass2 = 0;
+			for (int i = 0; i < os.size(); i++) {
+				JSuperClass persistable = (JSuperClass) os.get(i);
+
+				if (persistable.getClass() == JSuperClass.class) {
+					instancesOfSuperClass++;
+				}
+				if (persistable.getClass() == JConcreteClass2ExtendingAbstractClass.class) {
+					instancesOfConcreteClass2ExtendingAbstractClass++;
+				}
+				if (persistable.getClass() == JConcreteClass3ExtendingConcreteClass2.class) {
+					instancesOfConcreteClass3ExtendingConcreteClass2++;
+				}
+			}
+
+			assertEquals(0, instancesOfSuperClass);
+			assertEquals(1, instancesOfConcreteClass2ExtendingAbstractClass);
+			assertEquals(2, instancesOfConcreteClass3ExtendingConcreteClass2);
+
+		} finally {
+			manager.delete(superClass);
+			manager.delete(concreteClass2ExtendingAbstractClass);
+			manager.delete(concreteClass3ExtendingConcreteClass2);
+			manager.delete(concreteClass3ExtendingConcreteClass22);
+		}
+
+	}
+
+	public void testAbstractClassGetSharedInstance() throws Exception {
+		JSuperClass superClass = new JSuperClass();
+		JConcreteClass2ExtendingAbstractClass concreteClass2ExtendingAbstractClass = new JConcreteClass2ExtendingAbstractClass();
+		JConcreteClass3ExtendingConcreteClass2 concreteClass3ExtendingConcreteClass2 = new JConcreteClass3ExtendingConcreteClass2();
+		JConcreteClass3ExtendingConcreteClass2 concreteClass3ExtendingConcreteClass22 = new JConcreteClass3ExtendingConcreteClass2();
+
+		try {
+
+			manager.save(superClass);
+			manager.save(concreteClass2ExtendingAbstractClass);
+			manager.save(concreteClass3ExtendingConcreteClass2);
+			manager.save(concreteClass3ExtendingConcreteClass22);
+
+			PolymorphicObjectSet os = manager.polymorphicFind(JAbstractClassExtendingSuperClass.class,
+					null, false);
+
+			int instancesOfSuperClass = 0;
+			int instancesOfConcreteClass2ExtendingAbstractClass = 0;
+			int instancesOfConcreteClass3ExtendingConcreteClass2 = 0;
+
+			assertEquals(3, os.size());
+
+			Persistable temp = null;
+			for (int i = 0; i < os.size(); i++) {
+				JSuperClass persistable = (JSuperClass) os.getSharedInstance(i);
+
+				if (persistable.getClass() == JSuperClass.class) {
+					instancesOfSuperClass++;
+					if (temp == null) {
+						temp = persistable;
+					} else {
+						assertSame(temp, persistable);
+					}
+				}
+				if (persistable.getClass() == JConcreteClass2ExtendingAbstractClass.class) {
+					instancesOfConcreteClass2ExtendingAbstractClass++;
+				}
+				if (persistable.getClass() == JConcreteClass3ExtendingConcreteClass2.class) {
+					instancesOfConcreteClass3ExtendingConcreteClass2++;
+				}
+			}
+
+			assertEquals(0, instancesOfSuperClass);
+			assertEquals(1, instancesOfConcreteClass2ExtendingAbstractClass);
+			assertEquals(2, instancesOfConcreteClass3ExtendingConcreteClass2);
+		} finally {
+			manager.delete(superClass);
+			manager.delete(concreteClass2ExtendingAbstractClass);
+			manager.delete(concreteClass3ExtendingConcreteClass2);
+			manager.delete(concreteClass3ExtendingConcreteClass22);
+		}
+
+	}
+
 	public void testGetNewInstance() throws Exception {
 		JSuperClass superClass = new JSuperClass();
 		JConcreteClass2ExtendingAbstractClass concreteClass2ExtendingAbstractClass = new JConcreteClass2ExtendingAbstractClass();
@@ -89,7 +189,7 @@ public class RF2243110Test extends FloggyBaseTest {
 			int instancesOfConcreteClass3ExtendingConcreteClass2 = 0;
 
 			assertEquals(3, os.size());
-			
+
 			Persistable temp = null;
 			for (int i = 0; i < os.size(); i++) {
 				JSuperClass persistable = (JSuperClass) os.getSharedInstance(i);
@@ -259,7 +359,7 @@ public class RF2243110Test extends FloggyBaseTest {
 			int instancesOfConcreteClass4ExtendingSuperClass = 0;
 
 			assertEquals(5, os.size());
-			
+
 			Persistable temp = null;
 			for (int i = 0; i < os.size(); i++) {
 				JSuperClass persistable = (JSuperClass) os.getSharedInstance(i);

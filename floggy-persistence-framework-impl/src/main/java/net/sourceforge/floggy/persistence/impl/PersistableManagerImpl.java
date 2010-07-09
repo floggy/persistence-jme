@@ -294,16 +294,12 @@ public class PersistableManagerImpl extends PersistableManager {
 			throws FloggyException {
 
 		RecordFilter objectFilter = null;
-		ObjectComparator objectComparator = null;
-
+		__Persistable persistable = null;
 		/*
 		 * this is a auxiliary object used to return the name of the
 		 * RecordStore. If the argument filter is not null this object is passed
 		 * to the ObjectFilter constructor
 		 */
-		__Persistable persistable = Utils.createInstance(persistableClass);
-
-		objectFilter = getFilter(persistable, filter, lazy);
 
 		// Searchs the repository and create an object set as result.
 		int[] ids = null;
@@ -323,19 +319,16 @@ public class PersistableManagerImpl extends PersistableManager {
 			try {
 				persistableClass = Class.forName(persistables[i]);
 				persistable = Utils.createInstance(persistableClass);
+				objectFilter = getFilter(persistable, filter, lazy);
 			} catch (ClassNotFoundException ex) {
 				throw Utils.handleException(ex);
-			}
-			
-			if (singleStrategyClass.isAssignableFrom(singleStrategyClass)) {
-				objectFilter = getFilter(persistable, filter, lazy);
 			}
 
 			RecordStore rs = RecordStoreManager.getRecordStore(persistable);
 
 			try {
 				RecordEnumeration en = rs.enumerateRecords(objectFilter,
-						objectComparator, false);
+						null, false);
 				int numRecords = en.numRecords();
 				if (numRecords > 0) {
 					ids = new int[numRecords];
