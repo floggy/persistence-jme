@@ -23,11 +23,13 @@ import javassist.CtField;
 import javassist.NotFoundException;
 import net.sourceforge.floggy.persistence.ClassVerifier;
 import net.sourceforge.floggy.persistence.Configuration;
+import net.sourceforge.floggy.persistence.FloggyException;
 import net.sourceforge.floggy.persistence.codegen.CodeGenerator;
 import net.sourceforge.floggy.persistence.codegen.SourceCodeGenerator;
 import net.sourceforge.floggy.persistence.codegen.SourceCodeGeneratorFactory;
 import net.sourceforge.floggy.persistence.codegen.SuperClassGenerator;
-import net.sourceforge.floggy.persistence.impl.PersistableMetadataManager;
+import net.sourceforge.floggy.persistence.strategy.PerClassStrategy;
+import net.sourceforge.floggy.persistence.strategy.SingleStrategy;
 
 /**
  * Class JoinedStrategyCodeGenerator
@@ -46,8 +48,15 @@ public class JoinedStrategyCodeGenerator extends CodeGenerator {
 	 *            the configuration object
 	 */
 	public JoinedStrategyCodeGenerator(CtClass ctClass, ClassPool classPool,
-			Configuration configuration) {
+			Configuration configuration) throws FloggyException, NotFoundException {
 		super(ctClass, classPool, configuration);
+
+		CtClass perClassStrategy = classPool.get(PerClassStrategy.class.getName());
+		CtClass singleStrategy = classPool.get(SingleStrategy.class.getName());
+
+		if (ctClass.subtypeOf(perClassStrategy) || ctClass.subtypeOf(singleStrategy)) {
+			throw new FloggyException("You cannot use two persistence strategies on the same object hierarchy!");
+		}
 	}
 
 	/**

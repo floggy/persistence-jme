@@ -44,7 +44,7 @@ public class CodeGeneratorTest extends TestCase {
 	}
 
 	private CodeGenerator createCodeGenerator(CtClass ctClass,
-			boolean addDefaultConstructor) {
+			boolean addDefaultConstructor) throws Exception {
 		ClassPool pool = ClassPool.getDefault();
 		pool.insertClassPath(new LoaderClassPath(getClass().getClassLoader()));
 

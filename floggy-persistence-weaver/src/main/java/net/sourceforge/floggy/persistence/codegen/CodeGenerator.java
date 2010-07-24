@@ -29,6 +29,7 @@ import javassist.Modifier;
 import javassist.NotFoundException;
 import javassist.bytecode.AccessFlag;
 import net.sourceforge.floggy.persistence.Configuration;
+import net.sourceforge.floggy.persistence.FloggyException;
 import net.sourceforge.floggy.persistence.IDable;
 import net.sourceforge.floggy.persistence.Weaver;
 import net.sourceforge.floggy.persistence.formatter.CodeFormatter;
@@ -59,7 +60,7 @@ public abstract class CodeGenerator {
 	 *            the configuration object
 	 */
 	public CodeGenerator(CtClass ctClass, ClassPool classPool,
-			Configuration configuration) {
+			Configuration configuration) throws FloggyException, NotFoundException {
 		this.ctClass = ctClass;
 		this.classPool = classPool;
 		this.configuration = configuration;
