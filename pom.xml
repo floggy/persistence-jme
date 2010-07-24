@@ -44,16 +44,6 @@
 	</scm>
 	<repositories>
 		<repository>
-			<id>pyx4j-web-snapshot</id>
-			<url>http://repository.pyx4j.com/maven2-snapshot</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-		</repository>
-		<repository>
 			<id>pyx4j-web-release</id>
 			<url>http://repository.pyx4j.com/maven2-release</url>
 			<snapshots>
@@ -64,19 +54,55 @@
 			</releases>
 		</repository>
 		<repository>
-			<id>floggy</id>
-			<url>http://floggy.sourceforge.net/repository</url>
-		</repository>
-	</repositories>
-	<pluginRepositories>
-		<pluginRepository>
-			<id>floggy</id>
-			<url>http://floggy.sourceforge.net/repository</url>
+			<id>pyx4j-web-snapshot</id>
+			<url>http://repository.pyx4j.com/maven2-snapshot</url>
 			<snapshots>
 				<enabled>true</enabled>
 			</snapshots>
 			<releases>
+				<enabled>false</enabled>
+			</releases>
+		</repository>
+		<repository>
+			<id>sonatype-release</id>
+			<url>http://oss.sonatype.org/content/groups/sourceforge</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<releases>
 				<enabled>true</enabled>
+			</releases>
+		</repository>
+		<repository>
+			<id>sonatype-snapshot</id>
+			<url>http://oss.sonatype.org/content/repositories/sourceforge-snapshots</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>sonatype-plugin-release</id>
+			<url>http://oss.sonatype.org/content/groups/sourceforge</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</pluginRepository>
+		<pluginRepository>
+			<id>sonatype-plugin-snapshot</id>
+			<url>http://oss.sonatype.org/content/repositories/sourceforge-snapshots</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>false</enabled>
 			</releases>
 		</pluginRepository>
 	</pluginRepositories>
@@ -95,14 +121,14 @@
 			<url>scp://shell.sourceforge.net:/home/groups/f/fl/floggy/htdocs/modules/${project.artifactId}/${project.version}</url>
 		</site>
 		<repository>
-			<id>sourceforge</id>
-			<name>SourceForge.net</name>
-			<url>scp://shell.sourceforge.net:/home/groups/f/fl/floggy/htdocs/repository</url>
+			<id>sonatype</id>
+			<name>Sonatype.org</name>
+			<url>http://oss.sonatype.org/content/groups/sourceforge-with-staging</url>
 		</repository>
 		<snapshotRepository>
-			<id>sourceforge</id>
-			<name>SourceForge.net</name>
-			<url>scp://shell.sourceforge.net:/home/groups/f/fl/floggy/htdocs/repository</url>
+			<id>sonatype</id>
+			<name>Sonatype.org</name>
+			<url>http://oss.sonatype.org/content/repositories/sourceforge-snapshots</url>
 		</snapshotRepository>
 	</distributionManagement>
 	<mailingLists>
