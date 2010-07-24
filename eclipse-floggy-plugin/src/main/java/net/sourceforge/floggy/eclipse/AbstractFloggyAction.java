@@ -19,7 +19,7 @@ package net.sourceforge.floggy.eclipse;
 import java.util.Iterator;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -38,9 +38,8 @@ public abstract class AbstractFloggyAction implements IObjectActionDelegate {
 				Object element = it.next();
 				if (element instanceof IProject) {
 					project = (IProject) element;
-				} else if (element instanceof IAdaptable) {
-					project = (IProject) ((IAdaptable) element)
-							.getAdapter(IProject.class);
+				} else if (element instanceof IResource) {
+					project = ((IResource) element).getProject();
 				}
 				if (project != null) {
 					break;

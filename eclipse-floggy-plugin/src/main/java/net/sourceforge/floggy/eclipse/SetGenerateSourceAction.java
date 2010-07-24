@@ -24,7 +24,7 @@ public class SetGenerateSourceAction extends AbstractSetPropertyAction {
 			Activator.PLUGIN_ID, "generateSource");
 
 	public SetGenerateSourceAction() {
-		propertyName = PROPERTY_NAME;
+		super(PROPERTY_NAME);
 	}
 
 }

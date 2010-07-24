@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javassist.ClassPool;
+import net.sourceforge.floggy.eclipse.ConfigurationFileAction;
 import net.sourceforge.floggy.persistence.Weaver;
 
 import org.eclipse.core.resources.IFile;
@@ -80,8 +81,8 @@ public class MTJBuilder extends AbstractBuilder {
 				floggyTemp.create(IResource.DERIVED, true, monitor);
 			}
 			
-			IFile configurationFile = project.getFile("floggy.xml");
-			
+			IFile configurationFile = project.getFile(project.getPersistentProperty(ConfigurationFileAction.PROPERTY_NAME));
+
 			weaver.setEmbeddedClassesOutputPool(implJar.getLocation().toFile());
 			weaver.setOutputFile(floggyTemp.getLocation().toFile());
 			weaver.setInputFile(input);

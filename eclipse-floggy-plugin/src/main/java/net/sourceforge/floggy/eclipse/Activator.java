@@ -18,6 +18,9 @@ package net.sourceforge.floggy.eclipse;
 
 import java.util.Enumeration;
 
+import org.eclipse.core.resources.IResourceChangeEvent;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.RegistryFactory;
@@ -58,8 +61,13 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
-		plugin = this;
+
+		Activator.plugin = this;
 		Activator.context = context;
+
+		IWorkspace workspace = ResourcesPlugin.getWorkspace();
+
+		workspace.addResourceChangeListener(new ConfigurationFileResourceListener(), IResourceChangeEvent.POST_CHANGE);
 	}
 
 	/*

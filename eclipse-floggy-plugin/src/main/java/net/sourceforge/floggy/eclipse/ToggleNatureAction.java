@@ -135,6 +135,8 @@ public class ToggleNatureAction extends AbstractFloggyAction {
 		project.setPersistentProperty(
 				SetAddDefaultConstructorAction.PROPERTY_NAME, String
 						.valueOf(true));
+		project.setPersistentProperty(
+				ConfigurationFileAction.PROPERTY_NAME, "floggy.xml");
 	}
 
 	private void updateClasspath(IProject project) throws Exception {

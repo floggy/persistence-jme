@@ -26,9 +26,13 @@ import org.eclipse.ui.console.ConsolePlugin;
 
 public abstract class AbstractSetPropertyAction extends AbstractFloggyAction {
 
-	protected QualifiedName propertyName;
+	protected final QualifiedName propertyName;
+	
+	protected AbstractSetPropertyAction(QualifiedName propertyName) {
+		this.propertyName = propertyName;
+	}
 
-	private void changeProperty(IProject project) throws CoreException {
+	protected void changeProperty(IProject project) throws CoreException {
 		project.setPersistentProperty(propertyName, String
 				.valueOf(!isEnabled(project)));
 	}

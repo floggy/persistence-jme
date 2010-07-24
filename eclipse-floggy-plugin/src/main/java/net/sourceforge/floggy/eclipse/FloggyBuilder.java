@@ -43,7 +43,7 @@ public class FloggyBuilder extends IncrementalProjectBuilder {
 	public IProject[] build(int kind, Map args, IProgressMonitor monitor) throws CoreException {
 		try {
 			IProject project = getProject();
-
+			
 			if (project.hasNature(JavaCore.NATURE_ID) && project.hasNature(FloggyNature.NATURE_ID)){
 				AbstractBuilder builder = createFloggyBuilder();
 				return builder.build(project, monitor);

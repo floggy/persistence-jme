@@ -24,6 +24,6 @@ public class SetAddDefaultConstructorAction extends AbstractSetPropertyAction {
 			Activator.PLUGIN_ID, "addDefaultConstructor");
 
 	public SetAddDefaultConstructorAction() {
-		propertyName = PROPERTY_NAME;
+		super(PROPERTY_NAME);
 	}
 }

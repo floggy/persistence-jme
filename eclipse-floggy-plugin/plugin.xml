@@ -252,5 +252,27 @@
                menubarPath="net.sourceforge.floggy.menu/convertToFloggyProject"/>
       </objectContribution>
    </extension>
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            objectClass="org.eclipse.core.resources.IFile"
+            id="testeste.contribution1" nameFilter="*.xml">
+         <menu
+               label="Floggy"
+               path="additions"
+               id="net.sourceforge.floggy.menu">
+            <separator
+                  name="properties">
+            </separator>
+         </menu>
+         <action
+               label="Set as Configuration File"
+               class="net.sourceforge.floggy.eclipse.ConfigurationFileAction"
+               menubarPath="net.sourceforge.floggy.menu/properties"
+               enablesFor="1"
+               id="net.sourceforge.floggy.eclipse.ConfigurationFileAction">
+         </action>
+      </objectContribution>
+   </extension>
 
 </plugin>
