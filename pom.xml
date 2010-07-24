@@ -189,6 +189,16 @@
 			</roles>
 			<timezone>+0</timezone>
 		</developer>
+		<developer>
+			<name>Frederico José de Souza Filho</name>
+			<id>fredjsf</id>
+			<email>frederico.souza@@floggy.org</email>
+			<organization>Floggy Open Source Group</organization>
+			<roles>
+				<role>Java Developer</role>
+			</roles>
+			<timezone>-3</timezone>
+		</developer>
 	</developers>
 	<build>
 		<plugins>
