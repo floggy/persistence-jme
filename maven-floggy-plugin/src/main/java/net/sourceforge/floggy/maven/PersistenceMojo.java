@@ -33,6 +33,7 @@ import org.apache.maven.project.MavenProject;
  * 
  * @goal persistence-weaver
  * @phase process-classes
+ * @requiresDependencyResolution compile
  */
 public class PersistenceMojo extends AbstractMojo {
 	/**
