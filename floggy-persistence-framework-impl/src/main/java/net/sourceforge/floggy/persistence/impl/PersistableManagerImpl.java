@@ -289,6 +289,18 @@ public class PersistableManagerImpl extends PersistableManager {
 		}
 	}
 
+	public Object getProperty(String name) {
+		if (name == null || name.trim().length() == 0) {
+			throw new IllegalArgumentException("The property name cannot be null or empty");
+		} else if (name.equals(PersistableManager.BATCH_MODE)) {
+			return (RecordStoreManager.getBatchMode()) ? Boolean.TRUE : Boolean.FALSE;
+		} else if (name.equals(PersistableManager.STORE_INDEX_AFTER_SAVE_OPERATION)) {
+			return (IndexManager.getStoreIndexAfterSave()) ? Boolean.TRUE : Boolean.FALSE;
+		} else {
+			throw new IllegalArgumentException("Unreconized property: " + name);
+		}
+	}
+
 	public PolymorphicObjectSet polymorphicFind(Class persistableClass,
 			Filter filter, boolean lazy)
 			throws FloggyException {

@@ -33,6 +33,11 @@ public class IndexManager {
 	public static void setStoreIndexAfterSave(boolean storeIndexAfterSave) {
 		IndexManager.storeIndexAfterSave = storeIndexAfterSave;
 	}
+	
+	public static boolean getStoreIndexAfterSave() {
+		return IndexManager.storeIndexAfterSave;
+	}
+
 	/**
 	 * After object delete the cache of the index could be updated.
 	 * 

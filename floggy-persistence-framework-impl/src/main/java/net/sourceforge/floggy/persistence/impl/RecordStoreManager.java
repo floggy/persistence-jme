@@ -39,6 +39,10 @@ public class RecordStoreManager {
 		RecordStoreManager.batchMode = batchMode;
 	}
 
+	public static boolean getBatchMode() {
+		return RecordStoreManager.batchMode;
+	}
+
 	private static void check(PersistableMetadata metadata, boolean isUpdateProcess) throws Exception {
 	
 		PersistableMetadata rmsMetadata = PersistableMetadataManager.getRMSBasedMetadata(metadata.getClassName());

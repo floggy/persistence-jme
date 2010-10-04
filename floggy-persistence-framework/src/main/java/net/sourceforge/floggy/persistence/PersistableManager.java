@@ -291,11 +291,19 @@ public abstract class PersistableManager {
     /**
      * Set a property
      *  
-     * @param property the property's name
+     * @param name the property's name
      * @param value the property's value
      */
     public abstract void setProperty(String name, Object value);
-    
+
+    /**
+     * Get a property
+     *  
+     * @param name the property's name
+     * @return the property's value
+     */
+    public abstract Object getProperty(String name);
+
     /**
      * Shutdown the PersistableManager.
      */
