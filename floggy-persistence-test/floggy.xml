@@ -82,5 +82,12 @@
 				</index>
 			</indexes>
 		</persistable>
+		<persistable class-name="net.sourceforge.floggy.persistence.fr3080657.FR3080657" record-store-name="FR3080657">
+			<indexes>
+				<index name="byName">
+					<field>name</field>
+				</index>
+			</indexes>
+		</persistable>
 	</persistables>
 </floggy>

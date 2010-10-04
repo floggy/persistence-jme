@@ -28,7 +28,11 @@ import net.sourceforge.floggy.persistence.FloggyException;
 public class IndexManager {
 
 	private static Hashtable indexes = new Hashtable();
-
+	private static boolean storeIndexAfterSave = false;
+	
+	public static void setStoreIndexAfterSave(boolean storeIndexAfterSave) {
+		IndexManager.storeIndexAfterSave = storeIndexAfterSave;
+	}
 	/**
 	 * After object delete the cache of the index could be updated.
 	 * 
@@ -112,12 +116,13 @@ public class IndexManager {
 			Index index = null;
 
 			Object value = persistable.__getIndexValue(indexMetadata.getName());
+			String indexId = indexMetadata.getId();
 
-			if (indexes.containsKey(indexMetadata.getId())) {
-				index = (Index) indexes.get(indexMetadata.getId());
+			if (indexes.containsKey(indexId)) {
+				index = (Index) indexes.get(indexId);
 			} else {
 				index = new Index();
-				indexes.put(indexMetadata.getId(), index);
+				indexes.put(indexId, index);
 			}
 
 			if (value == null) {
@@ -128,6 +133,10 @@ public class IndexManager {
 				}
 			} else {
 				index.put(persistable.__getId(), value);
+			}
+
+			if (storeIndexAfterSave) {
+				save(indexId, index);
 			}
 		} else {
 			throw new IllegalArgumentException(
@@ -233,30 +242,36 @@ public class IndexManager {
 		indexes.clear();
 	}
 	
+	private static void save(String indexId, Index index) throws Exception {
+		FloggyOutputStream fos = new FloggyOutputStream();
+
+		RecordStore rs = RecordStore.openRecordStore(indexId, true);
+		Enumeration indexValueEnumeration = index.valueIds.elements();
+		
+		while (indexValueEnumeration.hasMoreElements()) {
+			IndexEntry indexEntry = (IndexEntry) indexValueEnumeration.nextElement();
+			indexEntry.serialize(fos);
+			int id = indexEntry.getRecordId();
+			byte[] data = fos.toByteArray();
+
+			if (id != -1) {
+				rs.setRecord(id, data, 0, data.length);
+			} else {
+				id = rs.addRecord(data, 0, data.length);
+				indexEntry.setRecordId(id);
+			}
+			fos.reset();
+		}
+		rs.closeRecordStore();
+	}
+	
 	public static void shutdown() throws Exception {
 		Enumeration indexIds = indexes.keys();
-		FloggyOutputStream fos = new FloggyOutputStream();
 		while(indexIds.hasMoreElements()) {
 			String indexId = (String) indexIds.nextElement();
 			Index index = (Index) indexes.get(indexId);
 			
-			RecordStore rs = RecordStore.openRecordStore(indexId, true);
-			Enumeration indexValueEnumeration = index.valueIds.elements();
-			while (indexValueEnumeration.hasMoreElements()) {
-				IndexEntry indexEntry = (IndexEntry) indexValueEnumeration.nextElement();
-				indexEntry.serialize(fos);
-				int id = indexEntry.getRecordId();
-				byte[] data = fos.toByteArray();
-
-				if (id != -1) {
-					rs.setRecord(id, data, 0, data.length);
-				} else {
-					id = rs.addRecord(data, 0, data.length);
-					indexEntry.setRecordId(id);
-				}
-				fos.reset();
-			}
-			rs.closeRecordStore();
+			save(indexId, index);
 		}
 		
 	}

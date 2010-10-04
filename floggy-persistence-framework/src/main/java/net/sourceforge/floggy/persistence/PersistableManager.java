@@ -26,6 +26,7 @@ package net.sourceforge.floggy.persistence;
 public abstract class PersistableManager {
 	
 	public static final String BATCH_MODE = "BATCH_MODE";
+	public static final String STORE_INDEX_AFTER_SAVE_OPERATION = "STORE_INDEX_AFTER_SAVE_OPERATION";
     /**
      * The single instance of PersistableManager.
      */

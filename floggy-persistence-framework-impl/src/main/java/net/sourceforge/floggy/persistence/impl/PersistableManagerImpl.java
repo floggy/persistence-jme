@@ -461,6 +461,12 @@ public class PersistableManagerImpl extends PersistableManager {
 			} else {
 				throw new IllegalArgumentException("The property PersistableManager.BATCH_MODE must be an instance of Boolean");
 			}
+		} else if (name.equals(PersistableManager.STORE_INDEX_AFTER_SAVE_OPERATION)) {
+			if (value instanceof Boolean) {
+				IndexManager.setStoreIndexAfterSave(((Boolean)value).booleanValue());
+			} else {
+				throw new IllegalArgumentException("The property PersistableManager.STORE_INDEX_AFTER_SAVE_OPERATION must be an instance of Boolean");
+			}
 		} else {
 			throw new IllegalArgumentException("Unreconized property: " + name);
 		}
