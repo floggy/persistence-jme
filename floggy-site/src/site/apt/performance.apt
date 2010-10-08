@@ -1,0 +1,45 @@
+~~
+~~ Copyright (c) 2006-2010 Floggy Open Source Group. All rights reserved.
+~~
+~~ Licensed under the Apache License, Version 2.0 (the "License");
+~~ you may not use this file except in compliance with the License.
+~~ You may obtain a copy of the License at
+~~
+~~ http://www.apache.org/licenses/LICENSE-2.0
+~~
+~~ Unless required by applicable law or agreed to in writing, software
+~~ distributed under the License is distributed on an "AS IS" BASIS,
+~~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+~~ See the License for the specific language governing permissions and
+~~ limitations under the License.
+~~
+
+Performance
+
+	Performance is one of the keys aspects of the mobile development. Following you will find some of the best practices during the usage of Floggy to achieve the best performance.
+
+	* If you have an extensive object hierarchy we would recommend you to use the {{{http://floggy.sourceforge.net/modules/floggy-persistence-framework/apidocs/net/sourceforge/floggy/persistence/strategy/PerClassStrategy.html}PerClassStrategy}} persistence strategy  
+
+	* Do not use the {{{http://floggy.sourceforge.net/modules/floggy-persistence-framework/apidocs/net/sourceforge/floggy/persistence/Comparator.html}Comparator}} interface to sort your objects. 
+	This operation is made by the RMS system and it does not have a good performance. We recommend you to sort the objects in memory after fetching them from the system. 
+
+	* Set the property PersistableManager.BATCH_MODE to true when doing heavy load or save operations.
+
++------------------------------+
+Person p = new Person();
+
+PersistableManager pm = PersistableManager.getInstance();
+
+pm.setProperty(PersistableManager.BATCH_MODE, Boolean.TRUE);
+
+for(...) {
+	loadDataFromServlet(p);
+
+	pm.batchSave(p);
+}
+
+pm.setProperty(PersistableManager.BATCH_MODE, Boolean.FALSE);
++-----------------------------+
+
+	* For search we advice to index the fields that you would like search for. Further information check out the {{{./core-package.html#Indexing_fields}documentation}}. 
+

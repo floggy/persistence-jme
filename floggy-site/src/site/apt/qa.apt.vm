@@ -14,21 +14,6 @@
  * limitations under the License.
  *#
 
-~~
-~~ Copyright (c) 2006-2009 Floggy Open Source Group. All rights reserved.
-~~
-~~ Licensed under the Apache License, Version 2.0 (the "License");
-~~ you may not use this file except in compliance with the License.
-~~ You may obtain a copy of the License at
-~~
-~~ http://www.apache.org/licenses/LICENSE-2.0
-~~
-~~ Unless required by applicable law or agreed to in writing, software
-~~ distributed under the License is distributed on an "AS IS" BASIS,
-~~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-~~ See the License for the specific language governing permissions and
-~~ limitations under the License.
-~~
 Quality & Assurance
 
  Deliver a free of bug software is a hard task to accomplish, we have been trying it since the beginning and some results appeared in our favor: our average bugs per release is 4, 
@@ -42,15 +27,15 @@ Quality & Assurance
 *----------*--------------*------------------------*
 | Project                             | Quantity | Results |
 *----------*--------------*------------------------*
-| floggy-persistence-framework        | 1        |{{{http://floggy.sourceforge.net/modules/floggy-persistence-framework/${currentVersion}/floggy-persistence-framework/surefire-report.html}Report}}|
+| floggy-persistence-framework        | 7        |{{{http://floggy.sourceforge.net/modules/floggy-persistence-framework/${currentVersion}/floggy-persistence-framework/surefire-report.html}Report}}|
 *----------*--------------*------------------------*
-| floggy-persistence-framework-impl   | 92       |{{{http://floggy.sourceforge.net/modules/floggy-persistence-framework-impl/${currentVersion}/floggy-persistence-framework-impl/surefire-report.html}Report}}|
+| floggy-persistence-framework-impl   | 110       |{{{http://floggy.sourceforge.net/modules/floggy-persistence-framework-impl/${currentVersion}/floggy-persistence-framework-impl/surefire-report.html}Report}}|
 *----------*--------------*------------------------*
-| floggy-persistence-weaver           | 21       |{{{http://floggy.sourceforge.net/modules/floggy-persistence-weaver/${currentVersion}/floggy-persistence-weaver/surefire-report.html}Report}}|
+| floggy-persistence-weaver           | 64       |{{{http://floggy.sourceforge.net/modules/floggy-persistence-weaver/${currentVersion}/floggy-persistence-weaver/surefire-report.html}Report}}|
 *----------*--------------*------------------------*
-| floggy-persistence-test             | 1364     |{{{http://floggy.sourceforge.net/modules/floggy-persistence-test/${currentVersion}/floggy-persistence-test/surefire-report.html}Report}}|
+| floggy-persistence-test             | 1486     |{{{http://floggy.sourceforge.net/modules/floggy-persistence-test/${currentVersion}/floggy-persistence-test/surefire-report.html}Report}}|
 *----------*--------------*------------------------*
-| <<Total>>                           | <<1478>> ||
+| <<Total>>                           | <<1667>> ||
 *----------*--------------*------------------------*
 
 *Continuous integration

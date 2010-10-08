@@ -61,25 +61,25 @@ public class Phone implements Persistable {
 +-----------------------------+
 
 * PersistableManager
- 
+
  All operations, such as saving, loading, deleting and finding objects are made through a single class called {{{./modules/floggy-persistence-framework/apidocs/net/sourceforge/floggy/persistence/PersistableManager.html} <<net.sourceforge.floggy.persistence.PersistableManager>>}}. 
 
  The basic operations are explained in the following examples:
- 
+
  * {{{#Saving_a_new_object} Saving a new object}}
- 
+
  * {{{#Loading_a_stored_object} Loading a stored object}}
- 
+
  * {{{#Lazy_loading_a_tree_of_objects} Lazy loading a tree of objects}}
- 
+
  * {{{#Changing_the_name_of_the_RecordStore_where_the_Persistable_will_be_stored} Changing the name of the RecordStore where the Persistable will be stored}}
- 
+
  * {{{#Deleting_a_previously_saved_object} Deleting a previously saved object}}
- 
+
  * {{{#Deleting_all_entities_based_on_its_class} Deleting all entities based on its class}}
- 
+
  * {{{#Deleting_all_entities_stored_by_the_midlet} Deleting all entities stored by the midlet}}
- 
+
  * {{{#Listing_all_objects} Listing all objects}}
 
  * {{{#Listing_all_objects_fast_version} Listing all objects (fast version)}}
@@ -87,12 +87,20 @@ public class Phone implements Persistable {
  * {{{#Using_a_filter_to_find_specific_objects} Using a filter to find specific objects}}
 
  * {{{#Using_a_comparator_to_sort_the_results_of_a_search} Using a comparator to sort the results of a search}}
- 
+
  * {{{#Checking_if_the_object_is_already_persisted} Checking if the object is already persisted}}
- 
+
  * {{{#Getting_the_object_id} Getting the object id}}
+
+ * {{{#Indexing_fields} Indexing fields}}
+
+ * {{{#Storing_the-index-after_a_save_operation}Storing the index after a save operation}}
  
- * {{{#Using_the_index_feature_only_available_on_package_1.4.0-alpha} Using the index feature}}
+ * {{{#Persistence_strategy} Persistence strategy}}
+
+ * {{{#Opening_a_shared_Record_Store} Opening a shared Record Store}}
+ 
+ * {{{#Working_with_batch_operations} Working with batch operations}}
  
 ** {Saving a new object}
  
@@ -332,10 +340,8 @@ try {
 }
 +-----------------------------+
 
-* {Using the index feature (only available on package 1.4.0-alpha)}.
+* {Indexing fields}.
 
-	<<Please keep in mind that this is not a completed task, you may find issues using it. Be patient! Let us know what we can improve and/or fix.>>
-	
 	First of all, you must create a floggy.xml file containing the following definitions:
 	
 +------------------------------+
@@ -344,8 +350,7 @@ try {
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://floggy.sourceforge.net/floggy-persistence-1.4.0 http://floggy.sourceforge.net/schema/floggy-persistence-1.4.0.xsd" generate-source="true">
 	<persistables>
-		<persistable class-name="net.sourceforge.floggy.persistence.Person">
-			<record-store-name>Person</record-store-name>
+		<persistable class-name="net.sourceforge.floggy.persistence.Person" record-store-name="Person">
 			<indexes>
 				<index name="byName">
 					<field>name</field>
@@ -357,10 +362,8 @@ try {
 +------------------------------+
 
 	This XML instance refer to a class called "Person" that contains a field named "name" that is configured as an index to our Person persistable class. 
-	You have to add the parameter <<configurationFile>> pointing to the file above in configuration of both Ant and Maven to get it worked, <<there isn't support for Eclipse yet.>> 
+	You have to add the parameter <<configurationFile>> pointing to the file above. 
 	
-	Here is the package that <<MUST>> be used: {{http://floggy.sourceforge.net/1.4.0-alpha/floggy-persistence-1.4.0-SNAPSHOT.zip}}. We also provided a sample working application {{http://floggy.sourceforge.net/1.4.0-alpha/floggy-persistence-demo-1.4.0-SNAPSHOT.zip}}.   
-
 +------------------------------+
 Person person = new Person();
 person.setName("Floggy");
@@ -375,6 +378,180 @@ try {
 	ObjectSet os = manager.find(Person.class, indexFilter, false);
 } catch (FloggyException e) {
 	...
+}
++-----------------------------+
+
+* {Storing the index after a save operation}.
+
++------------------------------+
+
+Person person = new Person();
+person.setName("Floggy");
+
+PersistableManager pm = PersistableManager.getInstance();
+
+try {
+
+	// turn on the store of indexes after a save operations
+	pm.setProperty(PersistableManager.STORE_INDEX_AFTER_SAVE_OPERATION, Boolean.TRUE);
+
+	// saving the objects
+	pm.save(person); 
+
+} catch (FloggyException e) {
+	...
+}
++-----------------------------+
+	
+* {Persistence strategy}.
+
+	The release 1.4.0 brought a new feature that enable the devoloper to change the persistence strategy for objects hierarchy. There are three types supported:
+
+	* PerClass: all properties of all super and subclasses are mapped into subclasse's RecordStores. The properties of the objects hierarchy are handled as if not having hierarchy.
+	
++------------------------------+
+import net.sourceforge.floggy.persistence.Persistable;
+import net.sourceforge.floggy.persistence.strategy.PerClassStrategy;
+
+public class Person implements Persistable, PerClassStrategy {
+
+	private String name;
+	private Date birthday;
+	...
+}
+
+...
+import net.sourceforge.floggy.persistence.Persistable;
+
+public class Employee extends Person {
+
+	protected long employeeId;
+	...
+}
+
+...
+import net.sourceforge.floggy.persistence.Persistable;
+
+public class Customer extends Person {
+
+	protected long favoriteProductId;
+	...
+}
+
++------------------------------+
+
+	For the usecase above Floggy will end up with two RecordStores one called Employee and another Customer. 
+	Employee will contain the data for name, birthday and employeeId. 
+	Customer will contain the data for name, birthday and favoriteProductId.
+
+	* Single: all properties of all super and subclasses are mapped into the same RecordStore, the super class RecordStore.
+
++------------------------------+
+import net.sourceforge.floggy.persistence.Persistable;
+import net.sourceforge.floggy.persistence.strategy.SingleStrategy;
+
+public class Person implements Persistable, SingleStrategy {
+
+	private String name;
+	private Date birthday;
+	...
+}
+
+...
+import net.sourceforge.floggy.persistence.Persistable;
+
+public class Employee extends Person {
+
+	protected long employeeId;
+	...
+}
+
+...
+import net.sourceforge.floggy.persistence.Persistable;
+
+public class Customer extends Person {
+
+	protected long favoriteProductId;
+	...
+}
+
++------------------------------+
+
+	For the usecase above Floggy will end up with only one RecordStore called Person. All the object for Employee and Customer will be save on the same RecordStore. 
+
+	* Joined: the properties for each super and sublclasses are mapped to different RecordStores. <<Default>>.
+
++------------------------------+
+import net.sourceforge.floggy.persistence.Persistable;
+import net.sourceforge.floggy.persistence.strategy.SingleStrategy;
+
+public class Person implements Persistable, JoinedStrategy {
+
+	private String name;
+	private Date birthday;
+	...
+}
+
+...
+import net.sourceforge.floggy.persistence.Persistable;
+
+public class Employee extends Person {
+
+	protected long employeeId;
+	...
+}
+
+...
+import net.sourceforge.floggy.persistence.Persistable;
+
+public class Customer extends Person {
+
+	protected long favoriteProductId;
+	...
+}
+
++------------------------------+
+
+	For the usecase above Floggy will end up with three RecordStores, called Person, Employee and Customer. 
+	Person will contain the data for name and birthday. 
+	Employee will contain the data for an entry on Person RecordStore and for employeeId. 
+	Customer will contain the data for an entry on Person RecordStore and for favoriteProductId.
+
+* {Opening a shared Record Store}.
+
+	If you need to open a shared Record Store you can configure the floggy.xml file with the information about it. 
+	<<Keep in mind that both application must use the exactly same Persistable classes>> 
+
++------------------------------+
+<?xml version="1.0" encoding="UTF-8"?>
+<floggy xmlns:tns="http://floggy.sourceforge.net/floggy-persistence-1.4.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://floggy.sourceforge.net/floggy-persistence-1.4.0 http://floggy.sourceforge.net/schema/floggy-persistence-1.4.0.xsd" generate-source="true">
+	<persistables>
+		<persistable class-name="net.sourceforge.floggy.persistence.Person" record-store-name="Person" suite-name="BarbecueCalculator" vendor-name="Floggy" />
+	</persistables>
+</floggy>
++------------------------------+
+	
+* {Working with batch operations}.
+
++------------------------------+
+
+PersistableManager pm = PersistableManager.getInstance();
+
+try {
+	
+	// turn on the batch operation
+	pm.setProperty(PersistableManager.BATCH_MODE, Boolean.TRUE);
+
+	// Run the heavy load/save operation
+	myLoadSaveHeavyOperation(); 
+
+} catch (FloggyException e) {
+	...
+} finally {
+	// turn off the batch operation
+	pm.setProperty(PersistableManager.BATCH_MODE, Boolean.FALSE);
 }
 +-----------------------------+
 	

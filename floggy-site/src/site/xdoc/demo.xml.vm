@@ -41,57 +41,112 @@
 		<section name="Demo">
 			<p>There are two applications that uses Floggy as the persistence framework. The first one was developed by our friend and barbecue addicted <a href="http://twitter.com/netomarin">Neto Marin</a>. 
 			The second one was part of the project that Rossato and Priscila presented for their graduation theses. Enjoy!</p>
-			<table class="bodyTable">
-				<tbody>
-					<tr class="a">
-						<td align="left">Name</td>
-						<td align="left">Description</td>
-						<td align="left">Java Web Start</td>
-						<td align="left">JAD (TinyURL)</td>
-						<td align="left">JAD</td>
-						<td align="left">JAR</td>
-						<td align="left">Source</td>
-					</tr>
-					<tr class="b">
-						<td align="left">Barbecue calculator</td>
-						<td align="left">A midlet to help you to organize a barbacue. Specifically a Brazilian barbecue.</td>
-						<td align="left">
-							<a href="http://microemu.org/webstart/floggy.sourceforge.net/demo/barbecue-calculator-${currentVersion}-me.jnlp">JNLP</a>
-						</td>
-						<td align="left">
-							<a href="http://tinyurl.com/mwhcmu">JAD (TinyURL)</a>
-						</td>
-						<td align="left">
-							<a href="demo/barbecue-calculator-${currentVersion}-me.jad">JAD</a>
-						</td>
-						<td align="left">
-							<a href="demo/barbecue-calculator-${currentVersion}-me.jar">JAR</a>
-						</td>
-						<td align="left">
-							<a href="http://floggy.svn.sourceforge.net/viewvc/floggy/trunk/barbecue-calculator.tar.gz?view=tar">Source</a>
-						</td>
-					</tr>
-					<tr class="a">
-						<td align="left">Hospital-ME</td>
-						<td align="left">A midlet that simulate a hospital system having doctors, patients, bedrooms interacting between each other.</td>
-						<td align="left">
-							<a href="http://microemu.org/webstart/floggy.sourceforge.net/demo/floggy-persistence-demo-${currentVersion}-me.jnlp">JNLP</a>
-						</td>
-						<td align="left">
-							<a href="http://tinyurl.com/yjssuq4">JAD (TinyURL)</a>
-						</td>
-						<td align="left">
-							<a href="demo/floggy-persistence-demo-${currentVersion}-me.jad">JAD</a>
-						</td>
-						<td align="left">
-							<a href="demo/floggy-persistence-demo-${currentVersion}-me.jar">JAR</a>
-						</td>
-						<td align="left">
-							<a href="http://floggy.svn.sourceforge.net/viewvc/floggy/trunk/floggy-persistence-demo.tar.gz?view=tar">Source</a>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+			<subsection name="1.3.1">
+				<table class="bodyTable">
+					<tbody>
+						<tr class="a">
+							<td align="left">Name</td>
+							<td align="left">Description</td>
+							<td align="left">Java Web Start</td>
+							<td align="left">JAD (TinyURL)</td>
+							<td align="left">JAD</td>
+							<td align="left">JAR</td>
+							<td align="left">Source</td>
+						</tr>
+						<tr class="b">
+							<td align="left">Barbecue calculator</td>
+							<td align="left">A midlet to help you to organize a barbacue. Specifically a Brazilian barbecue.</td>
+							<td align="left">
+								<a href="http://microemu.org/webstart/floggy.sourceforge.net/demo/barbecue-calculator-1.3.1-me.jnlp">JNLP</a>
+							</td>
+							<td align="left">
+								<a href="http://tinyurl.com/mwhcmu">JAD (TinyURL)</a>
+							</td>
+							<td align="left">
+								<a href="demo/barbecue-calculator-1.3.1-me.jad">JAD</a>
+							</td>
+							<td align="left">
+								<a href="demo/barbecue-calculator-1.3.1-me.jar">JAR</a>
+							</td>
+							<td align="left">
+								<a href="http://floggy.svn.sourceforge.net/viewvc/floggy/tags/floggy-1.3.1/barbecue-calculator/?view=tar">Source</a>
+							</td>
+						</tr>
+						<tr class="a">
+							<td align="left">Hospital-ME</td>
+							<td align="left">A midlet that simulate a hospital system having doctors, patients, bedrooms interacting between each other.</td>
+							<td align="left">
+								<a href="http://microemu.org/webstart/floggy.sourceforge.net/demo/floggy-persistence-demo-1.3.1-me.jnlp">JNLP</a>
+							</td>
+							<td align="left">
+								<a href="http://tinyurl.com/yjssuq4">JAD (TinyURL)</a>
+							</td>
+							<td align="left">
+								<a href="demo/floggy-persistence-demo-1.3.1-me.jad">JAD</a>
+							</td>
+							<td align="left">
+								<a href="demo/floggy-persistence-demo-1.3.1-me.jar">JAR</a>
+							</td>
+							<td align="left">
+								<a href="http://floggy.svn.sourceforge.net/viewvc/floggy/tags/floggy-1.3.1/floggy-persistence-demo/?view=tar">Source</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</subsection>
+			<subsection name="1.4.0">
+				<table class="bodyTable">
+					<tbody>
+						<tr class="a">
+							<td align="left">Name</td>
+							<td align="left">Description</td>
+							<td align="left">Java Web Start</td>
+							<td align="left">JAD (TinyURL)</td>
+							<td align="left">JAD</td>
+							<td align="left">JAR</td>
+							<td align="left">Source</td>
+						</tr>
+						<tr class="b">
+							<td align="left">Barbecue calculator</td>
+							<td align="left">A midlet to help you to organize a barbacue. Specifically a Brazilian barbecue.</td>
+							<td align="left">
+								<a href="http://microemu.org/webstart/floggy.sourceforge.net/demo/barbecue-calculator-1.4.0-me.jnlp">JNLP</a>
+							</td>
+							<td align="left">
+								<a href="http://tinyurl.com/2bkfrv8">JAD (TinyURL)</a>
+							</td>
+							<td align="left">
+								<a href="demo/barbecue-calculator-1.4.0-me.jad">JAD</a>
+							</td>
+							<td align="left">
+								<a href="demo/barbecue-calculator-1.4.0-me.jar">JAR</a>
+							</td>
+							<td align="left">
+								<a href="http://floggy.svn.sourceforge.net/viewvc/floggy/tags/floggy-1.4.0/barbecue-calculator/?view=tar">Source</a>
+							</td>
+						</tr>
+						<tr class="a">
+							<td align="left">Hospital-ME</td>
+							<td align="left">A midlet that simulate a hospital system having doctors, patients, bedrooms interacting between each other.</td>
+							<td align="left">
+								<a href="http://microemu.org/webstart/floggy.sourceforge.net/demo/floggy-persistence-demo-1.4.0-me.jnlp">JNLP</a>
+							</td>
+							<td align="left">
+								<a href="http://tinyurl.com/34uatv7">JAD (TinyURL)</a>
+							</td>
+							<td align="left">
+								<a href="demo/floggy-persistence-demo-1.4.0-me.jad">JAD</a>
+							</td>
+							<td align="left">
+								<a href="demo/floggy-persistence-demo-1.4.0-me.jar">JAR</a>
+							</td>
+							<td align="left">
+								<a href="http://floggy.svn.sourceforge.net/viewvc/floggy/tags/floggy-1.4.0/floggy-persistence-demo/?view=tar">Source</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</subsection>
 		</section>
 	</body>
 </document>

@@ -38,15 +38,14 @@
 	<properties>
 		<title>Welcome to Floggy</title>
 		<author email="thiago.moreira@floggy.org">Thiago Moreira</author>
-		<author email="thiago.rossato@floggy.org">Thiago Rossato</author>
 	</properties>
 	<body>
 		<section name="News">
+			<p><img src="images/starOn.png" alt="News" /><b> 01-Aug-10: The 1.4.0 final release was made available, check the list of <a href="./changes-report.html#a1.4.0">changes</a>. Enjoy!</b></p>
 			<p><img src="images/starOn.png" alt="News" /><b> 30-Jun-10: New download record for a month, exactly 1500. Thank you community! <a href="http://sourceforge.net/project/stats/detail.php?group_id=139426&amp;ugn=floggy&amp;type=prdownload&amp;mode=12months&amp;file_id=0" >Statistics</a></b></p>
-			<p><img src="images/starOn.png" alt="News" /><b> 25-Apr-10: Call for testers: we just built an alpha package for the new Index feature, we need testers! Be one! Check it out how <a href="./core-package.html#Using_the_index_feature_only_available_on_package_1.4.0-alpha">here</a>.</b></p>
+			<p><b>25-Apr-10:</b> Call for testers: we just built an alpha package for the new Index feature, we need testers! Be one! Check it out how <a href="./core-package.html#Using_the_index_feature_only_available_on_package_1.4.0-alpha">here</a>.</p>
 			<p><b>16-Jan-10:</b> The 1.3.1 maintenance release was made available, its target is fix an issue on Windows platform. Be aware of the <a href="./changes-report.html#a1.3.1">change</a>.</p>
 			<p><b>20-Dec-09:</b> The 1.3.0 final release was made available, check the list of <a href="./changes-report.html#a1.3.0">changes</a>. Enjoy!</p>
-			<p><b>18-Dec-09:</b> A new <a href="./qa.html">Q&amp;A</a> section was created. There you can check how we try to deliver a free of bug software.</p>
 			<p>A complete list of news is available <a href="./news.html">here</a>. Stay tuned! Subscribe our <a href="https://sourceforge.net/export/rss2_keepsake.php?group_id=139426" >RSS</a> feed.<a href="https://sourceforge.net/export/rss2_keepsake.php?group_id=139426"><img src="images/rss.png" alt="RSS"/></a></p>
 		</section>
 		<section name="Welcome to Floggy">

@@ -16,6 +16,8 @@
 
 News
 
+	<<01-Aug-10:>> The 1.4.0 final release was made available, check the list of {{{./changes-report.html#a1.4.0}changes}}. Enjoy!
+
 	<<30-Jun-10:>> New download record for a month, exactly 1500. Thank you community! {{{http://sourceforge.net/project/stats/detail.php?group_id=139426&ugn=floggy&type=prdownload&mode=12months&file_id=0}Statistics}}.
 
 	<<25-Apr-10:>> Call for testers: we just built an alpha package for the new Index feature, we need testers! Be one! Check it out how {{{./core-package.html#Using_the_index_feature_only_available_on_package_1.4.0-alpha}here}}.

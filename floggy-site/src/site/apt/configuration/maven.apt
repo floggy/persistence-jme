@@ -52,6 +52,9 @@ Maven 2.0
             <goals>
               <goal>persistence-weaver</goal>
             </goals>
+            <configuration>
+              <configurationFile>floggy.xml</configurationFile>
+            </configuration>
           </execution>
         </executions>
       </plugin>

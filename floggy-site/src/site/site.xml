@@ -24,7 +24,7 @@
 		<version>1.4.0-SNAPSHOT</version>
 	</skin>
 	<publishDate position="left" format="dd MMM yyyy" />
-	<version value="1.3.1" />
+	<version value="1.4.0" />
 	<bannerLeft>
 		<name>Floggy</name>
 		<src>images/banner-left.jpg</src>
@@ -64,11 +64,13 @@
 			<item name="Road Map" href="roadmap.html" img="images/new.png"/>
 			<item name="Changes" href="changes-report.html"/>
 			<item name="FAQ" href="faq.html" />
+			<item name="Articles" href="articles.html" />
 		</menu>
 		<menu name="Documentation">
 			<item name="Getting started" href="getting-started.html" />
 			<item name="Core package" href="core-package.html" />
 			<item name="Migration package" href="migration-package.html" />
+			<item name="Performance" href="performance.html" />
 			<item name="API" href="modules/floggy-persistence-framework/apidocs/index.html" />
 			<item name="Configuration" collapse="false" href="configuration/eclipse.html">
 				<item name="Eclipse" href="configuration/eclipse.html" />

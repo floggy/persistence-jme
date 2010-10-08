@@ -46,7 +46,7 @@ Ant
 +------------------------------------------+
 [...]
   <target name="floggy">
-	<floggy-persistence-weaver bootclasspathref="..." classpathref="..." input="..." output="..." generateSource="..."/>
+	<floggy-persistence-weaver bootclasspathref="..." classpathref="..." input="..." output="..." generateSource="..." configurationFile="floggy.xml"/>
   </target>
 [...]
 +------------------------------------------+
