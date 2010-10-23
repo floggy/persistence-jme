@@ -108,27 +108,32 @@
 					</execution>
 				</executions>
 			</plugin>
-		</plugins>
-	</build>
-	<reporting>
-		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-changes-plugin</artifactId>
-				<version>2.3</version>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>3.0-beta-2</version>
 				<configuration>
-					<issueLinkTemplate>http://sourceforge.net/support/tracker.php?aid=%ISSUE%</issueLinkTemplate>
+					<reportPlugins>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-changes-plugin</artifactId>
+							<version>2.3</version>
+							<configuration>
+								<issueLinkTemplate>http://sourceforge.net/support/tracker.php?aid=%ISSUE%</issueLinkTemplate>
+							</configuration>
+							<reportSets>
+								<reportSet>
+									<reports>
+										<report>changes-report</report>
+									</reports>
+								</reportSet>
+							</reportSets>
+						</plugin>
+					</reportPlugins>
 				</configuration>
-				<reportSets>
-					<reportSet>
-						<reports>
-							<report>changes-report</report>
-						</reports>
-					</reportSet>
-				</reportSets>
 			</plugin>
 		</plugins>
-	</reporting>
+	</build>
 	<properties>
 		<currentVersion>1.4.0-SNAPSHOT</currentVersion>
 	</properties>

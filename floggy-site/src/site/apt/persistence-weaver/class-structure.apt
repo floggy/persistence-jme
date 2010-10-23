@@ -154,7 +154,7 @@ public void __delete() throws java.lang.Exception {
 	
 	* {{{../configuration/ant.html#generateSource}Ant}}
 	
-	* {{{../configuration/commandline.html#-g}Command Line}}
+	* {{{../configuration/commandline.html#a-s}Command Line}}
 	
 	* Eclipse
 	

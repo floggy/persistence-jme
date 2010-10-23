@@ -32,6 +32,7 @@
 	</bannerLeft>
 	<body>
 		<links>
+			<item name="Twitter" href="http://twitter.com/floggyframework"/>
 			<item name="JME" href="http://java.sun.com/javame/index.jsp"/>
 			<item name="Maven 2" href="http://maven.apache.org/maven2/" />
 		</links>
@@ -60,8 +61,8 @@
 			<item name="Welcome" href="index.html" />
 			<item name="Download" href="download.html" />
 			<item name="Demo" href="demo.html" />
-			<item name="News" href="news.html" img="images/new.png"/>
-			<item name="Road Map" href="roadmap.html" img="images/new.png"/>
+			<item name="News" href="news.html" />
+			<item name="Road Map" href="roadmap.html" />
 			<item name="Changes" href="changes-report.html"/>
 			<item name="FAQ" href="faq.html" />
 			<item name="Articles" href="articles.html" />
@@ -95,8 +96,8 @@
 		<logo name="Sourceforge.net" href="http://sourceforge.net/" img="http://sflogo.sourceforge.net/sflogo.php?group_id&#61;139426&amp;type&#61;1"/>
 		<logo name="Maven" href="http://maven.apache.org/" img="http://maven.apache.org/images/logos/maven-button-3.png"/>
 		<logo name="Ohloh" href="http://www.ohloh.net/projects/floggy?ref=WidgetProjectThinBadge" img="http://www.ohloh.net/projects/floggy/widgets/project_thin_badge.gif"/>
-		<logo name="Fisheye" href="http://fisheye3.atlassian.com/browse/floggy" img="images/fisheye_logo.gif"/>
-		<logo name="Parabuild" href="http://parabuild.viewtier.com:8080/parabuild/index.htm?cid=9859&amp;view=detailed&amp;buildid=12739&amp;displaygroupid=-1" img="images/parabuild_logo.jpg"/>
+		<logo name="Fisheye" href="http://fisheye3.atlassian.com/browse/floggy" img="http://floggy.sf.net/images/fisheye_logo.gif"/>
+		<logo name="Parabuild" href="http://parabuild.viewtier.com:8080/parabuild/index.htm?cid=9859&amp;view=detailed&amp;buildid=12739&amp;displaygroupid=-1" img="http://floggy.sf.net/images/parabuild_logo.jpg"/>
 		<logo name="Sonar" href="http://nemo.sonarsource.org/project/index/214399" img="http://nemo.sonarsource.org/images/sonar.png"/>
 	</poweredBy>
 </project>

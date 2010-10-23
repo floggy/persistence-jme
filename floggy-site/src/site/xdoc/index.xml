@@ -17,23 +17,6 @@
 -->
 
 <!DOCTYPE document PUBLIC "-//Apache Software Foundation//DTD XDOC 1.0//EN" "http://maven.apache.org/dtd/xdoc_1_0.dtd">
-<!--
-
-    Copyright (c) 2006-2009 Floggy Open Source Group. All rights reserved.
-
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
-
--->
 <document>
 	<properties>
 		<title>Welcome to Floggy</title>
@@ -42,7 +25,8 @@
 	<body>
 		<section name="News">
 			<p><img src="images/starOn.png" alt="News" /><b> 01-Aug-10: The 1.4.0 final release was made available, check the list of <a href="./changes-report.html#a1.4.0">changes</a>. Enjoy!</b></p>
-			<p><img src="images/starOn.png" alt="News" /><b> 30-Jun-10: New download record for a month, exactly 1500. Thank you community! <a href="http://sourceforge.net/project/stats/detail.php?group_id=139426&amp;ugn=floggy&amp;type=prdownload&amp;mode=12months&amp;file_id=0" >Statistics</a></b></p>
+			<p><img src="images/starOn.png" alt="News" /><b> 16-Oct-10: Hey, now you can follow us on <a href="http://twitter.com/floggyframework" >twitter! </a></b></p>
+			<p><b>30-Jun-10:</b> New download record for a month, exactly 1500. Thank you community! <a href="http://sourceforge.net/project/stats/detail.php?group_id=139426&amp;ugn=floggy&amp;type=prdownload&amp;mode=12months&amp;file_id=0" >Statistics</a></p>
 			<p><b>25-Apr-10:</b> Call for testers: we just built an alpha package for the new Index feature, we need testers! Be one! Check it out how <a href="./core-package.html#Using_the_index_feature_only_available_on_package_1.4.0-alpha">here</a>.</p>
 			<p><b>16-Jan-10:</b> The 1.3.1 maintenance release was made available, its target is fix an issue on Windows platform. Be aware of the <a href="./changes-report.html#a1.3.1">change</a>.</p>
 			<p><b>20-Dec-09:</b> The 1.3.0 final release was made available, check the list of <a href="./changes-report.html#a1.3.0">changes</a>. Enjoy!</p>

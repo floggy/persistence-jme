@@ -17,7 +17,7 @@
 Eclipse
  
  For the beginners, we encourage the usage of the Floggy Eclipse plugin. It is the easiest way of configuring Floggy within Eclipse.
- For those who are already familiar to the Eclipse environment, feel free to choose others configurations like {{{ant.html}Ant}}, {{{maven.html}Maven}} or {{{commandline.html} command line}}.
+ For those who are already familiar to the Eclipse environment, feel free to choose others configurations like {{{./ant.html}Ant}}, {{{./maven.html}Maven}} or {{{./commandline.html} command line}}.
  
  Notice that if you choose to use the plugin, you <<don't>> need to download the Floggy release because all necessary files are bundled inside the plugin.
  

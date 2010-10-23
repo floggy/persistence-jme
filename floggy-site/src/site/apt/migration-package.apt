@@ -41,13 +41,13 @@ public class Person implements Persistable {
 
 * Basic operations
 
- * {{{#Addingrenaming_a_field} Adding/renaming a field}}
+ * {{{Addingrenaming_a_field} Adding/renaming a field}}
  
- * {{{#Migrating_a_Persistable_field} Migrating a Persistable field}}
+ * {{{Migrating_a_Persistable_field} Migrating a Persistable field}}
 
- * {{{#Deleting_a_field} Deleting a field}}
+ * {{{Deleting_a_field} Deleting a field}}
 
- * {{{#Deleting_a_whole_register} Deleting a whole register}}
+ * {{{Deleting_a_whole_register} Deleting a whole register}}
 
 
 ** {Adding/renaming a field}
