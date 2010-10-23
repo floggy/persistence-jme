@@ -206,7 +206,7 @@
 				</skip>
 				<tags>
 					<in-line></in-line>
-					<standard>@goal|@phase|@required|@optional|@parameter</standard>
+					<standard>@goal|@optional|@parameter|@phase|@required|@requiresDependencyResolution</standard>
 				</tags>
 				<templates>
 					<method>
