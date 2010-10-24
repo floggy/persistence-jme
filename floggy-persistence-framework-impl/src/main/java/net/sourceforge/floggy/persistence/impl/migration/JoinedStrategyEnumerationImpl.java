@@ -71,6 +71,7 @@ public class JoinedStrategyEnumerationImpl extends AbstractEnumerationImpl {
 				byte[] superData = store.getRecord(id);
 				buildPersistable(superMetadata, superData, hashtable);
 				superClassesIDs.put(superClassName, new Integer(id));
+				RecordStoreManager.closeRecordStore(store);
 			}
 
 			for (int i = 0; i < fieldNames.length; i++) {
@@ -130,6 +131,7 @@ public class JoinedStrategyEnumerationImpl extends AbstractEnumerationImpl {
 				if (metadata != null) {
 					RecordStore superRecordStore = RecordStoreManager.getRecordStore(metadata.getRecordStoreName(), metadata);
 					superRecordStore.deleteRecord(((Integer)superClassesIDs.get(className)).intValue());
+					RecordStoreManager.closeRecordStore(superRecordStore);
 				}
 			}
 		}
@@ -194,6 +196,7 @@ public class JoinedStrategyEnumerationImpl extends AbstractEnumerationImpl {
 			case PersistableMetadata.PERSISTABLE: {
 				FieldPersistableInfo fpi = null;
 				String fieldClassName = rmsBasedMetadata.getPersistableImplementationClassForField(fieldName);
+				//TODO
 //				if (PersistableMetadataManager.getRMSVersion().equals(PersistableMetadataManager.VERSION_1_4_0)) {
 //					dis.skipBytes(4);
 //				}
