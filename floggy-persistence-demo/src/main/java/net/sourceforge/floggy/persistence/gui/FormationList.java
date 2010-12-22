@@ -54,13 +54,14 @@ public class FormationList extends List implements CommandListener, Comparator {
         try {
             this.deleteAll();
 
-            formations = pm.find(Formation.class, null, this);
+            Class formationClass = Class.forName("net.sourceforge.floggy.persistence.model.Formation");
+            formations = pm.find(formationClass, null, this);
             for (int i = 0; i < formations.size(); i++) {
                 Formation element = (Formation) formations.get(i);
                 this.append(element.getFormation(), null);
             }
 
-        } catch (FloggyException e) {
+        } catch (Exception e) {
         	HospitalMIDlet.showException(e);
         }
     }

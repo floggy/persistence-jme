@@ -53,7 +53,8 @@ public class InternmentList extends List implements CommandListener {
         try {
             this.deleteAll();
 
-            internments = pm.find(Internment.class, new Filter() {
+            Class internmentClass = Class.forName("net.sourceforge.floggy.persistence.model.Internment");
+            internments = pm.find(internmentClass, new Filter() {
 
                 public boolean matches(Persistable arg0) {
                     return ((Internment) arg0).getExitDate() == null;
@@ -75,7 +76,7 @@ public class InternmentList extends List implements CommandListener {
                         + internment.getBed().getNumber(), null);
             }
 
-        } catch (FloggyException e) {
+        } catch (Exception e) {
         	HospitalMIDlet.showException(e);
         }
     }

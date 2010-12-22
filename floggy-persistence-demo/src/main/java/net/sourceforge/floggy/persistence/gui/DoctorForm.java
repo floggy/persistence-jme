@@ -127,7 +127,8 @@ public class DoctorForm extends Form implements CommandListener {
        
         PersistableManager pm = PersistableManager.getInstance();
         try {
-            formations = pm.find(Formation.class, null, new Comparator() {
+            Class formationClass = Class.forName("net.sourceforge.floggy.persistence.model.Formation");
+            formations = pm.find(formationClass, null, new Comparator() {
 
                 public int compare(Persistable arg0, Persistable arg1) {
                     Formation f1 = (Formation) arg0;
@@ -147,7 +148,7 @@ public class DoctorForm extends Form implements CommandListener {
 
             }
 
-        } catch (FloggyException e) {
+        } catch (Exception e) {
         	HospitalMIDlet.showException(e);
         }
 

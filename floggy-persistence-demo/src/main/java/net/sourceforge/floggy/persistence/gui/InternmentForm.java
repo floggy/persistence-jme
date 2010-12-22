@@ -107,7 +107,8 @@ public class InternmentForm extends Form implements CommandListener {
     public void startPatients() {
         PersistableManager pm = PersistableManager.getInstance();
         try {
-            patients = pm.find(Patient.class, null, new Comparator() {
+			Class patientClass = Class.forName("net.sourceforge.floggy.persistence.model.Patient");
+            patients = pm.find(patientClass, null, new Comparator() {
 
                 public int compare(Persistable arg0, Persistable arg1) {
                     Patient p1 = (Patient) arg0;
@@ -123,7 +124,7 @@ public class InternmentForm extends Form implements CommandListener {
                 this.cgPatients.append(patient.getName(), null);
             }
 
-        } catch (FloggyException e) {
+        } catch (Exception e) {
         	HospitalMIDlet.showException(e);
         }
 
@@ -132,7 +133,8 @@ public class InternmentForm extends Form implements CommandListener {
     public void startDoctors() {
         PersistableManager pm = PersistableManager.getInstance();
         try {
-            doctors = pm.find(Doctor.class, null, new Comparator() {
+            Class doctorClass = Class.forName("net.sourceforge.floggy.persistence.model.Doctor");
+            doctors = pm.find(doctorClass, null, new Comparator() {
 
                 public int compare(Persistable arg0, Persistable arg1) {
                     Doctor p1 = (Doctor) arg0;
@@ -149,7 +151,7 @@ public class InternmentForm extends Form implements CommandListener {
                 this.cgDoctors.append(doctor.getName(), null);
             }
 
-        } catch (FloggyException e) {
+        } catch (Exception e) {
         	HospitalMIDlet.showException(e);
         }
 
@@ -158,13 +160,14 @@ public class InternmentForm extends Form implements CommandListener {
     public void startBeds() {
         PersistableManager pm = PersistableManager.getInstance();
         try {
-            beds = pm.find(Bed.class, null, new BedComparator());
+            Class bedClass = Class.forName("net.sourceforge.floggy.persistence.model.Bed");
+            beds = pm.find(bedClass, null, new BedComparator());
             Bed bed= new Bed();
             for (int i = 0; i < beds.size(); i++) {
             	beds.get(i, bed);
                 this.cgBeds.append(String.valueOf(bed.getNumber()), null);
             }
-        } catch (FloggyException e) {
+        } catch (Exception e) {
         	HospitalMIDlet.showException(e);
         }
 

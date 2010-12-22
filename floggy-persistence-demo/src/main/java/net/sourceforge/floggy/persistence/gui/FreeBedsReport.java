@@ -48,14 +48,16 @@ public class FreeBedsReport extends List implements CommandListener {
 		try {
 			this.deleteAll();
 
-			final ObjectSet internments = pm.find(Internment.class,
+            Class internmentClass = Class.forName("net.sourceforge.floggy.persistence.model.Internment");
+            final ObjectSet internments = pm.find(internmentClass,
 					new Filter() {
 						public boolean matches(Persistable arg0) {
 							return ((Internment) arg0).getExitDate() == null;
 						}
 					}, null);
 
-			ObjectSet freeBeds = pm.find(Bed.class, new Filter() {
+			Class bedClass = Class.forName("net.sourceforge.floggy.persistence.model.Bed");
+			ObjectSet freeBeds = pm.find(bedClass, new Filter() {
 
 				public boolean matches(Persistable arg0) {
 					Bed bed = (Bed) arg0;
@@ -83,7 +85,7 @@ public class FreeBedsReport extends List implements CommandListener {
         					+ bed.getFloor(), null);
 			}
 
-		} catch (FloggyException e) {
+		} catch (Exception e) {
         	HospitalMIDlet.showException(e);
 		}
 	}

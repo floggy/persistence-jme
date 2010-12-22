@@ -61,10 +61,12 @@ public class PatientSearchForm  extends Form implements CommandListener {
 
 			try {
 				IndexFilter filter = new IndexFilter("byName", txtSearch.getString());
-				ObjectSet patients = pm.find(Patient.class, filter, false);
+
+				Class patientClass = Class.forName("net.sourceforge.floggy.persistence.model.Patient");
+				ObjectSet patients = pm.find(patientClass, filter, false);
 
 				HospitalMIDlet.setCurrent(new PatientList(patients));
-			} catch (FloggyException e) {
+			} catch (Exception e) {
 				HospitalMIDlet.showException(e);
 			}
 		}

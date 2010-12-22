@@ -68,7 +68,8 @@ public class PatientList extends List implements CommandListener {
             
         	if (patients == null) {
                 PersistableManager pm = PersistableManager.getInstance();
-                patients = pm.find(Patient.class, null, new Comparator() {
+				Class patientClass = Class.forName("net.sourceforge.floggy.persistence.model.Patient");
+                patients = pm.find(patientClass, null, new Comparator() {
                     public int compare(Persistable arg0, Persistable arg1) {
                         String s1 = arg0 == null ? "" : ((Patient) arg0).getName();
                         String s2 = arg1 == null ? "" : ((Patient) arg1).getName();
@@ -90,7 +91,7 @@ public class PatientList extends List implements CommandListener {
                 this.append(patient.getName() + " - " + type, null);
             }
 
-        } catch (FloggyException e) {
+        } catch (Exception e) {
         	HospitalMIDlet.showException(e);
         }
     }

@@ -54,7 +54,8 @@ public class DoctorList extends List implements CommandListener {
         try {
             this.deleteAll();
 
-            doctors = pm.find(Doctor.class, null, new Comparator() {
+            Class doctorClass = Class.forName("net.sourceforge.floggy.persistence.model.Doctor");
+            doctors = pm.find(doctorClass, null, new Comparator() {
                 public int compare(Persistable arg0, Persistable arg1) {
                     String s1 = arg0 == null ? "" : ((Doctor) arg0).getName();
                     String s2 = arg1 == null ? "" : ((Doctor) arg1).getName();
@@ -70,7 +71,7 @@ public class DoctorList extends List implements CommandListener {
                         null);
             }
 
-        } catch (FloggyException e) {
+        } catch (Exception e) {
         	HospitalMIDlet.showException(e);
         }
     }

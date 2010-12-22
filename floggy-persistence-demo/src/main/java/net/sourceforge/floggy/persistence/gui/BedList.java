@@ -53,14 +53,15 @@ public class BedList extends List implements CommandListener {
         try {
             this.deleteAll();
 
-            beds = pm.find(Bed.class, null, new BedComparator());
+            Class bedClass = Class.forName("net.sourceforge.floggy.persistence.model.Bed");
+            beds = pm.find(bedClass, null, new BedComparator());
 
             for (int i = 0; i < beds.size(); i++) {
                 Bed bed = (Bed) beds.get(i);
                 this.append(bed.getNumber() + " - Floor " + bed.getFloor(), null);
             }
 
-        } catch (FloggyException e) {
+        } catch (Exception e) {
         	HospitalMIDlet.showException(e);
         }
     }
