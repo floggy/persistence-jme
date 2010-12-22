@@ -289,9 +289,6 @@ public abstract class AbstractEnumerationImpl implements Enumeration {
 			case PersistableMetadata.PERSISTABLE: {
 				FieldPersistableInfo fpi = null;
 				String fieldClassName = rmsBasedMetadata.getPersistableImplementationClassForField(fieldName);
-				if (PersistableMetadataManager.getRMSVersion().equals(PersistableMetadataManager.VERSION_1_4_0)) {
-					dis.skipBytes(4);
-				}
 				switch (dis.readByte()) {
 				case -1:
 					fieldClassName = dis.readUTF();

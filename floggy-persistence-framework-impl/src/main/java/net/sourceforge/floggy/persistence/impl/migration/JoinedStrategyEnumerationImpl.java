@@ -30,10 +30,8 @@ import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.impl.PersistableMetadataManager;
 import net.sourceforge.floggy.persistence.impl.PersistableMetadata;
 import net.sourceforge.floggy.persistence.impl.RecordStoreManager;
-import net.sourceforge.floggy.persistence.impl.SerializationManager;
 import net.sourceforge.floggy.persistence.impl.Utils;
 import net.sourceforge.floggy.persistence.impl.__Persistable;
-import net.sourceforge.floggy.persistence.migration.FieldPersistableInfo;
 
 public class JoinedStrategyEnumerationImpl extends AbstractEnumerationImpl {
 
@@ -168,62 +166,5 @@ public class JoinedStrategyEnumerationImpl extends AbstractEnumerationImpl {
 			}
 		}
 		throw new FloggyException("There isn't a register to update. You have to iterate over the enumeration before call update.");
-	}
-
-	protected Object readObject(int type, String fieldName, DataInputStream dis)
-			throws Exception {
-		switch (type) {
-			case PersistableMetadata.BOOLEAN:
-				return SerializationManager.readBoolean(dis);
-			case PersistableMetadata.BYTE:
-				return SerializationManager.readByte(dis);
-			case PersistableMetadata.CALENDAR:
-				return SerializationManager.readCalendar(dis);
-			case PersistableMetadata.CHARACTER:
-				return SerializationManager.readChar(dis);
-			case PersistableMetadata.DATE:
-				return SerializationManager.readDate(dis);
-			case PersistableMetadata.DOUBLE:
-				return SerializationManager.readDouble(dis);
-			case PersistableMetadata.FLOAT:
-				return SerializationManager.readFloat(dis);
-			case PersistableMetadata.HASHTABLE:
-				return SerializationManager.readHashtable(dis);
-			case PersistableMetadata.INT:
-				return SerializationManager.readInt(dis);
-			case PersistableMetadata.LONG:
-				return SerializationManager.readLong(dis);
-			case PersistableMetadata.PERSISTABLE: {
-				FieldPersistableInfo fpi = null;
-				String fieldClassName = rmsBasedMetadata.getPersistableImplementationClassForField(fieldName);
-				//TODO
-//				if (PersistableMetadataManager.getRMSVersion().equals(PersistableMetadataManager.VERSION_1_4_0)) {
-//					dis.skipBytes(4);
-//				}
-				switch (dis.readByte()) {
-				case -1:
-					fieldClassName = dis.readUTF();
-				case SerializationManager.NOT_NULL:
-					int fieldId = dis.readInt();
-					fpi = new FieldPersistableInfo(fieldId, fieldClassName);
-					break;
-				}
-				return fpi;
-			}
-			case PersistableMetadata.SHORT:
-				return SerializationManager.readShort(dis);
-			case PersistableMetadata.STACK:
-				return SerializationManager.readStack(dis, lazy);
-			case PersistableMetadata.STRING:
-				return SerializationManager.readString(dis);
-			case PersistableMetadata.STRINGBUFFER:
-				return SerializationManager.readStringBuffer(dis);
-			case PersistableMetadata.TIMEZONE:
-				return SerializationManager.readTimeZone(dis);
-			case PersistableMetadata.VECTOR:
-				return SerializationManager.readVector(dis, lazy);
-			default:
-				throw new FloggyException("Type Unknow: " + type);
-		}
 	}
 }
