@@ -143,6 +143,48 @@ public class Weaver {
 			}
 		}
 		embeddedClassesOutputPool.addClass(ctClass);
+
+		fileURL = getClass().getResource("/net/sourceforge/floggy/persistence/impl/migration/AbstractEnumerationImpl.class");
+		classpathPool.makeClass(fileURL.openStream());
+
+		ctClass= this.classpathPool.get("net.sourceforge.floggy.persistence.impl.migration.AbstractEnumerationImpl");
+		if (isCLDC10()) {
+			CtMethod[] methods= ctClass.getMethods();
+			for (int i = 0; i < methods.length; i++) {
+				String methodName= methods[i].getName();
+				if (methodName.indexOf("Float") != -1 || methodName.indexOf("Double") != -1
+						|| "createArray".equals(methodName) || "readArray".equals(methodName)
+						|| "readObject".equals(methodName) || "readPrimitive".equals(methodName)) {
+					ctClass.removeMethod(methods[i]);
+				}
+			}
+			//this is done in two steps because we can't guarantee that the read/writeVector methods will be removed before the rename step.
+			for (int i = 0; i < methods.length; i++) {
+				String methodName= methods[i].getName();
+				if ("createArrayCLDC10".equals(methodName)) {
+					methods[i].setName("createArray");
+				}
+				if ("readArrayCLDC10".equals(methodName)) {
+					methods[i].setName("readArray");
+				}
+				if ("readObjectCLDC10".equals(methodName)) {
+					methods[i].setName("readObject");
+				}
+				if ("readPrimitiveCLDC10".equals(methodName)) {
+					methods[i].setName("readPrimitive");
+				}
+			}
+		} else {
+			CtMethod[] methods= ctClass.getMethods();
+			for (int i = 0; i < methods.length; i++) {
+				String methodName= methods[i].getName();
+				if (methodName.indexOf("CLDC10") != -1) {
+					ctClass.removeMethod(methods[i]);
+				}
+			}
+		}
+
+		embeddedClassesOutputPool.addClass(ctClass);
 	}
 
 	protected void addPersistableMetadataManagerClass() throws  CannotCompileException, IOException, NotFoundException {
@@ -565,7 +607,6 @@ public class Weaver {
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/RecordStoreManager$RecordStoreReference.class");
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/Utils.class");
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/migration/MigrationManagerImpl.class");
-		embeddedClass("/net/sourceforge/floggy/persistence/impl/migration/AbstractEnumerationImpl.class");
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/migration/SingleStrategyEnumerationImpl.class");
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/migration/PerClassStrategyEnumerationImpl.class");
 		embeddedClass("/net/sourceforge/floggy/persistence/impl/migration/JoinedStrategyEnumerationImpl.class");

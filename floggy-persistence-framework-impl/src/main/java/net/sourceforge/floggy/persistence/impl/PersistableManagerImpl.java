@@ -293,9 +293,9 @@ public class PersistableManagerImpl extends PersistableManager {
 		if (name == null || name.trim().length() == 0) {
 			throw new IllegalArgumentException("The property name cannot be null or empty");
 		} else if (name.equals(PersistableManager.BATCH_MODE)) {
-			return (RecordStoreManager.getBatchMode()) ? Boolean.TRUE : Boolean.FALSE;
+			return (RecordStoreManager.getBatchMode()) ? Utils.TRUE : Utils.FALSE;
 		} else if (name.equals(PersistableManager.STORE_INDEX_AFTER_SAVE_OPERATION)) {
-			return (IndexManager.getStoreIndexAfterSave()) ? Boolean.TRUE : Boolean.FALSE;
+			return (IndexManager.getStoreIndexAfterSave()) ? Utils.TRUE : Utils.FALSE;
 		} else {
 			throw new IllegalArgumentException("Unreconized property: " + name);
 		}

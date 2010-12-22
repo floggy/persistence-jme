@@ -291,5 +291,8 @@ public class Utils {
 							+ " is not a valid persistable class. Check the weaver execution!");
 		}
 	}
+
+	public static final Boolean FALSE = new Boolean(false);
+	public static final Boolean TRUE = new Boolean(true);
 	
 }

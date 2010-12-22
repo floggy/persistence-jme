@@ -46,7 +46,7 @@ public class SerializationManager {
 	public final static Boolean readBoolean(DataInput in) throws IOException {
 		Boolean b = null;
 		if (in.readByte() == NOT_NULL) {
-			b = (in.readBoolean()) ? Boolean.TRUE : Boolean.FALSE;
+			b = (in.readBoolean()) ? Utils.TRUE : Utils.FALSE;
 		}
 		return b;
 	}
@@ -153,7 +153,7 @@ public class SerializationManager {
 		Object o = null;
 		String className = in.readUTF();
 		if ("java.lang.Boolean".equals(className)) {
-			o = (in.readBoolean()) ? Boolean.TRUE : Boolean.FALSE;
+			o = (in.readBoolean()) ? Utils.TRUE : Utils.FALSE;
 		} else if ("java.lang.Byte".equals(className)) {
 			o = new Byte(in.readByte());
 		} else if ("java.lang.Character".equals(className)) {
@@ -200,7 +200,7 @@ public class SerializationManager {
 		Object o = null;
 		String className = in.readUTF();
 		if ("java.lang.Boolean".equals(className)) {
-			o = (in.readBoolean()) ? Boolean.TRUE : Boolean.FALSE;
+			o = (in.readBoolean()) ? Utils.TRUE : Utils.FALSE;
 		} else if ("java.lang.Byte".equals(className)) {
 			o = new Byte(in.readByte());
 		} else if ("java.lang.Character".equals(className)) {

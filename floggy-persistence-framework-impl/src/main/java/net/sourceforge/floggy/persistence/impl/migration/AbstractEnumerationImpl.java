@@ -105,6 +105,44 @@ public abstract class AbstractEnumerationImpl implements Enumeration {
 		}
 	}
 
+	protected Object[] createArrayCLDC10(int type, int size)
+			throws FloggyException {
+		switch (type) {
+		case PersistableMetadata.BOOLEAN:
+			return new Boolean[size];
+		case PersistableMetadata.BYTE:
+			return new Byte[size];
+		case PersistableMetadata.CALENDAR:
+			return new Calendar[size];
+		case PersistableMetadata.CHARACTER:
+			return new Character[size];
+		case PersistableMetadata.DATE:
+			return new Date[size];
+		case PersistableMetadata.HASHTABLE:
+			return new Hashtable[size];
+		case PersistableMetadata.INT:
+			return new Integer[size];
+		case PersistableMetadata.LONG:
+			return new Long[size];
+		case PersistableMetadata.PERSISTABLE:
+			return new FieldPersistableInfo[size];
+		case PersistableMetadata.SHORT:
+			return new Short[size];
+		case PersistableMetadata.STACK:
+			return new Stack[size];
+		case PersistableMetadata.STRING:
+			return new String[size];
+		case PersistableMetadata.STRINGBUFFER:
+			return new StringBuffer[size];
+		case PersistableMetadata.TIMEZONE:
+			return new TimeZone[size];
+		case PersistableMetadata.VECTOR:
+			return new Vector[size];
+		default:
+			throw new FloggyException("Type Unknow: " + type);
+		}
+}
+
 	public int delete() throws FloggyException {
 		if (recordId != -1) {
 			try {
@@ -162,47 +200,85 @@ public abstract class AbstractEnumerationImpl implements Enumeration {
 
 	protected Object readArray(int type, String fieldName, DataInputStream dis)
 			throws Exception {
-				Object object = null;
-				if (dis.readByte() == SerializationManager.NOT_NULL) {
-					int size = dis.readInt();
-					if ((type & PersistableMetadata.PRIMITIVE) == PersistableMetadata.PRIMITIVE) {
-						type = type & ~PersistableMetadata.PRIMITIVE;
-						switch (type) {
-						case PersistableMetadata.BOOLEAN:
-							object = readBooleanArray(size, dis);
-							break;
-						case PersistableMetadata.BYTE:
-							object = readByteArray(size, dis);
-							break;
-						case PersistableMetadata.CHARACTER:
-							object = readCharArray(size, dis);
-							break;
-						case PersistableMetadata.DOUBLE:
-							object = readDoubleArray(size, dis);
-							break;
-						case PersistableMetadata.FLOAT:
-							object = readFloatArray(size, dis);
-							break;
-						case PersistableMetadata.INT:
-							object = readIntArray(size, dis);
-							break;
-						case PersistableMetadata.LONG:
-							object = readLongArray(size, dis);
-							break;
-						case PersistableMetadata.SHORT:
-							object = readShortArray(size, dis);
-							break;
-						}
-					} else {
-						Object[] array = createArray(type, size);
-						for (int i = 0; i < size; i++) {
-							array[i] = readObject(type, fieldName, dis);
-						}
-						object = array;
-					}
+		Object object = null;
+		if (dis.readByte() == SerializationManager.NOT_NULL) {
+			int size = dis.readInt();
+			if ((type & PersistableMetadata.PRIMITIVE) == PersistableMetadata.PRIMITIVE) {
+				type = type & ~PersistableMetadata.PRIMITIVE;
+				switch (type) {
+				case PersistableMetadata.BOOLEAN:
+					object = readBooleanArray(size, dis);
+					break;
+				case PersistableMetadata.BYTE:
+					object = readByteArray(size, dis);
+					break;
+				case PersistableMetadata.CHARACTER:
+					object = readCharArray(size, dis);
+					break;
+				case PersistableMetadata.DOUBLE:
+					object = readDoubleArray(size, dis);
+					break;
+				case PersistableMetadata.FLOAT:
+					object = readFloatArray(size, dis);
+					break;
+				case PersistableMetadata.INT:
+					object = readIntArray(size, dis);
+					break;
+				case PersistableMetadata.LONG:
+					object = readLongArray(size, dis);
+					break;
+				case PersistableMetadata.SHORT:
+					object = readShortArray(size, dis);
+					break;
 				}
-				return object;
+			} else {
+				Object[] array = createArray(type, size);
+				for (int i = 0; i < size; i++) {
+					array[i] = readObject(type, fieldName, dis);
+				}
+				object = array;
 			}
+		}
+		return object;
+	}
+
+	protected Object readArrayCLDC10(int type, String fieldName, DataInputStream dis)
+		throws Exception {
+		Object object = null;
+		if (dis.readByte() == SerializationManager.NOT_NULL) {
+			int size = dis.readInt();
+			if ((type & PersistableMetadata.PRIMITIVE) == PersistableMetadata.PRIMITIVE) {
+				type = type & ~PersistableMetadata.PRIMITIVE;
+				switch (type) {
+				case PersistableMetadata.BOOLEAN:
+					object = readBooleanArray(size, dis);
+					break;
+				case PersistableMetadata.BYTE:
+					object = readByteArray(size, dis);
+					break;
+				case PersistableMetadata.CHARACTER:
+					object = readCharArray(size, dis);
+					break;
+				case PersistableMetadata.INT:
+					object = readIntArray(size, dis);
+					break;
+				case PersistableMetadata.LONG:
+					object = readLongArray(size, dis);
+					break;
+				case PersistableMetadata.SHORT:
+					object = readShortArray(size, dis);
+					break;
+				}
+			} else {
+				Object[] array = createArray(type, size);
+				for (int i = 0; i < size; i++) {
+					array[i] = readObject(type, fieldName, dis);
+				}
+				object = array;
+			}
+		}
+		return object;
+	}
 
 	protected boolean[] readBooleanArray(int size, DataInputStream dis)
 			throws Exception {
@@ -316,10 +392,60 @@ public abstract class AbstractEnumerationImpl implements Enumeration {
 		}
 	}
 
+	protected Object readObjectCLDC10(int type, String fieldName, DataInputStream dis)
+			throws Exception {
+
+		switch (type) {
+			case PersistableMetadata.BOOLEAN:
+				return SerializationManager.readBoolean(dis);
+			case PersistableMetadata.BYTE:
+				return SerializationManager.readByte(dis);
+			case PersistableMetadata.CALENDAR:
+				return SerializationManager.readCalendar(dis);
+			case PersistableMetadata.CHARACTER:
+				return SerializationManager.readChar(dis);
+			case PersistableMetadata.DATE:
+				return SerializationManager.readDate(dis);
+			case PersistableMetadata.HASHTABLE:
+				return SerializationManager.readHashtable(dis);
+			case PersistableMetadata.INT:
+				return SerializationManager.readInt(dis);
+			case PersistableMetadata.LONG:
+				return SerializationManager.readLong(dis);
+			case PersistableMetadata.PERSISTABLE: {
+				FieldPersistableInfo fpi = null;
+				String fieldClassName = rmsBasedMetadata.getPersistableImplementationClassForField(fieldName);
+				switch (dis.readByte()) {
+				case -1:
+					fieldClassName = dis.readUTF();
+				case SerializationManager.NOT_NULL:
+					int fieldId = dis.readInt();
+					fpi = new FieldPersistableInfo(fieldId, fieldClassName);
+					break;
+				}
+				return fpi;
+			}
+			case PersistableMetadata.SHORT:
+				return SerializationManager.readShort(dis);
+			case PersistableMetadata.STACK:
+				return SerializationManager.readStack(dis, lazy);
+			case PersistableMetadata.STRING:
+				return SerializationManager.readString(dis);
+			case PersistableMetadata.STRINGBUFFER:
+				return SerializationManager.readStringBuffer(dis);
+			case PersistableMetadata.TIMEZONE:
+				return SerializationManager.readTimeZone(dis);
+			case PersistableMetadata.VECTOR:
+				return SerializationManager.readVector(dis, lazy);
+			default:
+				throw new FloggyException("Type Unknow: " + type);
+		}
+	}
+
 	protected Object readPrimitive(int type, DataInputStream dis) throws Exception {
 		switch (type) {
 		case PersistableMetadata.BOOLEAN:
-			return dis.readBoolean() ? Boolean.TRUE : Boolean.FALSE;
+			return dis.readBoolean() ? Utils.TRUE : Utils.FALSE;
 		case PersistableMetadata.BYTE:
 			return new Byte(dis.readByte());
 		case PersistableMetadata.CHARACTER:
@@ -328,6 +454,25 @@ public abstract class AbstractEnumerationImpl implements Enumeration {
 			return new Double(dis.readDouble());
 		case PersistableMetadata.FLOAT:
 			return new Float(dis.readFloat());
+		case PersistableMetadata.INT:
+			return new Integer(dis.readInt());
+		case PersistableMetadata.LONG:
+			return new Long(dis.readLong());
+		case PersistableMetadata.SHORT:
+			return new Short(dis.readShort());
+		default:
+			throw new FloggyException("Type Unknow: " + type);
+		}
+	}
+
+	protected Object readPrimitiveCLDC10(int type, DataInputStream dis) throws Exception {
+		switch (type) {
+		case PersistableMetadata.BOOLEAN:
+			return dis.readBoolean() ? Utils.TRUE : Utils.FALSE;
+		case PersistableMetadata.BYTE:
+			return new Byte(dis.readByte());
+		case PersistableMetadata.CHARACTER:
+			return new Character(dis.readChar());
 		case PersistableMetadata.INT:
 			return new Integer(dis.readInt());
 		case PersistableMetadata.LONG:
