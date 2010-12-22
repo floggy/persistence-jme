@@ -54,7 +54,7 @@ public class FR2935390Test extends FloggyBaseTest {
 
 	public void testDoesNotExistIndexName() throws Exception {
 		try {
-			IndexFilter indexFilter = new IndexFilter("color", null);
+			IndexFilter indexFilter = new IndexFilter("color", "green");
 			manager.find(Bird.class, indexFilter, false);
 			fail("It must throw a FloggyException");
 		} catch (Exception ex) {

@@ -38,7 +38,7 @@ public class IndexFilter {
 
 	public void setIndexName(String indexName) {
 		if (indexName == null || indexName.trim().length() == 0) {
-			throw new IllegalArgumentException(indexName);
+			throw new IllegalArgumentException("Index name is null!");
 		}
 		this.indexName = indexName;
 	}
@@ -48,6 +48,9 @@ public class IndexFilter {
 	}
 
 	public void setIndexValue(Object indexValue) {
+		if (indexValue == null) {
+			throw new IllegalArgumentException("Index value is null!");
+		}
 		this.indexValue = indexValue;
 	}
 

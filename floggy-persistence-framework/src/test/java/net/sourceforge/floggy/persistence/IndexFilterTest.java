@@ -38,15 +38,19 @@ public class IndexFilterTest extends TestCase {
 		}
 	}
 
-	public void testGetIndexName() {
+	public void testIndexFilterNullIndexValue() {
 		String indexName = "testIndex";
-		IndexFilter filter = new IndexFilter(indexName, null);
-		assertSame(indexName, filter.getIndexName());
+		try {
+			new IndexFilter(indexName, null);
+			fail("It must throw an IllegalArgumentException");
+		} catch (Exception ex) {
+			assertEquals(IllegalArgumentException.class, ex.getClass());
+		}
 	}
 
 	public void testSetIndexName() {
 		try {
-			IndexFilter filter = new IndexFilter("test", null);
+			IndexFilter filter = new IndexFilter("test", "indexValue");
 			filter.setIndexName(null);
 			fail("It must throw an IllegalArgumentException");
 		} catch (Exception ex) {
@@ -57,17 +61,15 @@ public class IndexFilterTest extends TestCase {
 	public void testGetIndexValue() {
 		String indexName = "testIndex";
 		Object indexValue = new Integer(4545);
-		IndexFilter filter = new IndexFilter(indexName, null);
-		assertSame(null, filter.getIndexValue());
+		IndexFilter filter = new IndexFilter(indexName, indexValue);
 
-		filter.setIndexValue(indexValue);
 		assertSame(indexValue, filter.getIndexValue());
 	}
 
 	public void testSetIndexValue() {
 		String indexName = "testIndex";
 		Object indexValue = new Integer(4545);
-		IndexFilter filter = new IndexFilter(indexName, null);
+		IndexFilter filter = new IndexFilter(indexName, new Integer(23));
 
 		filter.setIndexValue(indexValue);
 		assertSame(indexValue, filter.getIndexValue());
