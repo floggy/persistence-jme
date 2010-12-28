@@ -71,7 +71,7 @@ public abstract class PersistableManager {
      * PersistableManager manager = PersistableManager.getInstance();<br>
      * manager.setProperty(PersistableManager.BATCH_MODE, Boolean.TRUE);<br>
      * Customer customer = new Customer(); <br>
-     * for(int i = 0; i < ...; i++) {<br>
+     * for(int i = 0; i &lt; ...; i++) {<br>
      * &nbsp;&nbsp;loadDataFromServerOnCustomer(customer);<br>
      * &nbsp;&nbsp;manager.batchSave(customer);<br>
      * }

@@ -34,8 +34,8 @@ import net.sourceforge.floggy.persistence.strategy.SingleStrategy;
 /**
  * Class JoinedStrategyCodeGenerator
  * 
- * @author Thiago Rossato <thiago.rossato@floggy.org>
- * @author Thiago Leão Moreira <thiago.moreira@floggy.org>
+ * @author Thiago Rossato
+ * @author Thiago Leão Moreira
  */
 public class JoinedStrategyCodeGenerator extends CodeGenerator {
 
