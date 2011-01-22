@@ -91,9 +91,9 @@
 			</exclusions> 
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse</groupId>
+			<groupId>org.floggy.3rd.org.eclipse</groupId>
 			<artifactId>jface</artifactId>
-			<version>3.3.2</version>
+			<version>3.3.2.M20080207-0800</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
