@@ -18,19 +18,18 @@ package net.sourceforge.floggy.eclipse.builder;
 
 import javassist.ClassPool;
 import javassist.NotFoundException;
+import net.sourceforge.floggy.eclipse.FloggyNature;
 import net.sourceforge.floggy.eclipse.SetAddDefaultConstructorAction;
 import net.sourceforge.floggy.eclipse.SetGenerateSourceAction;
 import net.sourceforge.floggy.persistence.Configuration;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
 
 public abstract class AbstractBuilder {
 	
@@ -92,34 +91,38 @@ public abstract class AbstractBuilder {
 		return configuration;
 	}
 
-	protected boolean validateClasspath(ClassPool classPool) {
-		boolean valid = true; 
-		final StringBuffer messages = new StringBuffer();
+	protected boolean validateClasspath(IProject project, ClassPool classPool) throws CoreException {
+		boolean valid = true;
 
 		try {
 			classPool.get(PERSISTABLE_CLASS_NAME);
 		} catch (NotFoundException e) {
 			valid = false;
-			messages.append("You must to add the Floggy framework library to the build path.");
+			IMarker marker = project.createMarker(IMarker.PROBLEM);
+			marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
+			marker.setAttribute(IMarker.MESSAGE, "You must to add the Floggy framework library to the build path.");
+			marker.setAttribute(IMarker.SOURCE_ID, FloggyNature.NATURE_ID);
 		}
 
 		try {
 			classPool.get(RECORDSTORE_CLASS_NAME);
 		} catch (NotFoundException e) {
 			valid = false;
-			if (messages.length() != 0) {
-				messages.append('\n');
-			}
-			messages.append("You must to add the MIDP library to the build path.");
+			IMarker marker = project.createMarker(IMarker.PROBLEM);
+			marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
+			marker.setAttribute(IMarker.MESSAGE, "You must to add the MIDP library to the build path.");
+			marker.setAttribute(IMarker.SOURCE_ID, FloggyNature.NATURE_ID);
 		}
 
-		if (!valid) {
-			Display.getDefault().asyncExec(new Runnable() {
-				public void run() {
-					Shell shell = Display.getDefault().getActiveShell();
-					MessageDialog.openError(shell, "Floggy", messages.toString());
+		if (valid) {
+			IMarker[] markers = project.findMarkers(IMarker.PROBLEM, false, IResource.DEPTH_ZERO);
+			for (int i = 0; i < markers.length; i++) {
+
+				Object sourceId = markers[i].getAttribute(IMarker.SOURCE_ID);
+				if (FloggyNature.NATURE_ID.equals(sourceId)) {
+					markers[i].delete();
 				}
-			});
+			}
 		}
 
 		return valid; 

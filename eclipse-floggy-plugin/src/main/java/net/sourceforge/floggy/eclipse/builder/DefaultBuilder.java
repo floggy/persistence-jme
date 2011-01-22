@@ -59,7 +59,7 @@ public class DefaultBuilder extends AbstractBuilder {
 			classPool.appendClassPath(pathName);
 		}
 
-		if (validateClasspath(classPool)) {
+		if (validateClasspath(project, classPool)) {
 			Weaver weaver = new Weaver(classPool);
 			IPath root = project.getLocation();
 			File input = root.removeLastSegments(1).append(
