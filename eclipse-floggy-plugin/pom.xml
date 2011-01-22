@@ -97,9 +97,9 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse</groupId>
+			<groupId>org.floggy.3rd.org.eclipse</groupId>
 			<artifactId>osgi</artifactId>
-			<version>3.3.2</version>
+			<version>3.3.2.R33x_v20080105</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
