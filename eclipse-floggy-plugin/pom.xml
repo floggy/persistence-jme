@@ -127,9 +127,9 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse.equinox</groupId>
+			<groupId>org.floggy.3rd.org.eclipse.equinox</groupId>
 			<artifactId>registry</artifactId>
-			<version>3.3.1</version>
+			<version>3.3.1.R33x_v20070802</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
