@@ -133,9 +133,9 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse.jdt</groupId>
+			<groupId>org.floggy.3rd.org.eclipse.jdt</groupId>
 			<artifactId>core</artifactId>
-			<version>3.3.3</version>
+			<version>3.3.3.v_793_R33x</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
