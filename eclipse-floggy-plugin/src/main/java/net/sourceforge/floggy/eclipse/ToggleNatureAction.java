@@ -17,11 +17,14 @@
 package net.sourceforge.floggy.eclipse;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.jar.JarOutputStream;
+import java.util.jar.Manifest;
 
 import org.eclipse.core.resources.ICommand;
 import org.eclipse.core.resources.IFile;
@@ -186,7 +189,12 @@ public class ToggleNatureAction extends AbstractFloggyAction {
 				IFile implJar = project.getFile("floggy-persistence-framework-impl.jar");
 
 				if (!implJar.exists()) {
-					implJar.create(new ByteArrayInputStream(new byte[0]), IResource.DERIVED, null);
+					ByteArrayOutputStream baos = new ByteArrayOutputStream();
+					JarOutputStream out = new JarOutputStream(baos, new Manifest());
+
+					out.close();
+
+					implJar.create(new ByteArrayInputStream(baos.toByteArray()), IResource.DERIVED, null);
 				}
 				
 				IPath filePatternImpl = new Path("net/sourceforge/floggy/persistence/impl/*");
