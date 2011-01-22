@@ -115,9 +115,9 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse.core</groupId>
+			<groupId>org.floggy.3rd.org.eclipse.core</groupId>
 			<artifactId>runtime</artifactId>
-			<version>3.3.100</version>
+			<version>3.3.100.v20070530</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
