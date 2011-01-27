@@ -44,36 +44,6 @@
 	</scm>
 	<repositories>
 		<repository>
-			<id>pyx4j-web-release</id>
-			<url>http://repository.pyx4j.com/maven2-release</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-		</repository>
-		<repository>
-			<id>pyx4j-web-snapshot</id>
-			<url>http://repository.pyx4j.com/maven2-snapshot</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-		</repository>
-		<repository>
-			<id>sonatype-release</id>
-			<url>http://oss.sonatype.org/content/groups/sourceforge</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-		</repository>
-		<repository>
 			<id>sonatype-snapshot</id>
 			<url>http://oss.sonatype.org/content/repositories/sourceforge-snapshots</url>
 			<snapshots>
@@ -85,16 +55,6 @@
 		</repository>
 	</repositories>
 	<pluginRepositories>
-		<pluginRepository>
-			<id>sonatype-plugin-release</id>
-			<url>http://oss.sonatype.org/content/groups/sourceforge</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-		</pluginRepository>
 		<pluginRepository>
 			<id>sonatype-plugin-snapshot</id>
 			<url>http://oss.sonatype.org/content/repositories/sourceforge-snapshots</url>
