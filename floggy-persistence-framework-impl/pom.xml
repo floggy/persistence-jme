@@ -52,9 +52,9 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.microemu</groupId>
+			<groupId>org.floggy.3rd.org.microemu</groupId>
 			<artifactId>microemulator</artifactId>
-			<version>${microemu.version}</version>
+			<version>3.0.0-r2474</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
