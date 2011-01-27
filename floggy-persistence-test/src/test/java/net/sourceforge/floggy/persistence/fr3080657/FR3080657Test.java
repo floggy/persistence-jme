@@ -43,7 +43,7 @@ public class FR3080657Test extends FloggyBaseTest {
 		
 		IndexMetadata indexMetadata = (IndexMetadata) indexMetadatas.elementAt(0);
 		
-		RecordStore recordStore = RecordStore.openRecordStore(indexMetadata.getRecordStoreName(), false);
+		RecordStore recordStore = RecordStore.openRecordStore(indexMetadata.getRecordStoreName(), true);
 		
 		assertEquals(0, recordStore.getNumRecords());
 		
@@ -83,7 +83,7 @@ public class FR3080657Test extends FloggyBaseTest {
 		IndexMetadata indexMetadata = (IndexMetadata) indexMetadatas.elementAt(0);
 
 		try {
-			RecordStore recordStore = RecordStore.openRecordStore(indexMetadata.getRecordStoreName(), false);
+			RecordStore recordStore = RecordStore.openRecordStore(indexMetadata.getRecordStoreName(), true);
 			
 			assertEquals(0, recordStore.getNumRecords());
 			
