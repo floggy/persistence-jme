@@ -194,7 +194,7 @@
 						<Bundle-Activator>${project.groupId}.eclipse.Activator</Bundle-Activator>
 						<Embed-Dependency>*;scope=compile</Embed-Dependency>
 						<Embed-Directory>lib</Embed-Directory>
-						<Bundle-RequiredExecutionEnvironment>J2SE-1.4</Bundle-RequiredExecutionEnvironment>
+						<Bundle-RequiredExecutionEnvironment>J2SE-1.5</Bundle-RequiredExecutionEnvironment>
 						<Import-Package>!com.sun.*,!javax.microedition.rms.*,!javax.security.auth,!javax.swing.*,!org.apache.avalon.*,!org.apache.log,!org.apache.tools.*,!org.apache.log4j,!org.codehaus.jettison.*,!org.dom4j.*,!org.joda.*,!org.jdom.*,!org.xmlpull.*,!net.sf.cglib.*,!nu.xom,!sun.*,com.thoughtworks.xstream.*,javax.xml.*,net.sourceforge.floggy.*,org.eclipse.core.resources,org.eclipse.core.runtime;registry=split,org.eclipse.jdt.core,org.eclipse.jface.action,org.eclipse.jface.dialogs,org.eclipse.jface.viewers,org.eclipse.swt.widgets,org.eclipse.ui,org.eclipse.ui.console,org.eclipse.ui.plugin,org.osgi.framework;version="1.4",org.w3c.dom,org.xml.sax.*</Import-Package>
 						<Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
 						<Bundle-ClassPath>.</Bundle-ClassPath>

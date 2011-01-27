@@ -82,7 +82,7 @@
 						<id>default-testCompile</id>
 						<configuration>
 							<source>1.3</source>
-							<target>1.3</target>
+							<target>1.5</target>
 						</configuration>
 					</execution>
 				</executions>
