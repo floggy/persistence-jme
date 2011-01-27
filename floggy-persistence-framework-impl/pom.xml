@@ -73,7 +73,7 @@
 							<compilerArgument>-g:none</compilerArgument>
 							<compilerArguments>
 								<bootclasspath>
-									${settings.localRepository}/org/microemu/cldcapi11/${microemu.version}/cldcapi11-${microemu.version}.jar${path.separator}${settings.localRepository}/org/microemu/midpapi20/${microemu.version}/midpapi20-${microemu.version}.jar
+									${settings.localRepository}/org/microemu/cldcapi11/2.0.4/cldcapi11-2.0.4.jar${path.separator}${settings.localRepository}/org/microemu/midpapi20/2.0.4/midpapi20-2.0.4.jar
 								</bootclasspath>
 							</compilerArguments>
 						</configuration>
