@@ -89,7 +89,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
-				<version>2.2-beta-5</version>
+				<version>2.2</version>
 				<configuration>
 					<finalName>floggy-persistence-${project.version}</finalName>
 					<appendAssemblyId>false</appendAssemblyId>
@@ -123,7 +123,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.3</version>
+				<version>2.3.1</version>
 				<executions>
 					<execution>
 						<goals>
