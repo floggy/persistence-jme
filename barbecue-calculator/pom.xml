@@ -84,7 +84,7 @@
 					<proguardOptions>
 						<options>
 							<option>-optimizations *</option>
-							<option>-optimizationpasses 5</option>
+							<option>-optimizationpasses 1</option>
 							<option>-allowaccessmodification</option>
 							<option>-overloadaggressively</option>
 							<option>-dontusemixedcaseclassnames</option>
