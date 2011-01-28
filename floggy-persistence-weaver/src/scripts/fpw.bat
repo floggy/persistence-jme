@@ -1,5 +1,5 @@
 @REM
-@REM Copyright (c) 2006-2010 Floggy Open Source Group. All rights reserved.
+@REM Copyright (c) 2006-2011 Floggy Open Source Group. All rights reserved.
 @REM
 @REM Licensed under the Apache License, Version 2.0 (the "License");
 @REM you may not use this file except in compliance with the License.
