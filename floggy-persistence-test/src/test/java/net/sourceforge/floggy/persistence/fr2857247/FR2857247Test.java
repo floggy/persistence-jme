@@ -28,6 +28,35 @@ import net.sourceforge.floggy.persistence.impl.__Persistable;
 
 public class FR2857247Test extends FloggyBaseTest {
 
+	protected Object batchMode;
+
+	protected void setUp() throws Exception {
+		batchMode = manager.getProperty(PersistableManager.BATCH_MODE);
+	}
+
+	protected void tearDown() throws Exception {
+		manager.setProperty(PersistableManager.BATCH_MODE, batchMode);
+	}
+
+	public void testBatchModeFalse() throws Exception {
+		manager.setProperty(PersistableManager.BATCH_MODE, Boolean.FALSE);
+
+		__Persistable object = (__Persistable) new Person();
+		PersistableMetadata metadata = 
+			PersistableMetadataManager.getClassBasedMetadata(object.getClass().getName());
+		RecordStore rs = 
+			RecordStoreManager.getRecordStore(object.getRecordStoreName(), metadata);
+
+		RecordStoreManager.closeRecordStore(rs);
+
+		try {
+			rs.getNumRecords();
+			fail("Must throw a RecordStoreNotOpenException");
+		} catch (Exception ex) {
+			assertEquals(RecordStoreNotOpenException.class, ex.getClass());
+		}
+	}
+
 	public void testBatchModeTrue() throws Exception {
 		manager.setProperty(PersistableManager.BATCH_MODE, Boolean.TRUE);
 
@@ -45,7 +74,6 @@ public class FR2857247Test extends FloggyBaseTest {
 		} catch (Exception ex) {
 			fail(ex.getMessage());
 		}
-		
 	}
 
 	public void testBatchModeTrueShutdown() throws Exception {
@@ -56,32 +84,13 @@ public class FR2857247Test extends FloggyBaseTest {
 			PersistableMetadataManager.getClassBasedMetadata(object.getClass().getName());
 		RecordStore rs = 
 			RecordStoreManager.getRecordStore(object.getRecordStoreName(), metadata);
-		
+
 		RecordStoreManager.closeRecordStore(rs);
 
 		manager.shutdown();
 
 		try {
 			assertEquals(0, rs.getNumRecords());
-			fail("Must throw a RecordStoreNotOpenException");
-		} catch (Exception ex) {
-			assertEquals(RecordStoreNotOpenException.class, ex.getClass());
-		}
-	}
-
-	public void testBatchModeFalse() throws Exception {
-		manager.setProperty(PersistableManager.BATCH_MODE, Boolean.FALSE);
-
-		__Persistable object = (__Persistable) new Person();
-		PersistableMetadata metadata = 
-			PersistableMetadataManager.getClassBasedMetadata(object.getClass().getName());
-		RecordStore rs = 
-			RecordStoreManager.getRecordStore(object.getRecordStoreName(), metadata);
-
-		RecordStoreManager.closeRecordStore(rs);
-
-		try {
-			rs.getNumRecords();
 			fail("Must throw a RecordStoreNotOpenException");
 		} catch (Exception ex) {
 			assertEquals(RecordStoreNotOpenException.class, ex.getClass());
