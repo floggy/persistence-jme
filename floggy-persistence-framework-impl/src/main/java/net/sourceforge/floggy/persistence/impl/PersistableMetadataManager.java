@@ -39,7 +39,7 @@ public class PersistableMetadataManager {
 	public static final String VERSION_1_1_1 = "1.1.1";
 	public static final String VERSION_1_2_0 = "1.2.0";
 	public static final String VERSION_1_3_0 = "1.3.0";
-	public static final String VERSION_1_4_0 = "1.4.0-alpha";
+	public static final String VERSION_1_4_0 = "1.4.0";
 	public static final String CURRENT_VERSION = VERSION_1_4_0;
 	private static String rmsVersion;
 	private static Hashtable classBasedMetadatas;
