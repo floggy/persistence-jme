@@ -15,7 +15,12 @@
  */
 package net.sourceforge.floggy.persistence.fr2243110.single;
 
-public class SConcreteClass3ExtendingConcreteClass2 extends
-	SConcreteClass2ExtendingAbstractClass {
-
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
+public class SConcreteClass3ExtendingConcreteClass2
+	extends SConcreteClass2ExtendingAbstractClass {
 }

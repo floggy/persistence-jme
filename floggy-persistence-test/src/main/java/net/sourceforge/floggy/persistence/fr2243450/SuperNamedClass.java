@@ -18,20 +18,42 @@ package net.sourceforge.floggy.persistence.fr2243450;
 import net.sourceforge.floggy.persistence.Nameable;
 import net.sourceforge.floggy.persistence.Persistable;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class SuperNamedClass implements Persistable, Nameable {
-
+	/**
+	 * DOCUMENT ME!
+	 */
 	protected String x;
 
-	public String getX() {
-		return x;
-	}
-
-	public void setX(String x) {
-		this.x = x;
-	}
-
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public String getRecordStoreName() {
 		return "SuperNamed";
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	public String getX() {
+		return x;
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param x DOCUMENT ME!
+	*/
+	public void setX(String x) {
+		this.x = x;
+	}
 }

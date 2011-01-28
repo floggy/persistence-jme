@@ -18,8 +18,15 @@ package net.sourceforge.floggy.persistence.fr2935390;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+
 import java.util.Iterator;
 import java.util.Vector;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+
+import org.microemu.MIDletBridge;
+import org.microemu.MicroEmulator;
 
 import net.sourceforge.floggy.persistence.FloggyBaseTest;
 import net.sourceforge.floggy.persistence.FloggyException;
@@ -31,26 +38,18 @@ import net.sourceforge.floggy.persistence.impl.IndexManager;
 import net.sourceforge.floggy.persistence.impl.PersistableMetadataManager;
 import net.sourceforge.floggy.persistence.impl.RecordStoreManager;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
-import org.microemu.MIDletBridge;
-import org.microemu.MicroEmulator;
-
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class FR2935390Test extends FloggyBaseTest {
-
-	protected Vector buildOrderedPersons(int quantity) {
-		Vector vector = new Vector(quantity);
-		for (int i = 0; i < quantity; i++) {
-			Bird bird = new Bird();
-			String color = "color" + i;
-			bird.setColor(color);
-
-			vector.addElement(bird);
-		}
-
-		return vector;
-	}
-
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testDoesNotExistIndexName() throws Exception {
 		try {
 			IndexFilter indexFilter = new IndexFilter("color", "green");
@@ -62,26 +61,31 @@ public class FR2935390Test extends FloggyBaseTest {
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testDoesNotFind() throws Exception {
 		Vector birds = buildOrderedPersons(100);
 
 		final String colorExpected = "noColor";
+
 		try {
 			for (Iterator iterator = birds.iterator(); iterator.hasNext();) {
 				Bird bird = (Bird) iterator.next();
 				manager.save(bird);
 			}
 
-			IndexFilter indexFilter = new IndexFilter("byColor",
-					colorExpected);
+			IndexFilter indexFilter = new IndexFilter("byColor", colorExpected);
 			ObjectSet os = manager.find(Bird.class, indexFilter, false);
 
 			assertEquals(0, os.size());
-
 		} catch (Exception e) {
 			fail(e.getMessage());
 		} finally {
 			IndexManager.shutdown();
+
 			for (Iterator iterator = birds.iterator(); iterator.hasNext();) {
 				Bird bird = (Bird) iterator.next();
 				manager.delete(bird);
@@ -89,23 +93,27 @@ public class FR2935390Test extends FloggyBaseTest {
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testFindOne() throws Exception {
 		Vector birds = buildOrderedPersons(100);
 
 		final String colorExpected = "color98";
+
 		try {
 			for (Iterator iterator = birds.iterator(); iterator.hasNext();) {
 				Bird bird = (Bird) iterator.next();
 				manager.save(bird);
 			}
 
-			IndexFilter indexFilter = new IndexFilter("byColor",
-					colorExpected);
+			IndexFilter indexFilter = new IndexFilter("byColor", colorExpected);
 			ObjectSet os = manager.find(Bird.class, indexFilter, false);
 
 			assertEquals(1, os.size());
 			assertEquals(colorExpected, ((Bird) os.get(0)).getColor());
-
 		} catch (Exception e) {
 			fail(e.getMessage());
 		} finally {
@@ -116,10 +124,16 @@ public class FR2935390Test extends FloggyBaseTest {
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testFindThree() throws Exception {
 		Vector birds = buildOrderedPersons(100);
 
 		final String colorExpected = "color98";
+
 		try {
 			for (Iterator iterator = birds.iterator(); iterator.hasNext();) {
 				Bird bird = (Bird) iterator.next();
@@ -134,8 +148,7 @@ public class FR2935390Test extends FloggyBaseTest {
 			bird2.setColor(colorExpected);
 			manager.save(bird2);
 
-			IndexFilter indexFilter = new IndexFilter("byColor",
-					colorExpected);
+			IndexFilter indexFilter = new IndexFilter("byColor", colorExpected);
 			ObjectSet os = manager.find(Bird.class, indexFilter, false);
 
 			assertEquals(3, os.size());
@@ -154,10 +167,16 @@ public class FR2935390Test extends FloggyBaseTest {
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testFindTwo() throws Exception {
 		Vector birds = buildOrderedPersons(100);
 
 		final String colorExpected = "color98";
+
 		try {
 			for (Iterator iterator = birds.iterator(); iterator.hasNext();) {
 				Bird bird = (Bird) iterator.next();
@@ -168,8 +187,7 @@ public class FR2935390Test extends FloggyBaseTest {
 			bird.setColor(colorExpected);
 			manager.save(bird);
 
-			IndexFilter indexFilter = new IndexFilter("byColor",
-					colorExpected);
+			IndexFilter indexFilter = new IndexFilter("byColor", colorExpected);
 			ObjectSet os = manager.find(Bird.class, indexFilter, false);
 
 			assertEquals(2, os.size());
@@ -186,7 +204,89 @@ public class FR2935390Test extends FloggyBaseTest {
 			}
 		}
 	}
-	
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
+	public void testFindWithoutAddingPersistables() throws Exception {
+		String name = "Parsippany";
+
+		MicroEmulator oldEmulator = MIDletBridge.getMicroEmulator();
+
+		try {
+			FileUtils.forceMkdir(new File("target/fr2935390/rms/1.4.0"));
+			IOUtils.copy(new FileInputStream("src/test/rms/1.4.0/FR2935390.rms"),
+				new FileOutputStream("target/fr2935390/rms/1.4.0/FR2935390.rms"));
+			IOUtils.copy(new FileInputStream(
+					"src/test/rms/1.4.0/Index1452747138byName.rms"),
+				new FileOutputStream(
+					"target/fr2935390/rms/1.4.0/Index1452747138byName.rms"));
+			MIDletBridge.setMicroEmulator(new RMSMemoryMicroEmulator(
+					"target/fr2935390/rms/1.4.0"));
+			RecordStoreManager.reset();
+			IndexManager.reset();
+			PersistableMetadataManager.init();
+			IndexManager.init();
+
+			IndexFilter filter = new IndexFilter("byName", name);
+			ObjectSet os = manager.find(FR2935390.class, filter, false);
+
+			assertEquals(2, os.size());
+		} finally {
+			MIDletBridge.setMicroEmulator(oldEmulator);
+		}
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
+	public void testIndexManagerShutdownMethod() throws Exception {
+		MicroEmulator oldEmulator = MIDletBridge.getMicroEmulator();
+		String name = "New York";
+
+		FR2935390 fr2935390 = new FR2935390();
+		fr2935390.setName(name);
+
+		try {
+			FileUtils.forceMkdir(new File("target/fr2935390/rms/1.4.0"));
+			MIDletBridge.setMicroEmulator(new RMSMemoryMicroEmulator(
+					"target/fr2935390/rms/1.4.0"));
+			IndexManager.reset();
+
+			manager.save(fr2935390);
+
+			IndexManager.shutdown();
+
+			IndexFilter filter = new IndexFilter("byName", name);
+			ObjectSet os = manager.find(FR2935390.class, filter, false);
+			assertEquals(1, os.size());
+
+			manager.delete(fr2935390);
+
+			os = manager.find(FR2935390.class, filter, false);
+			assertEquals(0, os.size());
+
+			IndexManager.shutdown();
+			IndexManager.reset();
+			IndexManager.init();
+
+			os = manager.find(FR2935390.class, filter, false);
+			assertEquals(0, os.size());
+		} finally {
+			manager.delete(fr2935390);
+			MIDletBridge.setMicroEmulator(oldEmulator);
+		}
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testSaveNotNullThenNullAndFind() throws Exception {
 		String name = "New York";
 
@@ -199,88 +299,35 @@ public class FR2935390Test extends FloggyBaseTest {
 			IndexFilter filter = new IndexFilter("byName", name);
 			ObjectSet os = manager.find(FR2935390.class, filter, false);
 			assertEquals(1, os.size());
-			
+
 			fr2935390.setName(null);
 			manager.save(fr2935390);
-			
-			os = manager.find(FR2935390.class, filter, false);
-			assertEquals(0, os.size());
-			
-		} finally {
-			manager.delete(fr2935390);
-		}
-	}
-	
-	public void testFindWithoutAddingPersistables() throws Exception {
-		String name = "Parsippany";
 
-//		FR2935390 fr2935390 = new FR2935390();
-//		fr2935390.setName(name);
-//		manager.save(fr2935390);
-//		
-//		fr2935390 = new FR2935390();
-//		fr2935390.setName(name);
-//		manager.save(fr2935390);
-//
-//		IndexManager.shutdown();
-
-		MicroEmulator oldEmulator = MIDletBridge.getMicroEmulator();
-		
-		try {
-			FileUtils.forceMkdir(new File("target/fr2935390/rms/1.4.0"));
-			IOUtils.copy(new FileInputStream("src/test/rms/1.4.0/FR2935390.rms"), new FileOutputStream("target/fr2935390/rms/1.4.0/FR2935390.rms"));
-			IOUtils.copy(new FileInputStream("src/test/rms/1.4.0/Index1452747138byName.rms"), new FileOutputStream("target/fr2935390/rms/1.4.0/Index1452747138byName.rms"));
-			MIDletBridge.setMicroEmulator(new RMSMemoryMicroEmulator("target/fr2935390/rms/1.4.0"));
-			RecordStoreManager.reset();
-			IndexManager.reset();
-			PersistableMetadataManager.init();
-			IndexManager.init();
-		
-			IndexFilter filter = new IndexFilter("byName", name);
-			ObjectSet os = manager.find(FR2935390.class, filter, false);
-			
-			assertEquals(2, os.size());
-		} finally {
-			MIDletBridge.setMicroEmulator(oldEmulator);
-		}
-	}
-
-	public void testIndexManagerShutdownMethod() throws Exception {
-		MicroEmulator oldEmulator = MIDletBridge.getMicroEmulator();
-		String name = "New York";
-
-		FR2935390 fr2935390 = new FR2935390();
-		fr2935390.setName(name);
-
-		try {
-			FileUtils.forceMkdir(new File("target/fr2935390/rms/1.4.0"));
-			MIDletBridge.setMicroEmulator(new RMSMemoryMicroEmulator("target/fr2935390/rms/1.4.0"));
-			IndexManager.reset();
-
-			manager.save(fr2935390);
-			
-			IndexManager.shutdown();
-			
-		
-			IndexFilter filter = new IndexFilter("byName", name);
-			ObjectSet os = manager.find(FR2935390.class, filter, false);
-			assertEquals(1, os.size());
-			
-			manager.delete(fr2935390);
-			
-			os = manager.find(FR2935390.class, filter, false);
-			assertEquals(0, os.size());
-			
-			IndexManager.shutdown();
-			IndexManager.reset();
-			IndexManager.init();
-			
 			os = manager.find(FR2935390.class, filter, false);
 			assertEquals(0, os.size());
 		} finally {
 			manager.delete(fr2935390);
-			MIDletBridge.setMicroEmulator(oldEmulator);
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param quantity DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	protected Vector buildOrderedPersons(int quantity) {
+		Vector vector = new Vector(quantity);
+
+		for (int i = 0; i < quantity; i++) {
+			Bird bird = new Bird();
+			String color = "color" + i;
+			bird.setColor(color);
+
+			vector.addElement(bird);
+		}
+
+		return vector;
+	}
 }

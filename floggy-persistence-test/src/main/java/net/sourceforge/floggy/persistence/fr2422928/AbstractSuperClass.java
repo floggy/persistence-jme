@@ -19,16 +19,33 @@ import java.util.Date;
 
 import net.sourceforge.floggy.persistence.Persistable;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public abstract class AbstractSuperClass implements Persistable {
-	
+	/**
+	 * DOCUMENT ME!
+	 */
 	protected Date creationDate;
-	
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Date getCreationDate() {
 		return creationDate;
 	}
-	
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param creationDate DOCUMENT ME!
+	*/
 	public void setCreationDate(Date creationDate) {
 		this.creationDate = creationDate;
 	}
-
 }

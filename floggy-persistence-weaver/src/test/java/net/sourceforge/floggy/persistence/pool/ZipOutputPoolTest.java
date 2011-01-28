@@ -17,15 +17,27 @@ package net.sourceforge.floggy.persistence.pool;
 
 import java.io.File;
 import java.io.FileInputStream;
+
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import javassist.ClassPool;
 import javassist.CtClass;
+
 import junit.framework.TestCase;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class ZipOutputPoolTest extends TestCase {
-
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testAddClass() throws Exception {
 		File tempFile = File.createTempFile("floggy", null, new File("target"));
 		ZipOutputPool pool = new ZipOutputPool(tempFile);
@@ -40,6 +52,11 @@ public class ZipOutputPoolTest extends TestCase {
 		assertNotNull(entry);
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testAddFile() throws Exception {
 		File tempFile = File.createTempFile("floggy", null, new File("target"));
 		ZipOutputPool pool = new ZipOutputPool(tempFile);
@@ -54,6 +71,11 @@ public class ZipOutputPoolTest extends TestCase {
 		assertNotNull(entry);
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testAddResource() throws Exception {
 		File tempFile = File.createTempFile("floggy", null, new File("target"));
 		ZipOutputPool pool = new ZipOutputPool(tempFile);
@@ -67,5 +89,4 @@ public class ZipOutputPoolTest extends TestCase {
 
 		assertNotNull(entry);
 	}
-
 }

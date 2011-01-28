@@ -21,24 +21,50 @@ import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.beans.FloggyCalendar;
 import net.sourceforge.floggy.persistence.rms.AbstractTest;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class CalendarTest extends AbstractTest {
+	public static final Calendar calendar = Calendar.getInstance();
 
-	public final static Calendar calendar = Calendar.getInstance();
-
-	protected Class getParameterType() {
-		return Calendar.class;
-	}
-	
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Object getValueForSetMethod() {
 		return calendar;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Persistable newInstance() {
 		return new FloggyCalendar();
 	}
-	
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param params DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	protected Class[] getClassesFromObjects(Object[] params) {
-		return new Class[]{Calendar.class};
+		return new Class[] { Calendar.class };
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	protected Class getParameterType() {
+		return Calendar.class;
+	}
 }

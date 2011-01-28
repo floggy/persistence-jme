@@ -18,8 +18,15 @@ package net.sourceforge.floggy.persistence.fr2243110.single;
 import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.strategy.SingleStrategy;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class SSuperClass implements Persistable, SingleStrategy {
-
+	/**
+	 * DOCUMENT ME!
+	 */
 	protected String stringField;
-
 }

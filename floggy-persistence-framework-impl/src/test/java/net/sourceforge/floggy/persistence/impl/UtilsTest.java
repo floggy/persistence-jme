@@ -18,43 +18,23 @@ package net.sourceforge.floggy.persistence.impl;
 import java.io.IOException;
 
 import junit.framework.TestCase;
+
 import net.sourceforge.floggy.persistence.FloggyException;
 import net.sourceforge.floggy.persistence.Persistable;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class UtilsTest extends TestCase {
-
-	public static class Person implements Persistable {
-	}
-
-	public static class Person2 implements Persistable, __Persistable {
-		public void __delete() throws FloggyException {
-		}
-
-		public void __deserialize(byte[] buffer, boolean lazy) throws Exception {
-		}
-
-		public int __getId() {
-			return -1;
-		}
-
-		public Object __getIndexValue(String indexName) {
-			return null;
-		}
-
-		public byte[] __serialize(boolean isRealObject) throws Exception {
-			return null;
-		}
-
-		public void __setId(int id) {
-		}
-
-		public String getRecordStoreName() {
-			return null;
-		}
-	}
-
+	/**
+	 * DOCUMENT ME!
+	*/
 	public void testCheckArgumentAndCast() {
 		Persistable persistable = null;
+
 		try {
 			Utils.checkArgumentAndCast(persistable);
 			fail("It should throw a IllegalArgumentException");
@@ -74,16 +54,19 @@ public class UtilsTest extends TestCase {
 		persistable = new Person2();
 
 		try {
-			__Persistable persistable2 = Utils
-					.checkArgumentAndCast(persistable);
+			__Persistable persistable2 = Utils.checkArgumentAndCast(persistable);
 			assertSame(persistable, persistable2);
 		} catch (Exception ex) {
 			fail(ex.getMessage());
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*/
 	public void testCreateInstance() {
 		Class persistableClass = null;
+
 		try {
 			Utils.createInstance(persistableClass);
 			fail("It should throw a IllegalArgumentException");
@@ -110,6 +93,9 @@ public class UtilsTest extends TestCase {
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*/
 	public void testHandleException() {
 		Exception expected = new FloggyException("test");
 		Exception actual = Utils.handleException(expected);
@@ -124,6 +110,25 @@ public class UtilsTest extends TestCase {
 		assertEquals(expected.getClass().getName(), actual.getMessage());
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*/
+	public void testIsEmpty() {
+		String str = null;
+		assertTrue(Utils.isEmpty(str));
+
+		str = "     	";
+		assertTrue(Utils.isEmpty(str));
+
+		str = "    test	";
+		assertFalse(Utils.isEmpty(str));
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testReadUTF8() throws Exception {
 		String expected = "";
 		FloggyOutputStream fos = new FloggyOutputStream();
@@ -147,8 +152,12 @@ public class UtilsTest extends TestCase {
 		assertEquals(expected, actual);
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*/
 	public void testValidatePersistableClassArgument() {
 		Class persistableClass = null;
+
 		try {
 			Utils.validatePersistableClassArgument(persistableClass);
 			fail("It should throw a IllegalArgumentException");
@@ -174,15 +183,34 @@ public class UtilsTest extends TestCase {
 		}
 	}
 
-	public void testIsEmpty() {
-		String str = null;
-		assertTrue(Utils.isEmpty(str));
-
-		str = "     	";
-		assertTrue(Utils.isEmpty(str));
-
-		str = "    test	";
-		assertFalse(Utils.isEmpty(str));
+	public static class Person implements Persistable {
 	}
 
+	public static class Person2 implements Persistable, __Persistable {
+		public void __delete() throws FloggyException {
+		}
+
+		public void __deserialize(byte[] buffer, boolean lazy)
+			throws Exception {
+		}
+
+		public int __getId() {
+			return -1;
+		}
+
+		public Object __getIndexValue(String indexName) {
+			return null;
+		}
+
+		public byte[] __serialize(boolean isRealObject) throws Exception {
+			return null;
+		}
+
+		public void __setId(int id) {
+		}
+
+		public String getRecordStoreName() {
+			return null;
+		}
+	}
 }

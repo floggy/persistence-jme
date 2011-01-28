@@ -15,17 +15,34 @@
  */
 package net.sourceforge.floggy.persistence.bug2834878;
 
-public class ConcreteSubClassOfNoneFieldAbstractSuperClass extends
-		NoneFieldAbstractSuperClass {
-
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
+public class ConcreteSubClassOfNoneFieldAbstractSuperClass
+	extends NoneFieldAbstractSuperClass {
+	/**
+	 * DOCUMENT ME!
+	 */
 	protected String x;
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public String getX() {
 		return x;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param x DOCUMENT ME!
+	*/
 	public void setX(String x) {
 		this.x = x;
 	}
-
 }

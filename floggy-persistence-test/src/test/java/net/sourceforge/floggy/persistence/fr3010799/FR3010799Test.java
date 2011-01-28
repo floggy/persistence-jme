@@ -20,8 +20,44 @@ import net.sourceforge.floggy.persistence.FloggyException;
 import net.sourceforge.floggy.persistence.beans.animals.Bird;
 import net.sourceforge.floggy.persistence.impl.__Persistable;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class FR3010799Test extends FloggyBaseTest {
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
+	public void testBatchSaveMethod() throws Exception {
+		Bird bird = new Bird();
 
+		int id = 0;
+
+		try {
+			assertFalse(manager.isPersisted(bird));
+
+			id = manager.batchSave(bird);
+
+			assertTrue(id > 0);
+
+			assertFalse(manager.isPersisted(bird));
+		} catch (Exception ex) {
+			fail(ex.getMessage());
+		} finally {
+			((__Persistable) bird).__setId(id);
+			manager.delete(bird);
+		}
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testUseTheRegularSaveMethod() throws Exception {
 		Bird bird = new Bird();
 
@@ -34,28 +70,6 @@ public class FR3010799Test extends FloggyBaseTest {
 		} catch (Exception ex) {
 			assertEquals(FloggyException.class, ex.getClass());
 		} finally {
-			manager.delete(bird);
-		}
-
-	}
-
-	public void testBatchSaveMethod() throws Exception {
-		Bird bird = new Bird();
-
-		int id = 0;
-		
-		try {
-			assertFalse(manager.isPersisted(bird));
-
-			id = manager.batchSave(bird);
-			
-			assertTrue(id > 0);
-
-			assertFalse(manager.isPersisted(bird));
-		} catch (Exception ex) {
-			fail(ex.getMessage());
-		} finally {
-			((__Persistable) bird).__setId(id);
 			manager.delete(bird);
 		}
 	}

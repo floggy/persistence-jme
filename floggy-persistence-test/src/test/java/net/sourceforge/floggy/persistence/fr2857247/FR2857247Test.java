@@ -21,30 +21,36 @@ import javax.microedition.rms.RecordStoreNotOpenException;
 import net.sourceforge.floggy.persistence.FloggyBaseTest;
 import net.sourceforge.floggy.persistence.PersistableManager;
 import net.sourceforge.floggy.persistence.beans.Person;
-import net.sourceforge.floggy.persistence.impl.PersistableMetadataManager;
 import net.sourceforge.floggy.persistence.impl.PersistableMetadata;
+import net.sourceforge.floggy.persistence.impl.PersistableMetadataManager;
 import net.sourceforge.floggy.persistence.impl.RecordStoreManager;
 import net.sourceforge.floggy.persistence.impl.__Persistable;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class FR2857247Test extends FloggyBaseTest {
-
+	/**
+	 * DOCUMENT ME!
+	 */
 	protected Object batchMode;
 
-	protected void setUp() throws Exception {
-		batchMode = manager.getProperty(PersistableManager.BATCH_MODE);
-	}
-
-	protected void tearDown() throws Exception {
-		manager.setProperty(PersistableManager.BATCH_MODE, batchMode);
-	}
-
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testBatchModeFalse() throws Exception {
 		manager.setProperty(PersistableManager.BATCH_MODE, Boolean.FALSE);
 
 		__Persistable object = (__Persistable) new Person();
-		PersistableMetadata metadata = 
-			PersistableMetadataManager.getClassBasedMetadata(object.getClass().getName());
-		RecordStore rs = 
+		PersistableMetadata metadata =
+			PersistableMetadataManager.getClassBasedMetadata(object.getClass()
+				 .getName());
+		RecordStore rs =
 			RecordStoreManager.getRecordStore(object.getRecordStoreName(), metadata);
 
 		RecordStoreManager.closeRecordStore(rs);
@@ -57,13 +63,19 @@ public class FR2857247Test extends FloggyBaseTest {
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testBatchModeTrue() throws Exception {
 		manager.setProperty(PersistableManager.BATCH_MODE, Boolean.TRUE);
 
 		__Persistable object = (__Persistable) new Person();
-		PersistableMetadata metadata = 
-			PersistableMetadataManager.getClassBasedMetadata(object.getClass().getName());
-		RecordStore rs = 
+		PersistableMetadata metadata =
+			PersistableMetadataManager.getClassBasedMetadata(object.getClass()
+				 .getName());
+		RecordStore rs =
 			RecordStoreManager.getRecordStore(object.getRecordStoreName(), metadata);
 
 		RecordStoreManager.closeRecordStore(rs);
@@ -76,13 +88,19 @@ public class FR2857247Test extends FloggyBaseTest {
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testBatchModeTrueShutdown() throws Exception {
 		manager.setProperty(PersistableManager.BATCH_MODE, Boolean.TRUE);
 
 		__Persistable object = (__Persistable) new Person();
-		PersistableMetadata metadata = 
-			PersistableMetadataManager.getClassBasedMetadata(object.getClass().getName());
-		RecordStore rs = 
+		PersistableMetadata metadata =
+			PersistableMetadataManager.getClassBasedMetadata(object.getClass()
+				 .getName());
+		RecordStore rs =
 			RecordStoreManager.getRecordStore(object.getRecordStoreName(), metadata);
 
 		RecordStoreManager.closeRecordStore(rs);
@@ -97,4 +115,21 @@ public class FR2857247Test extends FloggyBaseTest {
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
+	protected void setUp() throws Exception {
+		batchMode = manager.getProperty(PersistableManager.BATCH_MODE);
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
+	protected void tearDown() throws Exception {
+		manager.setProperty(PersistableManager.BATCH_MODE, batchMode);
+	}
 }

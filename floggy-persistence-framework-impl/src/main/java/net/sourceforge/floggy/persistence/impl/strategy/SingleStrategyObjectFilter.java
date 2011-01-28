@@ -22,26 +22,38 @@ import net.sourceforge.floggy.persistence.impl.Utils;
 import net.sourceforge.floggy.persistence.impl.__Persistable;
 
 /**
- * An internal implementation of <code>RecordComparator</code> for comparing two
- * objects.
- * 
- * @since 1.4.0
+* An internal implementation of <code>RecordComparator</code> for comparing
+* two objects.
+*
+* @since 1.4.0
  */
 public class SingleStrategyObjectFilter implements RecordFilter {
-
-	private final __Persistable persistable;
-	private final String className;
 	private final Filter filter;
+	private final String className;
+	private final __Persistable persistable;
 	private final boolean lazy;
 
+	/**
+	 * Creates a new SingleStrategyObjectFilter object.
+	 *
+	 * @param persistable DOCUMENT ME!
+	 * @param filter DOCUMENT ME!
+	 * @param lazy DOCUMENT ME!
+	 */
 	public SingleStrategyObjectFilter(__Persistable persistable, Filter filter,
-			boolean lazy) {
+		boolean lazy) {
 		this.persistable = persistable;
 		this.className = persistable.getClass().getName();
 		this.filter = filter;
-		this.lazy = lazy; 
+		this.lazy = lazy;
 	}
 
+	/**
+	 * Creates a new SingleStrategyObjectFilter object.
+	 *
+	 * @param persistable DOCUMENT ME!
+	 * @param lazy DOCUMENT ME!
+	 */
 	public SingleStrategyObjectFilter(__Persistable persistable, boolean lazy) {
 		this.persistable = persistable;
 		this.className = persistable.getClass().getName();
@@ -49,19 +61,29 @@ public class SingleStrategyObjectFilter implements RecordFilter {
 		this.lazy = lazy;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param data DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public boolean matches(byte[] data) {
 		try {
 			String className = Utils.readUTF8(data);
+
 			if (!this.className.equals(className)) {
 				return false;
 			}
+
 			if (filter == null) {
 				return true;
 			}
+
 			persistable.__deserialize(data, lazy);
 		} catch (Exception e) {
-			// Ignore
 		}
+
 		return filter.matches(persistable);
 	}
 }

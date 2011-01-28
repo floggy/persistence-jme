@@ -23,50 +23,92 @@ import net.sourceforge.floggy.persistence.FloggyException;
 import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.PersistableManager;
 
-
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class FloggyStack implements Persistable, Deletable {
-	
+	/**
+	 * DOCUMENT ME!
+	 */
 	protected Stack x;
-	
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws FloggyException DOCUMENT ME!
+	*/
 	public void delete() throws FloggyException {
-		if (x!= null) {
+		if (x != null) {
 			Enumeration enumeration = x.elements();
+
 			while (enumeration.hasMoreElements()) {
 				Object object = (Object) enumeration.nextElement();
+
 				if (object instanceof Persistable) {
-					PersistableManager.getInstance().delete((Persistable)object);
+					PersistableManager.getInstance().delete((Persistable) object);
 				}
 			}
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param obj DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
+
 		if (obj == null)
 			return false;
+
 		if (getClass() != obj.getClass())
 			return false;
+
 		final FloggyStack other = (FloggyStack) obj;
+
 		if (x == null) {
 			if (other.x != null)
 				return false;
 		} else if (!x.equals(other.x))
 			return false;
+
 		return true;
 	}
-	
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Stack getX() {
 		return x;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((x == null) ? 0 : x.hashCode());
+		result = (prime * result) + ((x == null) ? 0 : x.hashCode());
+
 		return result;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param x DOCUMENT ME!
+	*/
 	public void setX(Stack x) {
 		this.x = x;
 	}

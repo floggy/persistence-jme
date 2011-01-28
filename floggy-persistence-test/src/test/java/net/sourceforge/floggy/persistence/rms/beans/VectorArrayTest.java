@@ -21,21 +21,48 @@ import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.beans.FloggyVectorArray;
 import net.sourceforge.floggy.persistence.rms.AbstractTest;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class VectorArrayTest extends AbstractTest {
-
-	protected Class getParameterType() {
-		return Vector[].class;
-	}
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Object getNewValueForSetMethod() {
 		return new Vector[0];
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Object getValueForSetMethod() {
-		return new Vector[] { new Vector(), null, (Vector)new VectorTest().getValueForSetMethod()};
+		return new Vector[] {
+			new Vector(), null, (Vector) new VectorTest().getValueForSetMethod()
+		};
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Persistable newInstance() {
 		return new FloggyVectorArray();
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	protected Class getParameterType() {
+		return Vector[].class;
+	}
 }

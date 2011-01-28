@@ -15,16 +15,33 @@
  */
 package net.sourceforge.floggy.persistence.fr2852335.single;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class CSCOfConcreteSuperClass extends ConcreteSuperClass {
-
+	/**
+	 * DOCUMENT ME!
+	 */
 	protected char classification;
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public char getClassification() {
 		return classification;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param classification DOCUMENT ME!
+	*/
 	public void setClassification(char classification) {
 		this.classification = classification;
 	}
-
 }

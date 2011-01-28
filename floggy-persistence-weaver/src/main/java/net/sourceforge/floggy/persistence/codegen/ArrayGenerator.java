@@ -18,59 +18,84 @@ package net.sourceforge.floggy.persistence.codegen;
 import javassist.CtClass;
 import javassist.NotFoundException;
 
-public class ArrayGenerator extends SourceCodeGenerator implements
-	AttributeIterableGenerator {
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
+public class ArrayGenerator extends SourceCodeGenerator
+	implements AttributeIterableGenerator {
+	private CtClass persistableType;
+	private String indexForIteration;
 
-    private String indexForIteration;
-    private CtClass persistableType;
+	/**
+	 * Creates a new ArrayGenerator object.
+	 *
+	 * @param persistableType DOCUMENT ME!
+	 * @param fieldName DOCUMENT ME!
+	 * @param classType DOCUMENT ME!
+	 */
+	public ArrayGenerator(CtClass persistableType, String fieldName,
+		CtClass classType) {
+		super(fieldName, classType);
+		this.persistableType = persistableType;
+	}
 
-    public ArrayGenerator(CtClass persistableType, String fieldName, CtClass classType) {
-    	super(fieldName, classType);
-    	this.persistableType= persistableType;
-    }
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws NotFoundException DOCUMENT ME!
+	*/
+	public void initLoadCode() throws NotFoundException {
+		SourceCodeGenerator generator;
 
-    public void initLoadCode() throws NotFoundException {
-	SourceCodeGenerator generator;
+		addLoadCode("if(dis.readByte() == 0) {");
+		addLoadCode("int count = dis.readInt();");
+		addLoadCode("this." + fieldName + " = new "
+			+ fieldType.getComponentType().getName() + "[count];");
+		addLoadCode("for(int " + indexForIteration + " = 0; " + indexForIteration
+			+ " < count; " + indexForIteration + "++) {");
+		generator = SourceCodeGeneratorFactory.getSourceCodeGenerator(persistableType,
+				fieldName + "[" + indexForIteration + "]", fieldType.getComponentType());
+		addLoadCode(generator.getLoadCode());
+		addLoadCode("}");
+		addLoadCode("}");
+		addLoadCode("else {");
+		addLoadCode(fieldName + " = null;");
+		addLoadCode("}");
+	}
 
-	addLoadCode("if(dis.readByte() == 0) {");
-	addLoadCode("int count = dis.readInt();");
-	addLoadCode("this." + fieldName + " = new "
-		+ fieldType.getComponentType().getName() + "[count];");
-	addLoadCode("for(int " + indexForIteration + " = 0; "
-		+ indexForIteration + " < count; " + indexForIteration
-		+ "++) {");
-	generator = SourceCodeGeneratorFactory.getSourceCodeGenerator(persistableType, fieldName
-			+ "[" + indexForIteration + "]", fieldType.getComponentType());
-	addLoadCode(generator.getLoadCode());
-	addLoadCode("}");
-	addLoadCode("}");
-	addLoadCode("else {");
-	addLoadCode(fieldName + " = null;");
-	addLoadCode("}");
-    }
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws NotFoundException DOCUMENT ME!
+	*/
+	public void initSaveCode() throws NotFoundException {
+		SourceCodeGenerator generator;
 
-    public void initSaveCode() throws NotFoundException {
-	SourceCodeGenerator generator;
+		addSaveCode("if(" + "this." + fieldName + " == null) {");
+		addSaveCode("fos.writeByte(1);");
+		addSaveCode("}");
+		addSaveCode("else {");
+		addSaveCode("fos.writeByte(0);");
+		addSaveCode("int count = this." + fieldName + ".length;");
+		addSaveCode("fos.writeInt(count);");
+		addSaveCode("for(int " + indexForIteration + " = 0; " + indexForIteration
+			+ " < count; " + indexForIteration + "++) {");
+		generator = SourceCodeGeneratorFactory.getSourceCodeGenerator(persistableType,
+				fieldName + "[" + indexForIteration + "]", fieldType.getComponentType());
+		addSaveCode(generator.getSaveCode());
+		addSaveCode("}");
+		addSaveCode("}");
+	}
 
-	addSaveCode("if(" + "this." + fieldName + " == null) {");
-	addSaveCode("fos.writeByte(1);");
-	addSaveCode("}");
-	addSaveCode("else {");
-	addSaveCode("fos.writeByte(0);");
-	addSaveCode("int count = this." + fieldName + ".length;");
-	addSaveCode("fos.writeInt(count);");
-	addSaveCode("for(int " + indexForIteration + " = 0; "
-		+ indexForIteration + " < count; " + indexForIteration
-		+ "++) {");
-	generator = SourceCodeGeneratorFactory.getSourceCodeGenerator(persistableType, fieldName
-			+ "[" + indexForIteration + "]", fieldType.getComponentType());
-	addSaveCode(generator.getSaveCode());
-	addSaveCode("}");
-	addSaveCode("}");
-    }
-
-    public void setUpInterableVariable(String indexForIteration) {
-	this.indexForIteration = indexForIteration;
-    }
-
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param indexForIteration DOCUMENT ME!
+	*/
+	public void setUpInterableVariable(String indexForIteration) {
+		this.indexForIteration = indexForIteration;
+	}
 }

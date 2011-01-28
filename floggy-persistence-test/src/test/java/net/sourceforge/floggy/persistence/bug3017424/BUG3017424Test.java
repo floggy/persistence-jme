@@ -18,16 +18,16 @@ package net.sourceforge.floggy.persistence.bug3017424;
 import net.sourceforge.floggy.persistence.FloggyBaseTest;
 import net.sourceforge.floggy.persistence.bug3017424.BUG3017424;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class BUG3017424Test extends FloggyBaseTest {
-	
-	public void testDeleteAllClassParameter() {
-		try {
-			manager.deleteAll(BUG3017424.class);
-		} catch (Exception e) {
-			fail(e.getMessage());
-		}
-	}
-
+	/**
+	 * DOCUMENT ME!
+	*/
 	public void testDeleteAll() {
 		try {
 			manager.deleteAll();
@@ -37,4 +37,14 @@ public class BUG3017424Test extends FloggyBaseTest {
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*/
+	public void testDeleteAllClassParameter() {
+		try {
+			manager.deleteAll(BUG3017424.class);
+		} catch (Exception e) {
+			fail(e.getMessage());
+		}
+	}
 }

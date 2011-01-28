@@ -24,47 +24,38 @@ import javax.microedition.rms.RecordStoreNotFoundException;
 
 import net.sourceforge.floggy.persistence.FloggyException;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class RecordStoreManager {
-
-	private static class RecordStoreReference {
-		RecordStore recordStore;
-		int references = 0;
-	}
-
 	private static Hashtable references = new Hashtable();
 	private static boolean batchMode = false;
-	
-	public static void setBatchMode(boolean batchMode) {
-		RecordStoreManager.batchMode = batchMode;
+
+	/**
+	 * Creates a new RecordStoreManager object.
+	 */
+	protected RecordStoreManager() {
 	}
 
-	public static boolean getBatchMode() {
-		return RecordStoreManager.batchMode;
-	}
-
-	private static void check(PersistableMetadata metadata, boolean isUpdateProcess) throws Exception {
-	
-		PersistableMetadata rmsMetadata = PersistableMetadataManager.getRMSBasedMetadata(metadata.getClassName());
-	
-		if (rmsMetadata == null) {
-			if (!PersistableMetadataManager.getBytecodeVersion().equals(PersistableMetadataManager.getRMSVersion()) && !isUpdateProcess) {
-				throw new FloggyException("You are trying to access a Persistable (" + metadata.getClassName() + ") entity that was not migrate. Please execute a migration first.");
-			}
-			PersistableMetadataManager.saveRMSStructure(metadata);
-		} else {
-			if (!metadata.equals(rmsMetadata) && !isUpdateProcess) {
-				throw new FloggyException("Class and RMS description doesn't match for class " + metadata.getClassName() + ". Please execute a migration first.");
-			}
-		}
-	}
-
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param rs DOCUMENT ME!
+	*
+	* @throws FloggyException DOCUMENT ME!
+	*/
 	public static void closeRecordStore(RecordStore rs) throws FloggyException {
 		try {
 			if (rs != null) {
-				RecordStoreReference rsr = (RecordStoreReference) references
-						.get(rs.getName());
+				RecordStoreReference rsr =
+					(RecordStoreReference) references.get(rs.getName());
+
 				if (rsr != null) {
 					rsr.references--;
+
 					if (rsr.references == 0) {
 						if (!batchMode) {
 							rs.closeRecordStore();
@@ -77,49 +68,108 @@ public class RecordStoreManager {
 			throw Utils.handleException(ex);
 		}
 	}
-	
-	public static void init() {
-		
-	}
 
-	public static void deleteRecordStore(String recordStoreName) throws Exception{
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param recordStoreName DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
+	public static void deleteRecordStore(String recordStoreName)
+		throws Exception {
 		try {
 			RecordStore.deleteRecordStore(recordStoreName);
 		} catch (RecordStoreNotFoundException e) {
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	public static boolean getBatchMode() {
+		return RecordStoreManager.batchMode;
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param persistable DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*
+	* @throws FloggyException DOCUMENT ME!
+	*/
 	public static RecordStore getRecordStore(__Persistable persistable)
-			throws FloggyException {
-	
-		PersistableMetadata metadata = PersistableMetadataManager.getClassBasedMetadata(persistable.getClass().getName());
+		throws FloggyException {
+		PersistableMetadata metadata =
+			PersistableMetadataManager.getClassBasedMetadata(persistable.getClass()
+				 .getName());
+
 		return getRecordStore(persistable.getRecordStoreName(), metadata, false);
 	}
-	
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param indexMetadata DOCUMENT ME!
+	* @param metadata DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public static RecordStore getRecordStore(IndexMetadata indexMetadata,
-			PersistableMetadata metadata) throws Exception {
+		PersistableMetadata metadata) throws Exception {
 		return getRecordStore(indexMetadata.getRecordStoreName(), metadata, false);
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param recordStoreName DOCUMENT ME!
+	* @param metadata DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*
+	* @throws FloggyException DOCUMENT ME!
+	*/
 	public static RecordStore getRecordStore(String recordStoreName,
-			PersistableMetadata metadata) throws FloggyException {
+		PersistableMetadata metadata) throws FloggyException {
 		return getRecordStore(recordStoreName, metadata, false);
 	}
-	
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param recordStoreName DOCUMENT ME!
+	* @param metadata DOCUMENT ME!
+	* @param isUpdateProcess DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*
+	* @throws FloggyException DOCUMENT ME!
+	*/
 	public static RecordStore getRecordStore(String recordStoreName,
-			PersistableMetadata metadata, boolean isUpdateProcess) throws FloggyException {
+		PersistableMetadata metadata, boolean isUpdateProcess)
+		throws FloggyException {
 		try {
-			RecordStoreReference rsr = (RecordStoreReference) references.get(recordStoreName);
+			RecordStoreReference rsr =
+				(RecordStoreReference) references.get(recordStoreName);
+
 			if (rsr == null) {
 				check(metadata, isUpdateProcess);
-	
+
 				rsr = new RecordStoreReference();
 
 				String suiteName = metadata.getSuiteName();
 				String vendorName = metadata.getVendorName();
-				
-				if (suiteName != null && vendorName != null) {
-					rsr.recordStore = RecordStore.openRecordStore(recordStoreName, vendorName, suiteName);
+
+				if ((suiteName != null) && (vendorName != null)) {
+					rsr.recordStore = RecordStore.openRecordStore(recordStoreName,
+							vendorName, suiteName);
 				} else {
 					rsr.recordStore = RecordStore.openRecordStore(recordStoreName, true);
 				}
@@ -129,34 +179,63 @@ public class RecordStoreManager {
 				if (metadata.getPersistableStrategy() == PersistableMetadata.SINGLE_STRATEGY) {
 					check(metadata, isUpdateProcess);
 				}
-	
+
 				if (rsr.references == 0) {
 					String suiteName = metadata.getSuiteName();
 					String vendorName = metadata.getVendorName();
-					
-					if (suiteName != null && vendorName != null) {
-						rsr.recordStore = RecordStore.openRecordStore(recordStoreName, vendorName, suiteName);
+
+					if ((suiteName != null) && (vendorName != null)) {
+						rsr.recordStore = RecordStore.openRecordStore(recordStoreName,
+								vendorName, suiteName);
 					} else {
 						rsr.recordStore = RecordStore.openRecordStore(recordStoreName, true);
 					}
 				}
 			}
+
 			rsr.references++;
+
 			return rsr.recordStore;
 		} catch (Exception ex) {
 			throw Utils.handleException(ex);
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*/
+	public static void init() {
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*/
 	public static void reset() {
 		references.clear();
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param batchMode DOCUMENT ME!
+	*/
+	public static void setBatchMode(boolean batchMode) {
+		RecordStoreManager.batchMode = batchMode;
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws FloggyException DOCUMENT ME!
+	*/
 	public static void shutdown() throws FloggyException {
 		Enumeration recordStoreReferences = references.elements();
+
 		while (recordStoreReferences.hasMoreElements()) {
-			RecordStoreReference rsr = (RecordStoreReference)recordStoreReferences.nextElement(); 
+			RecordStoreReference rsr =
+				(RecordStoreReference) recordStoreReferences.nextElement();
 			RecordStore rs = rsr.recordStore;
+
 			if (rs != null) {
 				try {
 					rs.closeRecordStore();
@@ -167,8 +246,33 @@ public class RecordStoreManager {
 			}
 		}
 	}
-	
-	protected RecordStoreManager() {
+
+	private static void check(PersistableMetadata metadata,
+		boolean isUpdateProcess) throws Exception {
+		PersistableMetadata rmsMetadata =
+			PersistableMetadataManager.getRMSBasedMetadata(metadata.getClassName());
+
+		if (rmsMetadata == null) {
+			if (!PersistableMetadataManager.getBytecodeVersion()
+				 .equals(PersistableMetadataManager.getRMSVersion())
+				 && !isUpdateProcess) {
+				throw new FloggyException("You are trying to access a Persistable ("
+					+ metadata.getClassName()
+					+ ") entity that was not migrate. Please execute a migration first.");
+			}
+
+			PersistableMetadataManager.saveRMSStructure(metadata);
+		} else {
+			if (!metadata.equals(rmsMetadata) && !isUpdateProcess) {
+				throw new FloggyException(
+					"Class and RMS description doesn't match for class "
+					+ metadata.getClassName() + ". Please execute a migration first.");
+			}
+		}
 	}
 
+	private static class RecordStoreReference {
+		RecordStore recordStore;
+		int references = 0;
+	}
 }

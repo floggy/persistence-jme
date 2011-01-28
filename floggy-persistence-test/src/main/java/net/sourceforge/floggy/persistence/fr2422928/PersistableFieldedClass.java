@@ -17,14 +17,32 @@ package net.sourceforge.floggy.persistence.fr2422928;
 
 import net.sourceforge.floggy.persistence.beans.animals.Bird;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class PersistableFieldedClass extends ConcreteChildClass {
-
+	/**
+	 * DOCUMENT ME!
+	 */
 	protected Bird bird;
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Bird getBird() {
 		return bird;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param bird DOCUMENT ME!
+	*/
 	public void setBird(Bird bird) {
 		this.bird = bird;
 	}

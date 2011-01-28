@@ -18,21 +18,41 @@ package net.sourceforge.floggy.persistence.codegen;
 import javassist.CtClass;
 import javassist.NotFoundException;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class HashtableGenerator extends SourceCodeGenerator {
-
+	/**
+	 * Creates a new HashtableGenerator object.
+	 *
+	 * @param fieldName DOCUMENT ME!
+	 * @param classType DOCUMENT ME!
+	 */
 	public HashtableGenerator(String fieldName, CtClass classType) {
 		super(fieldName, classType);
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws NotFoundException DOCUMENT ME!
+	*/
 	public void initLoadCode() throws NotFoundException {
-		addLoadCode("this."
-				+ fieldName
-				+ "= net.sourceforge.floggy.persistence.impl.SerializationManager.readHashtable(dis);");
+		addLoadCode("this." + fieldName
+			+ "= net.sourceforge.floggy.persistence.impl.SerializationManager.readHashtable(dis);");
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws NotFoundException DOCUMENT ME!
+	*/
 	public void initSaveCode() throws NotFoundException {
-		addSaveCode("net.sourceforge.floggy.persistence.impl.SerializationManager.writeHashtable(fos, "
-				+ fieldName + ");");
+		addSaveCode(
+			"net.sourceforge.floggy.persistence.impl.SerializationManager.writeHashtable(fos, "
+			+ fieldName + ");");
 	}
-
 }

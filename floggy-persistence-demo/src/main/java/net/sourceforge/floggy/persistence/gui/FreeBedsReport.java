@@ -30,10 +30,21 @@ import net.sourceforge.floggy.persistence.model.Bed;
 import net.sourceforge.floggy.persistence.model.BedComparator;
 import net.sourceforge.floggy.persistence.model.Internment;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class FreeBedsReport extends List implements CommandListener {
-
+	/**
+	 * DOCUMENT ME!
+	 */
 	protected Command cmdBack;
 
+	/**
+	 * Creates a new FreeBedsReport object.
+	 */
 	public FreeBedsReport() {
 		super("Free beds", List.IMPLICIT);
 
@@ -41,51 +52,16 @@ public class FreeBedsReport extends List implements CommandListener {
 		startComponents();
 	}
 
-	private void startData() {
-		PersistableManager pm = PersistableManager.getInstance();
-
-		try {
-			this.deleteAll();
-
-            Class internmentClass = Class.forName("net.sourceforge.floggy.persistence.model.Internment");
-            final ObjectSet internments = pm.find(internmentClass,
-					new Filter() {
-						public boolean matches(Persistable arg0) {
-							return ((Internment) arg0).getExitDate() == null;
-						}
-					}, null);
-
-			Class bedClass = Class.forName("net.sourceforge.floggy.persistence.model.Bed");
-			ObjectSet freeBeds = pm.find(bedClass, new Filter() {
-
-				public boolean matches(Persistable arg0) {
-					Bed bed = (Bed) arg0;
-
-					for (int i = 0; i < internments.size(); i++) {
-
-						try {
-							if (((Internment) internments.get(i)).getBed()
-									.getNumber()== bed.getNumber()) {
-								return false;
-							}
-						} catch (FloggyException e) {
-				        	HospitalMIDlet.showException(e);
-						}
-					}
-
-					return true;
-				}
-
-			}, new BedComparator());
-
-        	            for (int i = 0; i < freeBeds.size(); i++) {
-        	                Bed bed = (Bed) freeBeds.get(i);
-        			this.append(bed.getNumber() + " - "
-        					+ bed.getFloor(), null);
-			}
-
-		} catch (Exception e) {
-        	HospitalMIDlet.showException(e);
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param cmd DOCUMENT ME!
+	* @param dsp DOCUMENT ME!
+	*/
+	public void commandAction(Command cmd, Displayable dsp) {
+		if (cmd == this.cmdBack) {
+			MainForm mainForm = new MainForm();
+			HospitalMIDlet.setCurrent(mainForm);
 		}
 	}
 
@@ -96,10 +72,51 @@ public class FreeBedsReport extends List implements CommandListener {
 		this.setCommandListener(this);
 	}
 
-	public void commandAction(Command cmd, Displayable dsp) {
-		if (cmd == this.cmdBack) {
-			MainForm mainForm = new MainForm();
-			HospitalMIDlet.setCurrent(mainForm);
+	private void startData() {
+		PersistableManager pm = PersistableManager.getInstance();
+
+		try {
+			this.deleteAll();
+
+			Class internmentClass =
+				Class.forName("net.sourceforge.floggy.persistence.model.Internment");
+			final ObjectSet internments =
+				pm.find(internmentClass,
+					new Filter() {
+						public boolean matches(Persistable arg0) {
+							return ((Internment) arg0).getExitDate() == null;
+						}
+					}, null);
+
+			Class bedClass =
+				Class.forName("net.sourceforge.floggy.persistence.model.Bed");
+			ObjectSet freeBeds =
+				pm.find(bedClass,
+					new Filter() {
+						public boolean matches(Persistable arg0) {
+							Bed bed = (Bed) arg0;
+
+							for (int i = 0; i < internments.size(); i++) {
+								try {
+									if (((Internment) internments.get(i)).getBed().getNumber() == bed
+										 .getNumber()) {
+										return false;
+									}
+								} catch (FloggyException e) {
+									HospitalMIDlet.showException(e);
+								}
+							}
+
+							return true;
+						}
+					}, new BedComparator());
+
+			for (int i = 0; i < freeBeds.size(); i++) {
+				Bed bed = (Bed) freeBeds.get(i);
+				this.append(bed.getNumber() + " - " + bed.getFloor(), null);
+			}
+		} catch (Exception e) {
+			HospitalMIDlet.showException(e);
 		}
 	}
 }

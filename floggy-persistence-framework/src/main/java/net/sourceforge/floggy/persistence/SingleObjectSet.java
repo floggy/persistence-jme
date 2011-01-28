@@ -43,28 +43,27 @@ package net.sourceforge.floggy.persistence;
  * @since 1.4.0
  */
 public interface SingleObjectSet extends ObjectSet {
-    /**
-     * Load the object of a given index into the object instance
-     * supplied.
-     *
-     * @param index Index of the object to be loaded.
-     *
-     * @return The id number at RMS system at the specified position in the
-     *         set.
-     *
-     * @throws FloggyException Exception thrown if a persistance error occurs.
-     */
-    int getId(int index) throws FloggyException;
+	/**
+	* Load the object of a given index into the object instance.
+	*
+	* @param index Index of the object to be loaded.
+	* @param object An instance of the object to be loaded. It cannot be
+	* 			 <code>null</code>.
+	*
+	* @throws FloggyException Exception thrown if a persistance error occurs.
+	*
+	* @deprecated Use the getSharedInstance instead of it.
+	*/
+	void get(int index, Persistable object) throws FloggyException;
 
-    /**
-     * Load the object of a given index into the object instance.
-     *
-     * @param index Index of the object to be loaded.
-     * @param object An instance of the object to be loaded. It cannot be
-     *        <code>null</code>.
-     *
-     * @throws FloggyException Exception thrown if a persistance error occurs.
-     * @deprecated Use the getSharedInstance instead of it.
-     */
-    void get(int index, Persistable object) throws FloggyException;
+	/**
+	* Load the object of a given index into the object instance supplied.
+	*
+	* @param index Index of the object to be loaded.
+	*
+	* @return The id number at RMS system at the specified position in the set.
+	*
+	* @throws FloggyException Exception thrown if a persistance error occurs.
+	*/
+	int getId(int index) throws FloggyException;
 }

@@ -17,16 +17,33 @@ package net.sourceforge.floggy.persistence.fr2422928;
 
 import java.util.Vector;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class ConcreteChildClass extends AbstractSuperClass {
-
+	/**
+	 * DOCUMENT ME!
+	 */
 	protected Vector dynamicFields = new Vector();
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Vector getDynamicFields() {
 		return dynamicFields;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param dynamicFields DOCUMENT ME!
+	*/
 	public void setDynamicFields(Vector dynamicFields) {
 		this.dynamicFields = dynamicFields;
 	}
-
 }

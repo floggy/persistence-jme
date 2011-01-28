@@ -24,60 +24,118 @@ import net.sourceforge.floggy.persistence.impl.IndexMetadata;
 import net.sourceforge.floggy.persistence.impl.PersistableMetadata;
 import net.sourceforge.floggy.persistence.impl.Utils;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class Configuration {
-	
+	private List persistables = new ArrayList();
 	private boolean addDefaultConstructor = true;
-
 	private boolean generateSource = false;
-	
-	private List persistables= new ArrayList();
 
-	public List getPersistableMetadatas() {
-		return persistables;
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param metadata DOCUMENT ME!
+	*/
+	public void addPersistableMetadata(PersistableMetadata metadata) {
+		persistables.add(metadata);
 	}
 
-	public boolean isAddDefaultConstructor() {
-		return addDefaultConstructor;
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param className DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	public boolean containsPersistable(String className) {
+		return getPersistableMetadata(className) != null;
 	}
 
-	public void setAddDefaultConstructor(boolean addDefaultConstructor) {
-		this.addDefaultConstructor = addDefaultConstructor;
-	}
-
-	public boolean isGenerateSource() {
-		return generateSource;
-	}
-
-	public void setGenerateSource(boolean generateSource) {
-		this.generateSource = generateSource;
-	}
-
-	public void setPersistables(List persistables) {
-		this.persistables = persistables;
-	}
-	
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param className DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public PersistableMetadata getPersistableMetadata(String className) {
 		for (Iterator iter = persistables.iterator(); iter.hasNext();) {
 			PersistableMetadata metadata = (PersistableMetadata) iter.next();
+
 			if (className.equals(metadata.getClassName())) {
 				return metadata;
 			}
 		}
+
 		return null;
 	}
-	
-	public boolean containsPersistable(String className) {
-		return getPersistableMetadata(className) != null;
-	}
-	
-	public void addPersistableMetadata(PersistableMetadata metadata) {
-		persistables.add(metadata);
-	}
-	
-	public String toString() {
-		return "Configuration [addDefaultConstructor=" + addDefaultConstructor
-				+ ", generateSource=" + generateSource + ", persistables="
-				+ persistables + "]";
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	public List getPersistableMetadatas() {
+		return persistables;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	public boolean isAddDefaultConstructor() {
+		return addDefaultConstructor;
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	public boolean isGenerateSource() {
+		return generateSource;
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param addDefaultConstructor DOCUMENT ME!
+	*/
+	public void setAddDefaultConstructor(boolean addDefaultConstructor) {
+		this.addDefaultConstructor = addDefaultConstructor;
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param generateSource DOCUMENT ME!
+	*/
+	public void setGenerateSource(boolean generateSource) {
+		this.generateSource = generateSource;
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param persistables DOCUMENT ME!
+	*/
+	public void setPersistables(List persistables) {
+		this.persistables = persistables;
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	public String toString() {
+		return "Configuration [addDefaultConstructor=" + addDefaultConstructor
+		+ ", generateSource=" + generateSource + ", persistables=" + persistables
+		+ "]";
+	}
 }

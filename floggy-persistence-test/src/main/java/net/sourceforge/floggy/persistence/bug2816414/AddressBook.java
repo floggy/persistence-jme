@@ -19,23 +19,45 @@ import net.sourceforge.floggy.persistence.Deletable;
 import net.sourceforge.floggy.persistence.FloggyException;
 import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.PersistableManager;
- 
-public class AddressBook implements Persistable, Deletable {
-	
-	protected Person person;
-	
-	public Person getPerson() {
-		return person;
-	}
-	
-	public void setPerson(Person person) {
-		this.person = person;
-	}
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
+public class AddressBook implements Persistable, Deletable {
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected Person person;
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws FloggyException DOCUMENT ME!
+	*/
 	public void delete() throws FloggyException {
 		if (person != null) {
 			PersistableManager.getInstance().delete(person);
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	public Person getPerson() {
+		return person;
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param person DOCUMENT ME!
+	*/
+	public void setPerson(Person person) {
+		this.person = person;
+	}
 }

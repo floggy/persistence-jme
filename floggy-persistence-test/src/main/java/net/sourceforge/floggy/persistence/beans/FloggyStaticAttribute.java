@@ -17,16 +17,30 @@ package net.sourceforge.floggy.persistence.beans;
 
 import net.sourceforge.floggy.persistence.Persistable;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class FloggyStaticAttribute implements Persistable {
-
 	public static Object x = null;
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Object getX() {
 		return FloggyStaticAttribute.x;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param x DOCUMENT ME!
+	*/
 	public void setX(Object x) {
 		FloggyStaticAttribute.x = x;
 	}
-
 }

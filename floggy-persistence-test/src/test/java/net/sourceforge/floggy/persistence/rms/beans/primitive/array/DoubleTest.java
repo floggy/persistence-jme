@@ -19,20 +19,39 @@ import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.beans.primitive.array.TestDouble;
 import net.sourceforge.floggy.persistence.rms.AbstractTest;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class DoubleTest extends AbstractTest {
-
 	static double[] att = new double[] { -3242.2342, 56, Double.MAX_VALUE };
 
-	protected Class getParameterType() {
-		return double[].class;
-	}
-	
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Object getValueForSetMethod() {
 		return att;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Persistable newInstance() {
 		return new TestDouble();
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	protected Class getParameterType() {
+		return double[].class;
+	}
 }

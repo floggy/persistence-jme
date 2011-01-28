@@ -39,12 +39,12 @@ package net.sourceforge.floggy.persistence;
  * 
  */
 public interface Deletable {
-    /**
-     * It is used to clean up references that the implementation class
-     * may  have to another entities.
-     *
-     * @throws FloggyException Exception thrown if an error occurs while
-     *         deleting the object.
-     */
-    void delete() throws FloggyException;
+	/**
+	* It is used to clean up references that the implementation class may
+	* have to another entities.
+	*
+	* @throws FloggyException Exception thrown if an error occurs while deleting
+	* 				the object.
+	*/
+	void delete() throws FloggyException;
 }

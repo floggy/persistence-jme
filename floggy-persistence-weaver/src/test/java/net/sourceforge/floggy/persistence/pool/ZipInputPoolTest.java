@@ -17,12 +17,23 @@ package net.sourceforge.floggy.persistence.pool;
 
 import java.io.File;
 import java.io.IOException;
+
 import java.net.URL;
 
 import junit.framework.TestCase;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class ZipInputPoolTest extends TestCase {
-
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws IOException DOCUMENT ME!
+	*/
 	public void testGetFileCount() throws IOException {
 		File file = new File("target/test-classes/test.jar");
 		ZipInputPool pool = new ZipInputPool(file);
@@ -30,6 +41,11 @@ public class ZipInputPoolTest extends TestCase {
 		assertEquals(2, pool.getFileCount());
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testGetFileName() throws Exception {
 		File file = new File("target/test-classes/test.jar");
 		ZipInputPool pool = new ZipInputPool(file);
@@ -38,13 +54,16 @@ public class ZipInputPoolTest extends TestCase {
 		assertEquals(nameExpected, pool.getFileName(0));
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testGetFileURL() throws Exception {
 		File file = new File("target/test-classes/test.jar");
 		ZipInputPool pool = new ZipInputPool(file);
 
-		URL urlExpected = new URL("jar:" + file.toURL()
-				+ "!/META-INF/MANIFEST.MF");
+		URL urlExpected = new URL("jar:" + file.toURL() + "!/META-INF/MANIFEST.MF");
 		assertEquals(urlExpected, pool.getFileURL(0));
 	}
-
 }

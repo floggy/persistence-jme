@@ -18,21 +18,41 @@ package net.sourceforge.floggy.persistence.codegen;
 import javassist.CtClass;
 import javassist.NotFoundException;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class StackGenerator extends SourceCodeGenerator {
-
+	/**
+	 * Creates a new StackGenerator object.
+	 *
+	 * @param fieldName DOCUMENT ME!
+	 * @param fieldType DOCUMENT ME!
+	 */
 	public StackGenerator(String fieldName, CtClass fieldType) {
 		super(fieldName, fieldType);
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws NotFoundException DOCUMENT ME!
+	*/
 	public void initLoadCode() throws NotFoundException {
-		addLoadCode("this."
-				+ fieldName
-				+ "= net.sourceforge.floggy.persistence.impl.SerializationManager.readStack(dis, lazy);");
+		addLoadCode("this." + fieldName
+			+ "= net.sourceforge.floggy.persistence.impl.SerializationManager.readStack(dis, lazy);");
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws NotFoundException DOCUMENT ME!
+	*/
 	public void initSaveCode() throws NotFoundException {
-		addSaveCode("net.sourceforge.floggy.persistence.impl.SerializationManager.writeStack(fos, "
-				+ fieldName + ");");
+		addSaveCode(
+			"net.sourceforge.floggy.persistence.impl.SerializationManager.writeStack(fos, "
+			+ fieldName + ");");
 	}
-
 }

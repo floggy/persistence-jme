@@ -25,11 +25,20 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 
-public class ConfigurationFileResourceListener implements
-		IResourceChangeListener {
-
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
+public class ConfigurationFileResourceListener
+	implements IResourceChangeListener {
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param event DOCUMENT ME!
+	*/
 	public void resourceChanged(IResourceChangeEvent event) {
-
 		IResourceDelta delta = event.getDelta();
 
 		try {
@@ -44,16 +53,26 @@ public class ConfigurationFileResourceListener implements
 
 				IProject project = workspace.getRoot().getProject(projectName);
 
-				String configurationFile =  movedTo.removeFirstSegments(1).toString();
+				String configurationFile = movedTo.removeFirstSegments(1).toString();
 
-				project.setPersistentProperty(
-						ConfigurationFileAction.PROPERTY_NAME,configurationFile);
+				project.setPersistentProperty(ConfigurationFileAction.PROPERTY_NAME,
+					configurationFile);
 			}
 		} catch (Exception e) {
 		}
 	}
 
-	protected IPath getMovedFromPath(IResourceDelta delta) throws CoreException {
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param delta DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*
+	* @throws CoreException DOCUMENT ME!
+	*/
+	protected IPath getMovedFromPath(IResourceDelta delta)
+		throws CoreException {
 		if (IResourceDelta.MOVED_FROM == delta.getFlags()) {
 			IPath configurationFilePath = delta.getMovedFromPath();
 
@@ -63,8 +82,9 @@ public class ConfigurationFileResourceListener implements
 
 			IProject project = workspace.getRoot().getProject(projectName);
 
-			String configurationFile = project.getPersistentProperty(ConfigurationFileAction.PROPERTY_NAME);
-			
+			String configurationFile =
+				project.getPersistentProperty(ConfigurationFileAction.PROPERTY_NAME);
+
 			IFile configurationFileFile = project.getFile(configurationFile);
 
 			if (configurationFileFile != null) {
@@ -72,29 +92,41 @@ public class ConfigurationFileResourceListener implements
 			}
 		} else {
 			IResourceDelta[] children = delta.getAffectedChildren();
+
 			for (int i = 0; i < children.length; i++) {
 				IPath path = getMovedFromPath(children[i]);
+
 				if (path != null) {
 					return path;
 				}
 			}
 		}
+
 		return null;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param delta DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	protected IPath getMovedToPath(IResourceDelta delta) {
 		if (IResourceDelta.MOVED_TO == delta.getFlags()) {
 			return delta.getMovedToPath();
-		}
-		else {
+		} else {
 			IResourceDelta[] children = delta.getAffectedChildren();
+
 			for (int i = 0; i < children.length; i++) {
 				IPath path = getMovedToPath(children[i]);
+
 				if (path != null) {
 					return path;
 				}
 			}
 		}
+
 		return null;
 	}
 }

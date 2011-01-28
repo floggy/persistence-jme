@@ -20,62 +20,92 @@ import javax.microedition.rms.RecordStore;
 import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.rms.AbstractTest;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class FR2243450Test extends AbstractTest {
-
-	protected Class getParameterType() {
-		return String.class;
-	}
-
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Object getValueForSetMethod() {
 		return "floggy-with-dinamic-name";
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Persistable newInstance() {
 		return new NamedClass();
 	}
 
-	public void testSimple() throws Exception {
-		NamedClass persistable = new NamedClass();
-		manager.save(persistable);
-		try {
-
-
-			String[] rsNames = RecordStore.listRecordStores();
-			boolean found = false;
-			for (int i = 0; i < rsNames.length; i++) {
-				if (rsNames[i].equals(persistable.getRecordStoreName())) {
-					found = true;
-					break;
-				}
-			}
-			assertTrue("The RecordStore: " + persistable.getRecordStoreName()
-					+ " should have been created.", found);
-
-		} finally {
-			manager.delete(persistable);
-		}
-	}
-	
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testInheritence() throws Exception {
 		SuperNamedClass persistable = new ExtendedNamedClass();
 		manager.save(persistable);
+
 		try {
-
-
 			String[] rsNames = RecordStore.listRecordStores();
 			int foundBoth = 0;
+
 			for (int i = 0; i < rsNames.length; i++) {
-				if (rsNames[i].equals(persistable.getRecordStoreName()) ||
-						rsNames[i].equals(new SuperNamedClass().getRecordStoreName())) {
+				if (rsNames[i].equals(persistable.getRecordStoreName())
+					 || rsNames[i].equals(new SuperNamedClass().getRecordStoreName())) {
 					foundBoth++;
 				}
 			}
-			assertEquals("The RecordStore: " + persistable.getRecordStoreName()
-					+ " should have been created.", 2, foundBoth);
 
+			assertEquals("The RecordStore: " + persistable.getRecordStoreName()
+				+ " should have been created.", 2, foundBoth);
 		} finally {
 			manager.delete(persistable);
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
+	public void testSimple() throws Exception {
+		NamedClass persistable = new NamedClass();
+		manager.save(persistable);
+
+		try {
+			String[] rsNames = RecordStore.listRecordStores();
+			boolean found = false;
+
+			for (int i = 0; i < rsNames.length; i++) {
+				if (rsNames[i].equals(persistable.getRecordStoreName())) {
+					found = true;
+
+					break;
+				}
+			}
+
+			assertTrue("The RecordStore: " + persistable.getRecordStoreName()
+				+ " should have been created.", found);
+		} finally {
+			manager.delete(persistable);
+		}
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	protected Class getParameterType() {
+		return String.class;
+	}
 }

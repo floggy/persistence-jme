@@ -15,17 +15,33 @@
  */
 package net.sourceforge.floggy.barbecuecalculator.core;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class Util {
-
+	/**
+	 * Creates a new Util object.
+	 */
 	protected Util() {
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param valor DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public static int round(double valor) {
 		if ((valor - ((int) valor)) >= 0.5)
 			return (((int) valor) + 1);
 		else if ((int) valor == 0)
 			return 1;
 		else
+
 			return (int) valor;
 	}
 }

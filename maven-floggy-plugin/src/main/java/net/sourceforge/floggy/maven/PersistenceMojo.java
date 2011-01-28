@@ -16,104 +16,114 @@
 package net.sourceforge.floggy.maven;
 
 import java.io.File;
-import java.util.List;
 
-import net.sourceforge.floggy.persistence.Configuration;
-import net.sourceforge.floggy.persistence.Weaver;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.LogFactory;
+
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 
+import net.sourceforge.floggy.persistence.Configuration;
+import net.sourceforge.floggy.persistence.Weaver;
+
 /**
- * Goal which runs the Floggy compiler.
- * 
- * @goal persistence-weaver
- * @phase process-classes
- * @requiresDependencyResolution compile
+* Goal which runs the Floggy compiler.
+*
+* @goal persistence-weaver
+* @phase process-classes
+* @requiresDependencyResolution compile
  */
 public class PersistenceMojo extends AbstractMojo {
 	/**
-	 * Location of the file.
-	 * 
-	 * @parameter expression="${project.build.outputDirectory}"
-	 * @required
-	 */
-	private File input;
-
-	/**
-	 * Location of the file.
-	 * 
-	 * @parameter expression="${project.build.outputDirectory}"
-	 * @required
-	 */
-	private File output;
-
-	/**
-	 * .
-	 * 
-	 * @parameter expression="false"
-	 * @optional
-	 */
-	private boolean generateSource= false;
-
-	/**
-	 * .
-	 * 
-	 * @parameter expression="true"
-	 * @optional
-	 */
-	private boolean addDefaultConstructor= true;
-
-	/**
-	 * 
-	 * @parameter expression="${configurationFile}"
-	 * @optional
+	* 
+	DOCUMENT ME!
+	*
+	* @parameter expression="${configurationFile}"
+	* @optional
 	 */
 	private File configurationFile;
 
 	/**
-	 * Location of the file.
-	 * 
-	 * @parameter expression="${project}"
-	 * @required
+	* Location of the file.
+	*
+	* @parameter expression="${project.build.outputDirectory}"
+	* @required
+	 */
+	private File input;
+
+	/**
+	* Location of the file.
+	*
+	* @parameter expression="${project.build.outputDirectory}"
+	* @required
+	 */
+	private File output;
+
+	/**
+	* Location of the file.
+	*
+	* @parameter expression="${project}"
+	* @required
 	 */
 	private MavenProject project;
 
+	/**
+	* .
+	*
+	* @parameter expression="true"
+	* @optional
+	 */
+	private boolean addDefaultConstructor = true;
+
+	/**
+	* .
+	*
+	* @parameter expression="false"
+	* @optional
+	 */
+	private boolean generateSource = false;
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws MojoExecutionException DOCUMENT ME!
+	*/
 	public void execute() throws MojoExecutionException {
-		
 		MavenLogWrapper.setLog(getLog());
-		
-		LogFactory.getFactory().setAttribute(
-			"org.apache.commons.logging.Log",
-			"net.sourceforge.floggy.maven.MavenLogWrapper");
-		
+
+		LogFactory.getFactory()
+		 .setAttribute("org.apache.commons.logging.Log",
+			 "net.sourceforge.floggy.maven.MavenLogWrapper");
+
 		Weaver weaver = new Weaver();
+
 		try {
 			List list = project.getCompileClasspathElements();
-			File temp = new File(project.getBuild().getDirectory(), String
-					.valueOf(System.currentTimeMillis()));
+			File temp =
+				new File(project.getBuild().getDirectory(),
+					String.valueOf(System.currentTimeMillis()));
 			FileUtils.forceMkdir(temp);
 			weaver.setOutputFile(temp);
 			weaver.setInputFile(input);
 			weaver.setClasspath((String[]) list.toArray(new String[list.size()]));
+
 			if (configurationFile == null) {
-				Configuration configuration= new Configuration();
+				Configuration configuration = new Configuration();
 				configuration.setAddDefaultConstructor(addDefaultConstructor);
 				configuration.setGenerateSource(generateSource);
 				weaver.setConfiguration(configuration);
 			} else {
 				weaver.setConfigurationFile(configurationFile);
 			}
+
 			weaver.execute();
 			FileUtils.copyDirectory(temp, output);
 			FileUtils.forceDelete(temp);
-
 		} catch (Exception e) {
 			throw new MojoExecutionException(e.getMessage(), e);
 		}
 	}
-
 }

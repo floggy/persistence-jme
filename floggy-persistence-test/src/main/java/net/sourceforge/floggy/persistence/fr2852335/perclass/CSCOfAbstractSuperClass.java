@@ -17,16 +17,33 @@ package net.sourceforge.floggy.persistence.fr2852335.perclass;
 
 import java.util.Calendar;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class CSCOfAbstractSuperClass extends AbstractSuperClass {
-
+	/**
+	 * DOCUMENT ME!
+	 */
 	protected Calendar checkpoint;
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Calendar getCheckpoint() {
 		return checkpoint;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param checkpoint DOCUMENT ME!
+	*/
 	public void setCheckpoint(Calendar checkpoint) {
 		this.checkpoint = checkpoint;
 	}
-
 }

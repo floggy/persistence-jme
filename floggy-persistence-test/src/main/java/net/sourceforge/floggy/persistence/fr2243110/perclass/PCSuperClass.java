@@ -18,8 +18,15 @@ package net.sourceforge.floggy.persistence.fr2243110.perclass;
 import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.strategy.PerClassStrategy;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class PCSuperClass implements Persistable, PerClassStrategy {
-
+	/**
+	 * DOCUMENT ME!
+	 */
 	protected String stringField;
-
 }

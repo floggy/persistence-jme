@@ -18,25 +18,50 @@ package net.sourceforge.floggy.persistence.codegen;
 import javassist.CtClass;
 import javassist.NotFoundException;
 
-public class VectorGenerator extends SourceCodeGenerator implements
-		AttributeIterableGenerator {
-
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
+public class VectorGenerator extends SourceCodeGenerator
+	implements AttributeIterableGenerator {
+	/**
+	 * Creates a new VectorGenerator object.
+	 *
+	 * @param fieldName DOCUMENT ME!
+	 * @param classType DOCUMENT ME!
+	 */
 	public VectorGenerator(String fieldName, CtClass classType) {
 		super(fieldName, classType);
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws NotFoundException DOCUMENT ME!
+	*/
 	public void initLoadCode() throws NotFoundException {
-		addLoadCode("this."
-				+ fieldName
-				+ "= net.sourceforge.floggy.persistence.impl.SerializationManager.readVector(dis, lazy);");
+		addLoadCode("this." + fieldName
+			+ "= net.sourceforge.floggy.persistence.impl.SerializationManager.readVector(dis, lazy);");
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws NotFoundException DOCUMENT ME!
+	*/
 	public void initSaveCode() throws NotFoundException {
-		addSaveCode("net.sourceforge.floggy.persistence.impl.SerializationManager.writeVector(fos, "
-				+ fieldName + ");");
+		addSaveCode(
+			"net.sourceforge.floggy.persistence.impl.SerializationManager.writeVector(fos, "
+			+ fieldName + ");");
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param indexForIteration DOCUMENT ME!
+	*/
 	public void setUpInterableVariable(String indexForIteration) {
 	}
-
 }

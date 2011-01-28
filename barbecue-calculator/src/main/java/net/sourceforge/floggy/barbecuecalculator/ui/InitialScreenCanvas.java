@@ -21,10 +21,18 @@ import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class InitialScreenCanvas extends Canvas {
-
 	private Image barbecueImage;
 
+	/**
+	 * Creates a new InitialScreenCanvas object.
+	 */
 	public InitialScreenCanvas() {
 		try {
 			this.barbecueImage = Image.createImage("/barbecue.png");
@@ -32,8 +40,13 @@ public class InitialScreenCanvas extends Canvas {
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param g DOCUMENT ME!
+	*/
 	protected void paint(Graphics g) {
-		g.drawImage(this.barbecueImage, this.getWidth() / 2,
-				this.getHeight() / 2, Graphics.VCENTER | Graphics.HCENTER);
+		g.drawImage(this.barbecueImage, this.getWidth() / 2, this.getHeight() / 2,
+			Graphics.VCENTER | Graphics.HCENTER);
 	}
 }

@@ -17,24 +17,37 @@ package net.sourceforge.floggy.persistence.codegen;
 
 import junit.framework.TestCase;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class StringGeneratorTest extends TestCase {
-
+	/**
+	 * DOCUMENT ME!
+	*/
 	public void testInitLoadCode() {
-		//fail("Not yet implemented");
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*/
 	public void testInitSaveCode() {
-		//fail("Not yet implemented");
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*/
 	public void testIsInstanceOf() {
-		//fail("Not yet implemented");
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*/
 	public void testStringGenerator() {
-		String field= "test";
-		StringGenerator generator= new StringGenerator(field, null);
+		String field = "test";
+		StringGenerator generator = new StringGenerator(field, null);
 		assertEquals(field, generator.fieldName);
 	}
-
 }

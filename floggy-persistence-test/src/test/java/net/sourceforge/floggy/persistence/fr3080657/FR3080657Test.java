@@ -26,79 +26,106 @@ import net.sourceforge.floggy.persistence.impl.PersistableMetadata;
 import net.sourceforge.floggy.persistence.impl.PersistableMetadataManager;
 import net.sourceforge.floggy.persistence.impl.__Persistable;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class FR3080657Test extends FloggyBaseTest {
-
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testStoreIndexAfterSaveOperationFalse() throws Exception {
-		manager.setProperty(PersistableManager.STORE_INDEX_AFTER_SAVE_OPERATION, Boolean.FALSE);
+		manager.setProperty(PersistableManager.STORE_INDEX_AFTER_SAVE_OPERATION,
+			Boolean.FALSE);
 
-		FR3080657 fr3080657 =new FR3080657();
-		
+		FR3080657 fr3080657 = new FR3080657();
+
 		fr3080657.setName("São Paulo - 04/10/2010");
-		
+
 		__Persistable object = (__Persistable) fr3080657;
-		PersistableMetadata metadata = 
-			PersistableMetadataManager.getClassBasedMetadata(object.getClass().getName());
+		PersistableMetadata metadata =
+			PersistableMetadataManager.getClassBasedMetadata(object.getClass()
+				 .getName());
 		Vector indexMetadatas = metadata.getIndexMetadatas();
-		
+
 		IndexMetadata indexMetadata = (IndexMetadata) indexMetadatas.elementAt(0);
-		
-		RecordStore recordStore = RecordStore.openRecordStore(indexMetadata.getRecordStoreName(), true);
-		
+
+		RecordStore recordStore =
+			RecordStore.openRecordStore(indexMetadata.getRecordStoreName(), true);
+
 		assertEquals(0, recordStore.getNumRecords());
-		
+
 		recordStore.closeRecordStore();
-		
+
 		manager.save(object);
 
-		recordStore = RecordStore.openRecordStore(indexMetadata.getRecordStoreName(), false);
-		
+		recordStore = RecordStore.openRecordStore(indexMetadata.getRecordStoreName(),
+				false);
+
 		assertEquals(0, recordStore.getNumRecords());
-		
+
 		recordStore.closeRecordStore();
 	}
 
-	public void testStoreIndexAfterSaveOperationString() throws Exception {
-
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
+	public void testStoreIndexAfterSaveOperationString()
+		throws Exception {
 		try {
-			manager.setProperty(PersistableManager.STORE_INDEX_AFTER_SAVE_OPERATION, "true");
+			manager.setProperty(PersistableManager.STORE_INDEX_AFTER_SAVE_OPERATION,
+				"true");
 			fail("Must throw a IllegalArgumentException");
 		} catch (Exception ex) {
 			assertEquals(IllegalArgumentException.class, ex.getClass());
 		}
-		
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testStoreIndexAfterSaveOperationTrue() throws Exception {
-		manager.setProperty(PersistableManager.STORE_INDEX_AFTER_SAVE_OPERATION, Boolean.TRUE);
+		manager.setProperty(PersistableManager.STORE_INDEX_AFTER_SAVE_OPERATION,
+			Boolean.TRUE);
 
-		FR3080657 fr3080657 =new FR3080657();
-		
+		FR3080657 fr3080657 = new FR3080657();
+
 		fr3080657.setName("São Paulo - 04/10/2010");
-		
+
 		__Persistable object = (__Persistable) fr3080657;
-		PersistableMetadata metadata = 
-			PersistableMetadataManager.getClassBasedMetadata(object.getClass().getName());
+		PersistableMetadata metadata =
+			PersistableMetadataManager.getClassBasedMetadata(object.getClass()
+				 .getName());
 		Vector indexMetadatas = metadata.getIndexMetadatas();
 		IndexMetadata indexMetadata = (IndexMetadata) indexMetadatas.elementAt(0);
 
 		try {
-			RecordStore recordStore = RecordStore.openRecordStore(indexMetadata.getRecordStoreName(), true);
-			
+			RecordStore recordStore =
+				RecordStore.openRecordStore(indexMetadata.getRecordStoreName(), true);
+
 			assertEquals(0, recordStore.getNumRecords());
-			
+
 			recordStore.closeRecordStore();
-			
+
 			manager.save(object);
 
-			recordStore = RecordStore.openRecordStore(indexMetadata.getRecordStoreName(), false);
-			
+			recordStore = RecordStore.openRecordStore(indexMetadata.getRecordStoreName(),
+					false);
+
 			assertEquals(1, recordStore.getNumRecords());
-			
+
 			recordStore.closeRecordStore();
 		} finally {
-			manager.setProperty(PersistableManager.STORE_INDEX_AFTER_SAVE_OPERATION, Boolean.FALSE);
+			manager.setProperty(PersistableManager.STORE_INDEX_AFTER_SAVE_OPERATION,
+				Boolean.FALSE);
 		}
-
 	}
-
 }

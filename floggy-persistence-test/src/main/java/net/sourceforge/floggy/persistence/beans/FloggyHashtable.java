@@ -23,28 +23,52 @@ import net.sourceforge.floggy.persistence.FloggyException;
 import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.PersistableManager;
 
-
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class FloggyHashtable implements Persistable, Deletable {
+	/**
+	 * DOCUMENT ME!
+	 */
 	protected Hashtable x;
 
-	public Hashtable getX() {
-		return x;
-	}
-
-	public void setX(Hashtable x) {
-		this.x = x;
-	}
-	
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws FloggyException DOCUMENT ME!
+	*/
 	public void delete() throws FloggyException {
-		if (x!= null) {
+		if (x != null) {
 			Enumeration enumeration = x.elements();
+
 			while (enumeration.hasMoreElements()) {
 				Object object = (Object) enumeration.nextElement();
+
 				if (object instanceof Persistable) {
-					PersistableManager.getInstance().delete((Persistable)object);
+					PersistableManager.getInstance().delete((Persistable) object);
 				}
 			}
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	public Hashtable getX() {
+		return x;
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param x DOCUMENT ME!
+	*/
+	public void setX(Hashtable x) {
+		this.x = x;
+	}
 }

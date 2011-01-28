@@ -15,6 +15,12 @@
  */
 package net.sourceforge.floggy.persistence.fr2722768;
 
-public class FR2722768ExtendedOfAbstractSuperClass extends FR2722768AbstractSuperClass {
-
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
+public class FR2722768ExtendedOfAbstractSuperClass
+	extends FR2722768AbstractSuperClass {
 }

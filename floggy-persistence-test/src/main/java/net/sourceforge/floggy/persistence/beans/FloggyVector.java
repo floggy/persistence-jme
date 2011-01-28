@@ -23,27 +23,49 @@ import net.sourceforge.floggy.persistence.FloggyException;
 import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.PersistableManager;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class FloggyVector implements Persistable, Deletable {
-
 	private Vector x;
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws FloggyException DOCUMENT ME!
+	*/
+	public void delete() throws FloggyException {
+		if (x != null) {
+			Enumeration enumeration = x.elements();
+
+			while (enumeration.hasMoreElements()) {
+				Object object = (Object) enumeration.nextElement();
+
+				if (object instanceof Persistable) {
+					PersistableManager.getInstance().delete((Persistable) object);
+				}
+			}
+		}
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Vector getX() {
 		return x;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param x DOCUMENT ME!
+	*/
 	public void setX(Vector x) {
 		this.x = x;
-	}
-	
-	public void delete() throws FloggyException {
-		if (x!= null) {
-			Enumeration enumeration = x.elements();
-			while (enumeration.hasMoreElements()) {
-				Object object = (Object) enumeration.nextElement();
-				if (object instanceof Persistable) {
-					PersistableManager.getInstance().delete((Persistable)object);
-				}
-			}
-		}
 	}
 }

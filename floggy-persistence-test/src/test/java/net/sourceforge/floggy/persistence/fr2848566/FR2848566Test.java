@@ -22,32 +22,18 @@ import net.sourceforge.floggy.persistence.FloggyBaseTest;
 import net.sourceforge.floggy.persistence.beans.FloggyHashtable;
 import net.sourceforge.floggy.persistence.beans.FloggyVector;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class FR2848566Test extends FloggyBaseTest {
-
-	public void testVectorHoldingHashtable() throws Exception {
-		Hashtable hashtable = new Hashtable();
-		hashtable.put("String", "temp");
-
-		Vector vector = new Vector();
-		vector.add(hashtable);
-
-		FloggyVector persistable = new FloggyVector();
-		persistable.setX(vector);
-
-		try {
-			int id = manager.save(persistable);
-			assertTrue(id > 0);
-
-			FloggyVector fake = new FloggyVector();
-			manager.load(fake, id);
-			assertEquals(persistable.getX(), fake.getX());
-		} catch (Exception e) {
-			fail(e.getMessage());
-		} finally {
-			manager.delete(persistable);
-		}
-	}
-
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testHashtableHoldingVector() throws Exception {
 		Vector vector = new Vector();
 		vector.add("String");
@@ -73,4 +59,32 @@ public class FR2848566Test extends FloggyBaseTest {
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
+	public void testVectorHoldingHashtable() throws Exception {
+		Hashtable hashtable = new Hashtable();
+		hashtable.put("String", "temp");
+
+		Vector vector = new Vector();
+		vector.add(hashtable);
+
+		FloggyVector persistable = new FloggyVector();
+		persistable.setX(vector);
+
+		try {
+			int id = manager.save(persistable);
+			assertTrue(id > 0);
+
+			FloggyVector fake = new FloggyVector();
+			manager.load(fake, id);
+			assertEquals(persistable.getX(), fake.getX());
+		} catch (Exception e) {
+			fail(e.getMessage());
+		} finally {
+			manager.delete(persistable);
+		}
+	}
 }

@@ -15,6 +15,11 @@
  */
 package net.sourceforge.floggy.persistence.fr2243110.perclass;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public abstract class PCAbstractClassExtendingSuperClass extends PCSuperClass {
-
 }

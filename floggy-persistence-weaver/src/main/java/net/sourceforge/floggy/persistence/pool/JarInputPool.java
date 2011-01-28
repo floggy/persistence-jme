@@ -18,10 +18,21 @@ package net.sourceforge.floggy.persistence.pool;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class JarInputPool extends ZipInputPool {
-
+	/**
+	 * Creates a new JarInputPool object.
+	 *
+	 * @param file DOCUMENT ME!
+	 *
+	 * @throws IOException DOCUMENT ME!
+	 */
 	public JarInputPool(File file) throws IOException {
 		super(file);
 	}
-
 }

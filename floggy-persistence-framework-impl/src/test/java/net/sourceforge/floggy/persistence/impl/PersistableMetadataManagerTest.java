@@ -15,21 +15,38 @@
  */
 package net.sourceforge.floggy.persistence.impl;
 
-import net.sourceforge.floggy.persistence.RMSMemoryMicroEmulator;
-
 import org.microemu.MIDletBridge;
 
 import junit.framework.TestCase;
 
+import net.sourceforge.floggy.persistence.RMSMemoryMicroEmulator;
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class PersistableMetadataManagerTest extends TestCase {
-	
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
+	public void testGetBytecodeVersion() throws Exception {
+		assertEquals(PersistableMetadataManager.CURRENT_VERSION,
+			PersistableMetadataManager.getBytecodeVersion());
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testGetRMSVersion() throws Exception {
 		MIDletBridge.setMicroEmulator(new RMSMemoryMicroEmulator("target/rms"));
 		PersistableMetadataManager.load();
-		assertEquals(PersistableMetadataManager.getBytecodeVersion(), PersistableMetadataManager.getRMSVersion());
-	}
-
-	public void testGetBytecodeVersion() throws Exception {
-		assertEquals(PersistableMetadataManager.CURRENT_VERSION, PersistableMetadataManager.getBytecodeVersion());
+		assertEquals(PersistableMetadataManager.getBytecodeVersion(),
+			PersistableMetadataManager.getRMSVersion());
 	}
 }

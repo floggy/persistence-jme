@@ -17,7 +17,12 @@ package net.sourceforge.floggy.persistence.fr2852335.joined;
 
 import net.sourceforge.floggy.persistence.strategy.PerClassStrategy;
 
-public class WrongHierarchyPerClass extends AbstractSuperClass implements
-		PerClassStrategy {
-
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
+public class WrongHierarchyPerClass extends AbstractSuperClass
+	implements PerClassStrategy {
 }

@@ -18,18 +18,31 @@ package net.sourceforge.floggy.persistence.model;
 import net.sourceforge.floggy.persistence.Comparator;
 import net.sourceforge.floggy.persistence.Persistable;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class BedComparator implements Comparator {
-
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param arg0 DOCUMENT ME!
+	* @param arg1 DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public int compare(Persistable arg0, Persistable arg1) {
-        Bed b1 = (Bed) arg0;
-        Bed b2 = (Bed) arg1;
-        if (b1.getNumber() == b2.getNumber()) {
-        	return Comparator.EQUIVALENT;
-        } else if (b1.getNumber() > b2.getNumber()) {
-            return Comparator.FOLLOWS;
-        } else {
-            return Comparator.PRECEDES;
-        }
-	}
+		Bed b1 = (Bed) arg0;
+		Bed b2 = (Bed) arg1;
 
+		if (b1.getNumber() == b2.getNumber()) {
+			return Comparator.EQUIVALENT;
+		} else if (b1.getNumber() > b2.getNumber()) {
+			return Comparator.FOLLOWS;
+		} else {
+			return Comparator.PRECEDES;
+		}
+	}
 }

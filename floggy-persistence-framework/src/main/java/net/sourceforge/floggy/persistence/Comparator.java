@@ -30,48 +30,46 @@ package net.sourceforge.floggy.persistence;
  * @see Filter
  */
 public interface Comparator {
-    /**
-     * PRECEDES means that the left (first parameter) object precedes
-     * the right (second parameter) object in terms of search or sort order.<br>
-     * <br>
-     * The value of PRECEDES is -1.
-     */
-    int PRECEDES = -1;
+	/**
+	* EQUIVALENT means that in terms of search or sort order, the two
+	* objects are the same. This does not necessarily mean that the two objects
+	* are identical.<br>
+	* <br>
+	* The value of EQUIVALENT is 0.
+	 */
+	int EQUIVALENT = 0;
 
-    /**
-     * EQUIVALENT means that in terms of search or sort order, the two
-     * objects are the same. This does not necessarily mean that the two
-     * objects are identical.<br>
-     * <br>
-     * The value of EQUIVALENT is 0.
-     */
-    int EQUIVALENT = 0;
+	/**
+	* FOLLOWS means that the left (first parameter) object follows the
+	* right (second parameter) object in terms of search or sort order.<br>
+	* <br>
+	* The value of FOLLOWS is 1.
+	 */
+	int FOLLOWS = 1;
 
-    /**
-     * FOLLOWS means that the left (first parameter) object follows the
-     * right (second parameter) object in terms of search or sort order.<br>
-     * <br>
-     * The value of FOLLOWS is 1.
-     */
-    int FOLLOWS = 1;
+	/**
+	* PRECEDES means that the left (first parameter) object precedes the
+	* right (second parameter) object in terms of search or sort order.<br>
+	* <br>
+	* The value of PRECEDES is -1.
+	 */
+	int PRECEDES = -1;
 
-    /**
-     * Returns <code>Comparator.PRECEDES</code> if <code>o1</code>
-     * precedes <code>o2</code> in sort order, or
-     * <code>Comparator.FOLLOWS</code> if <code>o1</code> follows
-     * <code>o2</code> in sort order, or <code>Comparator.EQUIVALENT</code> if
-     * <code>o1</code> and <code>o2</code> are equivalent in terms of sort
-     * order.
-     *
-     * @param o1 The first object for comparison.
-     * @param o2 The second object for comparison.
-     *
-     * @return <code>Comparator.PRECEDES</code> if <code>o1</code> precedes
-     *         <code>o2</code> in sort order, or
-     *         <code>Comparator.FOLLOWS</code> if <code>o1</code> follows
-     *         <code>o2</code> in sort order, or
-     *         <code>Comparator.EQUIVALENT</code> if <code>o1</code> and
-     *         <code>o2</code> are equivalent in terms of sort order.
-     */
-    int compare(Persistable o1, Persistable o2);
+	/**
+	* Returns <code>Comparator.PRECEDES</code> if <code>o1</code> precedes
+	* <code>o2</code> in sort order, or <code>Comparator.FOLLOWS</code> if
+	* <code>o1</code> follows <code>o2</code> in sort order, or
+	* <code>Comparator.EQUIVALENT</code> if <code>o1</code> and <code>o2</code>
+	* are equivalent in terms of sort order.
+	*
+	* @param o1 The first object for comparison.
+	* @param o2 The second object for comparison.
+	*
+	* @return <code>Comparator.PRECEDES</code> if <code>o1</code> precedes
+	* 				<code>o2</code> in sort order, or <code>Comparator.FOLLOWS</code>
+	* 				if <code>o1</code> follows <code>o2</code> in sort order, or
+	* 				<code>Comparator.EQUIVALENT</code> if <code>o1</code> and
+	* 				<code>o2</code> are equivalent in terms of sort order.
+	*/
+	int compare(Persistable o1, Persistable o2);
 }

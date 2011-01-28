@@ -15,8 +15,17 @@
  */
 package net.sourceforge.floggy.persistence.codegen;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public interface AttributeIterableGenerator {
-
-    public void setUpInterableVariable(String indexVariable);
-
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param indexVariable DOCUMENT ME!
+	*/
+	public void setUpInterableVariable(String indexVariable);
 }

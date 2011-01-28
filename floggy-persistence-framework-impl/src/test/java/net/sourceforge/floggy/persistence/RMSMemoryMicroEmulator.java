@@ -20,45 +20,103 @@ import java.io.InputStream;
 import org.microemu.MIDletContext;
 import org.microemu.MicroEmulator;
 import org.microemu.RecordStoreManager;
+
 import org.microemu.app.launcher.Launcher;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class RMSMemoryMicroEmulator implements MicroEmulator {
+	private RecordStoreManager rsManager;
 
-	private RecordStoreManager rsManager ;//= new MemoryRecordStoreManager();
-
-	public  RMSMemoryMicroEmulator(String rmsPath) {
+	/**
+	 * Creates a new RMSMemoryMicroEmulator object.
+	 *
+	 * @param rmsPath DOCUMENT ME!
+	 */
+	public RMSMemoryMicroEmulator(String rmsPath) {
 		rsManager = new FileRecordStoreManager(rmsPath);
 	}
 
-	public void destroyMIDletContext(MIDletContext midletContext) {
-
-	}
-
-	public String getAppProperty(String key) {
-		return null;
-	}
-
-	public RecordStoreManager getRecordStoreManager() {
-		return rsManager;
-	}
-
-	public void notifyDestroyed(MIDletContext midletContext) {
-	}
-
-	public boolean platformRequest(String URL) {
-		return false;
-	}
-
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param permission DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public int checkPermission(String permission) {
 		return 0;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param midletContext DOCUMENT ME!
+	*/
+	public void destroyMIDletContext(MIDletContext midletContext) {
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param key DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	public String getAppProperty(String key) {
+		return null;
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Launcher getLauncher() {
 		return null;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	public RecordStoreManager getRecordStoreManager() {
+		return rsManager;
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param clazz DOCUMENT ME!
+	* @param name DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public InputStream getResourceAsStream(Class clazz, String name) {
 		return null;
 	}
-	
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param midletContext DOCUMENT ME!
+	*/
+	public void notifyDestroyed(MIDletContext midletContext) {
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param URL DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	public boolean platformRequest(String URL) {
+		return false;
+	}
 }

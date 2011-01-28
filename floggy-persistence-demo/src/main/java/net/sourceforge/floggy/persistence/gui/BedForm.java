@@ -26,56 +26,88 @@ import net.sourceforge.floggy.persistence.HospitalMIDlet;
 import net.sourceforge.floggy.persistence.PersistableManager;
 import net.sourceforge.floggy.persistence.model.Bed;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class BedForm extends Form implements CommandListener {
-    
-    protected Bed bed;
-    
-    protected TextField txtBedNumber;
-    
-    protected TextField txtBedFloor;
-    
-    protected Command cmdOk;
-    
-    protected Command cmdCancel;
-    
-    public BedForm(Bed bed) {
-        super("Bed");
-        
-        this.bed = bed;
-        
-        startComponents();
-    }
-    
-    private void startComponents() {
-        this.txtBedNumber = new TextField("Bed number", String.valueOf(bed.getNumber()), 3, TextField.NUMERIC);
-        this.append(this.txtBedNumber);
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected Bed bed;
 
-        this.txtBedFloor  = new TextField("Bed floor", String.valueOf(bed.getFloor()), 15, TextField.NUMERIC);
-        this.append(this.txtBedFloor);        
-               
-        this.cmdOk = new Command("Ok", Command.OK, 0);
-        this.addCommand(this.cmdOk);
-        
-        this.cmdCancel = new Command("Cancel", Command.CANCEL, 1);
-        this.addCommand(this.cmdCancel);
-        
-        this.setCommandListener(this);
-    }
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected Command cmdCancel;
 
-    public void commandAction(Command cmd, Displayable dsp) {
-        if(cmd == this.cmdOk) {
-            PersistableManager pm = PersistableManager.getInstance();
-            
-            try {
-                bed.setNumber(Integer.parseInt(this.txtBedNumber.getString()));
-                bed.setFloor(Integer.parseInt(this.txtBedFloor.getString()));
-                pm.save(bed);         
-            
-            } catch (FloggyException e) {
-            	HospitalMIDlet.showException(e);
-            } 
-        }
-        
-        HospitalMIDlet.setCurrent(new BedList());
-    }
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected Command cmdOk;
+
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected TextField txtBedFloor;
+
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected TextField txtBedNumber;
+
+	/**
+	 * Creates a new BedForm object.
+	 *
+	 * @param bed DOCUMENT ME!
+	 */
+	public BedForm(Bed bed) {
+		super("Bed");
+
+		this.bed = bed;
+
+		startComponents();
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param cmd DOCUMENT ME!
+	* @param dsp DOCUMENT ME!
+	*/
+	public void commandAction(Command cmd, Displayable dsp) {
+		if (cmd == this.cmdOk) {
+			PersistableManager pm = PersistableManager.getInstance();
+
+			try {
+				bed.setNumber(Integer.parseInt(this.txtBedNumber.getString()));
+				bed.setFloor(Integer.parseInt(this.txtBedFloor.getString()));
+				pm.save(bed);
+			} catch (FloggyException e) {
+				HospitalMIDlet.showException(e);
+			}
+		}
+
+		HospitalMIDlet.setCurrent(new BedList());
+	}
+
+	private void startComponents() {
+		this.txtBedNumber = new TextField("Bed number",
+				String.valueOf(bed.getNumber()), 3, TextField.NUMERIC);
+		this.append(this.txtBedNumber);
+
+		this.txtBedFloor = new TextField("Bed floor",
+				String.valueOf(bed.getFloor()), 15, TextField.NUMERIC);
+		this.append(this.txtBedFloor);
+
+		this.cmdOk = new Command("Ok", Command.OK, 0);
+		this.addCommand(this.cmdOk);
+
+		this.cmdCancel = new Command("Cancel", Command.CANCEL, 1);
+		this.addCommand(this.cmdCancel);
+
+		this.setCommandListener(this);
+	}
 }

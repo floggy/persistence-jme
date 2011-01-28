@@ -20,26 +20,37 @@ import net.sourceforge.floggy.persistence.ObjectSet;
 import net.sourceforge.floggy.persistence.beans.animals.Reptile;
 import net.sourceforge.floggy.persistence.beans.animals.Sucuri;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class SucuriTest extends FloggyBaseTest {
-	
-	public void testDeleteWithSuperClassBeenPersistable() throws Exception {
-		Sucuri sucuri= new Sucuri();
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
+	public void testDeleteWithSuperClassBeenPersistable()
+		throws Exception {
+		Sucuri sucuri = new Sucuri();
 		manager.save(sucuri);
 		assertTrue(manager.isPersisted(sucuri));
-		ObjectSet set= manager.find(Sucuri.class, null, null);
+
+		ObjectSet set = manager.find(Sucuri.class, null, null);
 		assertEquals(1, set.size());
 
 		set = manager.find(Reptile.class, null, null);
 		assertEquals(0, set.size());
-		
+
 		manager.delete(sucuri);
 		assertFalse(manager.isPersisted(sucuri));
 
-		set= manager.find(Reptile.class, null, null);
+		set = manager.find(Reptile.class, null, null);
 		assertEquals(0, set.size());
 
-		set= manager.find(Sucuri.class, null, null);
+		set = manager.find(Sucuri.class, null, null);
 		assertEquals(0, set.size());
 	}
-
 }

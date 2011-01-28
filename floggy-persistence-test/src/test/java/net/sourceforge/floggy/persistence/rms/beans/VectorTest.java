@@ -26,10 +26,18 @@ import net.sourceforge.floggy.persistence.beans.Person;
 import net.sourceforge.floggy.persistence.beans.animals.Animal;
 import net.sourceforge.floggy.persistence.rms.AbstractTest;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class VectorTest extends AbstractTest {
-
 	private Vector vector = new Vector();
 
+	/**
+	 * Creates a new VectorTest object.
+	 */
 	public VectorTest() {
 		vector.addElement("floggy-framework");
 		vector.addElement(new Boolean(true));
@@ -43,11 +51,11 @@ public class VectorTest extends AbstractTest {
 		vector.addElement(new Short(Short.MIN_VALUE));
 		vector.addElement(new Date(12345678));
 		vector.addElement(TimeZone.getDefault());
-		Calendar c= Calendar.getInstance();
+
+		Calendar c = Calendar.getInstance();
 		c.setTimeInMillis(233456567);
 		vector.addElement(c);
-//		break the build because the class StringBuffer doesn't implements the equals method. 
-//		vector.addElement(new StringBuffer("testestringbuffer"));
+
 		Person person = new Person();
 		person.setCpf("23321654");
 		person.setNome("�çõí");
@@ -55,35 +63,58 @@ public class VectorTest extends AbstractTest {
 		vector.addElement(null);
 	}
 
-	protected Class getParameterType() {
-		return Vector.class;
-	}
-	
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Object getNewValueForSetMethod() {
 		return new Vector();
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Object getValueForSetMethod() {
 		return vector;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Persistable newInstance() {
 		return new FloggyVector();
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*/
 	public void testClassThatNotImplementsPersistable() {
 		FloggyVector test = new FloggyVector();
 		Vector vector = new Vector();
 		vector.addElement(new Animal());
 		test.setX(vector);
+
 		try {
 			manager.save(test);
-			fail("Deveria ocorrer erro no salvamento de uma classe que n�o � Persistable!");
+			fail(
+				"Deveria ocorrer erro no salvamento de uma classe que n�o � Persistable!");
 		} catch (Exception e) {
 			assertEquals("The class " + Animal.class.getName()
-					+ " doesn't is a persistable class!", e.getMessage());
+				+ " doesn't is a persistable class!", e.getMessage());
 		}
 	}
-	
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	protected Class getParameterType() {
+		return Vector.class;
+	}
 }

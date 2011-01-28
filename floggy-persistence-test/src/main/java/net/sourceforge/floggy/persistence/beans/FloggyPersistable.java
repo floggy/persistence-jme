@@ -20,42 +20,84 @@ import net.sourceforge.floggy.persistence.FloggyException;
 import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.PersistableManager;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class FloggyPersistable implements Persistable, Deletable {
+	/**
+	 * DOCUMENT ME!
+	 */
 	protected Person x;
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws FloggyException DOCUMENT ME!
+	*/
 	public void delete() throws FloggyException {
 		if (x != null) {
 			PersistableManager.getInstance().delete(x);
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param obj DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
+
 		if (obj == null)
 			return false;
+
 		if (getClass() != obj.getClass())
 			return false;
+
 		final FloggyPersistable other = (FloggyPersistable) obj;
+
 		if (x == null) {
 			if (other.x != null)
 				return false;
 		} else if (!x.equals(other.x))
 			return false;
+
 		return true;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Person getX() {
 		return x;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((x == null) ? 0 : x.hashCode());
+		result = (prime * result) + ((x == null) ? 0 : x.hashCode());
+
 		return result;
 	}
-	
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param x DOCUMENT ME!
+	*/
 	public void setX(Person x) {
 		this.x = x;
 	}

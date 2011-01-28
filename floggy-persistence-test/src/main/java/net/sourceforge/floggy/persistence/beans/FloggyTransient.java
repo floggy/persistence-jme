@@ -17,39 +17,71 @@ package net.sourceforge.floggy.persistence.beans;
 
 import net.sourceforge.floggy.persistence.Persistable;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class FloggyTransient implements Persistable {
-
 	private transient Object x;
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param obj DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
+
 		if (obj == null)
 			return false;
+
 		if (getClass() != obj.getClass())
 			return false;
+
 		final FloggyTransient other = (FloggyTransient) obj;
+
 		if (x == null) {
 			if (other.x != null)
 				return false;
 		} else if (!x.equals(other.x))
 			return false;
+
 		return true;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Object getX() {
 		return x;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((x == null) ? 0 : x.hashCode());
+		result = (prime * result) + ((x == null) ? 0 : x.hashCode());
+
 		return result;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param x DOCUMENT ME!
+	*/
 	public void setX(Object x) {
 		this.x = x;
 	}
-
 }

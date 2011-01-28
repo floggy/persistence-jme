@@ -20,23 +20,90 @@ import java.util.TimeZone;
 
 import net.sourceforge.floggy.persistence.Persistable;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class FR2937635 implements Persistable {
-	
-	protected byte byte1;
-	protected char char1;
-	protected double double1;
-	protected int int1;
-	protected long long1;
-	protected short short1;
+	/**
+	 * DOCUMENT ME!
+	 */
 	protected Byte byte2;
+
+	/**
+	 * DOCUMENT ME!
+	 */
 	protected Character char2;
-	protected Double double2;
-	protected Integer int2;
-	protected Long long2;
-	protected Short short2;
-	protected String string1;
+
+	/**
+	 * DOCUMENT ME!
+	 */
 	protected Date date;
+
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected Double double2;
+
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected Integer int2;
+
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected Long long2;
+
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected Short short2;
+
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected String string1;
+
+	/**
+	 * DOCUMENT ME!
+	 */
 	protected StringBuffer stringBuffer;
+
+	/**
+	 * DOCUMENT ME!
+	 */
 	protected TimeZone timeZone;
 
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected byte byte1;
+
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected char char1;
+
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected double double1;
+
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected int int1;
+
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected long long1;
+
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected short short1;
 }

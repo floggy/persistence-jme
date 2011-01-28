@@ -17,17 +17,33 @@ package net.sourceforge.floggy.persistence.fr2852335.perclass;
 
 import java.util.Date;
 
-public class CSCOfConcreteSubClass extends
-		CSCOfConcreteSuperClass {
-
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
+public class CSCOfConcreteSubClass extends CSCOfConcreteSuperClass {
+	/**
+	 * DOCUMENT ME!
+	 */
 	protected Date start;
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Date getStart() {
 		return start;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param start DOCUMENT ME!
+	*/
 	public void setStart(Date start) {
 		this.start = start;
 	}
-
 }

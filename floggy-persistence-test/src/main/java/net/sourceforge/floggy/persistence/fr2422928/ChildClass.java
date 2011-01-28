@@ -15,16 +15,33 @@
  */
 package net.sourceforge.floggy.persistence.fr2422928;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class ChildClass extends SuperClass {
-
+	/**
+	 * DOCUMENT ME!
+	 */
 	protected int age;
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public int getAge() {
 		return age;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param age DOCUMENT ME!
+	*/
 	public void setAge(int age) {
 		this.age = age;
 	}
-
 }

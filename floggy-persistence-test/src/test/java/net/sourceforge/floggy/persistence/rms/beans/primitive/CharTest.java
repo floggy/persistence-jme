@@ -18,26 +18,55 @@ package net.sourceforge.floggy.persistence.rms.beans.primitive;
 import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.beans.primitive.TestChar;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class CharTest extends PrimitiveAbstractTest {
-
-	protected Class getParameterType() {
-		return char.class;
-	}
-	
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Object getDefaultValue() {
 		return new Character('\u0000');
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Object getNewValueForSetMethod() {
-		return new Character((char)654);
+		return new Character((char) 654);
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Object getValueForSetMethod() {
 		return new Character('>');
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Persistable newInstance() {
 		return new TestChar();
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	protected Class getParameterType() {
+		return char.class;
+	}
 }

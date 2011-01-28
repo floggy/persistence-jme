@@ -18,23 +18,39 @@ package net.sourceforge.floggy.persistence.fr3081023;
 import net.sourceforge.floggy.persistence.FloggyBaseTest;
 import net.sourceforge.floggy.persistence.PersistableManager;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class FR3081023Test extends FloggyBaseTest {
-
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testGetPropertyBatchMode() throws Exception {
-		Boolean oldBatchMode = (Boolean) manager.getProperty(PersistableManager.BATCH_MODE);
+		Boolean oldBatchMode =
+			(Boolean) manager.getProperty(PersistableManager.BATCH_MODE);
 		Boolean batchMode = oldBatchMode;
-		
+
 		assertEquals(Boolean.FALSE, batchMode);
-		
+
 		manager.setProperty(PersistableManager.BATCH_MODE, Boolean.TRUE);
-		
+
 		batchMode = (Boolean) manager.getProperty(PersistableManager.BATCH_MODE);
-		
+
 		assertEquals(Boolean.TRUE, batchMode);
-		
+
 		manager.setProperty(PersistableManager.BATCH_MODE, oldBatchMode);
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testGetPropertyEmpty() throws Exception {
 		try {
 			manager.getProperty("");
@@ -42,9 +58,13 @@ public class FR3081023Test extends FloggyBaseTest {
 		} catch (Exception ex) {
 			assertEquals(IllegalArgumentException.class, ex.getClass());
 		}
-		
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testGetPropertyNull() throws Exception {
 		try {
 			manager.getProperty(null);
@@ -52,32 +72,44 @@ public class FR3081023Test extends FloggyBaseTest {
 		} catch (Exception ex) {
 			assertEquals(IllegalArgumentException.class, ex.getClass());
 		}
-		
 	}
 
-	public void testGetPropertyStoreIndexAfterSaveOperation() throws Exception {
-		Boolean oldStoreIndexAfterSaveOperation = (Boolean) manager.getProperty(PersistableManager.STORE_INDEX_AFTER_SAVE_OPERATION);
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
+	public void testGetPropertyStoreIndexAfterSaveOperation()
+		throws Exception {
+		Boolean oldStoreIndexAfterSaveOperation =
+			(Boolean) manager.getProperty(PersistableManager.STORE_INDEX_AFTER_SAVE_OPERATION);
 		Boolean storeIndexAfterSaveOperation = oldStoreIndexAfterSaveOperation;
-		
+
 		assertEquals(Boolean.FALSE, storeIndexAfterSaveOperation);
-		
-		manager.setProperty(PersistableManager.STORE_INDEX_AFTER_SAVE_OPERATION, Boolean.TRUE);
-		
+
+		manager.setProperty(PersistableManager.STORE_INDEX_AFTER_SAVE_OPERATION,
+			Boolean.TRUE);
+
 		storeIndexAfterSaveOperation = (Boolean) manager.getProperty(PersistableManager.STORE_INDEX_AFTER_SAVE_OPERATION);
-		
+
 		assertEquals(Boolean.TRUE, storeIndexAfterSaveOperation);
-		
-		manager.setProperty(PersistableManager.STORE_INDEX_AFTER_SAVE_OPERATION, oldStoreIndexAfterSaveOperation);
+
+		manager.setProperty(PersistableManager.STORE_INDEX_AFTER_SAVE_OPERATION,
+			oldStoreIndexAfterSaveOperation);
 	}
 
-	public void testGetPropertyUnreconizedPropertyName() throws Exception {
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
+	public void testGetPropertyUnreconizedPropertyName()
+		throws Exception {
 		try {
 			manager.getProperty("batch-mode");
 			fail("Must throw a IllegalArgumentException");
 		} catch (Exception ex) {
 			assertEquals(IllegalArgumentException.class, ex.getClass());
 		}
-		
 	}
-
 }

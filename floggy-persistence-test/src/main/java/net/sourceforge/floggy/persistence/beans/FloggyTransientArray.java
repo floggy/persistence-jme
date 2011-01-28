@@ -17,20 +17,37 @@ package net.sourceforge.floggy.persistence.beans;
 
 import net.sourceforge.floggy.persistence.Persistable;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class FloggyTransientArray implements Persistable {
-
 	private transient Object[] x;
 
+	/**
+	 * Creates a new FloggyTransientArray object.
+	 */
 	public FloggyTransientArray() {
 		super();
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Object[] getX() {
 		return x;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param x DOCUMENT ME!
+	*/
 	public void setX(Object[] x) {
 		this.x = x;
 	}
-
 }

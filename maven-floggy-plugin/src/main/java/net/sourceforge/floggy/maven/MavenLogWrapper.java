@@ -16,19 +16,40 @@
 package net.sourceforge.floggy.maven;
 
 import org.apache.commons.logging.impl.NoOpLog;
+
 import org.apache.maven.plugin.logging.Log;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class MavenLogWrapper extends NoOpLog {
-
 	private static Log log;
 
+	/**
+	 * Creates a new MavenLogWrapper object.
+	 *
+	 * @param name DOCUMENT ME!
+	 */
+	public MavenLogWrapper(String name) {
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param log DOCUMENT ME!
+	*/
 	public static void setLog(Log log) {
 		MavenLogWrapper.log = log;
 	}
 
-	public MavenLogWrapper(String name) {
-	}
-
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param message DOCUMENT ME!
+	*/
 	public void debug(Object message) {
 		if (message instanceof Throwable) {
 			MavenLogWrapper.log.debug((Throwable) message);
@@ -37,10 +58,22 @@ public class MavenLogWrapper extends NoOpLog {
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param message DOCUMENT ME!
+	* @param t DOCUMENT ME!
+	*/
 	public void debug(Object message, Throwable t) {
-		MavenLogWrapper.log.debug(String.valueOf(message), t);
+		if (MavenLogWrapper.log.isDebugEnabled())
+			MavenLogWrapper.log.debug(String.valueOf(message), t);
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param message DOCUMENT ME!
+	*/
 	public void error(Object message) {
 		if (message instanceof Throwable) {
 			MavenLogWrapper.log.error((Throwable) message);
@@ -49,10 +82,21 @@ public class MavenLogWrapper extends NoOpLog {
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param message DOCUMENT ME!
+	* @param t DOCUMENT ME!
+	*/
 	public void error(Object message, Throwable t) {
 		MavenLogWrapper.log.error(String.valueOf(message), t);
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param message DOCUMENT ME!
+	*/
 	public void info(Object message) {
 		if (message instanceof Throwable) {
 			MavenLogWrapper.log.info((Throwable) message);
@@ -61,10 +105,21 @@ public class MavenLogWrapper extends NoOpLog {
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param message DOCUMENT ME!
+	* @param t DOCUMENT ME!
+	*/
 	public void info(Object message, Throwable t) {
 		MavenLogWrapper.log.info(String.valueOf(message), t);
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param message DOCUMENT ME!
+	*/
 	public void warn(Object message) {
 		if (message instanceof Throwable) {
 			MavenLogWrapper.log.warn((Throwable) message);
@@ -73,8 +128,13 @@ public class MavenLogWrapper extends NoOpLog {
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param message DOCUMENT ME!
+	* @param t DOCUMENT ME!
+	*/
 	public void warn(Object message, Throwable t) {
 		MavenLogWrapper.log.warn(String.valueOf(message), t);
 	}
-
 }

@@ -18,26 +18,55 @@ package net.sourceforge.floggy.persistence.rms.beans.primitive;
 import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.beans.primitive.TestDouble;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class DoubleTest extends PrimitiveAbstractTest {
-
-	protected Class getParameterType() {
-		return double.class;
-	}
-	
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Object getDefaultValue() {
 		return new Double(0.0);
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Object getNewValueForSetMethod() {
-		return new Double((double)654);
+		return new Double((double) 654);
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Object getValueForSetMethod() {
 		return new Double(23434560.897987987);
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Persistable newInstance() {
 		return new TestDouble();
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	protected Class getParameterType() {
+		return double.class;
+	}
 }

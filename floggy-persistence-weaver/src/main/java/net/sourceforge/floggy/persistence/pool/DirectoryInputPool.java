@@ -17,28 +17,75 @@ package net.sourceforge.floggy.persistence.pool;
 
 import java.io.File;
 import java.io.IOException;
+
 import java.net.URL;
+
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class DirectoryInputPool implements InputPool {
-
+	/**
+	 * DOCUMENT ME!
+	 */
 	protected File rootDirectory;
 
+	/**
+	 * DOCUMENT ME!
+	 */
 	protected List files;
 
+	/**
+	 * Creates a new DirectoryInputPool object.
+	 *
+	 * @param directory DOCUMENT ME!
+	 *
+	 * @throws IOException DOCUMENT ME!
+	 */
 	public DirectoryInputPool(File directory) throws IOException {
 		this.rootDirectory = directory;
 		this.files = new ArrayList();
 		this.initFiles(directory);
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public int getFileCount() {
 		return this.files.size();
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param index DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public String getFileName(int index) {
 		return this.files.get(index).toString();
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param index DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*
+	* @throws IOException DOCUMENT ME!
+	*/
+	public URL getFileURL(int index) throws IOException {
+		File file = new File(rootDirectory, getFileName(index));
+
+		return file.toURI().toURL();
 	}
 
 	private void initFiles(File directory) throws IOException {
@@ -54,6 +101,7 @@ public class DirectoryInputPool implements InputPool {
 					String filePath = temp[i].getCanonicalPath();
 
 					String className = filePath.substring(rootPath.length());
+
 					if (className.startsWith(File.separator)) {
 						className = className.substring(1);
 					}
@@ -62,10 +110,5 @@ public class DirectoryInputPool implements InputPool {
 				}
 			}
 		}
-	}
-
-	public URL getFileURL(int index) throws IOException {
-		File file = new File(rootDirectory, getFileName(index));
-		return file.toURI().toURL();
 	}
 }

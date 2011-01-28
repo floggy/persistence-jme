@@ -18,16 +18,33 @@ package net.sourceforge.floggy.persistence.fr2852335.perclass;
 import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.strategy.PerClassStrategy;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class ConcreteSuperClass implements Persistable, PerClassStrategy {
-
+	/**
+	 * DOCUMENT ME!
+	 */
 	protected String name;
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param name DOCUMENT ME!
+	*/
 	public void setName(String name) {
 		this.name = name;
 	}
-
 }

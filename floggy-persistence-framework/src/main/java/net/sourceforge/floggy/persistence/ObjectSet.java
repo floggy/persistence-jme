@@ -43,51 +43,53 @@ package net.sourceforge.floggy.persistence;
  * @since 1.0
  */
 public interface ObjectSet {
-    /**
-     * Load the object at the specified index. A new instance will be 
-     * created to each invocation of this method.
-     *
-     * @param index Index of the object to be loaded.
-     *
-     * @return The object at the specified position in the set.
-     *
-     * @throws FloggyException Exception thrown if a persistence error occurs.
-     */
-    Persistable get(int index) throws FloggyException;
-    
-    /**
-     * Returns the object at the specified index. The object returned is a 
-     * instance shared by the ObjectSet. Use it with caution because the 
-     * reference of the object don't change across multiple invocation of the 
-     * getSharedInstance method only the value of the fields change.
-     * 
-     * @param index Index of the object to return.
-     *
-     * @return The shared object at the specified position in the set.
-     *
-     * @throws FloggyException Exception thrown if a persistence error occurs.
-     * 
-     * @since 1.4.0
-     */
-    Persistable getSharedInstance(int index) throws FloggyException;
+	/**
+	* Load the object at the specified index. A new instance will be
+	* created to each invocation of this method.
+	*
+	* @param index Index of the object to be loaded.
+	*
+	* @return The object at the specified position in the set.
+	*
+	* @throws FloggyException Exception thrown if a persistence error occurs.
+	*/
+	Persistable get(int index) throws FloggyException;
 
-    /**
-     * Gets the lazy property.
-     * 
-     * @return The flag indicating the the type of fetch made by 
-     * the PersistableManager.load method. 
-     */
-    boolean isLazy();
-    
-    /**
-     * Sets the lazy property.
-     */
-    void setLazy(boolean lazy);
-    
-    /**
-     * Returns the number of objects in this set.
-     *
-     * @return The number of objects in this set.
-     */
-    int size();
+	/**
+	* Returns the object at the specified index. The object returned is a
+	* instance shared by the ObjectSet. Use it with caution because the
+	* reference of the object don't change across multiple invocation of the
+	* getSharedInstance method only the value of the fields change.
+	*
+	* @param index Index of the object to return.
+	*
+	* @return The shared object at the specified position in the set.
+	*
+	* @throws FloggyException Exception thrown if a persistence error occurs.
+	*
+	* @since 1.4.0
+	*/
+	Persistable getSharedInstance(int index) throws FloggyException;
+
+	/**
+	* Gets the lazy property.
+	*
+	* @return The flag indicating the the type of fetch made by  the
+	* 				PersistableManager.load method.
+	*/
+	boolean isLazy();
+
+	/**
+	* Sets the lazy property.
+	*
+	* @param lazy DOCUMENT ME!
+	*/
+	void setLazy(boolean lazy);
+
+	/**
+	* Returns the number of objects in this set.
+	*
+	* @return The number of objects in this set.
+	*/
+	int size();
 }

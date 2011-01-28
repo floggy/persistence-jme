@@ -24,58 +24,91 @@ import javax.microedition.midlet.MIDletStateChangeException;
 
 import net.sourceforge.floggy.persistence.gui.MainForm;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class HospitalMIDlet extends MIDlet {
+	static Display display;
+	static HospitalMIDlet midlet;
+	static Exception exception;
 
-    static Display display;
-    
-    static HospitalMIDlet midlet;
-    
-    static Exception exception;
+	/**
+	 * Creates a new HospitalMIDlet object.
+	 */
+	public HospitalMIDlet() {
+		super();
+		display = Display.getDisplay(this);
+		midlet = this;
+	}
 
-    public HospitalMIDlet() {
-        super();        
-        display = Display.getDisplay(this);
-        midlet = this; 
-    }
+	/**
+	 * DOCUMENT ME!
+	*/
+	public static void exit() {
+		midlet.destroyApp(true);
+		midlet.notifyDestroyed();
+	}
 
-    protected void startApp() throws MIDletStateChangeException {
-        MainForm mainForm = new MainForm();
-        HospitalMIDlet.setCurrent(mainForm);
-    }
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param displayable DOCUMENT ME!
+	*/
+	public static void setCurrent(Displayable displayable) {
+		if (exception != null) {
+			Alert alert =
+				new Alert("Error", exception.getMessage(), null, AlertType.ERROR);
+			alert.setTimeout(Alert.FOREVER);
+			display.setCurrent(alert, displayable);
+			exception = null;
+		} else {
+			display.setCurrent(displayable);
+		}
+	}
 
-    protected void pauseApp() {
-    	try {
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param exception DOCUMENT ME!
+	*/
+	public static void showException(Exception exception) {
+		HospitalMIDlet.exception = exception;
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param unconditional DOCUMENT ME!
+	*/
+	protected void destroyApp(boolean unconditional) {
+		try {
 			PersistableManager.getInstance().shutdown();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-    }
+	}
 
-    protected void destroyApp(boolean unconditional) {
-    	try {
+	/**
+	 * DOCUMENT ME!
+	*/
+	protected void pauseApp() {
+		try {
 			PersistableManager.getInstance().shutdown();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-    }
-    
-    public static void setCurrent(Displayable displayable) {
-    	if (exception != null) {
-        	Alert alert= new Alert("Error", exception.getMessage(), null, AlertType.ERROR);
-        	alert.setTimeout(Alert.FOREVER);
-        	display.setCurrent(alert, displayable);
-        	exception= null;
-    	} else {
-    		display.setCurrent(displayable);
-    	}
-    }
-    
-    public static void exit(){
-    	midlet.destroyApp(true);
-        midlet.notifyDestroyed();
-    }
-    
-    public static void showException(Exception exception) {
-    	HospitalMIDlet.exception= exception;
-    }
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws MIDletStateChangeException DOCUMENT ME!
+	*/
+	protected void startApp() throws MIDletStateChangeException {
+		MainForm mainForm = new MainForm();
+		HospitalMIDlet.setCurrent(mainForm);
+	}
 }

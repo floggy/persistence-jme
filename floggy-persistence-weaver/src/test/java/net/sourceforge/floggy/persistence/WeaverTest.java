@@ -16,28 +16,40 @@
 package net.sourceforge.floggy.persistence;
 
 import junit.framework.TestCase;
+
 import net.sourceforge.floggy.persistence.impl.PersistableMetadata;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class WeaverTest extends TestCase {
-
+	/**
+	 * DOCUMENT ME!
+	*/
 	public void testCreatePersistableMetadata() {
-
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*/
 	public void testMerge() {
 		String className = "test";
 		String recordStoreName = "Floggy";
 		int persistableStrategy = 2;
 		Configuration c1 = new Configuration();
-		PersistableMetadata metadata1 = new PersistableMetadata(false,
-			className, null, null, null, null, null, null,
-			persistableStrategy, null);
+		PersistableMetadata metadata1 =
+			new PersistableMetadata(false, className, null, null, null, null, null,
+				null, persistableStrategy, null);
 
 		c1.addPersistableMetadata(metadata1);
 
 		Configuration c2 = new Configuration();
-		PersistableMetadata metadata2 = new PersistableMetadata(false,
-			className, null, null, null, null, null, recordStoreName, 0, null);
+		PersistableMetadata metadata2 =
+			new PersistableMetadata(false, className, null, null, null, null, null,
+				recordStoreName, 0, null);
 
 		c2.addPersistableMetadata(metadata2);
 
@@ -54,5 +66,4 @@ public class WeaverTest extends TestCase {
 		assertEquals(recordStoreName, metadata1.getRecordStoreName());
 		assertEquals(persistableStrategy, metadata1.getPersistableStrategy());
 	}
-
 }

@@ -17,7 +17,12 @@ package net.sourceforge.floggy.persistence.fr2852335.perclass;
 
 import net.sourceforge.floggy.persistence.strategy.SingleStrategy;
 
-public class WrongHierarchySingle extends AbstractSuperClass implements
-		SingleStrategy {
-
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
+public class WrongHierarchySingle extends AbstractSuperClass
+	implements SingleStrategy {
 }

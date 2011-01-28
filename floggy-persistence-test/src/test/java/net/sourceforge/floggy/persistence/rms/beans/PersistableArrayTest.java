@@ -26,16 +26,27 @@ import net.sourceforge.floggy.persistence.migration.FieldPersistableInfo;
 import net.sourceforge.floggy.persistence.migration.MigrationManager;
 import net.sourceforge.floggy.persistence.rms.AbstractTest;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class PersistableArrayTest extends AbstractTest {
-
-	protected Class getParameterType() {
-		return FloggyPersistable[].class;
-	}
-
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Object getNewValueForSetMethod() {
 		return new FloggyPersistable[0];
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Object getValueForSetMethod() {
 		FloggyPersistable[] persistables = new FloggyPersistable[2];
 		FloggyPersistable persistable = new FloggyPersistable();
@@ -47,28 +58,43 @@ public class PersistableArrayTest extends AbstractTest {
 		return persistables;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Persistable newInstance() {
 		return new FloggyPersistableArray();
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testFR2422928Read() throws Exception {
 		Persistable container = newInstance();
-		FloggyPersistable[] persistables = (FloggyPersistable[]) getValueForSetMethod();
+		FloggyPersistable[] persistables =
+			(FloggyPersistable[]) getValueForSetMethod();
 		int[] fieldId = new int[persistables.length];
 
 		for (int i = 0; i < persistables.length; i++) {
 			fieldId[i] = manager.save(persistables[i]);
 		}
+
 		setX(container, persistables);
 		manager.save(container);
 
 		MigrationManager um = MigrationManager.getInstance();
 		Enumeration enumeration = um.start(container.getClass(), null);
+
 		try {
 			while (enumeration.hasMoreElements()) {
 				Hashtable data = (Hashtable) enumeration.nextElement();
 				assertFalse("Should not be empty!", data.isEmpty());
+
 				FieldPersistableInfo[] pi = (FieldPersistableInfo[]) data.get("x");
+
 				for (int i = 0; i < pi.length; i++) {
 					assertEquals(pi[i].getId(), fieldId[i]);
 				}
@@ -78,13 +104,20 @@ public class PersistableArrayTest extends AbstractTest {
 			um.finish(container.getClass());
 		}
 	}
-	
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testFR2422928Update() throws Exception {
 		Persistable oldObject = newInstance();
 		setX(oldObject, getValueForSetMethod());
 		manager.save(oldObject);
+
 		MigrationManager um = MigrationManager.getInstance();
 		Enumeration enumeration = um.start(oldObject.getClass(), null);
+
 		try {
 			while (enumeration.hasMoreElements()) {
 				Persistable newObject = newInstance();
@@ -101,5 +134,12 @@ public class PersistableArrayTest extends AbstractTest {
 		}
 	}
 
-
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	protected Class getParameterType() {
+		return FloggyPersistable[].class;
+	}
 }

@@ -17,14 +17,32 @@ package net.sourceforge.floggy.persistence.fr2852335.perclass;
 
 import java.util.Date;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class CSCOfConcreteJoinedStrategy extends ConcreteJoinedStrategy {
-
+	/**
+	 * DOCUMENT ME!
+	 */
 	protected Date birthDate;
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Date getBirthDate() {
 		return birthDate;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param birthDate DOCUMENT ME!
+	*/
 	public void setBirthDate(Date birthDate) {
 		this.birthDate = birthDate;
 	}

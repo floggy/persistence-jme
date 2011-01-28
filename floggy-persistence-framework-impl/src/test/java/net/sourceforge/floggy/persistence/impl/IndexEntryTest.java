@@ -17,13 +17,24 @@ package net.sourceforge.floggy.persistence.impl;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
+
 import java.util.Date;
 import java.util.Vector;
 
 import junit.framework.TestCase;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class IndexEntryTest extends TestCase {
-	
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testDeserialize() throws Exception {
 		IndexEntry indexEntry = new IndexEntry(-1);
 
@@ -38,13 +49,18 @@ public class IndexEntryTest extends TestCase {
 
 		FloggyOutputStream out = new FloggyOutputStream();
 		indexEntry.serialize(out);
-		
-		DataInputStream in = new DataInputStream(new ByteArrayInputStream(out.toByteArray()));
+
+		DataInputStream in =
+			new DataInputStream(new ByteArrayInputStream(out.toByteArray()));
 		assertEquals(date, SerializationManager.readObject(in, false));
 		assertEquals(ids, SerializationManager.readIntVector(in));
-		
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testSerialize() throws Exception {
 		Date date = new Date();
 		Vector ids = new Vector();
@@ -56,13 +72,11 @@ public class IndexEntryTest extends TestCase {
 		FloggyOutputStream out = new FloggyOutputStream();
 		SerializationManager.writeObject(out, date);
 		SerializationManager.writeIntVector(out, ids);
-		
+
 		IndexEntry indexEntry = new IndexEntry(-1);
 		indexEntry.deserialize(out.toByteArray());
-		
+
 		assertEquals(date, indexEntry.getValue());
 		assertEquals(ids, indexEntry.getPersistableIds());
-		
 	}
-
 }

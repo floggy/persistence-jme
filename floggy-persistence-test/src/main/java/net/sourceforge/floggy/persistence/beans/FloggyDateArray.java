@@ -19,14 +19,32 @@ import java.util.Date;
 
 import net.sourceforge.floggy.persistence.Persistable;
 
-
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class FloggyDateArray implements Persistable {
-	protected Date x[];
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected Date[] x;
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Date[] getX() {
 		return x;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param x DOCUMENT ME!
+	*/
 	public void setX(Date[] x) {
 		this.x = x;
 	}

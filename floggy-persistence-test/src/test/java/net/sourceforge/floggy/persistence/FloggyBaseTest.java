@@ -19,16 +19,26 @@ import org.microemu.MIDletBridge;
 
 import junit.framework.TestCase;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public abstract class FloggyBaseTest extends TestCase {
-
-	protected PersistableManager manager;
-
 	static {
 		MIDletBridge.setMicroEmulator(new RMSMemoryMicroEmulator("target/rms"));
 	}
 
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected PersistableManager manager;
+
+	/**
+	 * Creates a new FloggyBaseTest object.
+	 */
 	public FloggyBaseTest() {
 		manager = PersistableManager.getInstance();
 	}
-
 }

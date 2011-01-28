@@ -19,14 +19,32 @@ import java.util.TimeZone;
 
 import net.sourceforge.floggy.persistence.Persistable;
 
-
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class FloggyTimeZone implements Persistable {
+	/**
+	 * DOCUMENT ME!
+	 */
 	protected TimeZone x;
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public TimeZone getX() {
 		return x;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param x DOCUMENT ME!
+	*/
 	public void setX(TimeZone x) {
 		this.x = x;
 	}

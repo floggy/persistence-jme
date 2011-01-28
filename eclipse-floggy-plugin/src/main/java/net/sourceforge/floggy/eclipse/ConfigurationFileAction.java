@@ -21,31 +21,46 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.QualifiedName;
+
 import org.eclipse.jface.viewers.IStructuredSelection;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class ConfigurationFileAction extends AbstractSetPropertyAction {
+	public static final QualifiedName PROPERTY_NAME =
+		new QualifiedName(Activator.PLUGIN_ID, "configurationFile");
 
-	public static final QualifiedName PROPERTY_NAME = new QualifiedName(
-			Activator.PLUGIN_ID, "configurationFile");
-
+	/**
+	 * Creates a new ConfigurationFileAction object.
+	 */
 	public ConfigurationFileAction() {
 		super(PROPERTY_NAME);
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param project DOCUMENT ME!
+	*
+	* @throws CoreException DOCUMENT ME!
+	*/
 	protected void changeProperty(IProject project) throws CoreException {
-
 		if (selection instanceof IStructuredSelection) {
-			for (Iterator it = ((IStructuredSelection) selection).iterator(); it.hasNext();) {
+			for (Iterator it = ((IStructuredSelection) selection).iterator();
+				 it.hasNext();) {
 				Object element = it.next();
 
 				if (element instanceof IFile) {
 					IFile file = (IFile) element;
 
-					project.setPersistentProperty(propertyName, file.getProjectRelativePath().toString());
+					project.setPersistentProperty(propertyName,
+						file.getProjectRelativePath().toString());
 				}
 			}
 		}
-
 	}
-
 }

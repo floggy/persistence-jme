@@ -24,9 +24,14 @@ import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.beans.FloggyHashtable;
 import net.sourceforge.floggy.persistence.rms.AbstractTest;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class HashtableTest extends AbstractTest {
-
-	public final static Hashtable hashtable = new Hashtable();
+	public static final Hashtable hashtable = new Hashtable();
 
 	static {
 		hashtable.put(Boolean.TRUE, Boolean.TRUE);
@@ -36,23 +41,37 @@ public class HashtableTest extends AbstractTest {
 		hashtable.put(new Float(45f), new Float(45f));
 		hashtable.put(new Integer(87), new Integer(87));
 		hashtable.put(new Long(89), new Long(89));
-		hashtable.put(new Short((short)78), new Short((short)78));
+		hashtable.put(new Short((short) 78), new Short((short) 78));
 		hashtable.put("key", "value");
 		hashtable.put(new Date(), new Date());
 		hashtable.put(Calendar.getInstance(), Calendar.getInstance());
 		hashtable.put(TimeZone.getDefault(), TimeZone.getDefault());
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Object getValueForSetMethod() {
 		return hashtable;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Persistable newInstance() {
 		return new FloggyHashtable();
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	protected Class getParameterType() {
 		return Hashtable.class;
 	}
-
 }

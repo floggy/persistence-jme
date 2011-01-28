@@ -21,54 +21,96 @@ import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.PersistableManager;
 import net.sourceforge.floggy.persistence.beans.animals.Bird;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class BUG2313565 implements Persistable, Deletable {
 	public boolean w;
-
-	protected Bird x;
-
 	public long y;
 
-	public Bird getX() {
-		return x;
-	}
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected Bird x;
 
-	public void setX(Bird x) {
-		this.x = x;
-	}
-
-	public int hashCode() {
-		final int PRIME = 31;
-		int result = 1;
-		result = PRIME * result + (w ? 1231 : 1237);
-		result = PRIME * result + ((x == null) ? 0 : x.hashCode());
-		result = PRIME * result + (int) (y ^ (y >>> 32));
-		return result;
-	}
-
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		final BUG2313565 other = (BUG2313565) obj;
-		if (w != other.w)
-			return false;
-		if (x == null) {
-			if (other.x != null)
-				return false;
-		} else if (!x.equals(other.x))
-			return false;
-		if (y != other.y)
-			return false;
-		return true;
-	}
-	
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws FloggyException DOCUMENT ME!
+	*/
 	public void delete() throws FloggyException {
 		if (x != null) {
 			PersistableManager.getInstance().delete(x);
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param obj DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+
+		if (obj == null)
+			return false;
+
+		if (getClass() != obj.getClass())
+			return false;
+
+		final BUG2313565 other = (BUG2313565) obj;
+
+		if (w != other.w)
+			return false;
+
+		if (x == null) {
+			if (other.x != null)
+				return false;
+		} else if (!x.equals(other.x))
+			return false;
+
+		if (y != other.y)
+			return false;
+
+		return true;
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	public Bird getX() {
+		return x;
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	public int hashCode() {
+		final int PRIME = 31;
+		int result = 1;
+		result = (PRIME * result) + (w ? 1231 : 1237);
+		result = (PRIME * result) + ((x == null) ? 0 : x.hashCode());
+		result = (PRIME * result) + (int) (y ^ (y >>> 32));
+
+		return result;
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param x DOCUMENT ME!
+	*/
+	public void setX(Bird x) {
+		this.x = x;
+	}
 }

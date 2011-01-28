@@ -38,12 +38,13 @@ package net.sourceforge.floggy.persistence;
  * @deprecated use the configuration file to set the RecordStore's name
  */
 public interface Nameable {
-    /**
-     * It is used to retrieve the name of the RecordStore where the
-     * class will be stored.
-     *
-     * @return the name of the RecordStore.
-     * @deprecated use the configuration file to set the RecordStore's name
-     */
-    String getRecordStoreName();
+	/**
+	* It is used to retrieve the name of the RecordStore where the class
+	* will be stored.
+	*
+	* @return the name of the RecordStore.
+	*
+	* @deprecated use the configuration file to set the RecordStore's name
+	*/
+	String getRecordStoreName();
 }

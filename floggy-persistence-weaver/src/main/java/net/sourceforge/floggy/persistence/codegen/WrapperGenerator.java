@@ -18,22 +18,43 @@ package net.sourceforge.floggy.persistence.codegen;
 import javassist.CtClass;
 import javassist.NotFoundException;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class WrapperGenerator extends SourceCodeGenerator {
-
+	/**
+	 * Creates a new WrapperGenerator object.
+	 *
+	 * @param fieldName DOCUMENT ME!
+	 * @param fieldType DOCUMENT ME!
+	 */
 	public WrapperGenerator(String fieldName, CtClass fieldType) {
 		super(fieldName, fieldType);
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws NotFoundException DOCUMENT ME!
+	*/
 	public void initLoadCode() throws NotFoundException {
-		addLoadCode("this."
-				+ fieldName
-				+ "= net.sourceforge.floggy.persistence.impl.SerializationManager.read"
-				+ PrimitiveTypeGenerator.getType(fieldType) + "(dis);");
+		addLoadCode("this." + fieldName
+			+ "= net.sourceforge.floggy.persistence.impl.SerializationManager.read"
+			+ PrimitiveTypeGenerator.getType(fieldType) + "(dis);");
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws NotFoundException DOCUMENT ME!
+	*/
 	public void initSaveCode() throws NotFoundException {
-		addSaveCode("net.sourceforge.floggy.persistence.impl.SerializationManager.write"
-				+ PrimitiveTypeGenerator.getType(fieldType) + "(fos, this." + fieldName + ");");
+		addSaveCode(
+			"net.sourceforge.floggy.persistence.impl.SerializationManager.write"
+			+ PrimitiveTypeGenerator.getType(fieldType) + "(fos, this." + fieldName
+			+ ");");
 	}
-
 }

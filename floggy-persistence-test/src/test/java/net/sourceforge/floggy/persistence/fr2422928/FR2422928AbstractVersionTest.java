@@ -18,9 +18,16 @@ package net.sourceforge.floggy.persistence.fr2422928;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+
 import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.List;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+
+import org.microemu.MIDletBridge;
+import org.microemu.MicroEmulator;
 
 import net.sourceforge.floggy.persistence.FloggyBaseTest;
 import net.sourceforge.floggy.persistence.FloggyException;
@@ -31,75 +38,86 @@ import net.sourceforge.floggy.persistence.migration.Enumeration;
 import net.sourceforge.floggy.persistence.migration.FieldPersistableInfo;
 import net.sourceforge.floggy.persistence.migration.MigrationManager;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
-import org.microemu.MIDletBridge;
-import org.microemu.MicroEmulator;
-
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public abstract class FR2422928AbstractVersionTest extends FloggyBaseTest {
-
+	/**
+	 * DOCUMENT ME!
+	 */
 	protected MicroEmulator emulator;
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public abstract String getVersion();
-	
-	protected void setUp() throws Exception {
-		emulator = MIDletBridge.getMicroEmulator();
-		FileUtils.forceMkdir(new File("target/fr2422928/rms/" + getVersion()));
-		IOUtils.copy(new FileInputStream("src/test/rms/" + getVersion() + "/FloggyProperties.rms"), new FileOutputStream("target/fr2422928/rms/" + getVersion() + "/FloggyProperties.rms"));
-		IOUtils.copy(new FileInputStream("src/test/rms/" + getVersion() + "/FR2422928-284317062.rms"), new FileOutputStream("target/fr2422928/rms/" + getVersion() + "/FR2422928-284317062.rms"));
-		IOUtils.copy(new FileInputStream("src/test/rms/" + getVersion() + "/Freezed-1739440490.rms"), new FileOutputStream("target/fr2422928/rms/" + getVersion() + "/Freezed-1739440490.rms"));
-		MIDletBridge.setMicroEmulator(new RMSMemoryMicroEmulator("target/fr2422928/rms/" + getVersion()));
-		PersistableMetadataManager.init();
-		RecordStoreManager.reset();
-	}
 
-	protected void tearDown() throws Exception {
-		MIDletBridge.setMicroEmulator(emulator);
-		PersistableMetadataManager.init();
-	}
-
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testFreezedClassIteration() throws Exception {
 		Hashtable properties = new Hashtable();
-		properties.put(MigrationManager.MIGRATE_FROM_PREVIOUS_1_3_0_VERSION, Boolean.TRUE);
+		properties.put(MigrationManager.MIGRATE_FROM_PREVIOUS_1_3_0_VERSION,
+			Boolean.TRUE);
 		properties.put(MigrationManager.ITERATION_MODE, Boolean.TRUE);
-		
-		Enumeration enumeration = MigrationManager.getInstance().start(Freezed.class, properties);
-	
+
+		Enumeration enumeration =
+			MigrationManager.getInstance().start(Freezed.class, properties);
+
 		assertEquals(2, enumeration.getSize());
-	
+
 		if (enumeration.hasMoreElements()) {
 			Hashtable data = enumeration.nextElement();
 			assertNull(data.get("uuid"));
 			assertNull(data.get("deadline"));
 			assertNull(data.get("description"));
 			assertNull(data.get("nested"));
-			assertEquals(0, ((Short)data.get("code")).shortValue());
+			assertEquals(0, ((Short) data.get("code")).shortValue());
 		}
-	
+
 		if (enumeration.hasMoreElements()) {
 			Hashtable data = enumeration.nextElement();
 			assertEquals(Freezed.UUID, data.get("uuid"));
 			assertEquals(Freezed.DEADLINE, data.get("deadline"));
 			assertEquals(Freezed.DESCRIPTION, data.get("description"));
-	
-			FieldPersistableInfo freezedInfo = (FieldPersistableInfo) data.get("nested");
+
+			FieldPersistableInfo freezedInfo =
+				(FieldPersistableInfo) data.get("nested");
 			Freezed nested = new Freezed();
 			manager.load(nested, freezedInfo.getId());
-			
+
 			assertEquals(Freezed.NESTED, nested);
-			assertEquals(Freezed.CODE, ((Short)data.get("code")).shortValue());
+			assertEquals(Freezed.CODE, ((Short) data.get("code")).shortValue());
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*/
 	public void testGetRMSBasedMetadata() {
-		assertNull(PersistableMetadataManager.getRMSBasedMetadata(FR2422928.class.getName()));
-		assertNull(PersistableMetadataManager.getRMSBasedMetadata(Freezed.class.getName()));
+		assertNull(PersistableMetadataManager.getRMSBasedMetadata(
+				FR2422928.class.getName()));
+		assertNull(PersistableMetadataManager.getRMSBasedMetadata(
+				Freezed.class.getName()));
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*/
 	public void testGetRMSVersion() {
 		assertEquals(getVersion(), PersistableMetadataManager.getRMSVersion());
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*/
 	public void testNoMigrationExecution() {
 		try {
 			manager.find(Freezed.class, null, null);
@@ -107,26 +125,34 @@ public abstract class FR2422928AbstractVersionTest extends FloggyBaseTest {
 		} catch (Exception ex) {
 			assertEquals(ex.getClass(), FloggyException.class);
 		}
-		
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*/
 	public void testNotThrowExceptionWhenMigratingFromPreviousVersion() {
 		Hashtable properties = new Hashtable();
-		properties.put(MigrationManager.MIGRATE_FROM_PREVIOUS_1_3_0_VERSION, Boolean.TRUE);
-		
+		properties.put(MigrationManager.MIGRATE_FROM_PREVIOUS_1_3_0_VERSION,
+			Boolean.TRUE);
+
 		try {
-			Enumeration enumeration = MigrationManager.getInstance().start(FR2422928.class, properties);
+			Enumeration enumeration =
+				MigrationManager.getInstance().start(FR2422928.class, properties);
 			assertNotNull(enumeration);
 		} catch (Exception ex) {
 			fail(ex.getMessage());
 		}
 	}
-	
+
+	/**
+	 * DOCUMENT ME!
+	*/
 	public void testQuickMigration() {
 		MigrationManager manager = MigrationManager.getInstance();
-		
+
 		List notMigratedClasses = Arrays.asList(manager.getNotMigratedClasses());
 		assertTrue(notMigratedClasses.contains(Freezed.class.getName()));
+
 		try {
 			manager.quickMigration(Freezed.class);
 
@@ -137,6 +163,11 @@ public abstract class FR2422928AbstractVersionTest extends FloggyBaseTest {
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testQuickMigrationOfAll() throws Exception {
 		MigrationManager manager = MigrationManager.getInstance();
 		String[] notMigratedClasses = manager.getNotMigratedClasses();
@@ -150,14 +181,53 @@ public abstract class FR2422928AbstractVersionTest extends FloggyBaseTest {
 		assertNotNull(notMigratedClasses);
 		assertEquals(0, notMigratedClasses.length);
 	}
-	
+
+	/**
+	 * DOCUMENT ME!
+	*/
 	public void testThrowExceptionWhenMigratingFromPreviousVersion() {
 		try {
 			MigrationManager.getInstance().start(FR2422928.class, null);
-			fail("Should throw a exception because the property MigrationManager.MIGRATE_FROM_PREVIOUS_FLOGGY_VERSION is not set to true!");
+			fail(
+				"Should throw a exception because the property MigrationManager.MIGRATE_FROM_PREVIOUS_FLOGGY_VERSION is not set to true!");
 		} catch (Exception ex) {
 			assertEquals(ex.getClass(), FloggyException.class);
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
+	protected void setUp() throws Exception {
+		emulator = MIDletBridge.getMicroEmulator();
+		FileUtils.forceMkdir(new File("target/fr2422928/rms/" + getVersion()));
+		IOUtils.copy(new FileInputStream("src/test/rms/" + getVersion()
+				+ "/FloggyProperties.rms"),
+			new FileOutputStream("target/fr2422928/rms/" + getVersion()
+				+ "/FloggyProperties.rms"));
+		IOUtils.copy(new FileInputStream("src/test/rms/" + getVersion()
+				+ "/FR2422928-284317062.rms"),
+			new FileOutputStream("target/fr2422928/rms/" + getVersion()
+				+ "/FR2422928-284317062.rms"));
+		IOUtils.copy(new FileInputStream("src/test/rms/" + getVersion()
+				+ "/Freezed-1739440490.rms"),
+			new FileOutputStream("target/fr2422928/rms/" + getVersion()
+				+ "/Freezed-1739440490.rms"));
+		MIDletBridge.setMicroEmulator(new RMSMemoryMicroEmulator(
+				"target/fr2422928/rms/" + getVersion()));
+		PersistableMetadataManager.init();
+		RecordStoreManager.reset();
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
+	protected void tearDown() throws Exception {
+		MIDletBridge.setMicroEmulator(emulator);
+		PersistableMetadataManager.init();
+	}
 }

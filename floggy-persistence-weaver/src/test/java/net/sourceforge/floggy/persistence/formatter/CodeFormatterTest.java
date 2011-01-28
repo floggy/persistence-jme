@@ -17,23 +17,38 @@ package net.sourceforge.floggy.persistence.formatter;
 
 import junit.framework.TestCase;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class CodeFormatterTest extends TestCase {
-	
+	/**
+	 * DOCUMENT ME!
+	*/
 	public void testFormat() {
-		String sourceExpected= "public void test() {\n    int hash= this.hashCode();\n}\n";
-		String source= "public void test() {\nint hash= this.hashCode();\n}";
-		String sourceFormated= CodeFormatter.format(source);
-		
+		String sourceExpected =
+			"public void test() {\n    int hash= this.hashCode();\n}\n";
+		String source = "public void test() {\nint hash= this.hashCode();\n}";
+		String sourceFormated = CodeFormatter.format(source);
+
 		assertEquals(sourceExpected, sourceFormated);
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*/
 	public void testFormatEmptySource() {
-		String sourceExpected= "";
-		String sourceFormated= CodeFormatter.format(sourceExpected);
-		
+		String sourceExpected = "";
+		String sourceFormated = CodeFormatter.format(sourceExpected);
+
 		assertEquals(sourceExpected, sourceFormated);
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*/
 	public void testFormatNullSource() {
 		try {
 			CodeFormatter.format(null);
@@ -42,5 +57,4 @@ public class CodeFormatterTest extends TestCase {
 			assertEquals(IllegalArgumentException.class, e.getClass());
 		}
 	}
-
 }

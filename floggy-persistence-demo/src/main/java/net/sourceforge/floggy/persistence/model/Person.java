@@ -20,61 +20,122 @@ import java.util.Date;
 
 import net.sourceforge.floggy.persistence.Persistable;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class Person implements Persistable {
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected Date bornDate;
 
-    protected String passport;
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected String name;
 
-    protected String name;
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected String passport;
 
-    protected Date bornDate;
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected transient int age;
 
-    protected transient int age;
-    
-    public Person() {
+	/**
+	 * Creates a new Person object.
+	 */
+	public Person() {
 	}
 
-    public Person(String passport, String nome, Date dataNascimento) {
-        setPassport(passport);
-        setName(nome);
-        setBornDate(dataNascimento);
-    }
+	/**
+	 * Creates a new Person object.
+	 *
+	 * @param passport DOCUMENT ME!
+	 * @param nome DOCUMENT ME!
+	 * @param dataNascimento DOCUMENT ME!
+	 */
+	public Person(String passport, String nome, Date dataNascimento) {
+		setPassport(passport);
+		setName(nome);
+		setBornDate(dataNascimento);
+	}
 
-    public String getPassport() {
-        return passport;
-    }
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	public int getAge() {
+		return age;
+	}
 
-    public void setPassport(String passport) {
-        this.passport = passport;
-    }
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	public Date getBornDate() {
+		return bornDate;
+	}
 
-    public Date getBornDate() {
-        return bornDate;
-    }
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	public String getName() {
+		return name;
+	}
 
-    public void setBornDate(Date dataNascimento) {
-        this.bornDate = dataNascimento;
-        if (dataNascimento != null) {
-            Calendar c1 = Calendar.getInstance();
-            Calendar c2 = Calendar.getInstance();
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	public String getPassport() {
+		return passport;
+	}
 
-            c2.setTime(dataNascimento);
-            this.age = c1.get(Calendar.YEAR) - c2.get(Calendar.YEAR);
-        } else {
-            this.age = 0;
-        }
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param dataNascimento DOCUMENT ME!
+	*/
+	public void setBornDate(Date dataNascimento) {
+		this.bornDate = dataNascimento;
 
-    }
+		if (dataNascimento != null) {
+			Calendar c1 = Calendar.getInstance();
+			Calendar c2 = Calendar.getInstance();
 
-    public int getAge() {
-        return age;
-    }
+			c2.setTime(dataNascimento);
+			this.age = c1.get(Calendar.YEAR) - c2.get(Calendar.YEAR);
+		} else {
+			this.age = 0;
+		}
+	}
 
-    public String getName() {
-        return name;
-    }
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param nome DOCUMENT ME!
+	*/
+	public void setName(String nome) {
+		this.name = nome;
+	}
 
-    public void setName(String nome) {
-        this.name = nome;
-    }
-
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param passport DOCUMENT ME!
+	*/
+	public void setPassport(String passport) {
+		this.passport = passport;
+	}
 }

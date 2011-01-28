@@ -20,33 +20,45 @@ import javax.microedition.rms.RecordComparator;
 import net.sourceforge.floggy.persistence.Comparator;
 
 /**
- * An internal implementation of RecordComparator for comparing two objects.
- * 
- * @since 1.0
+* An internal implementation of RecordComparator for comparing two objects.
+*
+* @since 1.0
  */
 class ObjectComparator implements RecordComparator {
-
 	private final Comparator c;
-
 	private final __Persistable p1;
-
 	private final __Persistable p2;
-	
 	private final boolean lazy;
 
-	public ObjectComparator(Comparator c, __Persistable p1, __Persistable p2, boolean lazy) {
+	/**
+	 * Creates a new ObjectComparator object.
+	 *
+	 * @param c DOCUMENT ME!
+	 * @param p1 DOCUMENT ME!
+	 * @param p2 DOCUMENT ME!
+	 * @param lazy DOCUMENT ME!
+	 */
+	public ObjectComparator(Comparator c, __Persistable p1, __Persistable p2,
+		boolean lazy) {
 		this.p1 = p1;
 		this.p2 = p2;
 		this.c = c;
 		this.lazy = lazy;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param b1 DOCUMENT ME!
+	* @param b2 DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public int compare(byte[] b1, byte[] b2) {
 		try {
 			p1.__deserialize(b1, lazy);
 			p2.__deserialize(b2, lazy);
 		} catch (Exception e) {
-			// Ignore
 		}
 
 		return c.compare(p1, p2);

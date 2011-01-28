@@ -19,36 +19,52 @@ import net.sourceforge.floggy.persistence.FloggyBaseTest;
 import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.PolymorphicObjectSet;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class RF2243110Test extends FloggyBaseTest {
-
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testAbstractClassGetNewInstance() throws Exception {
 		PCSuperClass superClass = new PCSuperClass();
-		PCConcreteClass2ExtendingAbstractClass concreteClass2ExtendingAbstractClass = new PCConcreteClass2ExtendingAbstractClass();
-		PCConcreteClass3ExtendingConcreteClass2 concreteClass3ExtendingConcreteClass2 = new PCConcreteClass3ExtendingConcreteClass2();
-		PCConcreteClass3ExtendingConcreteClass2 concreteClass3ExtendingConcreteClass22 = new PCConcreteClass3ExtendingConcreteClass2();
+		PCConcreteClass2ExtendingAbstractClass concreteClass2ExtendingAbstractClass =
+			new PCConcreteClass2ExtendingAbstractClass();
+		PCConcreteClass3ExtendingConcreteClass2 concreteClass3ExtendingConcreteClass2 =
+			new PCConcreteClass3ExtendingConcreteClass2();
+		PCConcreteClass3ExtendingConcreteClass2 concreteClass3ExtendingConcreteClass22 =
+			new PCConcreteClass3ExtendingConcreteClass2();
 
 		try {
-
 			manager.save(superClass);
 			manager.save(concreteClass2ExtendingAbstractClass);
 			manager.save(concreteClass3ExtendingConcreteClass2);
 			manager.save(concreteClass3ExtendingConcreteClass22);
 
-			PolymorphicObjectSet os = manager.polymorphicFind(PCAbstractClassExtendingSuperClass.class,
-					null, false);
+			PolymorphicObjectSet os =
+				manager.polymorphicFind(PCAbstractClassExtendingSuperClass.class, null,
+					false);
 
 			int instancesOfSuperClass = 0;
 			int instancesOfConcreteClass2ExtendingAbstractClass = 0;
 			int instancesOfConcreteClass3ExtendingConcreteClass2 = 0;
+
 			for (int i = 0; i < os.size(); i++) {
 				PCSuperClass persistable = (PCSuperClass) os.get(i);
 
 				if (persistable.getClass() == PCSuperClass.class) {
 					instancesOfSuperClass++;
 				}
+
 				if (persistable.getClass() == PCConcreteClass2ExtendingAbstractClass.class) {
 					instancesOfConcreteClass2ExtendingAbstractClass++;
 				}
+
 				if (persistable.getClass() == PCConcreteClass3ExtendingConcreteClass2.class) {
 					instancesOfConcreteClass3ExtendingConcreteClass2++;
 				}
@@ -57,31 +73,37 @@ public class RF2243110Test extends FloggyBaseTest {
 			assertEquals(0, instancesOfSuperClass);
 			assertEquals(1, instancesOfConcreteClass2ExtendingAbstractClass);
 			assertEquals(2, instancesOfConcreteClass3ExtendingConcreteClass2);
-
 		} finally {
 			manager.delete(superClass);
 			manager.delete(concreteClass2ExtendingAbstractClass);
 			manager.delete(concreteClass3ExtendingConcreteClass2);
 			manager.delete(concreteClass3ExtendingConcreteClass22);
 		}
-
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testAbstractClassGetSharedInstance() throws Exception {
 		PCSuperClass superClass = new PCSuperClass();
-		PCConcreteClass2ExtendingAbstractClass concreteClass2ExtendingAbstractClass = new PCConcreteClass2ExtendingAbstractClass();
-		PCConcreteClass3ExtendingConcreteClass2 concreteClass3ExtendingConcreteClass2 = new PCConcreteClass3ExtendingConcreteClass2();
-		PCConcreteClass3ExtendingConcreteClass2 concreteClass3ExtendingConcreteClass22 = new PCConcreteClass3ExtendingConcreteClass2();
+		PCConcreteClass2ExtendingAbstractClass concreteClass2ExtendingAbstractClass =
+			new PCConcreteClass2ExtendingAbstractClass();
+		PCConcreteClass3ExtendingConcreteClass2 concreteClass3ExtendingConcreteClass2 =
+			new PCConcreteClass3ExtendingConcreteClass2();
+		PCConcreteClass3ExtendingConcreteClass2 concreteClass3ExtendingConcreteClass22 =
+			new PCConcreteClass3ExtendingConcreteClass2();
 
 		try {
-
 			manager.save(superClass);
 			manager.save(concreteClass2ExtendingAbstractClass);
 			manager.save(concreteClass3ExtendingConcreteClass2);
 			manager.save(concreteClass3ExtendingConcreteClass22);
 
-			PolymorphicObjectSet os = manager.polymorphicFind(PCAbstractClassExtendingSuperClass.class,
-					null, false);
+			PolymorphicObjectSet os =
+				manager.polymorphicFind(PCAbstractClassExtendingSuperClass.class, null,
+					false);
 
 			int instancesOfSuperClass = 0;
 			int instancesOfConcreteClass2ExtendingAbstractClass = 0;
@@ -90,20 +112,24 @@ public class RF2243110Test extends FloggyBaseTest {
 			assertEquals(3, os.size());
 
 			Persistable temp = null;
+
 			for (int i = 0; i < os.size(); i++) {
 				PCSuperClass persistable = (PCSuperClass) os.getSharedInstance(i);
 
 				if (persistable.getClass() == PCSuperClass.class) {
 					instancesOfSuperClass++;
+
 					if (temp == null) {
 						temp = persistable;
 					} else {
 						assertSame(temp, persistable);
 					}
 				}
+
 				if (persistable.getClass() == PCConcreteClass2ExtendingAbstractClass.class) {
 					instancesOfConcreteClass2ExtendingAbstractClass++;
 				}
+
 				if (persistable.getClass() == PCConcreteClass3ExtendingConcreteClass2.class) {
 					instancesOfConcreteClass3ExtendingConcreteClass2++;
 				}
@@ -118,37 +144,47 @@ public class RF2243110Test extends FloggyBaseTest {
 			manager.delete(concreteClass3ExtendingConcreteClass2);
 			manager.delete(concreteClass3ExtendingConcreteClass22);
 		}
-
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testGetNewInstance() throws Exception {
 		PCSuperClass superClass = new PCSuperClass();
-		PCConcreteClass2ExtendingAbstractClass concreteClass2ExtendingAbstractClass = new PCConcreteClass2ExtendingAbstractClass();
-		PCConcreteClass3ExtendingConcreteClass2 concreteClass3ExtendingConcreteClass2 = new PCConcreteClass3ExtendingConcreteClass2();
-		PCConcreteClass3ExtendingConcreteClass2 concreteClass3ExtendingConcreteClass22 = new PCConcreteClass3ExtendingConcreteClass2();
+		PCConcreteClass2ExtendingAbstractClass concreteClass2ExtendingAbstractClass =
+			new PCConcreteClass2ExtendingAbstractClass();
+		PCConcreteClass3ExtendingConcreteClass2 concreteClass3ExtendingConcreteClass2 =
+			new PCConcreteClass3ExtendingConcreteClass2();
+		PCConcreteClass3ExtendingConcreteClass2 concreteClass3ExtendingConcreteClass22 =
+			new PCConcreteClass3ExtendingConcreteClass2();
 
 		try {
-
 			manager.save(superClass);
 			manager.save(concreteClass2ExtendingAbstractClass);
 			manager.save(concreteClass3ExtendingConcreteClass2);
 			manager.save(concreteClass3ExtendingConcreteClass22);
 
-			PolymorphicObjectSet os = manager.polymorphicFind(PCConcreteClass2ExtendingAbstractClass.class,
+			PolymorphicObjectSet os =
+				manager.polymorphicFind(PCConcreteClass2ExtendingAbstractClass.class,
 					null, false);
 
 			int instancesOfSuperClass = 0;
 			int instancesOfConcreteClass2ExtendingAbstractClass = 0;
 			int instancesOfConcreteClass3ExtendingConcreteClass2 = 0;
+
 			for (int i = 0; i < os.size(); i++) {
 				PCSuperClass persistable = (PCSuperClass) os.get(i);
 
 				if (persistable.getClass() == PCSuperClass.class) {
 					instancesOfSuperClass++;
 				}
+
 				if (persistable.getClass() == PCConcreteClass2ExtendingAbstractClass.class) {
 					instancesOfConcreteClass2ExtendingAbstractClass++;
 				}
+
 				if (persistable.getClass() == PCConcreteClass3ExtendingConcreteClass2.class) {
 					instancesOfConcreteClass3ExtendingConcreteClass2++;
 				}
@@ -157,30 +193,36 @@ public class RF2243110Test extends FloggyBaseTest {
 			assertEquals(0, instancesOfSuperClass);
 			assertEquals(1, instancesOfConcreteClass2ExtendingAbstractClass);
 			assertEquals(2, instancesOfConcreteClass3ExtendingConcreteClass2);
-
 		} finally {
 			manager.delete(superClass);
 			manager.delete(concreteClass2ExtendingAbstractClass);
 			manager.delete(concreteClass3ExtendingConcreteClass2);
 			manager.delete(concreteClass3ExtendingConcreteClass22);
 		}
-
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testGetSharedInstance() throws Exception {
 		PCSuperClass superClass = new PCSuperClass();
-		PCConcreteClass2ExtendingAbstractClass concreteClass2ExtendingAbstractClass = new PCConcreteClass2ExtendingAbstractClass();
-		PCConcreteClass3ExtendingConcreteClass2 concreteClass3ExtendingConcreteClass2 = new PCConcreteClass3ExtendingConcreteClass2();
-		PCConcreteClass3ExtendingConcreteClass2 concreteClass3ExtendingConcreteClass22 = new PCConcreteClass3ExtendingConcreteClass2();
+		PCConcreteClass2ExtendingAbstractClass concreteClass2ExtendingAbstractClass =
+			new PCConcreteClass2ExtendingAbstractClass();
+		PCConcreteClass3ExtendingConcreteClass2 concreteClass3ExtendingConcreteClass2 =
+			new PCConcreteClass3ExtendingConcreteClass2();
+		PCConcreteClass3ExtendingConcreteClass2 concreteClass3ExtendingConcreteClass22 =
+			new PCConcreteClass3ExtendingConcreteClass2();
 
 		try {
-
 			manager.save(superClass);
 			manager.save(concreteClass2ExtendingAbstractClass);
 			manager.save(concreteClass3ExtendingConcreteClass2);
 			manager.save(concreteClass3ExtendingConcreteClass22);
 
-			PolymorphicObjectSet os = manager.polymorphicFind(PCConcreteClass2ExtendingAbstractClass.class,
+			PolymorphicObjectSet os =
+				manager.polymorphicFind(PCConcreteClass2ExtendingAbstractClass.class,
 					null, false);
 
 			int instancesOfSuperClass = 0;
@@ -190,20 +232,24 @@ public class RF2243110Test extends FloggyBaseTest {
 			assertEquals(3, os.size());
 
 			Persistable temp = null;
+
 			for (int i = 0; i < os.size(); i++) {
 				PCSuperClass persistable = (PCSuperClass) os.getSharedInstance(i);
 
 				if (persistable.getClass() == PCSuperClass.class) {
 					instancesOfSuperClass++;
+
 					if (temp == null) {
 						temp = persistable;
 					} else {
 						assertSame(temp, persistable);
 					}
 				}
+
 				if (persistable.getClass() == PCConcreteClass2ExtendingAbstractClass.class) {
 					instancesOfConcreteClass2ExtendingAbstractClass++;
 				}
+
 				if (persistable.getClass() == PCConcreteClass3ExtendingConcreteClass2.class) {
 					instancesOfConcreteClass3ExtendingConcreteClass2++;
 				}
@@ -218,22 +264,29 @@ public class RF2243110Test extends FloggyBaseTest {
 			manager.delete(concreteClass3ExtendingConcreteClass2);
 			manager.delete(concreteClass3ExtendingConcreteClass22);
 		}
-
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testLeafClassGetNewInstance() throws Exception {
-		PCConcreteClass4ExtendingSuperClass concreteClass4ExtendingSuperClass = new PCConcreteClass4ExtendingSuperClass();
+		PCConcreteClass4ExtendingSuperClass concreteClass4ExtendingSuperClass =
+			new PCConcreteClass4ExtendingSuperClass();
 
 		int instancesOfConcreteClass4ExtendingSuperClass = 0;
-		try {
 
+		try {
 			manager.save(concreteClass4ExtendingSuperClass);
 
-			PolymorphicObjectSet os = manager.polymorphicFind(
-					PCConcreteClass4ExtendingSuperClass.class, null, false);
+			PolymorphicObjectSet os =
+				manager.polymorphicFind(PCConcreteClass4ExtendingSuperClass.class,
+					null, false);
 
 			for (int i = 0; i < os.size(); i++) {
 				PCSuperClass persistable = (PCSuperClass) os.get(i);
+
 				if (persistable.getClass() == PCConcreteClass4ExtendingSuperClass.class) {
 					instancesOfConcreteClass4ExtendingSuperClass++;
 				}
@@ -243,27 +296,37 @@ public class RF2243110Test extends FloggyBaseTest {
 		} finally {
 			manager.delete(concreteClass4ExtendingSuperClass);
 		}
-
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testLeafClassGetSharedInstance() throws Exception {
-		PCConcreteClass4ExtendingSuperClass concreteClass4ExtendingSuperClass = new PCConcreteClass4ExtendingSuperClass();
-		PCConcreteClass4ExtendingSuperClass concreteClass4ExtendingSuperClass2 = new PCConcreteClass4ExtendingSuperClass();
-		PCConcreteClass4ExtendingSuperClass concreteClass4ExtendingSuperClass3 = new PCConcreteClass4ExtendingSuperClass();
+		PCConcreteClass4ExtendingSuperClass concreteClass4ExtendingSuperClass =
+			new PCConcreteClass4ExtendingSuperClass();
+		PCConcreteClass4ExtendingSuperClass concreteClass4ExtendingSuperClass2 =
+			new PCConcreteClass4ExtendingSuperClass();
+		PCConcreteClass4ExtendingSuperClass concreteClass4ExtendingSuperClass3 =
+			new PCConcreteClass4ExtendingSuperClass();
 
 		int instancesOfConcreteClass4ExtendingSuperClass = 0;
-		try {
 
+		try {
 			manager.save(concreteClass4ExtendingSuperClass);
 			manager.save(concreteClass4ExtendingSuperClass2);
 			manager.save(concreteClass4ExtendingSuperClass3);
 
-			PolymorphicObjectSet os = manager.polymorphicFind(
-					PCConcreteClass4ExtendingSuperClass.class, null, false);
+			PolymorphicObjectSet os =
+				manager.polymorphicFind(PCConcreteClass4ExtendingSuperClass.class,
+					null, false);
 
 			Persistable temp = null;
+
 			for (int i = 0; i < os.size(); i++) {
 				PCSuperClass persistable = (PCSuperClass) os.getSharedInstance(i);
+
 				if (persistable.getClass() == PCConcreteClass4ExtendingSuperClass.class) {
 					instancesOfConcreteClass4ExtendingSuperClass++;
 
@@ -273,11 +336,9 @@ public class RF2243110Test extends FloggyBaseTest {
 						assertSame(temp, persistable);
 					}
 				} else {
-					fail("Only "
-							+ PCConcreteClass4ExtendingSuperClass.class.getName()
-							+ " instances should be returned."
-							+ " Returned type: "
-							+ persistable.getClass().getName());
+					fail("Only " + PCConcreteClass4ExtendingSuperClass.class.getName()
+						+ " instances should be returned." + " Returned type: "
+						+ persistable.getClass().getName());
 				}
 			}
 
@@ -289,34 +350,44 @@ public class RF2243110Test extends FloggyBaseTest {
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testRootClassGetNewInstance() throws Exception {
 		PCSuperClass superClass = new PCSuperClass();
-		PCConcreteClass2ExtendingAbstractClass concreteClass2ExtendingAbstractClass = new PCConcreteClass2ExtendingAbstractClass();
-		PCConcreteClass4ExtendingSuperClass concreteClass4ExtendingSuperClass = new PCConcreteClass4ExtendingSuperClass();
-		PCConcreteClass4ExtendingSuperClass concreteClass4ExtendingSuperClass2 = new PCConcreteClass4ExtendingSuperClass();
+		PCConcreteClass2ExtendingAbstractClass concreteClass2ExtendingAbstractClass =
+			new PCConcreteClass2ExtendingAbstractClass();
+		PCConcreteClass4ExtendingSuperClass concreteClass4ExtendingSuperClass =
+			new PCConcreteClass4ExtendingSuperClass();
+		PCConcreteClass4ExtendingSuperClass concreteClass4ExtendingSuperClass2 =
+			new PCConcreteClass4ExtendingSuperClass();
 
 		try {
-
 			manager.save(superClass);
 			manager.save(concreteClass2ExtendingAbstractClass);
 			manager.save(concreteClass4ExtendingSuperClass);
 			manager.save(concreteClass4ExtendingSuperClass2);
 
-			PolymorphicObjectSet os = manager.polymorphicFind(PCSuperClass.class,
-					null, false);
+			PolymorphicObjectSet os =
+				manager.polymorphicFind(PCSuperClass.class, null, false);
 
 			int instancesOfSuperClass = 0;
 			int instancesOfConcreteClass2ExtendingAbstractClass = 0;
 			int instancesOfConcreteClass4ExtendingSuperClass = 0;
+
 			for (int i = 0; i < os.size(); i++) {
 				PCSuperClass persistable = (PCSuperClass) os.get(i);
 
 				if (persistable.getClass() == PCSuperClass.class) {
 					instancesOfSuperClass++;
 				}
+
 				if (persistable.getClass() == PCConcreteClass2ExtendingAbstractClass.class) {
 					instancesOfConcreteClass2ExtendingAbstractClass++;
 				}
+
 				if (persistable.getClass() == PCConcreteClass4ExtendingSuperClass.class) {
 					instancesOfConcreteClass4ExtendingSuperClass++;
 				}
@@ -325,33 +396,37 @@ public class RF2243110Test extends FloggyBaseTest {
 			assertEquals(1, instancesOfSuperClass);
 			assertEquals(1, instancesOfConcreteClass2ExtendingAbstractClass);
 			assertEquals(2, instancesOfConcreteClass4ExtendingSuperClass);
-
 		} finally {
 			manager.delete(superClass);
 			manager.delete(concreteClass2ExtendingAbstractClass);
 			manager.delete(concreteClass4ExtendingSuperClass);
 			manager.delete(concreteClass4ExtendingSuperClass2);
 		}
-
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testRootClassGetSharedInstance() throws Exception {
 		PCSuperClass superClass = new PCSuperClass();
 		PCSuperClass superClass2 = new PCSuperClass();
 		PCSuperClass superClass3 = new PCSuperClass();
-		PCConcreteClass4ExtendingSuperClass concreteClass4ExtendingSuperClass = new PCConcreteClass4ExtendingSuperClass();
-		PCConcreteClass2ExtendingAbstractClass concreteClass2ExtendingAbstractClass = new PCConcreteClass2ExtendingAbstractClass();
+		PCConcreteClass4ExtendingSuperClass concreteClass4ExtendingSuperClass =
+			new PCConcreteClass4ExtendingSuperClass();
+		PCConcreteClass2ExtendingAbstractClass concreteClass2ExtendingAbstractClass =
+			new PCConcreteClass2ExtendingAbstractClass();
 
 		try {
-
 			manager.save(superClass);
 			manager.save(superClass2);
 			manager.save(superClass3);
 			manager.save(concreteClass4ExtendingSuperClass);
 			manager.save(concreteClass2ExtendingAbstractClass);
 
-			PolymorphicObjectSet os = manager.polymorphicFind(PCSuperClass.class,
-					null, false);
+			PolymorphicObjectSet os =
+				manager.polymorphicFind(PCSuperClass.class, null, false);
 
 			int instancesOfSuperClass = 0;
 			int instancesOfConcreteClass2ExtendingAbstractClass = 0;
@@ -360,20 +435,24 @@ public class RF2243110Test extends FloggyBaseTest {
 			assertEquals(5, os.size());
 
 			Persistable temp = null;
+
 			for (int i = 0; i < os.size(); i++) {
 				PCSuperClass persistable = (PCSuperClass) os.getSharedInstance(i);
 
 				if (persistable.getClass() == PCSuperClass.class) {
 					instancesOfSuperClass++;
+
 					if (temp == null) {
 						temp = persistable;
 					} else {
 						assertSame(temp, persistable);
 					}
 				}
+
 				if (persistable.getClass() == PCConcreteClass2ExtendingAbstractClass.class) {
 					instancesOfConcreteClass2ExtendingAbstractClass++;
 				}
+
 				if (persistable.getClass() == PCConcreteClass4ExtendingSuperClass.class) {
 					instancesOfConcreteClass4ExtendingSuperClass++;
 				}
@@ -389,7 +468,5 @@ public class RF2243110Test extends FloggyBaseTest {
 			manager.delete(concreteClass2ExtendingAbstractClass);
 			manager.delete(concreteClass4ExtendingSuperClass);
 		}
-
 	}
-
 }

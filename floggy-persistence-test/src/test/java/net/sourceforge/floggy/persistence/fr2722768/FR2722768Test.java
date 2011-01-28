@@ -18,22 +18,40 @@ package net.sourceforge.floggy.persistence.fr2722768;
 import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.rms.AbstractTest;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class FR2722768Test extends AbstractTest {
-
-	protected Class getParameterType() {
-		return String.class;
-	}
-
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Object getValueForSetMethod() {
 		return "IDable";
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Persistable newInstance() {
 		return new FR2722768SuperClass();
 	}
-	
-	public void testSuperClass() throws Exception {
-		FR2722768SuperClass fr2722768 = new FR2722768SuperClass();
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
+	public void testExtendedOfAbstractSuperClass() throws Exception {
+		FR2722768AbstractSuperClass fr2722768 =
+			new FR2722768ExtendedOfAbstractSuperClass();
+
 		try {
 			int id = manager.save(fr2722768);
 			assertEquals(id, fr2722768.getId());
@@ -42,8 +60,14 @@ public class FR2722768Test extends AbstractTest {
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testExtendedOfSuperClass() throws Exception {
 		FR2722768SuperClass fr2722768 = new FR2722768ExtendedOfSuperClass();
+
 		try {
 			int id = manager.save(fr2722768);
 			assertEquals(id, fr2722768.getId());
@@ -52,8 +76,14 @@ public class FR2722768Test extends AbstractTest {
 		}
 	}
 
-	public void testExtendedOfAbstractSuperClass() throws Exception {
-		FR2722768AbstractSuperClass fr2722768 = new FR2722768ExtendedOfAbstractSuperClass();
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
+	public void testSuperClass() throws Exception {
+		FR2722768SuperClass fr2722768 = new FR2722768SuperClass();
+
 		try {
 			int id = manager.save(fr2722768);
 			assertEquals(id, fr2722768.getId());
@@ -62,4 +92,12 @@ public class FR2722768Test extends AbstractTest {
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	protected Class getParameterType() {
+		return String.class;
+	}
 }

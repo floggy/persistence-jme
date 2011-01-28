@@ -24,122 +24,217 @@ import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.PersistableManager;
 import net.sourceforge.floggy.persistence.beans.animals.Bird;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class Person implements Persistable, Deletable {
+	public char sex;
 
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected Date dataNascimento;
+
+	/**
+	 * DOCUMENT ME!
+	 */
 	protected String cpf;
 
-    protected String nome;
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected String nome;
 
-    protected Date dataNascimento;
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected transient int idade;
+	private Bird x;
 
-    protected transient int idade;
-    
-    private Bird x;
-
-    public Person() {
-        //
-    }
-    
-    public char sex;
-
-    public Person(String cpf, String nome, Date dataNascimento) {
-        setCpf(cpf);
-        setNome(nome);
-        setDataNascimento(dataNascimento);
-    }
-
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
-    public Date getDataNascimento() {
-        return dataNascimento;
-    }
-
-    public void setDataNascimento(Date dataNascimento) {
-        this.dataNascimento = dataNascimento;
-        if (dataNascimento != null) {
-            Calendar c1 = Calendar.getInstance();
-            Calendar c2 = Calendar.getInstance();
-
-            c2.setTime(dataNascimento);
-            this.idade = c1.get(Calendar.YEAR) - c2.get(Calendar.YEAR);
-        } else {
-            this.idade = 0;
-        }
-
-    }
-
-    public int getIdade() {
-        return idade;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-	public Bird getX() {
-		return x;
+	/**
+	 * Creates a new Person object.
+	 */
+	public Person() {
 	}
 
-	public void setX(Bird x) {
-		this.x = x;
+	/**
+	 * Creates a new Person object.
+	 *
+	 * @param cpf DOCUMENT ME!
+	 * @param nome DOCUMENT ME!
+	 * @param dataNascimento DOCUMENT ME!
+	 */
+	public Person(String cpf, String nome, Date dataNascimento) {
+		setCpf(cpf);
+		setNome(nome);
+		setDataNascimento(dataNascimento);
 	}
 
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((cpf == null) ? 0 : cpf.hashCode());
-		result = prime * result
-				+ ((dataNascimento == null) ? 0 : dataNascimento.hashCode());
-		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
-		result = prime * result + ((x == null) ? 0 : x.hashCode());
-		return result;
-	}
-
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		final Person other = (Person) obj;
-		if (cpf == null) {
-			if (other.cpf != null)
-				return false;
-		} else if (!cpf.equals(other.cpf))
-			return false;
-		if (dataNascimento == null) {
-			if (other.dataNascimento != null)
-				return false;
-		} else if (!dataNascimento.equals(other.dataNascimento))
-			return false;
-		if (nome == null) {
-			if (other.nome != null)
-				return false;
-		} else if (!nome.equals(other.nome))
-			return false;
-		if (x == null) {
-			if (other.x != null)
-				return false;
-		} else if (!x.equals(other.x))
-			return false;
-		return true;
-	}
-	
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws FloggyException DOCUMENT ME!
+	*/
 	public void delete() throws FloggyException {
 		if (x != null) {
 			PersistableManager.getInstance().delete(x);
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param obj DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+
+		if (obj == null)
+			return false;
+
+		if (getClass() != obj.getClass())
+			return false;
+
+		final Person other = (Person) obj;
+
+		if (cpf == null) {
+			if (other.cpf != null)
+				return false;
+		} else if (!cpf.equals(other.cpf))
+			return false;
+
+		if (dataNascimento == null) {
+			if (other.dataNascimento != null)
+				return false;
+		} else if (!dataNascimento.equals(other.dataNascimento))
+			return false;
+
+		if (nome == null) {
+			if (other.nome != null)
+				return false;
+		} else if (!nome.equals(other.nome))
+			return false;
+
+		if (x == null) {
+			if (other.x != null)
+				return false;
+		} else if (!x.equals(other.x))
+			return false;
+
+		return true;
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	public String getCpf() {
+		return cpf;
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	public Date getDataNascimento() {
+		return dataNascimento;
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	public int getIdade() {
+		return idade;
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	public String getNome() {
+		return nome;
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	public Bird getX() {
+		return x;
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = (prime * result) + ((cpf == null) ? 0 : cpf.hashCode());
+		result = (prime * result)
+			+ ((dataNascimento == null) ? 0 : dataNascimento.hashCode());
+		result = (prime * result) + ((nome == null) ? 0 : nome.hashCode());
+		result = (prime * result) + ((x == null) ? 0 : x.hashCode());
+
+		return result;
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param cpf DOCUMENT ME!
+	*/
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param dataNascimento DOCUMENT ME!
+	*/
+	public void setDataNascimento(Date dataNascimento) {
+		this.dataNascimento = dataNascimento;
+
+		if (dataNascimento != null) {
+			Calendar c1 = Calendar.getInstance();
+			Calendar c2 = Calendar.getInstance();
+
+			c2.setTime(dataNascimento);
+			this.idade = c1.get(Calendar.YEAR) - c2.get(Calendar.YEAR);
+		} else {
+			this.idade = 0;
+		}
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param nome DOCUMENT ME!
+	*/
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param x DOCUMENT ME!
+	*/
+	public void setX(Bird x) {
+		this.x = x;
+	}
 }

@@ -15,20 +15,39 @@
  */
 package net.sourceforge.floggy.persistence.xstream;
 
-import net.sourceforge.floggy.persistence.impl.PersistableMetadata;
-
 import com.thoughtworks.xstream.converters.SingleValueConverter;
 
-public class PersistableStrategyConverter implements SingleValueConverter {
+import net.sourceforge.floggy.persistence.impl.PersistableMetadata;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
+public class PersistableStrategyConverter implements SingleValueConverter {
 	public static final String JOINED = "joined";
 	public static final String PER_CLASS = "per-class";
 	public static final String SINGLE = "single";
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param type DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public boolean canConvert(Class type) {
 		return true;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param str DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Object fromString(String str) {
 		if (PersistableStrategyConverter.JOINED.equals(str)) {
 			return new Integer(PersistableMetadata.JOINED_STRATEGY);
@@ -37,24 +56,35 @@ public class PersistableStrategyConverter implements SingleValueConverter {
 		} else if (PersistableStrategyConverter.SINGLE.equals(str)) {
 			return new Integer(PersistableMetadata.SINGLE_STRATEGY);
 		}
+
 		throw new IllegalArgumentException(str);
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param obj DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public String toString(Object obj) {
 		if (obj == null) {
 			throw new IllegalArgumentException((String) null);
 		} else {
 			Integer persistableStrategy = (Integer) obj;
+
 			switch (persistableStrategy.intValue()) {
 			case PersistableMetadata.JOINED_STRATEGY:
 				return PersistableStrategyConverter.JOINED;
+
 			case PersistableMetadata.PER_CLASS_STRATEGY:
 				return PersistableStrategyConverter.PER_CLASS;
+
 			case PersistableMetadata.SINGLE_STRATEGY:
 				return PersistableStrategyConverter.SINGLE;
+
 			default:
-				throw new IllegalArgumentException(persistableStrategy
-						.toString());
+				throw new IllegalArgumentException(persistableStrategy.toString());
 			}
 		}
 	}

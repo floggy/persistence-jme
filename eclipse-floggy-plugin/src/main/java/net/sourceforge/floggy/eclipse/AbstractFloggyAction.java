@@ -19,49 +19,93 @@ import java.util.Iterator;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public abstract class AbstractFloggyAction implements IObjectActionDelegate {
-
+	/**
+	 * DOCUMENT ME!
+	 */
 	protected ISelection selection;
 
-	protected IProject getProject(IAction action) {
-		IProject project = null;
-		if (selection instanceof IStructuredSelection) {
-			for (Iterator it = ((IStructuredSelection) selection).iterator(); it
-					.hasNext();) {
-				Object element = it.next();
-				if (element instanceof IProject) {
-					project = (IProject) element;
-				} else if (element instanceof IResource) {
-					project = ((IResource) element).getProject();
-				}
-				if (project != null) {
-					break;
-				}
-			}
-		}
-		return project;
-	}
-
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param action DOCUMENT ME!
+	*/
 	public void run(IAction action) {
 		IProject project = getProject(action);
+
 		if (project != null) {
 			run(project, action);
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param project DOCUMENT ME!
+	* @param action DOCUMENT ME!
+	*/
 	public abstract void run(IProject project, IAction action);
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param action DOCUMENT ME!
+	* @param selection DOCUMENT ME!
+	*/
 	public void selectionChanged(IAction action, ISelection selection) {
 		this.selection = selection;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param action DOCUMENT ME!
+	* @param targetPart DOCUMENT ME!
+	*/
 	public void setActivePart(IAction action, IWorkbenchPart targetPart) {
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param action DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	protected IProject getProject(IAction action) {
+		IProject project = null;
+
+		if (selection instanceof IStructuredSelection) {
+			for (Iterator it = ((IStructuredSelection) selection).iterator();
+				 it.hasNext();) {
+				Object element = it.next();
+
+				if (element instanceof IProject) {
+					project = (IProject) element;
+				} else if (element instanceof IResource) {
+					project = ((IResource) element).getProject();
+				}
+
+				if (project != null) {
+					break;
+				}
+			}
+		}
+
+		return project;
+	}
 }

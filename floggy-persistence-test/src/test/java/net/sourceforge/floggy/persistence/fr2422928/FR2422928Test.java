@@ -23,6 +23,8 @@ import java.util.Vector;
 
 import javax.microedition.rms.RecordStore;
 
+import org.microemu.MicroEmulator;
+
 import net.sourceforge.floggy.persistence.FloggyBaseTest;
 import net.sourceforge.floggy.persistence.FloggyException;
 import net.sourceforge.floggy.persistence.ObjectSet;
@@ -36,19 +38,135 @@ import net.sourceforge.floggy.persistence.migration.Enumeration;
 import net.sourceforge.floggy.persistence.migration.FieldPersistableInfo;
 import net.sourceforge.floggy.persistence.migration.MigrationManager;
 
-import org.microemu.MicroEmulator;
-
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class FR2422928Test extends FloggyBaseTest {
+	private static final Calendar checkpoint = Calendar.getInstance();
 
-	private static final Calendar checkpoint = Calendar.getInstance();  
-	protected MicroEmulator emulator;
-	
 	static {
 		TimeZone zone = TimeZone.getTimeZone("America/Sao_Paulo");
 		checkpoint.setTimeZone(zone);
 		checkpoint.setTimeInMillis(1234567890);
 	}
-	
+
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected MicroEmulator emulator;
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
+	public void testAbstractInheritance() throws Exception {
+		Date creationDate = new Date(123456789);
+
+		AbstractSuperClass asc = new ConcreteChildClass();
+		asc.setCreationDate(creationDate);
+
+		manager.save(asc);
+
+		MigrationManager um = MigrationManager.getInstance();
+		Enumeration enumeration = um.start(ConcreteChildClass.class, null);
+
+		try {
+			while (enumeration.hasMoreElements()) {
+				Hashtable data = (Hashtable) enumeration.nextElement();
+				assertEquals(creationDate, data.get("creationDate"));
+				assertEquals(new Vector(), data.get("dynamicFields"));
+			}
+		} finally {
+			um.finish(ConcreteChildClass.class);
+			manager.delete(asc);
+		}
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
+	public void testAbstractInheritanceDelete() throws Exception {
+		AbstractSuperClass asc = new ConcreteChildClass();
+		asc.setCreationDate(new Date());
+
+		manager.save(asc);
+
+		MigrationManager um = MigrationManager.getInstance();
+		Enumeration enumeration = um.start(ConcreteChildClass.class, null);
+
+		try {
+			while (enumeration.hasMoreElements()) {
+				enumeration.nextElement();
+				enumeration.delete();
+			}
+
+			ObjectSet os = manager.find(ConcreteChildClass.class, null, null);
+			assertEquals(0, os.size());
+
+			PersistableMetadata metadata =
+				PersistableMetadataManager.getClassBasedMetadata(AbstractSuperClass.class
+					 .getName());
+			RecordStore rs =
+				RecordStoreManager.getRecordStore(metadata.getRecordStoreName(),
+					metadata);
+
+			assertEquals(0, rs.getNumRecords());
+		} finally {
+			um.finish(ConcreteChildClass.class);
+		}
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
+	public void testAbstractInheritanceUpdate() throws Exception {
+		AbstractSuperClass asc = new ConcreteChildClass();
+		asc.setCreationDate(new Date());
+
+		int id = manager.save(asc);
+
+		MigrationManager um = MigrationManager.getInstance();
+		Enumeration enumeration = um.start(ConcreteChildClass.class, null);
+
+		try {
+			while (enumeration.hasMoreElements()) {
+				enumeration.nextElement();
+				asc = new ConcreteChildClass();
+
+				int tempId = enumeration.update(asc);
+				assertEquals(id, tempId);
+			}
+
+			ObjectSet os = manager.find(ConcreteChildClass.class, null, null);
+			assertEquals(1, os.size());
+
+			PersistableMetadata metadata =
+				PersistableMetadataManager.getClassBasedMetadata(AbstractSuperClass.class
+					 .getName());
+			RecordStore rs =
+				RecordStoreManager.getRecordStore(metadata.getRecordStoreName(),
+					metadata);
+
+			assertEquals(1, rs.getNumRecords());
+		} finally {
+			um.finish(ConcreteChildClass.class);
+			manager.delete(asc);
+		}
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testDoubleCalltoNextElement() throws Exception {
 		Bird bird1 = new Bird();
 		bird1.setColor("green");
@@ -73,7 +191,42 @@ public class FR2422928Test extends FloggyBaseTest {
 			manager.delete(bird2);
 		}
 	}
-	
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
+	public void testInheritanceRead() throws Exception {
+		String name = "Floggy";
+		int age = 23;
+
+		ChildClass cc = new ChildClass();
+		cc.setAge(age);
+		cc.setName(name);
+
+		manager.save(cc);
+
+		MigrationManager um = MigrationManager.getInstance();
+		Enumeration enumeration = um.start(ChildClass.class, null);
+
+		try {
+			while (enumeration.hasMoreElements()) {
+				Hashtable data = (Hashtable) enumeration.nextElement();
+				assertEquals(name, data.get("name"));
+				assertEquals(new Integer(age), data.get("age"));
+			}
+		} finally {
+			um.finish(ChildClass.class);
+			manager.delete(cc);
+		}
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testIterationMode() throws Exception {
 		MigrationManager um = MigrationManager.getInstance();
 		Hashtable properties = new Hashtable();
@@ -87,9 +240,9 @@ public class FR2422928Test extends FloggyBaseTest {
 			properties.put(MigrationManager.ITERATION_MODE, Boolean.TRUE);
 
 			Enumeration enumeration = um.start(Freezed.class, properties);
-			
+
 			assertEquals(2, enumeration.getSize());
-			
+
 			while (enumeration.hasMoreElements()) {
 				assertNotNull(enumeration.nextElement());
 			}
@@ -97,28 +250,33 @@ public class FR2422928Test extends FloggyBaseTest {
 			manager.delete(freezed);
 		}
 	}
-	
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testLazyTrue() throws Exception {
 		String color = "white";
 
 		Bird falcon = new Falcon();
 		falcon.setColor(color);
-		
+
 		Person person = new Person();
 		person.setX(falcon);
-		
+
 		manager.save(person);
 
 		MigrationManager um = MigrationManager.getInstance();
 
 		Hashtable properties = new Hashtable();
 		properties.put(MigrationManager.LAZY_LOAD, Boolean.TRUE);
-		
+
 		Enumeration enumeration = um.start(Person.class, properties);
 
 		try {
 			while (enumeration.hasMoreElements()) {
-				Hashtable data = (Hashtable)enumeration.nextElement();
+				Hashtable data = (Hashtable) enumeration.nextElement();
 				assertNull(data.get("x"));
 			}
 		} finally {
@@ -127,17 +285,22 @@ public class FR2422928Test extends FloggyBaseTest {
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testPersistableFielded() throws Exception {
 		String color = "blue";
 		Date now = new Date();
-		
+
 		Bird bird = new Bird();
 		bird.setColor(color);
 
 		PersistableFieldedClass pfc = new PersistableFieldedClass();
 		pfc.setBird(bird);
 		pfc.setCreationDate(now);
-		
+
 		manager.save(pfc);
 
 		MigrationManager um = MigrationManager.getInstance();
@@ -145,11 +308,11 @@ public class FR2422928Test extends FloggyBaseTest {
 
 		try {
 			while (enumeration.hasMoreElements()) {
-				Hashtable data = (Hashtable)enumeration.nextElement();
+				Hashtable data = (Hashtable) enumeration.nextElement();
 				FieldPersistableInfo field = (FieldPersistableInfo) data.get("bird");
 				String className = field.getClassName();
 
-				Bird b = (Bird)Class.forName(className).newInstance();
+				Bird b = (Bird) Class.forName(className).newInstance();
 
 				manager.load(b, field.getId());
 				assertEquals(color, b.getColor());
@@ -160,17 +323,22 @@ public class FR2422928Test extends FloggyBaseTest {
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testPersistableSubclassedField() throws Exception {
 		String color = "blue";
 		Date now = new Date();
-		
+
 		Bird bird = new Falcon();
 		bird.setColor(color);
 
 		PersistableFieldedClass pfc = new PersistableFieldedClass();
 		pfc.setBird(bird);
 		pfc.setCreationDate(now);
-		
+
 		manager.save(pfc);
 
 		MigrationManager um = MigrationManager.getInstance();
@@ -178,10 +346,10 @@ public class FR2422928Test extends FloggyBaseTest {
 
 		try {
 			while (enumeration.hasMoreElements()) {
-				Hashtable data = (Hashtable)enumeration.nextElement();
+				Hashtable data = (Hashtable) enumeration.nextElement();
 				FieldPersistableInfo field = (FieldPersistableInfo) data.get("bird");
 
-				Bird b = (Bird)Class.forName(field.getClassName()).newInstance();
+				Bird b = (Bird) Class.forName(field.getClassName()).newInstance();
 				manager.load(b, field.getId());
 				assertEquals(color, b.getColor());
 				enumeration.delete();
@@ -190,106 +358,4 @@ public class FR2422928Test extends FloggyBaseTest {
 			um.finish(PersistableFieldedClass.class);
 		}
 	}
-	
-	public void testAbstractInheritance() throws Exception {
-		Date creationDate = new Date(123456789);
-
-		AbstractSuperClass asc = new ConcreteChildClass();
-		asc.setCreationDate(creationDate);
-		
-		manager.save(asc);
-
-		MigrationManager um = MigrationManager.getInstance();
-		Enumeration enumeration = um.start(ConcreteChildClass.class, null);
-		try {
-			while (enumeration.hasMoreElements()) {
-				Hashtable data = (Hashtable) enumeration.nextElement();
-				assertEquals(creationDate, data.get("creationDate"));
-				assertEquals(new Vector(), data.get("dynamicFields"));
-			}
-		} finally {
-			um.finish(ConcreteChildClass.class);
-			manager.delete(asc);
-		}
-	}
-	
-	public void testAbstractInheritanceDelete() throws Exception {
-		AbstractSuperClass asc = new ConcreteChildClass();
-		asc.setCreationDate(new Date());
-		
-		manager.save(asc);
-
-		MigrationManager um = MigrationManager.getInstance();
-		Enumeration enumeration = um.start(ConcreteChildClass.class, null);
-		try {
-			while (enumeration.hasMoreElements()) {
-				enumeration.nextElement();
-				enumeration.delete();
-			}
-			ObjectSet os = manager.find(ConcreteChildClass.class, null, null);
-			assertEquals(0, os.size());
-
-			PersistableMetadata metadata = PersistableMetadataManager.getClassBasedMetadata(AbstractSuperClass.class.getName());
-			RecordStore rs = RecordStoreManager.getRecordStore(metadata.getRecordStoreName(), metadata);
-			
-			assertEquals(0, rs.getNumRecords());
-		} finally {
-			um.finish(ConcreteChildClass.class);
-		}
-	}
-
-	public void testAbstractInheritanceUpdate() throws Exception {
-		AbstractSuperClass asc = new ConcreteChildClass();
-		asc.setCreationDate(new Date());
-		
-		int id = manager.save(asc);
-
-		MigrationManager um = MigrationManager.getInstance();
-		Enumeration enumeration = um.start(ConcreteChildClass.class, null);
-		try {
-			while (enumeration.hasMoreElements()) {
-				enumeration.nextElement();
-				asc = new ConcreteChildClass();
-				int tempId = enumeration.update(asc);
-				assertEquals(id, tempId);
-			}
-			ObjectSet os = manager.find(ConcreteChildClass.class, null, null);
-			assertEquals(1, os.size());
-
-			PersistableMetadata metadata = PersistableMetadataManager.getClassBasedMetadata(AbstractSuperClass.class.getName());
-			RecordStore rs = RecordStoreManager.getRecordStore(metadata.getRecordStoreName(), metadata);
-			
-			assertEquals(1, rs.getNumRecords());
-		} finally {
-			um.finish(ConcreteChildClass.class);
-			manager.delete(asc);
-		}
-	}
-
-	public void testInheritanceRead() throws Exception {
-		String name = "Floggy";
-		int age = 23;
-
-		ChildClass cc = new ChildClass();
-		cc.setAge(age);
-		cc.setName(name);
-		
-		manager.save(cc);
-
-		MigrationManager um = MigrationManager.getInstance();
-		Enumeration enumeration = um.start(ChildClass.class, null);
-		try {
-			while (enumeration.hasMoreElements()) {
-				Hashtable data = (Hashtable) enumeration.nextElement();
-				assertEquals(name, data.get("name"));
-				assertEquals(new Integer(age), data.get("age"));
-			}
-		} finally {
-			um.finish(ChildClass.class);
-			manager.delete(cc);
-		}
-	}
-
-
-
 }

@@ -17,14 +17,32 @@ package net.sourceforge.floggy.persistence.beans;
 
 import net.sourceforge.floggy.persistence.Persistable;
 
-
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class FloggyStringBufferArray implements Persistable {
-	protected StringBuffer x[];
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected StringBuffer[] x;
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public StringBuffer[] getX() {
 		return x;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param x DOCUMENT ME!
+	*/
 	public void setX(StringBuffer[] x) {
 		this.x = x;
 	}

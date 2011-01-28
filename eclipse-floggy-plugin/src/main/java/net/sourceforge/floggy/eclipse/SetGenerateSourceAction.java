@@ -17,13 +17,20 @@ package net.sourceforge.floggy.eclipse;
 
 import org.eclipse.core.runtime.QualifiedName;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class SetGenerateSourceAction extends AbstractSetPropertyAction {
+	public static final QualifiedName PROPERTY_NAME =
+		new QualifiedName(Activator.PLUGIN_ID, "generateSource");
 
-	public static final QualifiedName PROPERTY_NAME = new QualifiedName(
-			Activator.PLUGIN_ID, "generateSource");
-
+	/**
+	 * Creates a new SetGenerateSourceAction object.
+	 */
 	public SetGenerateSourceAction() {
 		super(PROPERTY_NAME);
 	}
-
 }

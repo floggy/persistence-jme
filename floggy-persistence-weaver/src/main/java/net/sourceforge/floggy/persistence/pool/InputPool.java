@@ -16,14 +16,40 @@
 package net.sourceforge.floggy.persistence.pool;
 
 import java.io.IOException;
+
 import java.net.URL;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public interface InputPool {
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	public int getFileCount();
 
-    public int getFileCount();
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param index DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	public String getFileName(int index);
 
-    public String getFileName(int index);
-
-    public URL getFileURL(int index) throws IOException;
-
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param index DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*
+	* @throws IOException DOCUMENT ME!
+	*/
+	public URL getFileURL(int index) throws IOException;
 }

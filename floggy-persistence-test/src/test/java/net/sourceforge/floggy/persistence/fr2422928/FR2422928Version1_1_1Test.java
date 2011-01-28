@@ -17,13 +17,25 @@ package net.sourceforge.floggy.persistence.fr2422928;
 
 import net.sourceforge.floggy.persistence.impl.PersistableMetadataManager;
 
-
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class FR2422928Version1_1_1Test extends FR2422928AbstractVersionTest {
-
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public String getVersion() {
 		return "1.1.1";
 	}
-	
+
+	/**
+	 * DOCUMENT ME!
+	*/
 	public void testGetRMSVersion() {
 		assertEquals("1.1.0", PersistableMetadataManager.getRMSVersion());
 	}

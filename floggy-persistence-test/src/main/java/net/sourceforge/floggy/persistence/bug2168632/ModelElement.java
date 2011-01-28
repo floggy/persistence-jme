@@ -17,8 +17,17 @@ package net.sourceforge.floggy.persistence.bug2168632;
 
 import net.sourceforge.floggy.persistence.Persistable;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public interface ModelElement extends Persistable {
-    
-    void setName(String name);
-
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param name DOCUMENT ME!
+	*/
+	void setName(String name);
 }

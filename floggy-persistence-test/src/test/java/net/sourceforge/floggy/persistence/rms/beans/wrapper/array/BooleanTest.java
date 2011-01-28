@@ -19,21 +19,40 @@ import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.beans.wrapper.array.FloggyBoolean;
 import net.sourceforge.floggy.persistence.rms.AbstractTest;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class BooleanTest extends AbstractTest {
+	static Boolean[] att =
+		new Boolean[] { Boolean.FALSE, Boolean.TRUE, Boolean.FALSE };
 
-	static Boolean[] att = new Boolean[] { Boolean.FALSE, Boolean.TRUE,
-			Boolean.FALSE };
-
-	protected Class getParameterType() {
-		return Boolean[].class;
-	}
-	
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Object getValueForSetMethod() {
 		return att;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Persistable newInstance() {
 		return new FloggyBoolean();
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	protected Class getParameterType() {
+		return Boolean[].class;
+	}
 }

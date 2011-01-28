@@ -23,64 +23,23 @@ import net.sourceforge.floggy.persistence.FloggyBaseTest;
 import net.sourceforge.floggy.persistence.IndexFilter;
 import net.sourceforge.floggy.persistence.ObjectSet;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class FR2937635Test extends FloggyBaseTest {
-
+	/**
+	 * DOCUMENT ME!
+	 */
 	protected Random random = new Random();
 
-	public void testIndexFindTypeByte() throws Exception {
-		byte byte1 = (byte) 257;
-
-		FR2937635 fr2937635 = new FR2937635();
-
-		fr2937635.setByte1(byte1);
-
-		try {
-			IndexFilter filter = new IndexFilter("byByte1", new Byte(byte1));
-
-			ObjectSet os = manager.find(FR2937635.class, filter, true);
-
-			assertEquals(0, os.size());
-
-			manager.save(fr2937635);
-
-			os = manager.find(FR2937635.class, filter, true);
-
-			assertEquals(1, os.size());
-			assertEquals(byte1, ((FR2937635) os.get(0)).getByte1());
-		} catch (Exception e) {
-			fail(e.getMessage());
-		} finally {
-			manager.delete(fr2937635);
-		}
-	}
-
-	public void testIndexFindTypeBoolean() throws Exception {
-		boolean boolean1 = false;
-
-		FR2937635 fr2937635 = new FR2937635();
-
-		fr2937635.setBoolean1(boolean1);
-
-		try {
-			IndexFilter filter = new IndexFilter("byBoolean1", new Boolean(boolean1));
-
-			ObjectSet os = manager.find(FR2937635.class, filter, true);
-
-			assertEquals(0, os.size());
-
-			manager.save(fr2937635);
-
-			os = manager.find(FR2937635.class, filter, true);
-
-			assertEquals(1, os.size());
-			assertEquals(boolean1, ((FR2937635) os.get(0)).getBoolean1());
-		} catch (Exception e) {
-			fail(e.getMessage());
-		} finally {
-			manager.delete(fr2937635);
-		}
-	}
-
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testIndexFindFieldTypeChar() throws Exception {
 		char char1 = (char) 126;
 
@@ -89,8 +48,7 @@ public class FR2937635Test extends FloggyBaseTest {
 		fr2937635.setChar1(char1);
 
 		try {
-			IndexFilter filter = new IndexFilter("byChar1",
-					new Character(char1));
+			IndexFilter filter = new IndexFilter("byChar1", new Character(char1));
 
 			ObjectSet os = manager.find(FR2937635.class, filter, true);
 
@@ -102,7 +60,6 @@ public class FR2937635Test extends FloggyBaseTest {
 
 			assertEquals(1, os.size());
 			assertEquals(char1, ((FR2937635) os.get(0)).getChar1());
-
 		} catch (Exception e) {
 			fail(e.getMessage());
 		} finally {
@@ -110,6 +67,11 @@ public class FR2937635Test extends FloggyBaseTest {
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testIndexFindFieldTypeDouble() throws Exception {
 		double double1 = random.nextDouble();
 
@@ -118,8 +80,7 @@ public class FR2937635Test extends FloggyBaseTest {
 		fr2937635.setDouble1(double1);
 
 		try {
-			IndexFilter filter = new IndexFilter("byDouble1", new Double(
-					double1));
+			IndexFilter filter = new IndexFilter("byDouble1", new Double(double1));
 
 			ObjectSet os = manager.find(FR2937635.class, filter, true);
 
@@ -131,15 +92,18 @@ public class FR2937635Test extends FloggyBaseTest {
 
 			assertEquals(1, os.size());
 			assertEquals(double1, ((FR2937635) os.get(0)).getDouble1(), 0);
-
 		} catch (Exception e) {
 			fail(e.getMessage());
 		} finally {
 			manager.delete(fr2937635);
 		}
-
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testIndexFindFieldTypeInt() throws Exception {
 		int int1 = random.nextInt();
 
@@ -167,6 +131,11 @@ public class FR2937635Test extends FloggyBaseTest {
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testIndexFindFieldTypeJavaLangBoolean() throws Exception {
 		Boolean boolean2 = Boolean.TRUE;
 
@@ -194,6 +163,11 @@ public class FR2937635Test extends FloggyBaseTest {
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testIndexFindFieldTypeJavaLangByte() throws Exception {
 		Byte byte2 = new Byte((byte) 87);
 
@@ -221,6 +195,11 @@ public class FR2937635Test extends FloggyBaseTest {
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testIndexFindFieldTypeJavaLangChar() throws Exception {
 		Character char2 = new Character((char) 87);
 
@@ -248,8 +227,12 @@ public class FR2937635Test extends FloggyBaseTest {
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testIndexFindFieldTypeJavaLangDouble() throws Exception {
-
 		Double double2 = new Double(random.nextDouble());
 
 		FR2937635 fr2937635 = new FR2937635();
@@ -276,6 +259,11 @@ public class FR2937635Test extends FloggyBaseTest {
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testIndexFindFieldTypeJavaLangInteger() throws Exception {
 		Integer int2 = new Integer(random.nextInt());
 
@@ -303,6 +291,11 @@ public class FR2937635Test extends FloggyBaseTest {
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testIndexFindFieldTypeJavaLangLong() throws Exception {
 		Long long2 = new Long(random.nextLong());
 
@@ -330,6 +323,11 @@ public class FR2937635Test extends FloggyBaseTest {
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testIndexFindFieldTypeJavaLangShort() throws Exception {
 		Short short2 = new Short((short) 2347);
 
@@ -357,6 +355,11 @@ public class FR2937635Test extends FloggyBaseTest {
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testIndexFindFieldTypeJavaLangString() throws Exception {
 		String string1 = "room 355, Parsippany, watching RSA x URU world cup 2010";
 
@@ -384,8 +387,15 @@ public class FR2937635Test extends FloggyBaseTest {
 		}
 	}
 
-	public void testIndexFindFieldTypeJavaLangStringBuffer() throws Exception {
-		StringBuffer stringBuffer = new StringBuffer(
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
+	public void testIndexFindFieldTypeJavaLangStringBuffer()
+		throws Exception {
+		StringBuffer stringBuffer =
+			new StringBuffer(
 				"3, Gatehall, room 355, Parsippany, watching RSA x URU world cup 2010");
 
 		FR2937635 fr2937635 = new FR2937635();
@@ -404,8 +414,8 @@ public class FR2937635Test extends FloggyBaseTest {
 			os = manager.find(FR2937635.class, filter, true);
 
 			assertEquals(1, os.size());
-			assertEquals(stringBuffer.toString(), ((FR2937635) os.get(0))
-					.getStringBuffer().toString());
+			assertEquals(stringBuffer.toString(),
+				((FR2937635) os.get(0)).getStringBuffer().toString());
 		} catch (Exception e) {
 			fail(e.getMessage());
 		} finally {
@@ -413,6 +423,11 @@ public class FR2937635Test extends FloggyBaseTest {
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testIndexFindFieldTypeJavaUtilDate() throws Exception {
 		Date date = new Date();
 
@@ -440,7 +455,13 @@ public class FR2937635Test extends FloggyBaseTest {
 		}
 	}
 
-	public void testIndexFindFieldTypeJavaUtilTimezone() throws Exception {
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
+	public void testIndexFindFieldTypeJavaUtilTimezone()
+		throws Exception {
 		TimeZone timeZone = TimeZone.getDefault();
 
 		FR2937635 fr2937635 = new FR2937635();
@@ -467,6 +488,11 @@ public class FR2937635Test extends FloggyBaseTest {
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testIndexFindFieldTypeLong() throws Exception {
 		long long1 = random.nextLong();
 
@@ -494,6 +520,11 @@ public class FR2937635Test extends FloggyBaseTest {
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testIndexFindFieldTypeShort() throws Exception {
 		short short1 = (short) 123875;
 
@@ -521,4 +552,67 @@ public class FR2937635Test extends FloggyBaseTest {
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
+	public void testIndexFindTypeBoolean() throws Exception {
+		boolean boolean1 = false;
+
+		FR2937635 fr2937635 = new FR2937635();
+
+		fr2937635.setBoolean1(boolean1);
+
+		try {
+			IndexFilter filter = new IndexFilter("byBoolean1", new Boolean(boolean1));
+
+			ObjectSet os = manager.find(FR2937635.class, filter, true);
+
+			assertEquals(0, os.size());
+
+			manager.save(fr2937635);
+
+			os = manager.find(FR2937635.class, filter, true);
+
+			assertEquals(1, os.size());
+			assertEquals(boolean1, ((FR2937635) os.get(0)).getBoolean1());
+		} catch (Exception e) {
+			fail(e.getMessage());
+		} finally {
+			manager.delete(fr2937635);
+		}
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
+	public void testIndexFindTypeByte() throws Exception {
+		byte byte1 = (byte) 257;
+
+		FR2937635 fr2937635 = new FR2937635();
+
+		fr2937635.setByte1(byte1);
+
+		try {
+			IndexFilter filter = new IndexFilter("byByte1", new Byte(byte1));
+
+			ObjectSet os = manager.find(FR2937635.class, filter, true);
+
+			assertEquals(0, os.size());
+
+			manager.save(fr2937635);
+
+			os = manager.find(FR2937635.class, filter, true);
+
+			assertEquals(1, os.size());
+			assertEquals(byte1, ((FR2937635) os.get(0)).getByte1());
+		} catch (Exception e) {
+			fail(e.getMessage());
+		} finally {
+			manager.delete(fr2937635);
+		}
+	}
 }

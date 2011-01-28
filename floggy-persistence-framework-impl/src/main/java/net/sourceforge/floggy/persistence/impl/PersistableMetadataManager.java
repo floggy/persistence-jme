@@ -18,6 +18,7 @@ package net.sourceforge.floggy.persistence.impl;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
+
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
@@ -26,8 +27,13 @@ import javax.microedition.rms.RecordEnumeration;
 import javax.microedition.rms.RecordStore;
 import javax.microedition.rms.RecordStoreException;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class PersistableMetadataManager {
-
 	public static final String VERSION_1_0_1 = "1.0.1";
 	public static final String VERSION_1_1_0 = "1.1.0";
 	public static final String VERSION_1_1_1 = "1.1.1";
@@ -35,63 +41,114 @@ public class PersistableMetadataManager {
 	public static final String VERSION_1_3_0 = "1.3.0";
 	public static final String VERSION_1_4_0 = "1.4.0-alpha";
 	public static final String CURRENT_VERSION = VERSION_1_4_0;
-
 	private static String rmsVersion;
 	private static Hashtable classBasedMetadatas;
 	private static Hashtable rmsBasedMetadatas;
 	private static Vector notMigratedClassNames;
-	
+
+	/**
+	 * Creates a new PersistableMetadataManager object.
+	 */
+	protected PersistableMetadataManager() {
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param metadata DOCUMENT ME!
+	*/
 	public static void addRMSMetadata(PersistableMetadata metadata) {
 		rmsBasedMetadatas.put(metadata.getClassName(), metadata);
 		notMigratedClassNames.removeElement(metadata.getClassName());
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param metadata DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public static boolean containsRMSMetadata(PersistableMetadata metadata) {
 		return rmsBasedMetadatas.containsKey(metadata.getClassName());
 	}
 
-	private static void deserialize(byte[] data) throws IOException {
-		DataInputStream dis = new DataInputStream(
-				new ByteArrayInputStream(data));
-		while (dis.available() != 0) {
-			String field = dis.readUTF();
-			if ("version".equals(field)) {
-				rmsVersion = dis.readUTF();
-			}
-		}
-	}
-
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public static String getBytecodeVersion() {
 		return CURRENT_VERSION;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param className DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public static PersistableMetadata getClassBasedMetadata(String className) {
 		return (PersistableMetadata) classBasedMetadatas.get(className);
 	}
-	
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public static Enumeration getClassBasedMetadatas() {
 		return classBasedMetadatas.elements();
 	}
-	
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public static Vector getNotMigratedClasses() {
-		return notMigratedClassNames; 
+		return notMigratedClassNames;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param className DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public static PersistableMetadata getRMSBasedMetadata(String className) {
 		return (PersistableMetadata) rmsBasedMetadatas.get(className);
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public static String getRMSVersion() {
 		return rmsVersion;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public static void init() throws Exception {
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public static void load() throws Exception {
 		notMigratedClassNames = new Vector();
 
 		RecordStore rs = RecordStore.openRecordStore("FloggyProperties", true);
+
 		if (rs.getNumRecords() != 0) {
 			deserialize(rs.getRecord(1));
 			loadRMSStructure();
@@ -102,84 +159,48 @@ public class PersistableMetadataManager {
 
 		if (classBasedMetadatas != null) {
 			Enumeration classNames = classBasedMetadatas.keys();
+
 			while (classNames.hasMoreElements()) {
 				String className = (String) classNames.nextElement();
-		
-				PersistableMetadata classBasedMetadata = (PersistableMetadata) classBasedMetadatas.get(className);
-				PersistableMetadata rmsBasedMetadata = (PersistableMetadata) rmsBasedMetadatas.get(className);
-				
+
+				PersistableMetadata classBasedMetadata =
+					(PersistableMetadata) classBasedMetadatas.get(className);
+				PersistableMetadata rmsBasedMetadata =
+					(PersistableMetadata) rmsBasedMetadatas.get(className);
+
 				if (!classBasedMetadata.equals(rmsBasedMetadata)) {
 					notMigratedClassNames.addElement(className);
 				}
 			}
 		}
 	}
-	
+
+	/**
+	 * DOCUMENT ME!
+	*/
 	public static void reset() {
 		classBasedMetadatas.clear();
 		rmsBasedMetadatas.clear();
 		notMigratedClassNames.removeAllElements();
 	}
 
-	private static void loadRMSStructure() throws Exception {
-		RecordStore rs = RecordStore.openRecordStore("FloggyProperties", true);
-		RecordEnumeration enumeration = rs.enumerateRecords(null, null, false);
-		while (enumeration.hasNextElement()) {
-			int recordId = enumeration.nextRecordId();
-			DataInputStream dis = new DataInputStream(new ByteArrayInputStream(rs.getRecord(recordId)));
-			String className = dis.readUTF();
-			if (!"version".equals(className)) {
-				boolean isAbstract = dis.readBoolean();
-				String superClassName = SerializationManager.readString(dis);
-				String fieldNames[] = new String[dis.readInt()]; 
-				int fieldTypes[] = new int[fieldNames.length];
-				for (int i = 0; i < fieldNames.length; i++) {
-					fieldNames[i] = dis.readUTF();
-					fieldTypes[i] = dis.readInt();
-				}
-				Hashtable persistableImplementations = SerializationManager.readHashtable(dis);
-				String recordStoreName = dis.readUTF();
-				int persistableStrategy = PersistableMetadata.JOINED_STRATEGY;
-				if (dis.available() != 0) {
-					persistableStrategy = dis.readInt();
-				}
-
-				Vector indexMetadatas = null;
-				if (dis.available() != 0) {
-					indexMetadatas = SerializationManager.readIndexMetadata(dis);
-				}
-
-				String recordStoreVersion = getRMSVersion();
-				if (dis.available() != 0) {
-					recordStoreVersion = dis.readUTF();
-				}
-
-				addRMSMetadata(new PersistableMetadata(isAbstract, className, 
-					superClassName, fieldNames, fieldTypes, 
-					persistableImplementations, indexMetadatas, recordStoreName,
-					recordStoreVersion, persistableStrategy, recordId));
-			}
-		}
-	}
-
-	private static void save(RecordStore rs) throws IOException,
-			RecordStoreException {
-		byte[] data = serialize();
-		if (rs.getNumRecords() == 1) {
-			rs.setRecord(1, data, 0, data.length);
-		} else {
-			rs.addRecord(data, 0, data.length);
-		}
-	}
-	
-	public static void saveRMSStructure(PersistableMetadata metadata) throws Exception {
-		String[] fieldNames = metadata.getFieldNames(); 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param metadata DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
+	public static void saveRMSStructure(PersistableMetadata metadata)
+		throws Exception {
+		String[] fieldNames = metadata.getFieldNames();
 
 		int[] fieldTypes = metadata.getFieldTypes();
 
 		String recordStoreVersion = metadata.getRecordStoreVersion();
 
-		recordStoreVersion = (recordStoreVersion == null) ? getRMSVersion() : recordStoreVersion;
+		recordStoreVersion = (recordStoreVersion == null) ? getRMSVersion()
+			: recordStoreVersion;
 
 		FloggyOutputStream out = new FloggyOutputStream();
 
@@ -187,11 +208,14 @@ public class PersistableMetadataManager {
 		out.writeBoolean(metadata.isAbstract());
 		SerializationManager.writeString(out, metadata.getSuperClassName());
 		out.writeInt(fieldTypes.length);
+
 		for (int i = 0; i < fieldTypes.length; i++) {
 			out.writeUTF(fieldNames[i]);
 			out.writeInt(fieldTypes[i]);
 		}
-		SerializationManager.writeHashtable(out, metadata.getPersistableImplementations());
+
+		SerializationManager.writeHashtable(out,
+			metadata.getPersistableImplementations());
 		out.writeUTF(metadata.getRecordStoreName());
 		out.writeInt(metadata.getPersistableStrategy());
 		SerializationManager.writeIndexMetadata(out, metadata.getIndexMetadatas());
@@ -201,23 +225,94 @@ public class PersistableMetadataManager {
 		RecordStore rs = RecordStore.openRecordStore("FloggyProperties", true);
 
 		int recordId = metadata.getRecordId();
+
 		if (recordId != -1) {
 			rs.setRecord(recordId, data, 0, data.length);
-		}
-		else {
+		} else {
 			metadata.setRecordId(rs.addRecord(data, 0, data.length));
 		}
+
 		addRMSMetadata(metadata);
+	}
+
+	private static void deserialize(byte[] data) throws IOException {
+		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(data));
+
+		while (dis.available() != 0) {
+			String field = dis.readUTF();
+
+			if ("version".equals(field)) {
+				rmsVersion = dis.readUTF();
+			}
+		}
+	}
+
+	private static void loadRMSStructure() throws Exception {
+		RecordStore rs = RecordStore.openRecordStore("FloggyProperties", true);
+		RecordEnumeration enumeration = rs.enumerateRecords(null, null, false);
+
+		while (enumeration.hasNextElement()) {
+			int recordId = enumeration.nextRecordId();
+			DataInputStream dis =
+				new DataInputStream(new ByteArrayInputStream(rs.getRecord(recordId)));
+			String className = dis.readUTF();
+
+			if (!"version".equals(className)) {
+				boolean isAbstract = dis.readBoolean();
+				String superClassName = SerializationManager.readString(dis);
+				String[] fieldNames = new String[dis.readInt()];
+				int[] fieldTypes = new int[fieldNames.length];
+
+				for (int i = 0; i < fieldNames.length; i++) {
+					fieldNames[i] = dis.readUTF();
+					fieldTypes[i] = dis.readInt();
+				}
+
+				Hashtable persistableImplementations =
+					SerializationManager.readHashtable(dis);
+				String recordStoreName = dis.readUTF();
+				int persistableStrategy = PersistableMetadata.JOINED_STRATEGY;
+
+				if (dis.available() != 0) {
+					persistableStrategy = dis.readInt();
+				}
+
+				Vector indexMetadatas = null;
+
+				if (dis.available() != 0) {
+					indexMetadatas = SerializationManager.readIndexMetadata(dis);
+				}
+
+				String recordStoreVersion = getRMSVersion();
+
+				if (dis.available() != 0) {
+					recordStoreVersion = dis.readUTF();
+				}
+
+				addRMSMetadata(new PersistableMetadata(isAbstract, className,
+						superClassName, fieldNames, fieldTypes, persistableImplementations,
+						indexMetadatas, recordStoreName, recordStoreVersion,
+						persistableStrategy, recordId));
+			}
+		}
+	}
+
+	private static void save(RecordStore rs)
+		throws IOException, RecordStoreException {
+		byte[] data = serialize();
+
+		if (rs.getNumRecords() == 1) {
+			rs.setRecord(1, data, 0, data.length);
+		} else {
+			rs.addRecord(data, 0, data.length);
+		}
 	}
 
 	private static byte[] serialize() throws IOException {
 		FloggyOutputStream fos = new FloggyOutputStream();
 		fos.writeUTF("version");
 		fos.writeUTF(rmsVersion);
+
 		return fos.toByteArray();
 	}
-
-	protected PersistableMetadataManager() {
-	}
-
 }

@@ -17,6 +17,11 @@ package net.sourceforge.floggy.persistence.bug2834878;
 
 import net.sourceforge.floggy.persistence.Persistable;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class NoneFieldConcreteSuperClass implements Persistable {
-
 }

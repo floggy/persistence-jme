@@ -15,20 +15,40 @@
  */
 package net.sourceforge.floggy.persistence;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class WeaverException extends Exception {
-
 	private static final long serialVersionUID = -5031495264446460275L;
 
+	/**
+	 * Creates a new WeaverException object.
+	 *
+	 * @param message DOCUMENT ME!
+	 */
 	public WeaverException(String message) {
 		super(message);
 	}
-	
+
+	/**
+	 * Creates a new WeaverException object.
+	 *
+	 * @param message DOCUMENT ME!
+	 * @param throwable DOCUMENT ME!
+	 */
 	public WeaverException(String message, Throwable throwable) {
 		super(message, throwable);
 	}
 
+	/**
+	 * Creates a new WeaverException object.
+	 *
+	 * @param throwable DOCUMENT ME!
+	 */
 	public WeaverException(Throwable throwable) {
 		super(throwable);
 	}
-
 }

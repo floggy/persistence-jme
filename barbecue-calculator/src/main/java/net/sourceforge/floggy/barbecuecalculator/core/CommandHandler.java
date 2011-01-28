@@ -21,29 +21,38 @@ import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.List;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class CommandHandler implements CommandListener {
-
 	private static CommandHandler instance;
-
-	public static Command CALCULATE_CMD = new Command("Calculate",
-			Command.SCREEN, 1);
-	public static Command SAVED_CMD = new Command("Saved barbecues",
-			Command.SCREEN, 2);
-	public static Command SHOW_BARBECUE_CMD = new Command("Show barbecue",
-			Command.OK, 1);
-	public static Command DELETE_BARBECUE_CMD = new Command("Delete barbecue",
-			Command.SCREEN, 2);
+	public static Command CALCULATE_CMD =
+		new Command("Calculate", Command.SCREEN, 1);
+	public static Command SAVED_CMD =
+		new Command("Saved barbecues", Command.SCREEN, 2);
+	public static Command SHOW_BARBECUE_CMD =
+		new Command("Show barbecue", Command.OK, 1);
+	public static Command DELETE_BARBECUE_CMD =
+		new Command("Delete barbecue", Command.SCREEN, 2);
 	public static Command ABOUT_CMD = new Command("About", Command.HELP, 4);
-	public static Command SET_BARBECUE_NAME_CMD = new Command("Save barbecue",
-			Command.SCREEN, 1);
-	public static Command SAVE_BARBECUE_CMD = new Command("Save",
-			Command.SCREEN, 1);
+	public static Command SET_BARBECUE_NAME_CMD =
+		new Command("Save barbecue", Command.SCREEN, 1);
+	public static Command SAVE_BARBECUE_CMD =
+		new Command("Save", Command.SCREEN, 1);
 	public static Command BACK_CMD = new Command("Back", Command.BACK, 2);
 	public static Command EXIT_CMD = new Command("Exit", Command.EXIT, 5);
 
 	private CommandHandler() {
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public static CommandHandler getInstance() {
 		if (instance == null)
 			instance = new CommandHandler();
@@ -51,6 +60,12 @@ public class CommandHandler implements CommandListener {
 		return instance;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param command DOCUMENT ME!
+	* @param displayable DOCUMENT ME!
+	*/
 	public void commandAction(Command command, Displayable displayable) {
 		if (command == CommandHandler.BACK_CMD) {
 			try {
@@ -91,14 +106,14 @@ public class CommandHandler implements CommandListener {
 			}
 		} else if (command == CommandHandler.SHOW_BARBECUE_CMD) {
 			try {
-				FlowManager.getInstance().exibirChurrasSalvo(
-						((List) displayable).getSelectedIndex());
+				FlowManager.getInstance()
+				 .exibirChurrasSalvo(((List) displayable).getSelectedIndex());
 			} catch (FlowManagerNotStartedException e) {
 			}
 		} else if (command == CommandHandler.DELETE_BARBECUE_CMD) {
 			try {
-				FlowManager.getInstance().apagarChurrasSalvo(
-						((List) displayable).getSelectedIndex());
+				FlowManager.getInstance()
+				 .apagarChurrasSalvo(((List) displayable).getSelectedIndex());
 			} catch (FlowManagerNotStartedException e) {
 			}
 		} else if (command == CommandHandler.ABOUT_CMD) {

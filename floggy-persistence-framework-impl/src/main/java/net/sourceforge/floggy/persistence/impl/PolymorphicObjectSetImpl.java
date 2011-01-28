@@ -20,53 +20,42 @@ import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.PolymorphicObjectSet;
 
 /**
- * An implementation of the <code>ObjectSet</code> interface.
- * 
- * @since 1.4.0
- * @author Thiago Moreira
+* An implementation of the <code>ObjectSet</code> interface.
+*
+* @author Thiago Moreira
+*
+* @since 1.4.0
  */
 public class PolymorphicObjectSetImpl implements PolymorphicObjectSet {
-
-	class ObjectList {
-
-		Class persistableClass;
-
-		__Persistable sharedInstance;
-
-		int[] ids;
-
-		int currentIndex;
-
-	}
-
-	private ObjectList[] list = new ObjectList[0];
-
-	private int size;
-
-	/**
-	 * PersistableManager instance.
-	 */
+	/** PersistableManager instance. */
 	protected PersistableManagerImpl manager;
 
-	/**
-	 * The lazy flag.
-	 */
+	/** The lazy flag. */
 	protected boolean lazy;
+	private ObjectList[] list = new ObjectList[0];
+	private int size;
 
-	/**
-	 * Creates a new instance of ObjectSetImpl.
-	 * 
-	 * @param manager
-	 *            TODO
-	 */
-	public PolymorphicObjectSetImpl(PersistableManagerImpl manager,
-			boolean lazy) {
+/**
+   * Creates a new instance of ObjectSetImpl.
+   * 
+   * @param manager
+   *            TODO
+   */
+	public PolymorphicObjectSetImpl(PersistableManagerImpl manager, boolean lazy) {
 		this.manager = manager;
 		this.lazy = lazy;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param ids DOCUMENT ME!
+	* @param persistableClass DOCUMENT ME!
+	*
+	* @throws FloggyException DOCUMENT ME!
+	*/
 	public void addList(int[] ids, Class persistableClass)
-			throws FloggyException {
+		throws FloggyException {
 		if (ids != null) {
 			ObjectList objectList = new ObjectList();
 			objectList.ids = ids;
@@ -83,32 +72,20 @@ public class PolymorphicObjectSetImpl implements PolymorphicObjectSet {
 	}
 
 	/**
-	 * 
-	 * 
-	 * @see net.sourceforge.floggy.persistence.ObjectSet#getId(int)
-	 */
-	public int getId(int index) {
-		throw new IllegalStateException(
-				"You can't call this method on a PolymorphicObjectSet.");
-	}
-
-	/**
-	 * 
-	 * 
-	 * @see net.sourceforge.floggy.persistence.ObjectSet#get(int, Persistable)
-	 */
+	* 
+	* @see net.sourceforge.floggy.persistence.ObjectSet#get(int, Persistable)
+	*/
 	public void get(int index, Persistable persistable) throws FloggyException {
 		throw new IllegalStateException(
-				"You can't call this method on a PolymorphicObjectSet.");
+			"You can't call this method on a PolymorphicObjectSet.");
 	}
 
 	/**
-	 * 
-	 * 
-	 * @see net.sourceforge.floggy.persistence.ObjectSet#get(int)
-	 */
+	* 
+	* @see net.sourceforge.floggy.persistence.ObjectSet#get(int)
+	*/
 	public Persistable get(int index) throws FloggyException {
-		if (index < 0 || index >= size) {
+		if ((index < 0) || (index >= size)) {
 			throw new IndexOutOfBoundsException(String.valueOf(index));
 		}
 
@@ -120,34 +97,42 @@ public class PolymorphicObjectSetImpl implements PolymorphicObjectSet {
 		for (int i = 0; i < list.length; i++) {
 			int length = list[i].ids.length;
 
-			if (sumOfLength <= index && index < (sumOfLength + length)) {
+			if ((sumOfLength <= index) && (index < (sumOfLength + length))) {
 				currentObjectList = list[i];
 				realIndex = index - sumOfLength;
+
 				break;
 			}
+
 			sumOfLength = sumOfLength + length;
 		}
 
 		if (currentObjectList != null) {
-
-			// Try to create a new instance of the persistable class.
 			persistable = Utils.createInstance(currentObjectList.persistableClass);
 
-			// Load the data from the repository.
 			manager.load(persistable, currentObjectList.ids[realIndex]);
 		} else {
 			throw new IndexOutOfBoundsException();
 		}
+
 		return persistable;
 	}
 
 	/**
-	 * 
-	 * 
-	 * @see net.sourceforge.floggy.persistence.ObjectSet#get(int)
-	 */
+	* 
+	* @see net.sourceforge.floggy.persistence.ObjectSet#getId(int)
+	*/
+	public int getId(int index) {
+		throw new IllegalStateException(
+			"You can't call this method on a PolymorphicObjectSet.");
+	}
+
+	/**
+	* 
+	* @see net.sourceforge.floggy.persistence.ObjectSet#get(int)
+	*/
 	public Persistable getSharedInstance(int index) throws FloggyException {
-		if (index < 0 || index >= size) {
+		if ((index < 0) || (index >= size)) {
 			throw new IndexOutOfBoundsException(String.valueOf(index));
 		}
 
@@ -159,40 +144,57 @@ public class PolymorphicObjectSetImpl implements PolymorphicObjectSet {
 		for (int i = 0; i < list.length; i++) {
 			int length = list[i].ids.length;
 
-			if (sumOfLength <= index && index < (sumOfLength + length)) {
+			if ((sumOfLength <= index) && (index < (sumOfLength + length))) {
 				currentObjectList = list[i];
 				realIndex = index - sumOfLength;
+
 				break;
 			}
+
 			sumOfLength = sumOfLength + length;
 		}
 
 		if (currentObjectList != null) {
-			// Load the data from the repository.
 			manager.load(currentObjectList.sharedInstance,
-					currentObjectList.ids[realIndex]);
+				currentObjectList.ids[realIndex]);
 			persistable = currentObjectList.sharedInstance;
 		} else {
 			throw new IndexOutOfBoundsException();
 		}
+
 		return persistable;
 	}
 
 	/**
-	 * 
-	 * 
-	 * @see net.sourceforge.floggy.persistence.ObjectSet#size()
-	 */
-	public int size() {
-		return size;
-	}
-	
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public boolean isLazy() {
 		return lazy;
 	}
-	
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param lazy DOCUMENT ME!
+	*/
 	public void setLazy(boolean lazy) {
 		this.lazy = lazy;
 	}
 
+	/**
+	* 
+	* @see net.sourceforge.floggy.persistence.ObjectSet#size()
+	*/
+	public int size() {
+		return size;
+	}
+
+	class ObjectList {
+		Class persistableClass;
+		int[] ids;
+		__Persistable sharedInstance;
+		int currentIndex;
+	}
 }

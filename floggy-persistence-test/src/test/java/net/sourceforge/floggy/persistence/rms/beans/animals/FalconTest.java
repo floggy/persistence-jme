@@ -26,22 +26,39 @@ import net.sourceforge.floggy.persistence.migration.FieldPersistableInfo;
 import net.sourceforge.floggy.persistence.migration.MigrationManager;
 import net.sourceforge.floggy.persistence.rms.AbstractTest;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class FalconTest extends AbstractTest {
-
-	protected Class getParameterType() {
-		return Bird.class;
-	}
-
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Object getValueForSetMethod() {
 		Bird bird = new Falcon();
 		bird.setColor("black");
+
 		return bird;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Persistable newInstance() {
 		return new Person();
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testFR2422928Read() throws Exception {
 		Persistable container = newInstance();
 		Persistable field = (Persistable) getValueForSetMethod();
@@ -51,10 +68,12 @@ public class FalconTest extends AbstractTest {
 
 		MigrationManager um = MigrationManager.getInstance();
 		Enumeration enumeration = um.start(container.getClass(), null);
+
 		try {
 			while (enumeration.hasMoreElements()) {
 				Hashtable data = (Hashtable) enumeration.nextElement();
 				assertFalse("Should not be empty!", data.isEmpty());
+
 				FieldPersistableInfo pi = (FieldPersistableInfo) data.get("x");
 				assertEquals(pi.getId(), fieldId);
 			}
@@ -63,13 +82,20 @@ public class FalconTest extends AbstractTest {
 			um.finish(container.getClass());
 		}
 	}
-	
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testFR2422928Update() throws Exception {
 		Persistable oldObject = newInstance();
 		setX(oldObject, getValueForSetMethod());
 		manager.save(oldObject);
+
 		MigrationManager um = MigrationManager.getInstance();
 		Enumeration enumeration = um.start(oldObject.getClass(), null);
+
 		try {
 			while (enumeration.hasMoreElements()) {
 				Persistable newObject = newInstance();
@@ -86,4 +112,12 @@ public class FalconTest extends AbstractTest {
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	protected Class getParameterType() {
+		return Bird.class;
+	}
 }

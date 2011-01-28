@@ -19,26 +19,39 @@ import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.LoaderClassPath;
 import javassist.NotFoundException;
+
 import junit.framework.TestCase;
+
 import net.sourceforge.floggy.persistence.Configuration;
 import net.sourceforge.floggy.persistence.FloggyException;
 import net.sourceforge.floggy.persistence.codegen.strategy.PerClassStrategyCodeGenerator;
 import net.sourceforge.floggy.persistence.impl.PersistableMetadata;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class FR2852335Test extends TestCase {
-	
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws NotFoundException DOCUMENT ME!
+	*/
 	public void testWrongHierarchyJoined() throws NotFoundException {
 		ClassPool pool = ClassPool.getDefault();
 		pool.insertClassPath(new LoaderClassPath(getClass().getClassLoader()));
 
 		CtClass ctClass = pool.get(WrongHierarchyJoined.class.getName());
 		Configuration configuration = new Configuration();
-		PersistableMetadata metadata = new PersistableMetadata(false, 
-			ctClass.getName(), null, null, null, null, null, 
-			ctClass.getSimpleName(), PersistableMetadata.JOINED_STRATEGY, null);
-		
+		PersistableMetadata metadata =
+			new PersistableMetadata(false, ctClass.getName(), null, null, null, null,
+				null, ctClass.getSimpleName(), PersistableMetadata.JOINED_STRATEGY, null);
+
 		configuration.addPersistableMetadata(metadata);
 		configuration.setAddDefaultConstructor(true);
+
 		try {
 			new PerClassStrategyCodeGenerator(ctClass, pool, configuration);
 			fail("Must throw a FloggyException");
@@ -47,18 +60,24 @@ public class FR2852335Test extends TestCase {
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws NotFoundException DOCUMENT ME!
+	*/
 	public void testWrongHierarchySingle() throws NotFoundException {
 		ClassPool pool = ClassPool.getDefault();
 		pool.insertClassPath(new LoaderClassPath(getClass().getClassLoader()));
 
 		CtClass ctClass = pool.get(WrongHierarchySingle.class.getName());
 		Configuration configuration = new Configuration();
-		PersistableMetadata metadata = new PersistableMetadata(false, 
-			ctClass.getName(), null, null, null, null, null, 
-			ctClass.getSimpleName(), PersistableMetadata.JOINED_STRATEGY, null);
-		
+		PersistableMetadata metadata =
+			new PersistableMetadata(false, ctClass.getName(), null, null, null, null,
+				null, ctClass.getSimpleName(), PersistableMetadata.JOINED_STRATEGY, null);
+
 		configuration.addPersistableMetadata(metadata);
 		configuration.setAddDefaultConstructor(true);
+
 		try {
 			new PerClassStrategyCodeGenerator(ctClass, pool, configuration);
 			fail("Must throw a FloggyException");
@@ -66,5 +85,4 @@ public class FR2852335Test extends TestCase {
 			assertEquals(FloggyException.class, e.getClass());
 		}
 	}
-
 }

@@ -18,51 +18,99 @@ package net.sourceforge.floggy.persistence.codegen;
 import javassist.CtClass;
 import javassist.NotFoundException;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public abstract class SourceCodeGenerator {
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected CtClass fieldType;
 
-    protected String fieldName;
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected String fieldName;
+	private StringBuffer loadCode;
+	private StringBuffer saveCode;
 
-    protected CtClass fieldType;
-
-    private StringBuffer loadCode;
-
-    private StringBuffer saveCode;
-
-    protected SourceCodeGenerator(String fieldName, CtClass fieldType) {
-	this.fieldName = fieldName;
-	this.fieldType = fieldType;
-	this.loadCode = new StringBuffer();
-	this.saveCode = new StringBuffer();
-    }
-
-    protected void addLoadCode(String part) {
-	this.loadCode.append(part);
-	this.loadCode.append('\n');
-    }
-
-    protected void addSaveCode(String part) {
-	this.saveCode.append(part);
-	this.saveCode.append('\n');
-    }
-
-    public String getLoadCode() throws NotFoundException {
-	if (this.loadCode.length() == 0) {
-	    this.initLoadCode();
+	/**
+	 * Creates a new SourceCodeGenerator object.
+	 *
+	 * @param fieldName DOCUMENT ME!
+	 * @param fieldType DOCUMENT ME!
+	 */
+	protected SourceCodeGenerator(String fieldName, CtClass fieldType) {
+		this.fieldName = fieldName;
+		this.fieldType = fieldType;
+		this.loadCode = new StringBuffer();
+		this.saveCode = new StringBuffer();
 	}
 
-	return this.loadCode.toString();
-    }
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*
+	* @throws NotFoundException DOCUMENT ME!
+	*/
+	public String getLoadCode() throws NotFoundException {
+		if (this.loadCode.length() == 0) {
+			this.initLoadCode();
+		}
 
-    public String getSaveCode() throws NotFoundException {
-	if (this.saveCode.length() == 0) {
-	    this.initSaveCode();
+		return this.loadCode.toString();
 	}
 
-	return this.saveCode.toString();
-    }
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*
+	* @throws NotFoundException DOCUMENT ME!
+	*/
+	public String getSaveCode() throws NotFoundException {
+		if (this.saveCode.length() == 0) {
+			this.initSaveCode();
+		}
 
-    public abstract void initLoadCode() throws NotFoundException;
+		return this.saveCode.toString();
+	}
 
-    public abstract void initSaveCode() throws NotFoundException;
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws NotFoundException DOCUMENT ME!
+	*/
+	public abstract void initLoadCode() throws NotFoundException;
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws NotFoundException DOCUMENT ME!
+	*/
+	public abstract void initSaveCode() throws NotFoundException;
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param part DOCUMENT ME!
+	*/
+	protected void addLoadCode(String part) {
+		this.loadCode.append(part);
+		this.loadCode.append('\n');
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param part DOCUMENT ME!
+	*/
+	protected void addSaveCode(String part) {
+		this.saveCode.append(part);
+		this.saveCode.append('\n');
+	}
 }

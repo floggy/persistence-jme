@@ -15,10 +15,24 @@
  */
 package net.sourceforge.floggy.barbecuecalculator.core;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class FlowManagerAlreadyStartedException extends FlowManagerException {
-	
-	public FlowManagerAlreadyStartedException() {}
-	
+	/**
+	 * Creates a new FlowManagerAlreadyStartedException object.
+	 */
+	public FlowManagerAlreadyStartedException() {
+	}
+
+	/**
+	 * Creates a new FlowManagerAlreadyStartedException object.
+	 *
+	 * @param s DOCUMENT ME!
+	 */
 	public FlowManagerAlreadyStartedException(String s) {
 		super(s);
 	}

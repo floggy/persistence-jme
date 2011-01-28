@@ -20,35 +20,63 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.core.runtime.Status;
+
 import org.eclipse.jface.action.IAction;
+
 import org.eclipse.ui.console.ConsolePlugin;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public abstract class AbstractSetPropertyAction extends AbstractFloggyAction {
-
+	/**
+	 * DOCUMENT ME!
+	 */
 	protected final QualifiedName propertyName;
-	
+
+	/**
+	 * Creates a new AbstractSetPropertyAction object.
+	 *
+	 * @param propertyName DOCUMENT ME!
+	 */
 	protected AbstractSetPropertyAction(QualifiedName propertyName) {
 		this.propertyName = propertyName;
 	}
 
-	protected void changeProperty(IProject project) throws CoreException {
-		project.setPersistentProperty(propertyName, String
-				.valueOf(!isEnabled(project)));
-	}
-
-	private boolean isEnabled(IProject project) throws CoreException {
-		String value = project.getPersistentProperty(propertyName);
-		return Boolean.valueOf(value).booleanValue();
-	}
-
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param project DOCUMENT ME!
+	* @param action DOCUMENT ME!
+	*/
 	public void run(IProject project, IAction action) {
 		try {
 			changeProperty(project);
 		} catch (Exception e) {
-			IStatus status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1,
-					e.getMessage(), e);
+			IStatus status =
+				new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1, e.getMessage(), e);
 			ConsolePlugin.log(status);
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param project DOCUMENT ME!
+	*
+	* @throws CoreException DOCUMENT ME!
+	*/
+	protected void changeProperty(IProject project) throws CoreException {
+		project.setPersistentProperty(propertyName,
+			String.valueOf(!isEnabled(project)));
+	}
+
+	private boolean isEnabled(IProject project) throws CoreException {
+		String value = project.getPersistentProperty(propertyName);
+
+		return Boolean.valueOf(value).booleanValue();
+	}
 }

@@ -20,18 +20,23 @@ import net.sourceforge.floggy.persistence.FloggyException;
 import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.PersistableManager;
 
-
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class FloggyPersistableArray implements Persistable, Deletable {
+	/**
+	 * DOCUMENT ME!
+	 */
 	protected FloggyPersistable[] x;
 
-	public FloggyPersistable[] getX() {
-		return x;
-	}
-
-	public void setX(FloggyPersistable[] x) {
-		this.x = x;
-	}
-
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws FloggyException DOCUMENT ME!
+	*/
 	public void delete() throws FloggyException {
 		if (x != null) {
 			for (int i = 0; i < x.length; i++) {
@@ -42,4 +47,21 @@ public class FloggyPersistableArray implements Persistable, Deletable {
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	public FloggyPersistable[] getX() {
+		return x;
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param x DOCUMENT ME!
+	*/
+	public void setX(FloggyPersistable[] x) {
+		this.x = x;
+	}
 }

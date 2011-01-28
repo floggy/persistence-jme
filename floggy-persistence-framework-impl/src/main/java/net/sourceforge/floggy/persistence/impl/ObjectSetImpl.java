@@ -20,123 +20,122 @@ import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.SingleObjectSet;
 
 /**
- * An implementation of the <code>ObjectSet</code> interface.
- * 
- * @since 1.0
+* An implementation of the <code>ObjectSet</code> interface.
+*
+* @since 1.0
  */
 class ObjectSetImpl implements SingleObjectSet {
-
-	/**
-	 * List of IDs.
-	 */
-	private int[] ids;
-
-	private int size;
-
-	/**
-	 * Persistable class used in the search.
-	 */
+	/** Persistable class used in the search. */
 	protected Class persistableClass;
 
-	/**
-	 * PersistableManager instance.
-	 */
-	protected PersistableManagerImpl manager;
-
-	/**
-	 * The lazy flag.
-	 */
-	protected boolean lazy;
-	
-	/**
-	 * The shared instance
-	 */
+	/** The shared instance */
 	protected Persistable sharedInstance;
 
-	/**
-	 * Creates a new instance of ObjectSetImpl.
-	 * 
-	 * @param ids
-	 *                The list of IDs, result of a search.
-	 * @param persistableClass
-	 *                A persistable class used to create new instances of
-	 *                objects.
-	 * @param manager TODO
-	 */
-	protected ObjectSetImpl(int[] ids, Class persistableClass, PersistableManagerImpl manager, boolean lazy) throws FloggyException {
+	/** PersistableManager instance. */
+	protected PersistableManagerImpl manager;
+
+	/** The lazy flag. */
+	protected boolean lazy;
+
+	/** List of IDs. */
+	private int[] ids;
+	private int size;
+
+/**
+   * Creates a new instance of ObjectSetImpl.
+   * 
+   * @param ids
+   *                The list of IDs, result of a search.
+   * @param persistableClass
+   *                A persistable class used to create new instances of
+   *                objects.
+   * @param manager TODO
+   */
+	protected ObjectSetImpl(int[] ids, Class persistableClass,
+		PersistableManagerImpl manager, boolean lazy) throws FloggyException {
 		this.ids = ids;
 		this.persistableClass = persistableClass;
 		this.sharedInstance = Utils.createInstance(persistableClass);
-		
-		// Init attributes
+
 		this.size = (ids == null) ? 0 : ids.length;
 
-		// Retrieve the manager instance
 		this.manager = manager;
-		
+
 		this.lazy = lazy;
 	}
-	
-	
+
 	/**
-	 * @see net.sourceforge.floggy.persistence.ObjectSet#get(int)
-	 */
+	* 
+	* @see net.sourceforge.floggy.persistence.ObjectSet#get(int)
+	*/
 	public Persistable get(int index) throws FloggyException {
-		// Try to create a new instance of the persistable class.
 		Persistable persistable = Utils.createInstance(persistableClass);
 
-		// Load the data from the repository.
 		get(index, persistable);
+
 		return persistable;
 	}
 
 	/**
-	 * @see net.sourceforge.floggy.persistence.ObjectSet#get(int, Persistable)
-	 */
+	* 
+	* @see net.sourceforge.floggy.persistence.ObjectSet#get(int, Persistable)
+	*/
 	public void get(int index, Persistable persistable) throws FloggyException {
 		if (persistable == null) {
-			throw new IllegalArgumentException("The persistable object cannot be null!");
+			throw new IllegalArgumentException(
+				"The persistable object cannot be null!");
 		}
 
-		// Load the data from the repository.
 		manager.load(persistable, getId(index), lazy);
 	}
 
 	/**
-	 * @see net.sourceforge.floggy.persistence.ObjectSet#getId(int)
-	 */
+	* 
+	* @see net.sourceforge.floggy.persistence.ObjectSet#getId(int)
+	*/
 	public int getId(int index) {
-		// Checks if the index is valid.
-		if (index < 0 || index >= size) {
+		if ((index < 0) || (index >= size)) {
 			throw new IndexOutOfBoundsException();
 		}
-		
+
 		return ids[index];
 	}
-	
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param index DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*
+	* @throws FloggyException DOCUMENT ME!
+	*/
 	public Persistable getSharedInstance(int index) throws FloggyException {
 		manager.load(sharedInstance, getId(index), lazy);
-		
+
 		return sharedInstance;
 	}
-	
+
 	/**
-	 * @see net.sourceforge.floggy.persistence.ObjectSet#isLazy()
-	 */
+	* 
+	* @see net.sourceforge.floggy.persistence.ObjectSet#isLazy()
+	*/
 	public boolean isLazy() {
 		return lazy;
 	}
-	
+
 	/**
-	 * @see net.sourceforge.floggy.persistence.ObjectSet#setLazy(boolean)
-	 */
+	* 
+	* @see net.sourceforge.floggy.persistence.ObjectSet#setLazy(boolean)
+	*/
 	public void setLazy(boolean lazy) {
 		this.lazy = lazy;
 	}
 
 	/**
-	 * @see net.sourceforge.floggy.persistence.ObjectSet#size()
-	 */
+	* 
+	* @see net.sourceforge.floggy.persistence.ObjectSet#size()
+	*/
 	public int size() {
 		return size;
 	}

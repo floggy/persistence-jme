@@ -19,21 +19,42 @@ import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.beans.wrapper.array.TestInteger;
 import net.sourceforge.floggy.persistence.rms.AbstractTest;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class IntegerTest extends AbstractTest {
+	static Integer[] att =
+		new Integer[] {
+			new Integer(-2345), new Integer(-34576), new Integer(2), new Integer(56)
+		};
 
-	static Integer[] att = new Integer[] { new Integer(-2345),
-			new Integer(-34576), new Integer(2), new Integer(56) };
-
-	protected Class getParameterType() {
-		return Integer[].class;
-	}
-	
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Object getValueForSetMethod() {
 		return att;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Persistable newInstance() {
 		return new TestInteger();
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	protected Class getParameterType() {
+		return Integer[].class;
+	}
 }

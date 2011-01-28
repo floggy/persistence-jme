@@ -28,13 +28,13 @@ package net.sourceforge.floggy.persistence;
  * @see Comparator
  */
 public interface Filter {
-    /**
-     * Returns true if the candidate object matches the implemented
-     * criterion.
-     *
-     * @param o The candidate object.
-     *
-     * @return True if the candidate object matches the implemented criterion.
-     */
-    boolean matches(Persistable o);
+	/**
+	* Returns true if the candidate object matches the implemented
+	* criterion.
+	*
+	* @param o The candidate object.
+	*
+	* @return True if the candidate object matches the implemented criterion.
+	*/
+	boolean matches(Persistable o);
 }

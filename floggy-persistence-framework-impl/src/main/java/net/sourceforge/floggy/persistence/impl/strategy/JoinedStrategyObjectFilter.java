@@ -20,39 +20,62 @@ import javax.microedition.rms.RecordFilter;
 import net.sourceforge.floggy.persistence.Filter;
 import net.sourceforge.floggy.persistence.impl.__Persistable;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class JoinedStrategyObjectFilter implements RecordFilter {
-
-	private final __Persistable p;
-
 	private final Filter f;
-
+	private final __Persistable p;
 	private final boolean lazy;
 
+	/**
+	 * Creates a new JoinedStrategyObjectFilter object.
+	 *
+	 * @param lazy DOCUMENT ME!
+	 */
 	public JoinedStrategyObjectFilter(boolean lazy) {
 		this.p = null;
 		this.f = null;
 		this.lazy = lazy;
 	}
 
+	/**
+	 * Creates a new JoinedStrategyObjectFilter object.
+	 *
+	 * @param p DOCUMENT ME!
+	 * @param f DOCUMENT ME!
+	 * @param lazy DOCUMENT ME!
+	 */
 	public JoinedStrategyObjectFilter(__Persistable p, Filter f, boolean lazy) {
 		this.p = p;
 		this.f = f;
 		this.lazy = lazy;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param b DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public boolean matches(byte[] b) {
 		if (b[3] == 0) {
 			return false;
 		}
+
 		if (f != null) {
 			try {
 				p.__deserialize(b, lazy);
 			} catch (Exception e) {
-				// Ignore
 			}
+
 			return f.matches(p);
 		}
+
 		return true;
 	}
-
 }

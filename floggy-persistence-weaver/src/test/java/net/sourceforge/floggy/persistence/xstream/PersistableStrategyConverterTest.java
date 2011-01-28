@@ -15,20 +15,29 @@
  */
 package net.sourceforge.floggy.persistence.xstream;
 
-import net.sourceforge.floggy.persistence.impl.PersistableMetadata;
 import junit.framework.TestCase;
 
-public class PersistableStrategyConverterTest extends TestCase {
+import net.sourceforge.floggy.persistence.impl.PersistableMetadata;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
+public class PersistableStrategyConverterTest extends TestCase {
+	/**
+	 * DOCUMENT ME!
+	*/
 	public void testFromString() {
 		PersistableStrategyConverter converter = new PersistableStrategyConverter();
 
 		assertEquals(new Integer(PersistableMetadata.JOINED_STRATEGY),
-				converter.fromString(PersistableStrategyConverter.JOINED));
+			converter.fromString(PersistableStrategyConverter.JOINED));
 		assertEquals(new Integer(PersistableMetadata.PER_CLASS_STRATEGY),
-				converter.fromString(PersistableStrategyConverter.PER_CLASS));
+			converter.fromString(PersistableStrategyConverter.PER_CLASS));
 		assertEquals(new Integer(PersistableMetadata.SINGLE_STRATEGY),
-				converter.fromString(PersistableStrategyConverter.SINGLE));
+			converter.fromString(PersistableStrategyConverter.SINGLE));
 
 		try {
 			converter.fromString(null);
@@ -39,6 +48,7 @@ public class PersistableStrategyConverterTest extends TestCase {
 		}
 
 		String str = "test";
+
 		try {
 			converter.fromString(str);
 			fail("It should throw a IllegalArgumentException");
@@ -47,16 +57,19 @@ public class PersistableStrategyConverterTest extends TestCase {
 			assertEquals(str, ex.getMessage());
 		}
 	}
-	
+
+	/**
+	 * DOCUMENT ME!
+	*/
 	public void testToString() {
 		PersistableStrategyConverter converter = new PersistableStrategyConverter();
 
 		assertEquals(PersistableStrategyConverter.JOINED,
-				converter.toString(new Integer(PersistableMetadata.JOINED_STRATEGY)));
+			converter.toString(new Integer(PersistableMetadata.JOINED_STRATEGY)));
 		assertEquals(PersistableStrategyConverter.PER_CLASS,
-				converter.toString(new Integer(PersistableMetadata.PER_CLASS_STRATEGY)));
+			converter.toString(new Integer(PersistableMetadata.PER_CLASS_STRATEGY)));
 		assertEquals(PersistableStrategyConverter.SINGLE,
-				converter.toString(new Integer(PersistableMetadata.SINGLE_STRATEGY)));
+			converter.toString(new Integer(PersistableMetadata.SINGLE_STRATEGY)));
 
 		try {
 			converter.toString(null);
@@ -67,6 +80,7 @@ public class PersistableStrategyConverterTest extends TestCase {
 		}
 
 		Integer obj = new Integer(3);
+
 		try {
 			converter.toString(obj);
 			fail("It should throw a IllegalArgumentException");
@@ -75,5 +89,4 @@ public class PersistableStrategyConverterTest extends TestCase {
 			assertEquals(obj.toString(), ex.getMessage());
 		}
 	}
-
 }

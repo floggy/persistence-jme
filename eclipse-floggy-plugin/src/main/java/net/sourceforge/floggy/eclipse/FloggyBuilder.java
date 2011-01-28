@@ -17,46 +17,63 @@ package net.sourceforge.floggy.eclipse;
 
 import java.util.Map;
 
-import net.sourceforge.floggy.eclipse.builder.AbstractBuilder;
-import net.sourceforge.floggy.eclipse.builder.DefaultBuilder;
-import net.sourceforge.floggy.eclipse.builder.MTJBuilder;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+
 import org.eclipse.jdt.core.JavaCore;
 
+import net.sourceforge.floggy.eclipse.builder.AbstractBuilder;
+import net.sourceforge.floggy.eclipse.builder.DefaultBuilder;
+import net.sourceforge.floggy.eclipse.builder.MTJBuilder;
+
 /**
- * 
- * @author Thiago Moreira
- * @author Dan Murphy
- *
+* 
+DOCUMENT ME!
+*
+* @author Thiago Moreira
+* @author Dan Murphy
  */
 public class FloggyBuilder extends IncrementalProjectBuilder {
+	public static final String BUILDER_ID =
+		"net.sourceforge.floggy.floggyBuilder";
 
-	public static final String BUILDER_ID = "net.sourceforge.floggy.floggyBuilder";
-
-	public IProject[] build(int kind, Map args, IProgressMonitor monitor) throws CoreException {
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param kind DOCUMENT ME!
+	* @param args DOCUMENT ME!
+	* @param monitor DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*
+	* @throws CoreException DOCUMENT ME!
+	*/
+	public IProject[] build(int kind, Map args, IProgressMonitor monitor)
+		throws CoreException {
 		try {
 			IProject project = getProject();
-			
-			if (project.hasNature(JavaCore.NATURE_ID) && project.hasNature(FloggyNature.NATURE_ID)){
+
+			if (project.hasNature(JavaCore.NATURE_ID)
+				 && project.hasNature(FloggyNature.NATURE_ID)) {
 				AbstractBuilder builder = createFloggyBuilder();
+
 				return builder.build(project, monitor);
 			}
 		} catch (CoreException ce) {
 			throw ce;
 		} catch (Exception e) {
-			IStatus status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1,	e.getMessage(), e);
+			IStatus status =
+				new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1, e.getMessage(), e);
 			throw new CoreException(status);
 		}
 
 		return new IProject[0];
 	}
-	
+
 	private AbstractBuilder createFloggyBuilder() {
 		if (Activator.isMTJAvailble()) {
 			return new MTJBuilder();
@@ -64,5 +81,4 @@ public class FloggyBuilder extends IncrementalProjectBuilder {
 			return new DefaultBuilder();
 		}
 	}
-	
 }

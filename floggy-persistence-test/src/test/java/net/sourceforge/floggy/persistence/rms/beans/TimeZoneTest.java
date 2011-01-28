@@ -21,27 +21,59 @@ import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.beans.FloggyTimeZone;
 import net.sourceforge.floggy.persistence.rms.AbstractTest;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class TimeZoneTest extends AbstractTest {
+	public static final TimeZone timeZone = TimeZone.getDefault();
 
-	public final static TimeZone timeZone = TimeZone.getDefault();
-
-	protected Class getParameterType() {
-		return TimeZone.class;
-	}
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Object getNewValueForSetMethod() {
 		return TimeZone.getTimeZone("PST");
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Object getValueForSetMethod() {
 		return timeZone;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Persistable newInstance() {
 		return new FloggyTimeZone();
 	}
-	
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param params DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	protected Class[] getClassesFromObjects(Object[] params) {
-		return new Class[]{TimeZone.class};
+		return new Class[] { TimeZone.class };
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	protected Class getParameterType() {
+		return TimeZone.class;
+	}
 }

@@ -28,17 +28,58 @@ import net.sourceforge.floggy.persistence.ObjectSet;
 import net.sourceforge.floggy.persistence.PersistableManager;
 import net.sourceforge.floggy.persistence.model.Patient;
 
-public class PatientSearchForm  extends Form implements CommandListener {
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
+public class PatientSearchForm extends Form implements CommandListener {
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected Command cmdCancel;
 
-	protected TextField txtSearch;
-
+	/**
+	 * DOCUMENT ME!
+	 */
 	protected Command cmdOk;
 
-	protected Command cmdCancel;
-	
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected TextField txtSearch;
+
+	/**
+	 * Creates a new PatientSearchForm object.
+	 */
 	public PatientSearchForm() {
 		super("Search");
 		startComponents();
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param cmd DOCUMENT ME!
+	* @param arg1 DOCUMENT ME!
+	*/
+	public void commandAction(Command cmd, Displayable arg1) {
+		if (cmd == this.cmdOk) {
+			PersistableManager pm = PersistableManager.getInstance();
+
+			try {
+				IndexFilter filter = new IndexFilter("byName", txtSearch.getString());
+
+				Class patientClass =
+					Class.forName("net.sourceforge.floggy.persistence.model.Patient");
+				ObjectSet patients = pm.find(patientClass, filter, false);
+
+				HospitalMIDlet.setCurrent(new PatientList(patients));
+			} catch (Exception e) {
+				HospitalMIDlet.showException(e);
+			}
+		}
 	}
 
 	private void startComponents() {
@@ -52,23 +93,5 @@ public class PatientSearchForm  extends Form implements CommandListener {
 		this.addCommand(this.cmdCancel);
 
 		this.setCommandListener(this);
-	}
-
-	public void commandAction(Command cmd, Displayable arg1) {
-		if (cmd == this.cmdOk) {
-			PersistableManager pm = PersistableManager.getInstance();
-
-			try {
-				IndexFilter filter = new IndexFilter("byName", txtSearch.getString());
-
-				Class patientClass = Class.forName("net.sourceforge.floggy.persistence.model.Patient");
-				ObjectSet patients = pm.find(patientClass, filter, false);
-
-				HospitalMIDlet.setCurrent(new PatientList(patients));
-			} catch (Exception e) {
-				HospitalMIDlet.showException(e);
-			}
-		}
-		
 	}
 }

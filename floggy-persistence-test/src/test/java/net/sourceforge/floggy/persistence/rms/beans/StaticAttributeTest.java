@@ -23,36 +23,55 @@ import net.sourceforge.floggy.persistence.migration.Enumeration;
 import net.sourceforge.floggy.persistence.migration.MigrationManager;
 import net.sourceforge.floggy.persistence.rms.AbstractTest;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class StaticAttributeTest extends AbstractTest {
-
 	static final Object object = new Object();
 
-	protected Class getParameterType() {
-		return Object.class;
-	}
-
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Object getNewValueForSetMethod() {
 		return new Object();
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Object getValueForSetMethod() {
 		return object;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Persistable newInstance() {
 		return new FloggyStaticAttribute();
 	}
 
-	protected void tearDown() throws Exception {
-		FloggyStaticAttribute.x = null;
-	}
-
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testFR2422928Read() throws Exception {
 		Persistable object = newInstance();
 		setX(object, getValueForSetMethod());
 		manager.save(object);
+
 		MigrationManager um = MigrationManager.getInstance();
 		Enumeration enumeration = um.start(object.getClass(), null);
+
 		try {
 			while (enumeration.hasMoreElements()) {
 				Hashtable data = (Hashtable) enumeration.nextElement();
@@ -64,9 +83,30 @@ public class StaticAttributeTest extends AbstractTest {
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testNotNullAttribute() throws Exception {
-		// como o atributo não vai ser salvo ele tem q retornar null!!!
 		testNullAttribute();
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	protected Class getParameterType() {
+		return Object.class;
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
+	protected void tearDown() throws Exception {
+		FloggyStaticAttribute.x = null;
+	}
 }

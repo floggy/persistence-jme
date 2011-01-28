@@ -18,17 +18,34 @@ package net.sourceforge.floggy.persistence.fr2722768;
 import net.sourceforge.floggy.persistence.IDable;
 import net.sourceforge.floggy.persistence.Persistable;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public abstract class FR2722768AbstractSuperClass implements Persistable,
-		IDable {
-
+	IDable {
+	/**
+	 * DOCUMENT ME!
+	 */
 	protected int id;
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public int getId() {
 		return id;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param id DOCUMENT ME!
+	*/
 	public void setId(int id) {
 		this.id = id;
 	}
-
 }

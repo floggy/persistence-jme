@@ -21,8 +21,18 @@ import net.sourceforge.floggy.persistence.beans.Person;
 import net.sourceforge.floggy.persistence.beans.animals.Bird;
 import net.sourceforge.floggy.persistence.beans.animals.USFalcon;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class FR2227200Test extends FloggyBaseTest {
-
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testFindLazyFalse() throws Exception {
 		Person container = new Person();
 		Bird field = new USFalcon();
@@ -30,8 +40,8 @@ public class FR2227200Test extends FloggyBaseTest {
 		container.setX(field);
 
 		manager.save(container);
-		try {
 
+		try {
 			ObjectSet os = manager.find(Person.class, null, null, false);
 
 			for (int i = 0; i < os.size(); i++) {
@@ -43,6 +53,11 @@ public class FR2227200Test extends FloggyBaseTest {
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testFindLazyTrue() throws Exception {
 		Person container = new Person();
 		Bird field = new USFalcon();
@@ -50,6 +65,7 @@ public class FR2227200Test extends FloggyBaseTest {
 		container.setX(field);
 
 		manager.save(container);
+
 		try {
 			ObjectSet os = manager.find(Person.class, null, null, true);
 
@@ -62,6 +78,11 @@ public class FR2227200Test extends FloggyBaseTest {
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testLoadLazyFalse() throws Exception {
 		Person container = new Person();
 		Bird field = new USFalcon();
@@ -69,16 +90,22 @@ public class FR2227200Test extends FloggyBaseTest {
 		container.setX(field);
 
 		int containerId = manager.save(container);
+
 		try {
 			Person persistable = new Person();
 			manager.load(persistable, containerId, false);
-			 
+
 			assertNotNull(persistable.getX());
 		} finally {
 			manager.delete(container);
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testLoadLazyTrue() throws Exception {
 		Person container = new Person();
 		Bird field = new USFalcon();
@@ -86,6 +113,7 @@ public class FR2227200Test extends FloggyBaseTest {
 		container.setX(field);
 
 		int containerId = manager.save(container);
+
 		try {
 			Person persistable = new Person();
 			manager.load(persistable, containerId, true);
@@ -95,5 +123,4 @@ public class FR2227200Test extends FloggyBaseTest {
 			manager.delete(container);
 		}
 	}
-
 }

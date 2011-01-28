@@ -17,8 +17,18 @@ package net.sourceforge.floggy.persistence.bug2168632;
 
 import net.sourceforge.floggy.persistence.FloggyBaseTest;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class BUG2168632Test extends FloggyBaseTest {
-
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testIt() throws Exception {
 		ConcreteElement persistable = new ConcreteElement();
 		persistable.setName("floggy");
@@ -37,10 +47,15 @@ public class BUG2168632Test extends FloggyBaseTest {
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testNorton() throws Exception {
 		String name = "XYZ";
 		int age = 23;
-		ExtendedConcreteElement persistable =new ExtendedConcreteElement();
+		ExtendedConcreteElement persistable = new ExtendedConcreteElement();
 		persistable.setName(name);
 		persistable.setAge(age);
 

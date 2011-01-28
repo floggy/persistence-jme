@@ -17,9 +17,16 @@ package net.sourceforge.floggy.persistence.impl;
 
 import junit.framework.TestCase;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class IndexManagerTest extends TestCase {
-	
+	/**
+	 * DOCUMENT ME!
+	*/
 	public void test() {
-		
 	}
 }

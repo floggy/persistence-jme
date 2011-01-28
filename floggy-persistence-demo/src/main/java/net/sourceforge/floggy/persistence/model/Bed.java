@@ -18,38 +18,75 @@ package net.sourceforge.floggy.persistence.model;
 import net.sourceforge.floggy.persistence.Nameable;
 import net.sourceforge.floggy.persistence.Persistable;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class Bed implements Persistable, Nameable {
-
 	private int floor;
-
 	private int number;
 
+	/**
+	 * Creates a new Bed object.
+	 */
 	public Bed() {
 	}
 
+	/**
+	 * Creates a new Bed object.
+	 *
+	 * @param floor DOCUMENT ME!
+	 * @param number DOCUMENT ME!
+	 */
 	public Bed(int floor, int number) {
 		this.floor = floor;
 		this.number = number;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public int getFloor() {
 		return floor;
 	}
 
-	public void setFloor(int floor) {
-		this.floor = floor;
-	}
-
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public int getNumber() {
 		return number;
 	}
 
-	public void setNumber(int number) {
-		this.number = number;
-	}
-	
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public String getRecordStoreName() {
 		return "Bed";
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param floor DOCUMENT ME!
+	*/
+	public void setFloor(int floor) {
+		this.floor = floor;
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param number DOCUMENT ME!
+	*/
+	public void setNumber(int number) {
+		this.number = number;
+	}
 }

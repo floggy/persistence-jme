@@ -23,29 +23,52 @@ import net.sourceforge.floggy.persistence.FloggyException;
 import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.PersistableManager;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class BUG2903826StackHolder implements Deletable, Persistable {
-	
+	/**
+	 * DOCUMENT ME!
+	 */
 	protected Stack stack;
-	
-	public Stack getStack() {
-		return stack;
-	}
-	
-	public void setStack(Stack stack) {
-		this.stack = stack;
-	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws FloggyException DOCUMENT ME!
+	*/
 	public void delete() throws FloggyException {
 		if (stack != null) {
 			Enumeration enumeration = stack.elements();
+
 			while (enumeration.hasMoreElements()) {
 				Object object = (Object) enumeration.nextElement();
+
 				if (object instanceof Persistable) {
-					PersistableManager.getInstance().delete((Persistable)object);
+					PersistableManager.getInstance().delete((Persistable) object);
 				}
 			}
 		}
-
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	public Stack getStack() {
+		return stack;
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param stack DOCUMENT ME!
+	*/
+	public void setStack(Stack stack) {
+		this.stack = stack;
+	}
 }

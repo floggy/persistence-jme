@@ -17,7 +17,12 @@ package net.sourceforge.floggy.persistence.fr2852335.single;
 
 import net.sourceforge.floggy.persistence.strategy.JoinedStrategy;
 
-public class WrongHierarchyJoined extends AbstractSuperClass implements
-		JoinedStrategy {
-
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
+public class WrongHierarchyJoined extends AbstractSuperClass
+	implements JoinedStrategy {
 }

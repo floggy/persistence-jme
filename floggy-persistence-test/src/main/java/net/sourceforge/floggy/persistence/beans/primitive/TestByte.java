@@ -17,14 +17,32 @@ package net.sourceforge.floggy.persistence.beans.primitive;
 
 import net.sourceforge.floggy.persistence.Persistable;
 
-
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class TestByte implements Persistable {
+	/**
+	 * DOCUMENT ME!
+	 */
 	protected byte x;
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public byte getX() {
 		return x;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param x DOCUMENT ME!
+	*/
 	public void setX(byte x) {
 		this.x = x;
 	}

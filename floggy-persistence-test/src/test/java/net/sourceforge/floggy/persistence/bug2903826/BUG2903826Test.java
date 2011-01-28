@@ -20,26 +20,70 @@ import java.util.Vector;
 
 import net.sourceforge.floggy.persistence.FloggyBaseTest;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class BUG2903826Test extends FloggyBaseTest {
-	
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
+	public void testLazyInStacks() throws Exception {
+		BUG2903826 bug2903826 = new BUG2903826();
+		bug2903826.setName("Thiago Moreira");
+
+		Stack stack = new Stack();
+		stack.push(bug2903826);
+		stack.push(new Integer(321));
+
+		BUG2903826StackHolder holder = new BUG2903826StackHolder();
+		holder.setStack(stack);
+
+		try {
+			int id = manager.save(holder);
+
+			holder = new BUG2903826StackHolder();
+
+			manager.load(holder, id, true);
+
+			stack = holder.getStack();
+
+			assertEquals(2, stack.size());
+			assertNotNull(stack.pop());
+			assertNull(stack.pop());
+		} finally {
+			manager.delete(bug2903826);
+			manager.delete(holder);
+		}
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testLazyInVectors() throws Exception {
 		BUG2903826 bug2903826 = new BUG2903826();
 		bug2903826.setName("Thiago Moreira");
-		
+
 		Vector vector = new Vector();
 		vector.addElement(bug2903826);
 		vector.addElement(null);
-		
+
 		BUG2903826VectorHolder holder = new BUG2903826VectorHolder();
 		holder.setVector(vector);
-		
+
 		try {
 			int id = manager.save(holder);
 
 			holder = new BUG2903826VectorHolder();
-			
+
 			manager.load(holder, id, true);
-			
+
 			vector = holder.getVector();
 
 			assertEquals(2, vector.size());
@@ -50,34 +94,4 @@ public class BUG2903826Test extends FloggyBaseTest {
 			manager.delete(holder);
 		}
 	}
-
-	public void testLazyInStacks() throws Exception {
-		BUG2903826 bug2903826 = new BUG2903826();
-		bug2903826.setName("Thiago Moreira");
-		
-		Stack stack = new Stack();
-		stack.push(bug2903826);
-		stack.push(new Integer(321));
-		
-		BUG2903826StackHolder holder = new BUG2903826StackHolder();
-		holder.setStack(stack);
-		
-		try {
-			int id = manager.save(holder);
-
-			holder = new BUG2903826StackHolder();
-			
-			manager.load(holder, id, true);
-			
-			stack = holder.getStack();
-			
-			assertEquals(2, stack.size());
-			assertNotNull(stack.pop());
-			assertNull(stack.pop());
-		} finally {
-			manager.delete(bug2903826);
-			manager.delete(holder);
-		}
-	}
-
 }

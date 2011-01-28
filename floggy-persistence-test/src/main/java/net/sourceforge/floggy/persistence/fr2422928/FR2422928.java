@@ -20,45 +20,87 @@ import java.util.Calendar;
 import net.sourceforge.floggy.persistence.Nameable;
 import net.sourceforge.floggy.persistence.Persistable;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class FR2422928 implements Persistable, Nameable {
-
+	/**
+	 * DOCUMENT ME!
+	 */
 	protected Calendar checkpoint;
-//	protected long id;
-	protected String name;
+
+	/**
+	 * DOCUMENT ME!
+	 */
 	protected Persistable node;
 
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected String name;
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Calendar getCheckpoint() {
 		return checkpoint;
 	}
 
-//	public long getId() {
-//		return id;
-//	}
-
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Persistable getNode() {
 		return node;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public String getRecordStoreName() {
 		return "FR2422928";
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param checkpoint DOCUMENT ME!
+	*/
 	public void setCheckpoint(Calendar checkpoint) {
 		this.checkpoint = checkpoint;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param name DOCUMENT ME!
+	*/
 	public void setName(String name) {
 		this.name = name;
 	}
 
-//	public void setId(long id) {
-//		this.id = id;
-//	}
-
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param node DOCUMENT ME!
+	*/
 	public void setNode(Persistable node) {
 		this.node = node;
 	}

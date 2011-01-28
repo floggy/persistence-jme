@@ -29,17 +29,55 @@ import net.sourceforge.floggy.persistence.Persistable;
  * @see Persistable
  */
 public interface __Persistable extends Persistable, Nameable {
-
-	public int __getId();
-
-	public void __setId(int id);
-
-	public Object __getIndexValue(String indexName);
-
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws FloggyException DOCUMENT ME!
+	*/
 	public void __delete() throws FloggyException;
 
-	public void __deserialize(byte[] buffer, boolean lazy) throws Exception;
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param buffer DOCUMENT ME!
+	* @param lazy DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
+	public void __deserialize(byte[] buffer, boolean lazy)
+		throws Exception;
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	public int __getId();
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param indexName DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	public Object __getIndexValue(String indexName);
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param isRealObject DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public byte[] __serialize(boolean isRealObject) throws Exception;
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param id DOCUMENT ME!
+	*/
+	public void __setId(int id);
 }

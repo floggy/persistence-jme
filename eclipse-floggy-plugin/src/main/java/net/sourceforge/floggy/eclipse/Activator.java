@@ -23,41 +23,79 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.RegistryFactory;
+
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+
 import org.osgi.framework.BundleContext;
 
 /**
- * The activator class controls the plug-in life cycle
+* The activator class controls the plug-in life cycle
  */
 public class Activator extends AbstractUIPlugin {
-
-	// The shared instance
 	private static Activator plugin;
 	private static BundleContext context;
-
-	// The plug-in ID
 	public static final String PLUGIN_ID = "net.sourceforge.floggy";
 
+/**
+   * The constructor
+   */
+	public Activator() {
+	}
+
 	/**
-	 * Returns the shared instance
-	 * 
-	 * @return the shared instance
-	 */
+	 * DOCUMENT ME!
+	*
+	* @param path DOCUMENT ME!
+	* @param filePattern DOCUMENT ME!
+	* @param recurse DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	public static Enumeration findEntries(String path, String filePattern,
+		boolean recurse) {
+		Enumeration result = null;
+
+		if (context != null) {
+			result = context.getBundle().findEntries(path, filePattern, recurse);
+		}
+
+		return result;
+	}
+
+	/**
+	* Returns the shared instance
+	*
+	* @return the shared instance
+	*/
 	public static Activator getDefault() {
 		return plugin;
 	}
 
 	/**
-	 * The constructor
-	 */
-	public Activator() {
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	public static boolean isMTJAvailble() {
+		IExtensionRegistry registry = RegistryFactory.getRegistry();
+		IExtensionPoint extension =
+			registry.getExtensionPoint("org.eclipse.mtj.core.mtjbuildhook");
+
+		return extension != null;
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
 	 */
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param context DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 
@@ -66,32 +104,25 @@ public class Activator extends AbstractUIPlugin {
 
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 
-		workspace.addResourceChangeListener(new ConfigurationFileResourceListener(), IResourceChangeEvent.POST_CHANGE);
+		workspace.addResourceChangeListener(new ConfigurationFileResourceListener(),
+			IResourceChangeEvent.POST_CHANGE);
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
 	 */
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param context DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
 		Activator.context = null;
 		super.stop(context);
 	}
-	
-	public static Enumeration findEntries(String path, String filePattern, boolean recurse){
-		Enumeration result = null;
-		if (context != null){
-			result = context.getBundle().findEntries(path, filePattern, recurse);
-		}
-		return result;
-	}
-	
-	public static boolean isMTJAvailble() {
-		IExtensionRegistry registry = RegistryFactory.getRegistry();
-		IExtensionPoint extension = registry.getExtensionPoint("org.eclipse.mtj.core.mtjbuildhook");
-		return extension != null;
-	}
-
 }

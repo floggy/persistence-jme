@@ -16,41 +16,67 @@
 package net.sourceforge.floggy.persistence;
 
 /**
- * An class defining a filter which matches a objects (based on an
- * application-defined index). ....
- * 
- * @since 1.4
+* An class defining a filter which matches a objects (based on an
+* application-defined index). ....
+*
+* @since 1.4
  */
 public class IndexFilter {
-
-	public String indexName;
 	public Object indexValue;
+	public String indexName;
 
+	/**
+	 * Creates a new IndexFilter object.
+	 *
+	 * @param indexName DOCUMENT ME!
+	 * @param indexValue DOCUMENT ME!
+	 */
 	public IndexFilter(String indexName, Object indexValue) {
 		setIndexName(indexName);
 		setIndexValue(indexValue);
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public String getIndexName() {
 		return indexName;
 	}
 
-	public void setIndexName(String indexName) {
-		if (indexName == null || indexName.trim().length() == 0) {
-			throw new IllegalArgumentException("Index name is null!");
-		}
-		this.indexName = indexName;
-	}
-
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Object getIndexValue() {
 		return indexValue;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param indexName DOCUMENT ME!
+	*/
+	public void setIndexName(String indexName) {
+		if ((indexName == null) || (indexName.trim().length() == 0)) {
+			throw new IllegalArgumentException("Index name is null!");
+		}
+
+		this.indexName = indexName;
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param indexValue DOCUMENT ME!
+	*/
 	public void setIndexValue(Object indexValue) {
 		if (indexValue == null) {
 			throw new IllegalArgumentException("Index value is null!");
 		}
+
 		this.indexValue = indexValue;
 	}
-
 }

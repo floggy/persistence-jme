@@ -17,16 +17,33 @@ package net.sourceforge.floggy.persistence.bug3017424;
 
 import net.sourceforge.floggy.persistence.Persistable;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class BUG3017424 implements Persistable {
-	
+	/**
+	 * DOCUMENT ME!
+	 */
 	protected String name;
-	
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public String getName() {
 		return name;
 	}
-	
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param name DOCUMENT ME!
+	*/
 	public void setName(String name) {
 		this.name = name;
 	}
-
 }

@@ -15,9 +15,24 @@
  */
 package net.sourceforge.floggy.barbecuecalculator.core;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class DisplayManagerNotStartedException extends DisplayManagerException {
-	public DisplayManagerNotStartedException() {}
-	
+	/**
+	 * Creates a new DisplayManagerNotStartedException object.
+	 */
+	public DisplayManagerNotStartedException() {
+	}
+
+	/**
+	 * Creates a new DisplayManagerNotStartedException object.
+	 *
+	 * @param s DOCUMENT ME!
+	 */
 	public DisplayManagerNotStartedException(String s) {
 		super(s);
 	}

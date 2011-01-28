@@ -20,37 +20,74 @@ import net.sourceforge.floggy.persistence.Persistable;
 import net.sourceforge.floggy.persistence.beans.FloggyStringBuffer;
 import net.sourceforge.floggy.persistence.rms.AbstractTest;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class StringBufferTest extends AbstractTest {
+	public static final StringBuffer stringBuffer =
+		new StringBuffer("floggy test");
 
-	public final static StringBuffer stringBuffer= new StringBuffer("floggy test");
-	
-	protected Class getParameterType() {
-		return StringBuffer.class;
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	public Filter getFilter() {
+		return new Filter() {
+				public boolean matches(Persistable arg0) {
+					String temp = ((FloggyStringBuffer) arg0).getX().toString();
+
+					return stringBuffer.toString().equals(temp);
+				}
+			};
 	}
-	
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Object getNewValueForSetMethod() {
 		return new StringBuffer();
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Object getValueForSetMethod() {
 		return stringBuffer;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Persistable newInstance() {
 		return new FloggyStringBuffer();
 	}
-	
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param o1 DOCUMENT ME!
+	* @param o2 DOCUMENT ME!
+	*/
 	protected void equals(Object o1, Object o2) {
 		super.equals(o1.toString(), o2.toString());
 	}
-	
-	public Filter getFilter() {
-		return new Filter() {
-			public boolean matches(Persistable arg0) {
-				String temp= ((FloggyStringBuffer)arg0).getX().toString();
-				return stringBuffer.toString().equals(temp);
-			}
-		};
-	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	protected Class getParameterType() {
+		return StringBuffer.class;
+	}
 }

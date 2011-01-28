@@ -17,15 +17,25 @@ package net.sourceforge.floggy.persistence.bug2816414;
 
 import net.sourceforge.floggy.persistence.FloggyBaseTest;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class BUG2816414Test extends FloggyBaseTest {
-
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws Exception DOCUMENT ME!
+	*/
 	public void testIt() throws Exception {
 		Person person = new Coleague();
 		person.setName("Floggy");
 
 		AddressBook book = new AddressBook();
 		book.setPerson(person);
-		
+
 		try {
 			int id = manager.save(book);
 
@@ -38,7 +48,5 @@ public class BUG2816414Test extends FloggyBaseTest {
 		} finally {
 			manager.delete(book);
 		}
-
-		
 	}
 }

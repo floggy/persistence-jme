@@ -17,6 +17,11 @@ package net.sourceforge.floggy.persistence.beans.animals;
 
 import net.sourceforge.floggy.persistence.Persistable;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class Reptile extends Animal implements Persistable {
-
 }

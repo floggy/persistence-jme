@@ -15,10 +15,24 @@
  */
 package net.sourceforge.floggy.barbecuecalculator.core;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class FlowManagerException extends Exception {
-	
-	public FlowManagerException() {}
-	
+	/**
+	 * Creates a new FlowManagerException object.
+	 */
+	public FlowManagerException() {
+	}
+
+	/**
+	 * Creates a new FlowManagerException object.
+	 *
+	 * @param s DOCUMENT ME!
+	 */
 	public FlowManagerException(String s) {
 		super(s);
 	}

@@ -17,11 +17,69 @@ package net.sourceforge.floggy.persistence;
 
 import java.util.List;
 
-import net.sourceforge.floggy.persistence.impl.PersistableMetadata;
 import junit.framework.TestCase;
 
-public class ConfigurationTest extends TestCase {
+import net.sourceforge.floggy.persistence.impl.PersistableMetadata;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
+public class ConfigurationTest extends TestCase {
+	/**
+	 * DOCUMENT ME!
+	*/
+	public void testAddPersistableMetadata() {
+		String className = "test";
+		Configuration configuration = new Configuration();
+		PersistableMetadata metadata =
+			new PersistableMetadata(false, className, null, null, null, null, null,
+				null, 0, null);
+
+		configuration.addPersistableMetadata(metadata);
+
+		PersistableMetadata temp = configuration.getPersistableMetadata(className);
+
+		assertSame(metadata, temp);
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*/
+	public void testContainsPersistable() {
+		String className = "test";
+		Configuration configuration = new Configuration();
+		PersistableMetadata metadata =
+			new PersistableMetadata(false, className, null, null, null, null, null,
+				null, 0, null);
+
+		configuration.addPersistableMetadata(metadata);
+
+		assertTrue(configuration.containsPersistable(className));
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*/
+	public void testGetPersistableMetadata() {
+		String className = "test";
+		Configuration configuration = new Configuration();
+		PersistableMetadata metadata =
+			new PersistableMetadata(false, className, null, null, null, null, null,
+				null, 0, null);
+
+		configuration.addPersistableMetadata(metadata);
+
+		PersistableMetadata temp = configuration.getPersistableMetadata(className);
+
+		assertSame(metadata, temp);
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*/
 	public void testGetPersistableMetadatas() {
 		Configuration configuration = new Configuration();
 		List list = configuration.getPersistableMetadatas();
@@ -30,6 +88,9 @@ public class ConfigurationTest extends TestCase {
 		assertEquals(0, list.size());
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*/
 	public void testIsAddDefaultConstructor() {
 		Configuration configuration = new Configuration();
 
@@ -40,16 +101,9 @@ public class ConfigurationTest extends TestCase {
 		assertFalse(configuration.isAddDefaultConstructor());
 	}
 
-	public void testSetAddDefaultConstructor() {
-		Configuration configuration = new Configuration();
-
-		assertTrue(configuration.isAddDefaultConstructor());
-
-		configuration.setAddDefaultConstructor(false);
-
-		assertFalse(configuration.isAddDefaultConstructor());
-	}
-
+	/**
+	 * DOCUMENT ME!
+	*/
 	public void testIsGenerateSource() {
 		Configuration configuration = new Configuration();
 
@@ -60,6 +114,22 @@ public class ConfigurationTest extends TestCase {
 		assertTrue(configuration.isGenerateSource());
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*/
+	public void testSetAddDefaultConstructor() {
+		Configuration configuration = new Configuration();
+
+		assertTrue(configuration.isAddDefaultConstructor());
+
+		configuration.setAddDefaultConstructor(false);
+
+		assertFalse(configuration.isAddDefaultConstructor());
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*/
 	public void testSetGenerateSource() {
 		Configuration configuration = new Configuration();
 
@@ -70,6 +140,9 @@ public class ConfigurationTest extends TestCase {
 		assertTrue(configuration.isGenerateSource());
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*/
 	public void testSetPersistables() {
 		Configuration configuration = new Configuration();
 		List list = configuration.getPersistableMetadatas();
@@ -83,44 +156,4 @@ public class ConfigurationTest extends TestCase {
 
 		assertNull(list);
 	}
-
-	public void testGetPersistableMetadata() {
-		String className = "test";
-		Configuration configuration = new Configuration();
-		PersistableMetadata metadata = new PersistableMetadata(false,
-				className, null, null, null, null, null, null, 0, null);
-
-		configuration.addPersistableMetadata(metadata);
-
-		PersistableMetadata temp = configuration
-				.getPersistableMetadata(className);
-
-		assertSame(metadata, temp);
-	}
-
-	public void testContainsPersistable() {
-		String className = "test";
-		Configuration configuration = new Configuration();
-		PersistableMetadata metadata = new PersistableMetadata(false,
-				className, null, null, null, null, null, null, 0, null);
-
-		configuration.addPersistableMetadata(metadata);
-
-		assertTrue(configuration.containsPersistable(className));
-	}
-
-	public void testAddPersistableMetadata() {
-		String className = "test";
-		Configuration configuration = new Configuration();
-		PersistableMetadata metadata = new PersistableMetadata(false,
-				className, null, null, null, null, null, null, 0, null);
-
-		configuration.addPersistableMetadata(metadata);
-
-		PersistableMetadata temp = configuration
-				.getPersistableMetadata(className);
-
-		assertSame(metadata, temp);
-	}
-
 }

@@ -17,8 +17,15 @@ package net.sourceforge.floggy.persistence.fr2243110;
 
 import net.sourceforge.floggy.persistence.Persistable;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class JSuperClass implements Persistable {
-
+	/**
+	 * DOCUMENT ME!
+	 */
 	protected String stringField;
-
 }

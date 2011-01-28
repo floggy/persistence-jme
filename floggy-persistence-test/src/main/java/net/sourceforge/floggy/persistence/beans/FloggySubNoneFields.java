@@ -15,6 +15,11 @@
  */
 package net.sourceforge.floggy.persistence.beans;
 
-
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class FloggySubNoneFields extends FloggyNoneFields {
 }

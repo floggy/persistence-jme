@@ -332,6 +332,7 @@
 				</dependencies>
 				<configuration>
 					<convention>jalopy-code-convetion.xml</convention>
+					<srcExcludesPattern>**\Freezed.java</srcExcludesPattern>
 				</configuration>
 			</plugin>
 		</plugins>

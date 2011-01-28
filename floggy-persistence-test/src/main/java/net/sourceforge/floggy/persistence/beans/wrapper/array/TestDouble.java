@@ -17,14 +17,32 @@ package net.sourceforge.floggy.persistence.beans.wrapper.array;
 
 import net.sourceforge.floggy.persistence.Persistable;
 
-
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class TestDouble implements Persistable {
+	/**
+	 * DOCUMENT ME!
+	 */
 	protected Double[] x;
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
 	public Double[] getX() {
 		return x;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param x DOCUMENT ME!
+	*/
 	public void setX(Double[] x) {
 		this.x = x;
 	}

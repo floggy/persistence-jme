@@ -18,18 +18,33 @@ package net.sourceforge.floggy.persistence.impl;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class FloggyOutputStream extends DataOutputStream {
-	
+	/**
+	 * Creates a new FloggyOutputStream object.
+	 */
 	public FloggyOutputStream() {
 		super(new ByteArrayOutputStream());
 	}
-	
-	public byte[] toByteArray() {
-		return ((ByteArrayOutputStream)out).toByteArray();
-	}
 
+	/**
+	 * DOCUMENT ME!
+	*/
 	public void reset() {
-		((ByteArrayOutputStream)out).reset();
+		((ByteArrayOutputStream) out).reset();
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	public byte[] toByteArray() {
+		return ((ByteArrayOutputStream) out).toByteArray();
+	}
 }

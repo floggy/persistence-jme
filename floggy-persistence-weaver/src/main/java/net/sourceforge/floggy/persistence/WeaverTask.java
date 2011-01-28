@@ -18,101 +18,167 @@ package net.sourceforge.floggy.persistence;
 import java.io.File;
 
 import org.apache.commons.logging.LogFactory;
+
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 import org.apache.tools.ant.types.Path;
 import org.apache.tools.ant.types.Reference;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class WeaverTask extends Task {
-
-	protected Path classpath;
-
-	protected File input;
-
-	protected File output;
-
-	protected boolean generateSource= false;
-
-	protected boolean addDefaultConstructor= true;
-	
+	/**
+	 * DOCUMENT ME!
+	 */
 	protected File configurationFile;
 
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected File input;
+
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected File output;
+
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected Path classpath;
+
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected boolean addDefaultConstructor = true;
+
+	/**
+	 * DOCUMENT ME!
+	 */
+	protected boolean generateSource = false;
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @throws BuildException DOCUMENT ME!
+	*/
 	public void execute() throws BuildException {
 		AntLog.setTask(this);
-		LogFactory.getFactory().setAttribute("org.apache.commons.logging.Log", AntLog.class.getName());
+		LogFactory.getFactory()
+		 .setAttribute("org.apache.commons.logging.Log", AntLog.class.getName());
+
 		Weaver weaver = new Weaver();
+
 		try {
 			weaver.setClasspath(classpath.list());
 			weaver.setInputFile(input);
 			weaver.setOutputFile(output);
+
 			if (configurationFile == null) {
-				Configuration configuration= new Configuration();
+				Configuration configuration = new Configuration();
 				configuration.setAddDefaultConstructor(addDefaultConstructor);
 				configuration.setGenerateSource(generateSource);
 				weaver.setConfiguration(configuration);
 			} else {
 				weaver.setConfigurationFile(configurationFile);
 			}
+
 			weaver.execute();
 		} catch (WeaverException e) {
 			throw new BuildException(e);
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param addDefaultConstructor DOCUMENT ME!
+	*/
+	public void setAddDefaultConstructor(boolean addDefaultConstructor) {
+		this.addDefaultConstructor = addDefaultConstructor;
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param path DOCUMENT ME!
+	*/
 	public void setBootClasspath(Path path) {
 		addToClasspath(path);
 	}
 
 	/**
-	 * Adds a reference to a classpath defined elsewhere.
-	 * 
-	 * @param r
-	 *            a reference to a classpath
-	 */
+	* Adds a reference to a classpath defined elsewhere.
+	*
+	* @param r a reference to a classpath
+	*/
 	public void setBootClasspathRef(Reference r) {
 		addToClasspath((Path) r.getReferencedObject());
-
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param path DOCUMENT ME!
+	*/
 	public void setClasspath(Path path) {
 		addToClasspath(path);
 	}
 
 	/**
-	 * Adds a reference to a classpath defined elsewhere.
-	 * 
-	 * @param r
-	 *            a reference to a classpath
-	 */
+	* Adds a reference to a classpath defined elsewhere.
+	*
+	* @param r a reference to a classpath
+	*/
 	public void setClasspathRef(Reference r) {
 		addToClasspath((Path) r.getReferencedObject());
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param configurationFile DOCUMENT ME!
+	*/
+	public void setConfigurationFile(File configurationFile) {
+		this.configurationFile = configurationFile;
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param generateSource DOCUMENT ME!
+	*/
+	public void setGenerateSource(boolean generateSource) {
+		this.generateSource = generateSource;
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param input DOCUMENT ME!
+	*/
+	public void setInput(File input) {
+		this.input = input;
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*
+	* @param output DOCUMENT ME!
+	*/
+	public void setOutput(File output) {
+		this.output = output;
 	}
 
 	private void addToClasspath(Path path) {
 		if (classpath == null) {
 			classpath = new Path(getProject());
 		}
+
 		classpath.append(path);
 	}
-
-	public void setGenerateSource(boolean generateSource) {
-		this.generateSource = generateSource;
-	}
-
-	public void setInput(File input) {
-		this.input = input;
-	}
-
-	public void setOutput(File output) {
-		this.output = output;
-	}
-
-	public void setAddDefaultConstructor(boolean addDefaultConstructor) {
-		this.addDefaultConstructor = addDefaultConstructor;
-	}
-	
-	public void setConfigurationFile(File configurationFile) {
-		this.configurationFile = configurationFile;
-	}
-
 }

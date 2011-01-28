@@ -17,17 +17,27 @@ package net.sourceforge.floggy.persistence;
 
 import junit.framework.TestCase;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:thiago.moreira@floggy.org">Thiago Moreira</a>
+ * @version $Revision$
+  */
 public class IndexFilterTest extends TestCase {
+	/**
+	 * DOCUMENT ME!
+	*/
+	public void testGetIndexValue() {
+		String indexName = "testIndex";
+		Object indexValue = new Integer(4545);
+		IndexFilter filter = new IndexFilter(indexName, indexValue);
 
-	public void testIndexFilterNullIndexName() {
-		try {
-			new IndexFilter(null, null);
-			fail("It must throw an IllegalArgumentException");
-		} catch (Exception ex) {
-			assertEquals(IllegalArgumentException.class, ex.getClass());
-		}
+		assertSame(indexValue, filter.getIndexValue());
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*/
 	public void testIndexFilterEmptyIndexName() {
 		try {
 			new IndexFilter("", null);
@@ -37,8 +47,24 @@ public class IndexFilterTest extends TestCase {
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*/
+	public void testIndexFilterNullIndexName() {
+		try {
+			new IndexFilter(null, null);
+			fail("It must throw an IllegalArgumentException");
+		} catch (Exception ex) {
+			assertEquals(IllegalArgumentException.class, ex.getClass());
+		}
+	}
+
+	/**
+	 * DOCUMENT ME!
+	*/
 	public void testIndexFilterNullIndexValue() {
 		String indexName = "testIndex";
+
 		try {
 			new IndexFilter(indexName, null);
 			fail("It must throw an IllegalArgumentException");
@@ -47,6 +73,9 @@ public class IndexFilterTest extends TestCase {
 		}
 	}
 
+	/**
+	 * DOCUMENT ME!
+	*/
 	public void testSetIndexName() {
 		try {
 			IndexFilter filter = new IndexFilter("test", "indexValue");
@@ -57,14 +86,9 @@ public class IndexFilterTest extends TestCase {
 		}
 	}
 
-	public void testGetIndexValue() {
-		String indexName = "testIndex";
-		Object indexValue = new Integer(4545);
-		IndexFilter filter = new IndexFilter(indexName, indexValue);
-
-		assertSame(indexValue, filter.getIndexValue());
-	}
-
+	/**
+	 * DOCUMENT ME!
+	*/
 	public void testSetIndexValue() {
 		String indexName = "testIndex";
 		Object indexValue = new Integer(4545);
@@ -73,5 +97,4 @@ public class IndexFilterTest extends TestCase {
 		filter.setIndexValue(indexValue);
 		assertSame(indexValue, filter.getIndexValue());
 	}
-
 }
