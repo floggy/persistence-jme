@@ -38,8 +38,8 @@ public class PolymorphicObjectSetImpl implements PolymorphicObjectSet {
 /**
    * Creates a new instance of ObjectSetImpl.
    * 
-   * @param manager
-   *            TODO
+   * @param manager The PersistableManager instance
+   * @param lazy Flag indicating lazy or not load
    */
 	public PolymorphicObjectSetImpl(PersistableManagerImpl manager, boolean lazy) {
 		this.manager = manager;

@@ -49,7 +49,8 @@ class ObjectSetImpl implements SingleObjectSet {
    * @param persistableClass
    *                A persistable class used to create new instances of
    *                objects.
-   * @param manager TODO
+   * @param manager The PersistableManager instance
+   * @param lazy Flag indicating lazy or not load
    */
 	protected ObjectSetImpl(int[] ids, Class persistableClass,
 		PersistableManagerImpl manager, boolean lazy) throws FloggyException {
