@@ -83,7 +83,7 @@
 		<repository>
 			<id>sonatype</id>
 			<name>Sonatype.org</name>
-			<url>http://oss.sonatype.org/content/groups/sourceforge-with-staging</url>
+			<url>http://oss.sonatype.org/service/local/staging/deploy/maven2</url>
 		</repository>
 		<snapshotRepository>
 			<id>sonatype</id>
