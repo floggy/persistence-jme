@@ -23,7 +23,7 @@
 	</properties>
 	<body>
 		<section name="News">
-			<p><img src="images/starOn.png" alt="News" /><b> 01-Aug-10: The 1.4.0 final release was made available, check the list of <a href="./changes-report.html#a1.4.0">changes</a>. Enjoy!</b></p>
+			<p><img src="images/starOn.png" alt="News" /><b> 02-Feb-11: The 1.4.0 final release was made available, check the list of <a href="./changes-report.html#a1.4.0">changes</a>. Enjoy!</b></p>
 			<p><img src="images/starOn.png" alt="News" /><b> 16-Oct-10: Hey, now you can follow us on <a href="http://twitter.com/floggyframework" >twitter! </a></b></p>
 			<p><b>30-Jun-10:</b> New download record for a month, exactly 1500. Thank you community! <a href="http://sourceforge.net/project/stats/detail.php?group_id=139426&amp;ugn=floggy&amp;type=prdownload&amp;mode=12months&amp;file_id=0" >Statistics</a></p>
 			<p><b>25-Apr-10:</b> Call for testers: we just built an alpha package for the new Index feature, we need testers! Be one! Check it out how <a href="./core-package.html#Using_the_index_feature_only_available_on_package_1.4.0-alpha">here</a>.</p>
