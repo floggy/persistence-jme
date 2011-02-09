@@ -107,7 +107,7 @@
 				<executions>
 					<execution>
 						<id>copy-dependencies</id>
-						<phase>process-sources</phase>
+						<phase>pre-site</phase>
 						<goals>
 							<goal>copy-dependencies</goal>
 						</goals>
@@ -122,7 +122,7 @@
 					</execution>
 					<execution>
 						<id>unpack</id>
-						<phase>process-sources</phase>
+						<phase>pre-site</phase>
 						<goals>
 							<goal>unpack-dependencies</goal>
 						</goals>
