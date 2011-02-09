@@ -19,7 +19,7 @@
 			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 			xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
 <body>
-	<release version="1.4.0" date="08-01-2010" description="Fitfh public release">
+	<release version="1.4.0" date="02-09-2011" description="Fitfh public release">
 		<action dev="thiagolm" type="update" issue="2988927">
 			Updated the libraries of Microemu to 2.0.4.
 		</action>
