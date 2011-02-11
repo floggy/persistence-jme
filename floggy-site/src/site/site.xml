@@ -73,7 +73,7 @@
 			<item name="Migration package" href="migration-package.html" />
 			<item name="Performance" href="performance.html" />
 			<item name="API" href="modules/floggy-persistence-framework/apidocs/index.html" />
-			<item name="Configuration" collapse="false" href="configuration/eclipse.html">
+			<item name="Configuration" collapse="true" href="configuration/eclipse.html">
 				<item name="Eclipse" href="configuration/eclipse.html" />
 				<item name="Netbeans" href="configuration/netbeans.html" />
 				<item name="Ant" href="configuration/ant.html" />
