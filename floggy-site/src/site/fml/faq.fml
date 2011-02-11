@@ -154,11 +154,11 @@
 				How can I get the source code?
 			</question>
 			<answer>
-				<p>Our project is hosted on SourceForge.net, so all the source code is available on their Subversion system. You can access it <a href="http://sourceforge.net/svn/?group_id=139426">here</a>.</p>
+				<p>Our source code is hosted on github.com in their Git system. You can access it <a href="https://github.com/floggy/persistence-jme">here</a>.</p>
 
-				<p>Simplifying: svn co https://floggy.svn.sourceforge.net/svnroot/floggy/trunk</p>
+				<p>Simplifying: git clone git@github.com:floggy/persistence-jme.git</p>
 				
-				Or you can grab the GNU tarball directly from Sourceforge <a href="http://floggy.svn.sourceforge.net/viewvc/floggy/trunk.tar.gz?view=tar">here</a>
+				Or you can grab a compacted archive directly from github: <a href="https://github.com/floggy/persistence-jme/tarball/master">tar.gz</a> or <a href="https://github.com/floggy/persistence-jme/zipball/master">zip</a>
 			</answer>
 		</faq>
 		<faq id="what-is-the-format-of-the-commit-message">
