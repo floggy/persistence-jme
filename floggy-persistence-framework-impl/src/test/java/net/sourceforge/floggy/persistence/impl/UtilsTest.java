@@ -108,7 +108,15 @@ public class UtilsTest extends TestCase {
 		expected = new IOException();
 		actual = Utils.handleException(expected);
 		assertEquals(expected.getClass().getName(), actual.getMessage());
-	}
+
+		expected = new NullPointerException();
+		try {
+			Utils.handleException(expected);
+			fail("It should be throwed an exception!");
+		} catch (Exception ex) {
+			assertSame(expected, ex);
+		}
+}
 
 	/**
 	 * DOCUMENT ME!

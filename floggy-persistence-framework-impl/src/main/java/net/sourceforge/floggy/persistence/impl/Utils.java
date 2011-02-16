@@ -165,6 +165,10 @@ public class Utils {
 	* @return DOCUMENT ME!
 	*/
 	public static FloggyException handleException(Exception ex) {
+		if (ex instanceof RuntimeException) {
+			throw (RuntimeException) ex;
+		}
+
 		if (ex instanceof FloggyException) {
 			return (FloggyException) ex;
 		}
