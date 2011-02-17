@@ -36,7 +36,7 @@
 		<site>
 			<id>sourceforge</id>
 			<name>SourceForge.net</name>
-			<url>scp://shell.sourceforge.net:/home/groups/f/fl/floggy/htdocs/</url>
+			<url>scp://shell.sourceforge.net:/home/project-web/floggy/htdocs/</url>
 		</site>
 	</distributionManagement>
 	<dependencies>
