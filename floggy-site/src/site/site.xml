@@ -31,6 +31,7 @@
 	</bannerLeft>
 	<body>
 		<links>
+			<item name="Donate" href="donate.html" />
 			<item name="Twitter" href="http://twitter.com/floggyframework"/>
 			<item name="JME" href="http://java.sun.com/javame/index.jsp"/>
 			<item name="Maven 2" href="http://maven.apache.org/maven2/" />
