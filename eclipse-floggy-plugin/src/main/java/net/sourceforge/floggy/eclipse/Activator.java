@@ -17,6 +17,7 @@ package net.sourceforge.floggy.eclipse;
 
 import java.util.Enumeration;
 
+import org.apache.commons.logging.LogFactory;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -40,6 +41,8 @@ public class Activator extends AbstractUIPlugin {
    * The constructor
    */
 	public Activator() {
+		super();
+		LogFactory.getFactory().setAttribute("org.apache.commons.logging.Log", EclipseLog.class.getName());
 	}
 
 	/**
