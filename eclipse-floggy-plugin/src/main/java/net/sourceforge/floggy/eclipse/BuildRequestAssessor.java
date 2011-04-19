@@ -7,7 +7,14 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.jdt.core.IClassFile;
+import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IPackageFragment;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
 
 /**
  * Decides if a build is really needed.
@@ -28,6 +35,7 @@ public class BuildRequestAssessor {
 	private static final Log LOG = LogFactory.getLog(BuildRequestAssessor.class);
 	private static final String MJT_TEMP_DIR = ".mtj.tmp/";
 	private static final String CLASS_SUFFIX = ".class";
+	private IJavaProject javaProject;
 
 	/**
 	 * Determines if a build of the project is required. If we're being asked be
@@ -85,9 +93,12 @@ public class BuildRequestAssessor {
 		if (resouceDelta == null) {
 			LOG.debug("Cannot determine which resources have changed");
 			result = true;
-		} else {
+		} else if (result == false) {
+			if (javaProject == null) {
+				javaProject = JavaCore.create(project);
+			}
 			logDelta(resouceDelta);
-			result = isBuildRequired(resouceDelta);
+			result = isBuildRequired(project, resouceDelta);
 		}
 		LOG.info((result ? "Floggy build required"
 				: "Floggy build not required"));
@@ -105,7 +116,8 @@ public class BuildRequestAssessor {
 	 * @return
 	 * @throws CoreException
 	 */
-	private boolean isBuildRequired(IResourceDelta delta) throws CoreException {
+	private boolean isBuildRequired(IProject project, IResourceDelta delta)
+			throws CoreException {
 		boolean buildNeeded = false;
 		IResourceDelta[] changes = delta.getAffectedChildren();
 		IResource resource;
@@ -117,18 +129,40 @@ public class BuildRequestAssessor {
 						.toPortableString();
 				if (pathAsString.endsWith(CLASS_SUFFIX)
 						&& !pathAsString.startsWith(MJT_TEMP_DIR)) {
-					buildNeeded = true;
-					LOG.debug("Build required due to change of "
-							+ resource.getFullPath().toPortableString());
+					// currently don't look any deeper than this, in future will see if 
+					// the class extends a persistable... if we can get this to work
+					// by calling doesClassExtendPersistable(resource);
+					buildNeeded = true; 
+					if (buildNeeded) {
+						LOG.debug("Build required due to change of "
+								+ resource.getFullPath().toPortableString());
+						break;
+					}
 				}
 			} else if (resource.getType() == IResource.FOLDER) {
-				buildNeeded = isBuildRequired(changes[i]);
+				buildNeeded = isBuildRequired(project, changes[i]);
 				if (buildNeeded) {
 					break;
 				}
 			}
 		}
 		return buildNeeded;
+	}
+
+	private boolean doesClassExtendPersistable(IResource resource) throws JavaModelException {
+		boolean result = true;
+		IJavaElement javaElement = JavaCore.create(resource);
+		IPath outputLocation = javaProject.getOutputLocation();
+		if (javaElement.getElementType() == IJavaElement.CLASS_FILE) {
+			IClassFile classFile = (IClassFile) javaElement;
+			IType roType = classFile.getType();
+			String className = roType.getFullyQualifiedName();
+			IPackageFragment fragment = roType.getPackageFragment();
+			System.out.println();
+				//javaProject.findType(classFile.getElementName());
+			System.out.println();
+		}
+		return result;
 	}
 
 	private void logDelta(IResourceDelta projectDelta) {
